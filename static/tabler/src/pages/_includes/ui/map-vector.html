@@ -1,0 +1,51 @@
+{% assign id = include.map-id %}
+{% assign data = site.data.maps-vector[id] %}
+{% assign color = include.color | default: data.color | default: 'green' %}
+
+{% if data %}
+	<div class="ratio ratio-21x9">
+		<div>
+			<div id="map-{{ id }}" class="w-100 h-100"></div>
+		</div>
+	</div>
+
+	{% capture script %}
+	<script>
+		// @formatter:on
+		{% if jekyll.environment == 'development' %}window.tabler_map_vector = window.tabler_map_vector || {};{% endif %}
+
+		document.addEventListener("DOMContentLoaded", function() {
+			{% if jekyll.environment == 'development' %}window.tabler_map_vector["map-{{ id }}"] = {% endif %}new jsVectorMap({
+				selector: '#map-{{ id }}',
+				map: '{{ data.map }}',
+				backgroundColor: 'transparent',
+				regionStyle: {
+					initial: {
+						fill: '#F8FAFC',
+						stroke: '#dae1e7',
+						strokeWidth: 1,
+					}
+				},
+				zoomOnScroll: {% if data.zoom %}true{% else %}false{% endif %},
+				zoomButtons: {% if data.zoom %}true{% else %}false{% endif %},
+				{% if data.values %}
+				// -------- Series --------
+				visualizeData: {
+					scale: ['#F8FAFC', '{{ data.color | tabler_color }}'],
+					values: {{ data.values }},
+				},
+				{% endif %}
+			});
+		});
+		// @formatter:off
+	</script>
+	{% endcapture %}
+
+	{% if include.show-scripts %}
+		{{ script }}
+	{% else %}
+		{% capture_global scripts %}
+			{{ script }}
+		{% endcapture_global %}
+	{% endif %}
+{% endif %}

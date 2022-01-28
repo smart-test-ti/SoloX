@@ -1,0 +1,220 @@
+home:
+  url: index.html
+  title: Home
+  icon: home
+
+base:
+  title: Interface
+  icon: package
+  columns: 2
+  children:
+    empty:
+      title: Empty page
+      url: empty.html
+    accordion:
+      title: Accordion
+      url: accordion.html
+    blank:
+      title: Blank page
+      url: blank.html
+    buttons:
+      url: buttons.html
+      title: Buttons
+    cards:
+      url: cards.html
+      title: Cards
+    cards-masonry:
+      url: cards-masonry.html
+      title: Cards Masonry
+    colors:
+      url: colors.html
+      title: Colors
+    dropdowns:
+      url: dropdowns.html
+      title: Dropdowns
+    icons:
+      url: icons.html
+      title: Icons
+    modals:
+      url: modals.html
+      title: Modals
+    maps:
+      url: maps.html
+      title: Maps
+    map-fullsize:
+      url: map-fullsize.html
+      title: Map fullsize
+    maps-vector:
+      url: maps-vector.html
+      title: Vector maps
+    navigation:
+      url: navigation.html
+      title: Navigation
+    charts:
+      url: charts.html
+      title: Charts
+    pagination:
+      url: pagination.html
+      title: Pagination
+      icon: pie-chart
+    placeholder:
+      url: placeholder.html
+      title: Placeholder
+    tabs:
+      url: tabs.html
+      title: Tabs
+    tables:
+      url: tables.html
+      title: Tables
+    carousel:
+      title: Carousel
+      url: carousel.html
+    lists:
+      title: Lists
+      url: lists.html
+    typography:
+      title: Typography
+      url: typography.html
+    offcanvas:
+      title: Offcanvas
+      url: offcanvas.html
+    markdown:
+      title: Markdown
+      url: markdown.html
+
+    authentication:
+      title: Authentication
+      children:
+        sign-in:
+          title: Sign in
+          url: sign-in.html
+        sign-up:
+          title: Sign up
+          url: sign-up.html
+        forgot-password:
+          title: Forgot password
+          url: forgot-password.html
+        terms-of-service:
+          title: Terms of service
+          url: terms-of-service.html
+        auth-lock:
+          title: Lock screen
+          url: auth-lock.html
+
+    error:
+      title: Error pages
+      icon: file-minus
+      children:
+        404:
+          url: error-404.html
+          title: 404 page
+        500:
+          url: error-500.html
+          title: 500 page
+        maintenance:
+          url: error-maintenance.html
+          title: Maintenance page
+
+forms:
+  url: form-elements.html
+  title: Forms
+  title-long: Form elements
+  icon: checkbox
+
+extra:
+  title: Extra
+  icon: star
+  children:
+    activity:
+      title: Activity
+      url: activity.html
+    gallery:
+      title: Gallery
+      url: gallery.html
+    invoice:
+      title: Invoice
+      url: invoice.html
+    search-results:
+      title: Search results
+      url: search-results.html
+    pricing:
+      url: pricing.html
+      title: Pricing cards
+    users:
+      title: Users
+      url: users.html
+    license:
+      title: License
+      url: license.html
+    music:
+      title: Music
+      url: music.html
+    uptime:
+      title: Uptime monitor
+      url: uptime.html
+    widgets:
+      title: Widgets
+      url: widgets.html
+    wizard:
+      title: Wizard
+      url: wizard.html
+
+layout:
+  icon: layout-2
+  title: Layout
+  columns: 2
+  children:
+    horizontal:
+      url: layout-horizontal.html
+      title: Horizontal
+    vertical:
+      url: layout-vertical.html
+      title: Vertical
+    vertical-transparent:
+      url: layout-vertical-transparent.html
+      title: Vertical transparent
+    vertical-right:
+      url: layout-vertical-right.html
+      title: Right vertical
+    condensed:
+      url: layout-condensed.html
+      title: Condensed
+    combo:
+      url: layout-combo.html
+      title: Combined
+    navbar-dark:
+      url: layout-navbar-dark.html
+      title: Navbar dark
+    navbar-sticky:
+      url: layout-navbar-sticky.html
+      title: Navbar sticky
+    navbar-overlap:
+      url: layout-navbar-overlap.html
+      title: Navbar overlap
+    rtl-mode:
+      url: layout-rtl.html
+      title: RTL mode
+    fluid:
+      url: layout-fluid.html
+      title: Fluid
+    fluid-vertical:
+      url: layout-fluid-vertical.html
+      title: Fluid vertical
+
+docs:
+  title: Documentation
+  icon: file-text
+  url: docs/index.html
+
+
+
+#changelog:
+#  url: changelog.html
+#  title: Changelog
+#  icon: file-plus
+#  label: v1.0
+
+#components:
+#  url: components.html
+#  title: Components
+#  icon: truck
