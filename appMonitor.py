@@ -6,7 +6,7 @@ import re
 import sys
 import time
 from threading import Timer
-
+from functools import reduce
 import matplotlib
 
 from adbTool import Adb
@@ -44,7 +44,7 @@ class CpuProfiler():
             "utf-8").strip()
         r = re.compile("\\s+")
         toks = r.split(stringBuffer)
-        processCpu = float(long(toks[13]) + long(toks[14]));
+        processCpu = float(int(toks[13]) + int(toks[14]));
         return processCpu
 
     def getTotalCpuStat(self):
@@ -53,7 +53,7 @@ class CpuProfiler():
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(child_out)
         idleCpu = float(toks[3])
-        totalCpu = float(reduce(lambda x, y: long(x) + long(y), toks));
+        totalCpu = float(reduce(lambda x, y: int(x) + int(y), toks));
         return idleCpu, totalCpu
 
     def profile(self):
@@ -219,9 +219,9 @@ class app_monitor(multiprocessing.Process):
             return 0
 
     def waitForAppReady(self):
-        start_time = long(time.time())
+        start_time = int(time.time())
         while self.appPid == 0:
-            elapsed = long(time.time()) - start_time
+            elapsed = int(time.time()) - start_time
             # 做完一部分任务后,判断是否超时
             if elapsed >= app_monitor.timeout_in_seconds:
                 self.loghd.info("获取app pid超时，退出")
@@ -282,7 +282,7 @@ class app_monitor(multiprocessing.Process):
                             wspace=0.25)
 
         # plt.show()
-        print self.pigName
+        print (self.pigName)
         plt.savefig(self.pigName)
 
     def run(self):
@@ -291,9 +291,9 @@ class app_monitor(multiprocessing.Process):
         # self.is_alive = True
 
         # 等待获取到被监控app的pid后才开始采集数据
-        print "waitForAppReady begin"
+        print ("waitForAppReady begin")
         self.waitForAppReady()
-        print "waitForAppReady end"
+        print ("waitForAppReady end")
 
         flowProfile = FlowProfiler(self.appPid, self.adb, self.loghd)
         cpuProfile = CpuProfiler(self.appPid, self.adb, self.loghd)
@@ -330,7 +330,7 @@ class app_monitor(multiprocessing.Process):
                 f.write(write_str)
                 f.flush()
 
-            except Exception, e:
+            except Exception as e:
                 errorTimes += 1
                 if (errorTimes > 5):  # 本来想尝试通过看app是否还在来判断，但是发现用例结束后，app仍然在后台运行
                     self.loghd.info("monitor app end or process exception: %s" % e)
@@ -344,18 +344,18 @@ class app_monitor(multiprocessing.Process):
 
         f.close()
 
-        print u"开始绘图了"
+        print (u"开始绘图了")
         self.pic(cpuProfile.processcpuRatioList, cpuProfile.cpuRatioList, memProfile.PSSList, \
                  memProfile.NativeHeapList, memProfile.DalvikHeapList, flowProfile.flowList)
-        print u"绘图结束了"
+        print (u"绘图结束了")
 
         self.running = False
 
 
 def help_notice():
-    print u"用法 python getAndroidCpu.py 2 d:\ com.yy.me 23423442"
-    print u"参数：时间间隔 结果存放目录 包名 设备ID(只连一台手机不需要此参数)"
-    print u"参数不足, 或某些参数为空"
+    print (u"用法 python getAndroidCpu.py 2 d:\ com.yy.me 23423442")
+    print (u"参数：时间间隔 结果存放目录 包名 设备ID(只连一台手机不需要此参数)")
+    print (u"参数不足, 或某些参数为空")
     sys.exit(0)
 
 
@@ -370,8 +370,8 @@ if __name__ == "__main__":
         appMonitor = app_monitor(sys.argv[1], sys.argv[2], sys.argv[3], logUtils.log_init("device"), sys.argv[4])
     elif len(sys.argv) == 2:
         appMonitor = app_monitor(2, sys.argv[1], "com.duowan.mobile", logUtils.log_init("device"))
-        print u"默认app为安卓手y, 间隔时间为2秒"
-        print u"用法 python appMonitor.py filepath+filename"
+        print (u"默认app为安卓手y, 间隔时间为2秒")
+        print (u"用法 python appMonitor.py filepath+filename")
     else:
         appMonitor = app_monitor(sys.argv[1], sys.argv[2], sys.argv[3], logUtils.log_init("device"))
 

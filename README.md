@@ -18,7 +18,9 @@ SoloX - APP性能数据实时收集工具。
 
 
 ## 功能
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1644216415350-3c40d6c6-ad8f-49e8-8f57-05b122793179.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1645174919944-c952dfec-5575-4501-b690-648d3d5805fb.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1645175000817-074f6fde-5964-4def-8d69-be9f783efad6.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1644304938575-c1d70f70-776d-4882-8d65-291a5ff84616.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 

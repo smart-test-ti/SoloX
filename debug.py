@@ -49,6 +49,21 @@ def getSingCpuRate(pkgName):
     cpuRate = int((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100)
     return f'cpu%:{cpuRate}'
 
+def getCPU(pkgName):
+    """
+    获取APP的CPU损耗占比
+    """
+    try:
+        cmd = f"adb shell top -o ARGS -o %CPU | grep {pkgName}  >> ./test.txt"
+        subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cpuvalue = 0
+    except IndexError as e:
+        print(str(e))
+        cpuvalue = 0
+    finally:
+        print(cpuvalue)
+    return f'cpu%:{cpuvalue}'
+
 def getProcessMem(pkgName):
     """获取进程内存Total\NativeHeap\NativeHeap;单位：MB"""
     pid = getPid(pkgName)
@@ -64,5 +79,10 @@ def getProcessMem(pkgName):
 
 
 if __name__ == "__main__":
-    pass
+    print(getPid('com.playit.videoplayer'))
+    # print(getprocessCpuStat('com.playit.videoplayer'))
+    # print(getTotalCpuStat())
+    #print(getSingCpuRate('com.playit.videoplayer'))
+    #getCPU('com.playit.videoplayer')
+    print(getProcessMem('com.playit.videoplayer'))
 

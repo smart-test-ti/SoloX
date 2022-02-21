@@ -1,10 +1,11 @@
 import re
 import os
 import subprocess
+import shutil
 
 class Devices():
 
-    def __init__(self, platform):
+    def __init__(self, platform='mac'):
         self.platform = platform
 
     def getDeviceIds(self):
@@ -19,7 +20,7 @@ class Devices():
     def getDevicesName(self,deviceId):
         """获取对应设备Id的设备名称"""
         devices_name = os.popen(f'adb -s {deviceId} shell getprop ro.product.model').readlines()
-        return devices_name
+        return devices_name[0].strip()
 
     def getDevices(self):
         """获取所有设备"""
@@ -41,6 +42,47 @@ class Devices():
         flag = len(result) > 0
         pid = (0,result[0].split()[1])[flag]
         return pid
+
+    def checkPkgname(self,pkgname):
+        flag = True
+        replace_list = ['com.android','com.google','com.xiaomi','com.miui','com.mi','android']
+        for i in replace_list:
+            if i in pkgname:
+                flag = False
+        return flag        
+
+
+    def getPkgname(self):
+        """获取手机所有包名"""
+        pkginfo  = os.popen("adb shell pm list package")
+        pkglist = []
+        for p in pkginfo:
+            p = p.lstrip('package').lstrip(":").strip()
+            if self.checkPkgname(p):
+                pkglist.append(p)
+        return pkglist
+
+class file():
+
+    def __init__(self, fileroot):
+        self.fileroot = fileroot
+        self.report_dir = os.path.join(os.getcwd(), 'report')
+
+    def create_file(self,filename,content=''):
+        if not os.path.exists(f'{self.report_dir}/{self.fileroot}'):
+            os.mkdir(f'{self.report_dir}')
+        with open(f'{self.report_dir}/{filename}', 'w', encoding="utf-8") as file:
+            file.write(content)
+
+    def make_report(self):
+        report_new_dir = f'{self.report_dir}/{self.fileroot}'
+        if not os.path.exists(report_new_dir):
+            os.mkdir(report_new_dir)
+
+        for f in os.listdir(self.report_dir):
+            filename = os.path.join(self.report_dir, f)
+            if f.split(".")[-1] == "log":
+                shutil.move(filename, report_new_dir)
 
 class Adb():
 

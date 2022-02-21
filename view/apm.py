@@ -1,19 +1,24 @@
 import re
-import common
+from .common import *
 from functools import reduce
 import time
 
+d = Devices()
+adb = Adb()
+current_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
 
 class CPU():
+
     def __init__(self, pkgName ,deviceId):
         self.pkgName = pkgName
         self.deviceId = deviceId
+        self.cpufile = file(fileroot='.').create_file(filename='cpu.log')
 
     def getprocessCpuStat(self):
         """获取某个时刻的某个进程的cpu损耗"""
-        pid = common.Devices.getPid(pkgName=self.pkgName,deviceId=self.deviceId)
+        pid = d.getPid(pkgName=self.pkgName,deviceId=self.deviceId)
         cmd = f'cat /proc/{pid}/stat'
-        result = common.Adb.shell(cmd)
+        result = adb.shell(cmd)
         r = re.compile("\\s+")
         toks = r.split(result)
         processCpu = float(int(toks[13]) + int(toks[14]));
@@ -22,7 +27,7 @@ class CPU():
     def getTotalCpuStat(self):
         """获取某个时刻的总cpu损耗"""
         cmd = f'cat /proc/stat |grep ^cpu\ '
-        result = common.Adb.shell(cmd)
+        result = adb.shell(cmd)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
         idleCpu = float(toks[3])
@@ -45,10 +50,10 @@ class MEM():
         self.deviceId = deviceId
 
     def getProcessMem(self):
-        """获取进程内存Total\NativeHeap\NativeHeap;单位：MB"""
-        pid = common.Devices.getPid(pkgName=self.pkgName,deviceId=self.deviceId)
+        """获取进程内存Total、NativeHeap、NativeHeap;单位MB"""
+        pid = d.getPid(pkgName=self.pkgName,deviceId=self.deviceId)
         cmd = f'adb shell dumpsys meminfo {pid}'
-        output = common.Adb.shell(cmd)
+        output = adb.shell(cmd)
         m = re.search(r'TOTAL\s*(\d+)', output)
         m1 = re.search(r'Native Heap\s*(\d+)', output)
         m2 = re.search(r'Dalvik Heap\s*(\d+)', output)
