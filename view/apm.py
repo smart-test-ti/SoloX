@@ -6,13 +6,14 @@ import time
 d = Devices()
 adb = Adb()
 current_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
-
+report_dir = os.path.join(os.getcwd(), 'report')
 class CPU():
 
     def __init__(self, pkgName ,deviceId):
         self.pkgName = pkgName
         self.deviceId = deviceId
-        self.cpufile = file(fileroot='.').create_file(filename='cpu.log')
+        # self.cpufile = file().create_file(filename='cpu.log')
+        self.apm_time = time.strftime("%H:%M:%S", time.localtime())
 
     def getprocessCpuStat(self):
         """获取某个时刻的某个进程的cpu损耗"""
@@ -42,6 +43,8 @@ class CPU():
         processCpuTime_2 = self.getprocessCpuStat()
         totalCpuTime_2 = self.getTotalCpuStat()
         cpuRate = int((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100)
+        with open(f'{report_dir}/cpu.log', 'a+') as f:
+            f.write(f'{self.apm_time}={str(cpuRate)}' + '\n')
         return cpuRate
 
 class MEM():

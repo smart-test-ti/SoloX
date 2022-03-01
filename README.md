@@ -1,6 +1,6 @@
 <p align="center">
 <a href="#">
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1643364757640-b4529458-ec8d-42cc-a2d8-c0ce60fdf50f.png" alt="Elver" width="300">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1643364757640-b4529458-ec8d-42cc-a2d8-c0ce60fdf50f.png" alt="SoloX" width="300">
 </a>
 <br>
 <br>
@@ -18,15 +18,16 @@ SoloX - APP性能数据实时收集工具。
 
 
 ## 功能
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1645174919944-c952dfec-5575-4501-b690-648d3d5805fb.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+#### 首页
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646124096293-844c676f-2d4e-443b-a74c-29fe40d523d1.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1645175000817-074f6fde-5964-4def-8d69-be9f783efad6.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+#### 报告
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646124102808-1c14c403-0813-49d9-bb2e-ebb915af9066.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1644304938575-c1d70f70-776d-4882-8d65-291a5ff84616.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+#### 分析
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646124090165-11408e8c-a5ec-45ec-9955-a0ce92f68d10.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1644304947747-18580ee6-0dd9-416a-a401-cc322507cc78.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
-# 环境
 ```
 1.安装Python:3.6+ 
 2.安装依赖：pip3 install -r requirements.txt
@@ -43,7 +44,7 @@ SoloX - APP性能数据实时收集工具。
  * Debug mode: on
  * Running on all addresses.
    WARNING: This is a development server. Do not use it in a production deployment.
- * Running on http://192.168.13.248:5000/ (Press CTRL+C to quit)
+ * Running on http://xx.xx.xx.xx:5000/ (Press CTRL+C to quit)
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 906-499-328

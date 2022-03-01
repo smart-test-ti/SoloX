@@ -2,6 +2,7 @@ import re
 import os
 import subprocess
 import shutil
+import json
 
 class Devices():
 
@@ -40,7 +41,11 @@ class Devices():
         """获取对应包名的pid"""
         result = os.popen(f"adb -s {deviceId} shell ps | grep {pkgName}").readlines()
         flag = len(result) > 0
-        pid = (0,result[0].split()[1])[flag]
+        try:
+            pid = (0,result[0].split()[1])[flag]
+        except Exception as e:
+            print(str(e))
+            pid = None    
         return pid
 
     def checkPkgname(self,pkgname):
@@ -64,25 +69,41 @@ class Devices():
 
 class file():
 
-    def __init__(self, fileroot):
+    def __init__(self, fileroot='.'):
         self.fileroot = fileroot
         self.report_dir = os.path.join(os.getcwd(), 'report')
 
     def create_file(self,filename,content=''):
-        if not os.path.exists(f'{self.report_dir}/{self.fileroot}'):
+        if not os.path.exists(f'{self.report_dir}'):
             os.mkdir(f'{self.report_dir}')
-        with open(f'{self.report_dir}/{filename}', 'w', encoding="utf-8") as file:
+        with open(f'{self.report_dir}/{filename}', 'a+', encoding="utf-8") as file:
             file.write(content)
 
     def make_report(self):
+        result_dict = {
+            "app":"com.xxx.xxxx.wechat",
+            "icon":"",
+            "platform":"Android",
+            "devices":"华为Mate20",
+            "cpu":"80%",
+            "mem":"250MB",
+            "fps":"60fps",
+            "bettery":"300mA",
+            "flow":"200MB",
+            "ctime":"2022-2-8 10:10:10"
+            }
+        content = json.dumps(result_dict)
+        self.create_file(filename='result.json',content=content)
         report_new_dir = f'{self.report_dir}/{self.fileroot}'
         if not os.path.exists(report_new_dir):
             os.mkdir(report_new_dir)
 
         for f in os.listdir(self.report_dir):
             filename = os.path.join(self.report_dir, f)
-            if f.split(".")[-1] == "log":
+            if f.split(".")[-1] in ['log','json']:
                 shutil.move(filename, report_new_dir)
+        if os.path.exists(f'{self.report_dir}/cpu.log'):
+             os.remove(f'{self.report_dir}/cpu.log')
 
 class Adb():
 

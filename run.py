@@ -1,12 +1,11 @@
-from unittest import result
 from flask import Flask, render_template
 from flask import request
 from view.common import *
 from view.apm import *
-import random
 import os
 import json
 import time
+import shutil
 
 
 app = Flask(__name__,template_folder='templates',static_folder='static')
@@ -23,7 +22,7 @@ def report():
     dirs = os.listdir(report_dir)
     apm_data = []
     for dir in dirs:
-        if dir.split(".")[-1] != "log":
+        if dir.split(".")[-1] not in ['log','json']:
             try:
                 f = open(f'{report_dir}/{dir}/result.json')
                 json_data = json.loads(f.read())
@@ -44,21 +43,38 @@ def report():
             except Exception as e:
                 print(e)
                 continue
+    apm_data_len = len(apm_data)        
     return render_template('report.html',**locals())
 
 @app.route('/analysis',methods=['post','get'])
 def analysis():
     scene = request.args.get('scene')
     app = request.args.get('app')
+    report_dir = os.path.join(os.getcwd(), 'report')
+    dirs = os.listdir(report_dir)
+    apm_data = {}
+    for dir in dirs:
+        if dir == scene:
+            try:
+                f = open(f'{report_dir}/{dir}/result.json')
+                json_data = json.loads(f.read())
+                apm_data['cpu'] = json_data['cpu']
+                apm_data['mem'] = json_data['mem']
+                apm_data['fps'] = json_data['fps']
+                apm_data['bettery'] = json_data['bettery']
+                apm_data['flow'] = json_data['flow']
+                f.close()
+                break
+            except Exception as e:
+                print(e)
+                break
     return render_template('/analysis.html',**locals())
 
 @app.route('/device/ids',methods=['post','get'])
 def deviceids():
-
     deviceids = d.getDeviceIds()
     devices = d.getDevices()
     pkgnames = d.getPkgname()
-    time.sleep(2)
     if len(deviceids)>0:
         result = {'status':1,'deviceids':deviceids,'devices':devices,'pkgnames':pkgnames}
     else:
@@ -69,13 +85,14 @@ def deviceids():
 def getCpuRate():
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    # deviceId = d.getIdbyDevice(device)
-    if pkgname and device:
-        cpu = CPU(pkgName='s',deviceId='s')
-        # cpuRate = cpu.getSingCpuRate()
-        result = {'status': 1, 'cpuRate': random.randint(50, 200)}
+    deviceId = d.getIdbyDevice(device)
+    pid = d.getPid(deviceId=deviceId,pkgName=pkgname)
+    if pid:
+        cpu = CPU(pkgName=pkgname,deviceId=deviceId)
+        cpuRate = cpu.getSingCpuRate()
+        result = {'status': 1, 'cpuRate': cpuRate}
     else:
-        result = {'status': 0, 'msg': '未选择设备或者不包名'}
+        result = {'status': 0, 'msg': f'未发现{pkgname}的进程'}
 
     return result
 
@@ -86,6 +103,34 @@ def makeReport():
     result = {'status': 1}
     return result
 
+@app.route('/apm/edit/report',methods=['post','get'])
+def editReport():
+    old_scene = request.args.get('old_scene')
+    new_scene = request.args.get('new_scene')
+    report_dir = os.path.join(os.getcwd(), 'report')
+    if old_scene == new_scene:
+        result = {'status': 0,'msg':'scene名称没有改变'}
+    elif os.path.exists(f'{report_dir}/{new_scene}'):
+        result = {'status': 0, 'msg': 'scene名称已经存在'}
+    else:
+        try:
+            new_scene = new_scene.replace('/', '_').replace(' ', '').replace('&', '_')
+            os.rename(f'{report_dir}/{old_scene}',f'{report_dir}/{new_scene}')
+            result = {'status': 1}
+        except Exception as e:
+            result = {'status': 0,'msg':str(e)}
+    return result
+
+@app.route('/apm/remove/report',methods=['post','get'])
+def removeReport():
+    scene = request.args.get('scene')
+    report_dir = os.path.join(os.getcwd(), 'report')
+    try:
+        shutil.rmtree(f'{report_dir}/{scene}', True)
+        result = {'status': 1}
+    except Exception as e:
+        result = {'status': 0,'msg':str(e)}
+    return result
 
 if __name__ == '__main__':
 

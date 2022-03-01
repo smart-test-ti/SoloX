@@ -1,290 +1,173 @@
-<!doctype html>
-<!--
-* SoloX - Premium and Open Source APM template with high quality testing service.
-* @version 1.0.0
-* @Author Rafa Chen
-* Copyright SoloX.2022
--->
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>SoloX - 报告详情</title>
-    <!-- CSS files -->
-    <link rel="icon" href="./static/logo/logo.png">
-    <link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
-    <link href="./static/tabler/dist/css/demo.min.css" rel="stylesheet"/>
-    <!-- Select2-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.1.1/dist/select2-bootstrap-5-theme.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.1.1/dist/select2-bootstrap-5-theme.rtl.min.css" />
-</head>
-<body >
-<div class="page">
-    <header class="navbar navbar-expand-md navbar-light d-print-none">
-        <div class="container-xl">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                <a href=".">
-                    <img src="./static/logo/logo.png" width="110" height="32" alt="Tabler" class="navbar-brand-image">
-                </a>
-                <label style="margin-left: 10px;font-weight: bolder;font-style: normal;font-size: 20px;">SoloX</label>
-            </h1>
-            <div class="collapse navbar-collapse" id="navbar-menu" style="margin-left: 20px;">
-                <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
-                    <ul class="navbar-nav">
-                        <li class="nav-item" id="apm_tab" style="margin-left: 20px;font-weight: bolder;">
-                            <a class="nav-link" href="." >
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <svg t="1635060342196" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="82258" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FBD000" p-id="82259"></path><path d="M949.6 848H92.8c-4.8 0-8-3.2-8-8s3.2-8 8-8h856.8c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#074370" p-id="82260"></path><path d="M903.2 776c0 35.2-28.8 64-64 64H203.2c-35.2 0-64-28.8-64-64V293.6c0-35.2 28.8-64 64-64h636c35.2 0 64 28.8 64 64V776z" fill="#415E6D" p-id="82261"></path><path d="M839.2 797.6H203.2c-35.2 0-64-28.8-64-64V776c0 35.2 28.8 64 64 64h636c35.2 0 64-28.8 64-64v-42.4c0 35.2-28.8 64-64 64z" fill="#324D5B" p-id="82262"></path><path d="M839.2 229.6H203.2c-35.2 0-64 28.8-64 64V728h764V293.6c0-35.2-28.8-64-64-64z" fill="#EAEAEA" p-id="82263"></path><path d="M901.6 736H144c-4.8 0-8-3.2-8-8s3.2-8 8-8h757.6c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#074370" p-id="82264"></path><path d="M816 784m-24 0a24 24 0 1 0 48 0 24 24 0 1 0-48 0Z" fill="#28A5C6" p-id="82265"></path><path d="M216 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#3AD0F9" p-id="82266"></path><path d="M280 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#FF4848" p-id="82267"></path><path d="M344 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#75B600" p-id="82268"></path><path d="M408 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#FFFFFF" p-id="82269"></path><path d="M904 592h-72c-4.8 0-8-3.2-8-8s4-8 8-8h71.2c4.8 0 8 3.2 8 8s-3.2 8-7.2 8zM639.2 664c-3.2 0-6.4-2.4-8-5.6L592 523.2l-14.4 63.2c-0.8 4-4 6.4-8 6.4H391.2c-4 0-7.2-2.4-8-6.4l-21.6-119.2-17.6 73.6c-0.8 4-5.6 7.2-9.6 5.6-4-0.8-7.2-5.6-5.6-9.6L355.2 424c0.8-4 4-6.4 8-6.4s7.2 3.2 8 6.4l27.2 152h166.4L584 488.8c0.8-3.2 4-8.8 8-8.8s6.4 4.8 8 8.8l38.4 132.8 40.8-224.8c0.8-4 4-6.4 8-6.4s7.2 2.4 8 6.4L732 576h76c4.8 0 8 3.2 8 8s-3.2 8-8 8H725.6c-4 0-7.2-2.4-8-6.4l-30.4-146.4-40 218.4c-0.8 3.2-4 6.4-8 6.4 0.8 0 0.8 0 0 0zM305.6 680c-4 0-7.2-2.4-8-6.4L268 536l-15.2 50.4c-0.8 3.2-4 5.6-8 5.6H146.4c-4.8 0-8-3.2-8-8s3.2-8 8-8h92.8l22.4-74.4c0.8-3.2 4.8-5.6 8-5.6 4 0 6.4 2.4 7.2 6.4l28.8 132.8 11.2-47.2c0.8-4 5.6-7.2 9.6-5.6 4 0.8 7.2 5.6 5.6 9.6l-19.2 82.4c0 3.2-4 5.6-7.2 5.6z" fill="#074370" p-id="82270"></path><path d="M776 304h-56c-4.8 0-8-3.2-8-8s3.2-8 8-8h56c4.8 0 8 3.2 8 8s-3.2 8-8 8zM672 304H488c-4 0-8-3.2-8-8s3.2-8 8-8h184c4 0 8 3.2 8 8s-3.2 8-8 8zM424 304H224c-4.8 0-8-3.2-8-8s4-8 8-8h200c4.8 0 8 3.2 8 8s-4 8-8 8zM711.2 344H584c-4.8 0-8-3.2-8-8s3.2-8 8-8h127.2c4.8 0 8 3.2 8 8s-3.2 8-8 8zM528 344H224c-4.8 0-8-3.2-8-8s4-8 8-8h304c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#ADADAD" p-id="82271"></path><path d="M840 848H200c-40 0-72-32-72-72V296c0-40 32-72 72-72h640c40 0 72 32 72 72v480c0 40-32 72-72 72zM200 240c-31.2 0-56 24.8-56 56v480c0 31.2 24.8 56 56 56h640c31.2 0 56-24.8 56-56V296c0-31.2-24.8-56-56-56H200z" fill="#074370" p-id="82272"></path><path d="M864 553.6c-4.8 0-8-3.2-8-8v-80c0-4.8 3.2-8 8-8s8 3.2 8 8v80c0 4.8-3.2 8-8 8zM864 425.6c-4.8 0-8-3.2-8-8V312c0-22.4-17.6-40-40-40H408c-4.8 0-8-3.2-8-8s3.2-8 8-8h408c31.2 0 56 24.8 56 56v105.6c0 4.8-3.2 8-8 8zM345.6 272H224c-4.8 0-8-3.2-8-8s3.2-8 8-8h121.6c4.8 0 8 3.2 8 8s-4 8-8 8zM64 464c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32z m0-48c-8.8 0-16 7.2-16 16s7.2 16 16 16 16-7.2 16-16-7.2-16-16-16zM656 176c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32z m0-48c-8.8 0-16 7.2-16 16s7.2 16 16 16 16-7.2 16-16-7.2-16-16-16zM474.4 124c0-3.2-3.2-6.4-8-7.2l-15.2-2.4c-4-0.8-8.8-4.8-8.8-8.8l-2.4-15.2c-0.8-4-4-8-7.2-8s-6.4 3.2-7.2 8l-2.4 15.2c-0.8 4-4.8 8.8-8.8 8.8l-15.2 2.4c-4 0.8-8 4-8 7.2s3.2 6.4 8 7.2l15.2 2.4c4 0.8 8.8 4.8 8.8 8.8l2.4 15.2c0.8 4 4 8 7.2 8s6.4-3.2 7.2-8l2.4-16.8c0.8-4 4.8-8 8.8-8.8l14.4-0.8c5.6-1.6 8.8-4 8.8-7.2zM502.4 928c0-3.2-3.2-6.4-8-7.2l-15.2-2.4c-4-0.8-8.8-4.8-8.8-8.8l-2.4-15.2c-0.8-4-4-8-7.2-8s-6.4 3.2-7.2 8l-2.4 15.2c-0.8 4-4.8 8.8-8.8 8.8l-15.2 2.4c-4 0.8-8 4-8 7.2s3.2 6.4 8 7.2l15.2 2.4c4 0.8 8.8 4.8 8.8 8.8l2.4 15.2c0.8 4 4 8 7.2 8s6.4-3.2 7.2-8l2.4-16.8c0.8-4 4.8-8 8.8-8.8l14.4-0.8c5.6-1.6 8.8-4 8.8-7.2z" fill="#FFFFFF" p-id="82273"></path></svg>
-                                </span>
-                                <span class="nav-link-title strong-text">性能测试</span>
-                            </a>
-                        </li>
-                        <li class="nav-item active" id="report_tab" style="margin-left: 20px;font-weight: bolder;">
-                            <a class="nav-link" href="/report" >
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <svg t="1643364122000" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="29349" width="300" height="300"><path d="M777 806.7c0 38.7-31.1 70.3-69.7 70.3H225.9c-38.7 0-69.9-31.6-69.9-70.3V174.4c0-38.7 31.2-70.4 69.9-70.4h481.4c38.7 0 69.7 31.7 69.7 70.4v632.3z" fill="#FFFFFF" p-id="29350"></path><path d="M707.3 886H225.9c-43.5 0-78.9-35.8-78.9-79.3V174.4c0-43.5 35.4-79.4 78.9-79.4h481.4c43.5 0 79.7 35.9 79.7 79.4v632.3c0 43.5-36.2 79.3-79.7 79.3zM225.9 113c-33.7 0-59.9 27.7-59.9 61.4v632.3c0 33.7 26.2 61.3 59.9 61.3h481.4c33.7 0 60.7-27.6 60.7-61.3V174.4c0-33.7-27-61.4-60.7-61.4H225.9z" fill="#282828" p-id="29351"></path><path d="M732 763.1c0 33.3-26.1 60.9-59.4 60.9H251.7c-33.3 0-59.7-27.6-59.7-60.9V226.9c0-33.3 26.4-60.9 59.7-60.9h420.9c33.3 0 59.4 27.5 59.4 60.9v536.2z" fill="#50BCFF" p-id="29352"></path><path d="M361.8 251.9H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9h153.1c4.9 0 8.9 4 8.9 8.9s-3.9 8.9-8.8 8.9zM549.2 313H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9h340.5c4.9 0 8.9 4 8.9 8.9s-3.9 8.9-8.8 8.9zM652 448.4H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9H652c4.9 0 8.9 4 8.9 8.9s-4 8.9-8.9 8.9zM588.4 515.8H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9h379.7c4.9 0 8.9 4 8.9 8.9 0.1 4.9-3.9 8.9-8.8 8.9z" fill="#282828" p-id="29353"></path><path d="M673.3 113.3c0 19.6-15.9 35.5-35.5 35.5h-346c-19.6 0-35.5-15.9-35.5-35.5v-6.7c0-19.6 15.9-35.5 35.5-35.5h346c19.6 0 35.5 15.9 35.5 35.5v6.7z" fill="#1A6DFF" p-id="29354"></path><path d="M637.8 157.6h-346c-24.5 0-44.4-19.9-44.4-44.4v-6.7c0-24.5 19.9-44.4 44.4-44.4h346c24.5 0 44.4 19.9 44.4 44.4v6.7c0 24.5-19.9 44.4-44.4 44.4zM291.9 80c-14.7 0-26.6 11.9-26.6 26.6v6.7c0 14.7 11.9 26.6 26.6 26.6h346c14.7 0 26.6-11.9 26.6-26.6v-6.7c0-14.7-11.9-26.6-26.6-26.6h-346z" fill="#282828" p-id="29355"></path><path d="M849.7 758.4c0 106.3-86.2 192.4-192.4 192.4-106.3 0-192.4-86.2-192.4-192.4C464.8 652.1 551 566 657.3 566c106.2 0 192.4 86.1 192.4 192.4z" fill="#FFFFFF" p-id="29356"></path><path d="M657.3 959.7c-111 0-201.3-90.3-201.3-201.3s90.3-201.3 201.3-201.3 201.3 90.3 201.3 201.3-90.3 201.3-201.3 201.3z m0-384.8c-101.2 0-183.5 82.3-183.5 183.5S556.1 942 657.3 942s183.6-82.3 183.6-183.6c-0.1-101.2-82.4-183.5-183.6-183.5z" fill="#282828" p-id="29357"></path><path d="M657.3 553.6v204.9h203.6c-0.2-112.7-91.2-204-203.6-204.9z" fill="#1A6DFF" p-id="29358"></path><path d="M860.9 767.3H657.3c-4.9 0-8.9-4-8.9-8.9V553.6c0-2.4 0.9-4.6 2.6-6.3 1.7-1.7 3.6-2.4 6.3-2.6 116.9 0.9 212.2 96.8 212.4 213.7 0 2.4-0.9 4.6-2.6 6.3-1.6 1.7-3.9 2.6-6.2 2.6z m-194.8-17.8h185.6C847 649.3 766.2 568 666.1 562.7v186.8z" fill="#282828" p-id="29359"></path><path d="M794.1 903.7c-2.3 0-4.6-0.9-6.3-2.6L652.1 764.7c-3.5-3.5-3.4-9.1 0-12.6 3.5-3.5 9.1-3.4 12.6 0l135.7 136.5c3.5 3.5 3.4 9.1 0 12.6-1.8 1.7-4 2.5-6.3 2.5z" fill="#282828" p-id="29360"></path></svg>
-                                </span>
-                                <span class="nav-link-title strong-text">测试报告</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="nav-item dropdown d-none d-md-flex me-3">
-                <a href="#" id="timeline_tab">
-                  <svg t="1645002673922" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3507" width="300" height="300"><path d="M437.6 717.4c0-164.4 133.2-297.6 297.6-297.6 31.4 0 61.6 4.9 90 13.9v-117L588.8 80.2H120.2c-11.6 0-21 9.4-21 21v822.1c0 11.6 9.4 21 21 21h422.4c-64.2-54.6-105-136-105-226.9z" fill="#FFFFFF" p-id="3508"></path><path d="M825.2 449.6c-8.8 0-16-7.2-16-16V323L577.5 91.3c-6.2-6.2-6.2-16.4 0-22.6 6.2-6.2 16.4-6.2 22.6 0L836.5 305c3 3 4.7 7.1 4.7 11.3v117.3c0 8.8-7.2 16-16 16z" fill="#00365B" p-id="3509"></path><path d="M542.7 960H120.2c-20.4 0-37-16.6-37-37V100.9c0-20.4 16.6-37 37-37h468.6c8.8 0 16 7.2 16 16s-7.2 16-16 16H120.2c-2.7 0-5 2.2-5 5V923c0 2.7 2.2 5 5 5h422.5c8.8 0 16 7.2 16 16s-7.2 16-16 16z" fill="#00365B" p-id="3510"></path><path d="M825.2 316.3H588.8V79.9z" fill="#FFFFFF" p-id="3511"></path><path d="M825.2 332.3H588.8c-8.8 0-16-7.2-16-16V79.9c0-6.5 3.9-12.3 9.9-14.8s12.9-1.1 17.4 3.5L836.5 305c4.6 4.6 5.9 11.5 3.5 17.4-2.5 6-8.3 9.9-14.8 9.9z m-220.4-32h181.8L604.8 118.6v181.7z" fill="#00365B" p-id="3512"></path><path d="M735.2 717.4m-205.6 0a205.6 205.6 0 1 0 411.2 0 205.6 205.6 0 1 0-411.2 0Z" fill="#5185D6" p-id="3513"></path><path d="M735.2 747.4c-16.6 0-30-13.4-30-30V593.1c0-16.6 13.4-30 30-30s30 13.4 30 30v124.3c0 16.5-13.4 30-30 30z" fill="#F2F2F2" p-id="3514"></path><path d="M852 789.9c-3.4 0-6.9-0.6-10.3-1.8L725 745.5c-15.6-5.7-23.6-22.9-17.9-38.5s22.9-23.6 38.5-17.9l116.8 42.5c15.6 5.7 23.6 22.9 17.9 38.5-4.5 12.2-16 19.8-28.3 19.8z" fill="#F2F2F2" p-id="3515"></path></svg>
-                </a>
-            </div>
-            <div class="navbar-nav flex-row order-md-last">
-            
-                <a href="?theme=dark" class="nav-link px-1 hide-theme-dark" style="margin-right: 10px;" title="Enable dark mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
-                </a>
-                <a href="?theme=light" class="nav-link px-1 hide-theme-light mr-2" style="margin-right: 10px;" title="Enable light mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="4" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
-                </a>
-            </div>
-        </div>
-    </header>
-    <div class="page-wrapper">
-        <div class="container-xl">
-            <div class="page-header d-print-none">
-                <div class="row align-items-center">
-                    <div class="row">
-                        <h2 class="page-title">
-                            <a class="active" style="color: #1e71df" href="/report">测试报告</a>
-                            <svg t="1635085520789" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="165732" width="200" height="200"><path d="M360.704 280.746667l45.226667-45.226667 246.570666 246.528a42.666667 42.666667 0 0 1 0 60.330667l-246.528 246.570666-45.22666601-45.269333 231.42400001-231.466667-231.466667-231.424z" p-id="165733"></path></svg>
-                            {{ app }}
-                            <svg t="1635085520789" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="165732" width="200" height="200"><path d="M360.704 280.746667l45.226667-45.226667 246.570666 246.528a42.666667 42.666667 0 0 1 0 60.330667l-246.528 246.570666-45.22666601-45.269333 231.42400001-231.466667-231.466667-231.424z" p-id="165733"></path></svg>
-                            {{ scene }}
-                        </h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="page-body">
-            <div class="container-xl">
-                <div class="col-12 mb-3">
-                    <div class="row row-cards">
-                        <div class="col-sm-6 col-lg-2">
-                            <div class="card card-sm">
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="bg-dark text-white avatar">
-                                                CPU
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <div class="font-weight-medium">
-                                                CPU
-                                            </div>
-                                            <div class="text-muted">
-                                                平均:80%
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-2">
-                            <div class="card card-sm">
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="bg-yellow text-white avatar">
-                                                MEM
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <div class="font-weight-medium">
-                                                内存
-                                            </div>
-                                            <div class="text-muted">
-                                                总共:300MB
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-2">
-                            <div class="card card-sm">
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="bg-green text-white avatar">
-                                                FPS
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <div class="font-weight-medium">
-                                                流畅度
-                                            </div>
-                                            <div class="text-muted">
-                                                平均:25fps
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-2">
-                            <div class="card card-sm">
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="bg-red text-white avatar">
-                                                电量
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <div class="font-weight-medium">
-                                                耗电量
-                                            </div>
-                                            <div class="text-muted">
-                                                总共:1000MA
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-2">
-                            <div class="card card-sm">
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="bg-blue text-white avatar">
-                                                流量
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <div class="font-weight-medium">
-                                                上行
-                                            </div>
-                                            <div class="text-muted">
-                                                总共:300MB
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-2">
-                            <div class="card card-sm">
-                                <div class="card-body">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <span class="bg-blue text-white avatar">
-                                                流量
-                                            </span>
-                                        </div>
-                                        <div class="col">
-                                            <div class="font-weight-medium">
-                                                下行
-                                            </div>
-                                            <div class="text-muted">
-                                                总共:200MB
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class='card-title'>CPU</div>
-                        </div>
-                        <div class="card-body">
-                            <div id="chart-social-referrals"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <footer class="footer footer-transparent d-print-none">
-            <div class="container-xl">
-                <div class="row text-center align-items-center flex-row-reverse">
-                    <div class="col-lg-auto ms-lg-auto">
-                        <ul class="list-inline list-inline-dots mb-0">
-                            <li class="list-inline-item"><a href="#" class="link-secondary">Documentation</a></li>
-                            <li class="list-inline-item"><a href="#" target="_blank" class="link-secondary" rel="noopener">Source code</a></li>
-                            <li class="list-inline-item">
-                                <a href="#" target="_blank" class="link-secondary" rel="noopener">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink icon-filled icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                                    Sponsor
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-                        <ul class="list-inline list-inline-dots mb-0">
-                            <li class="list-inline-item">Copyright &copy; 2022
-                                <a href="#" class="link-secondary">SoloX</a>
-                                . All rights reserved.
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="#" class="link-secondary" rel="noopener">v1.0.0</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
-</div>
+{% extends 'base.html' %}
 
-<div class="modal modal-blur fade" id="modal-danger" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            <div class="modal-status bg-danger"></div>
-            <div class="modal-body text-center py-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v2m0 4v.01" /><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" /></svg>
-                <h3>确认删除?</h3>
-                <div class="text-muted directory-name"></div>
-            </div>
-            <div class="modal-footer">
-                <div class="w-100">
-                    <div class="row">
-                        <div class="col">
-                            <a  class="btn btn-white w-100" data-bs-dismiss="modal">
-                            取消
-                            </a>
+{% block title %}SoloX - 报告详情{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block page_title %}
+<a class="active" style="color: #1e71df" href="/report">测试报告</a>
+<svg t="1635085520789" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="165732" width="200" height="200"><path d="M360.704 280.746667l45.226667-45.226667 246.570666 246.528a42.666667 42.666667 0 0 1 0 60.330667l-246.528 246.570666-45.22666601-45.269333 231.42400001-231.466667-231.466667-231.424z" p-id="165733"></path></svg>
+{{ app }}
+<svg t="1635085520789" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="165732" width="200" height="200"><path d="M360.704 280.746667l45.226667-45.226667 246.570666 246.528a42.666667 42.666667 0 0 1 0 60.330667l-246.528 246.570666-45.22666601-45.269333 231.42400001-231.466667-231.466667-231.424z" p-id="165733"></path></svg>
+{{ scene }}
+{% endblock %}
+
+{% block ms_auto %}
+<div class="col-auto ms-auto d-print-none">
+    <div class="btn-list">
+        <a download="报告.png" onclick="save_img()" class="btn">
+            <svg t="1645944931399" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4026" width="200" height="200"><path d="M523.73504 319.29344h-204.8c-16.896 0-30.72-13.824-30.72-30.72s13.824-30.72 30.72-30.72h204.8c16.896 0 30.72 13.824 30.72 30.72s-13.824 30.72-30.72 30.72zM605.65504 452.41344h-286.72c-16.896 0-30.72-13.824-30.72-30.72s13.824-30.72 30.72-30.72h286.72c16.896 0 30.72 13.824 30.72 30.72s-13.824 30.72-30.72 30.72z" fill="#FFFFFF" p-id="4027"></path><path d="M658.176 146.57536H267.8784c-40.07936 0-72.58112 32.13312-72.58112 71.7824v587.29472c0 39.63904 32.49152 71.7824 72.58112 71.7824h488.2432c40.07936 0 72.58112-32.13312 72.58112-71.7824V303.18592L658.176 146.57536z" fill="#3889FF" p-id="4028"></path><path d="M317.10208 195.29728h341.06368v146.176H317.10208zM268.38016 633.8048h487.23968v243.61984H268.38016z" fill="#FFFFFF" p-id="4029"></path><path d="M598.71232 317.10208a25.6 25.6 0 0 1-25.6-25.6v-46.24384a25.6 25.6 0 1 1 51.2 0v46.24384a25.6 25.6 0 0 1-25.6 25.6zM640 736.2048h-256a25.6 25.6 0 1 1 0-51.2h256a25.6 25.6 0 1 1 0 51.2zM643.0208 829.17376h-256a25.6 25.6 0 1 1 0-51.2h256a25.6 25.6 0 0 1 0 51.2z" fill="#3889FF" p-id="4030"></path></svg>
+            生成图片
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block navbar_nav %}
+<ul class="navbar-nav">
+  <li class="nav-item" id="apm_tab" style="margin-left: 20px;font-weight: bolder;">
+    <a class="nav-link" href="." >
+      <span class="nav-link-icon d-md-none d-lg-inline-block">
+        <svg t="1635060342196" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="82258" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FBD000" p-id="82259"></path><path d="M949.6 848H92.8c-4.8 0-8-3.2-8-8s3.2-8 8-8h856.8c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#074370" p-id="82260"></path><path d="M903.2 776c0 35.2-28.8 64-64 64H203.2c-35.2 0-64-28.8-64-64V293.6c0-35.2 28.8-64 64-64h636c35.2 0 64 28.8 64 64V776z" fill="#415E6D" p-id="82261"></path><path d="M839.2 797.6H203.2c-35.2 0-64-28.8-64-64V776c0 35.2 28.8 64 64 64h636c35.2 0 64-28.8 64-64v-42.4c0 35.2-28.8 64-64 64z" fill="#324D5B" p-id="82262"></path><path d="M839.2 229.6H203.2c-35.2 0-64 28.8-64 64V728h764V293.6c0-35.2-28.8-64-64-64z" fill="#EAEAEA" p-id="82263"></path><path d="M901.6 736H144c-4.8 0-8-3.2-8-8s3.2-8 8-8h757.6c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#074370" p-id="82264"></path><path d="M816 784m-24 0a24 24 0 1 0 48 0 24 24 0 1 0-48 0Z" fill="#28A5C6" p-id="82265"></path><path d="M216 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#3AD0F9" p-id="82266"></path><path d="M280 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#FF4848" p-id="82267"></path><path d="M344 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#75B600" p-id="82268"></path><path d="M408 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#FFFFFF" p-id="82269"></path><path d="M904 592h-72c-4.8 0-8-3.2-8-8s4-8 8-8h71.2c4.8 0 8 3.2 8 8s-3.2 8-7.2 8zM639.2 664c-3.2 0-6.4-2.4-8-5.6L592 523.2l-14.4 63.2c-0.8 4-4 6.4-8 6.4H391.2c-4 0-7.2-2.4-8-6.4l-21.6-119.2-17.6 73.6c-0.8 4-5.6 7.2-9.6 5.6-4-0.8-7.2-5.6-5.6-9.6L355.2 424c0.8-4 4-6.4 8-6.4s7.2 3.2 8 6.4l27.2 152h166.4L584 488.8c0.8-3.2 4-8.8 8-8.8s6.4 4.8 8 8.8l38.4 132.8 40.8-224.8c0.8-4 4-6.4 8-6.4s7.2 2.4 8 6.4L732 576h76c4.8 0 8 3.2 8 8s-3.2 8-8 8H725.6c-4 0-7.2-2.4-8-6.4l-30.4-146.4-40 218.4c-0.8 3.2-4 6.4-8 6.4 0.8 0 0.8 0 0 0zM305.6 680c-4 0-7.2-2.4-8-6.4L268 536l-15.2 50.4c-0.8 3.2-4 5.6-8 5.6H146.4c-4.8 0-8-3.2-8-8s3.2-8 8-8h92.8l22.4-74.4c0.8-3.2 4.8-5.6 8-5.6 4 0 6.4 2.4 7.2 6.4l28.8 132.8 11.2-47.2c0.8-4 5.6-7.2 9.6-5.6 4 0.8 7.2 5.6 5.6 9.6l-19.2 82.4c0 3.2-4 5.6-7.2 5.6z" fill="#074370" p-id="82270"></path><path d="M776 304h-56c-4.8 0-8-3.2-8-8s3.2-8 8-8h56c4.8 0 8 3.2 8 8s-3.2 8-8 8zM672 304H488c-4 0-8-3.2-8-8s3.2-8 8-8h184c4 0 8 3.2 8 8s-3.2 8-8 8zM424 304H224c-4.8 0-8-3.2-8-8s4-8 8-8h200c4.8 0 8 3.2 8 8s-4 8-8 8zM711.2 344H584c-4.8 0-8-3.2-8-8s3.2-8 8-8h127.2c4.8 0 8 3.2 8 8s-3.2 8-8 8zM528 344H224c-4.8 0-8-3.2-8-8s4-8 8-8h304c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#ADADAD" p-id="82271"></path><path d="M840 848H200c-40 0-72-32-72-72V296c0-40 32-72 72-72h640c40 0 72 32 72 72v480c0 40-32 72-72 72zM200 240c-31.2 0-56 24.8-56 56v480c0 31.2 24.8 56 56 56h640c31.2 0 56-24.8 56-56V296c0-31.2-24.8-56-56-56H200z" fill="#074370" p-id="82272"></path><path d="M864 553.6c-4.8 0-8-3.2-8-8v-80c0-4.8 3.2-8 8-8s8 3.2 8 8v80c0 4.8-3.2 8-8 8zM864 425.6c-4.8 0-8-3.2-8-8V312c0-22.4-17.6-40-40-40H408c-4.8 0-8-3.2-8-8s3.2-8 8-8h408c31.2 0 56 24.8 56 56v105.6c0 4.8-3.2 8-8 8zM345.6 272H224c-4.8 0-8-3.2-8-8s3.2-8 8-8h121.6c4.8 0 8 3.2 8 8s-4 8-8 8zM64 464c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32z m0-48c-8.8 0-16 7.2-16 16s7.2 16 16 16 16-7.2 16-16-7.2-16-16-16zM656 176c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32z m0-48c-8.8 0-16 7.2-16 16s7.2 16 16 16 16-7.2 16-16-7.2-16-16-16zM474.4 124c0-3.2-3.2-6.4-8-7.2l-15.2-2.4c-4-0.8-8.8-4.8-8.8-8.8l-2.4-15.2c-0.8-4-4-8-7.2-8s-6.4 3.2-7.2 8l-2.4 15.2c-0.8 4-4.8 8.8-8.8 8.8l-15.2 2.4c-4 0.8-8 4-8 7.2s3.2 6.4 8 7.2l15.2 2.4c4 0.8 8.8 4.8 8.8 8.8l2.4 15.2c0.8 4 4 8 7.2 8s6.4-3.2 7.2-8l2.4-16.8c0.8-4 4.8-8 8.8-8.8l14.4-0.8c5.6-1.6 8.8-4 8.8-7.2zM502.4 928c0-3.2-3.2-6.4-8-7.2l-15.2-2.4c-4-0.8-8.8-4.8-8.8-8.8l-2.4-15.2c-0.8-4-4-8-7.2-8s-6.4 3.2-7.2 8l-2.4 15.2c-0.8 4-4.8 8.8-8.8 8.8l-15.2 2.4c-4 0.8-8 4-8 7.2s3.2 6.4 8 7.2l15.2 2.4c4 0.8 8.8 4.8 8.8 8.8l2.4 15.2c0.8 4 4 8 7.2 8s6.4-3.2 7.2-8l2.4-16.8c0.8-4 4.8-8 8.8-8.8l14.4-0.8c5.6-1.6 8.8-4 8.8-7.2z" fill="#FFFFFF" p-id="82273"></path></svg>
+      </span>
+      <span class="nav-link-title strong-text">性能测试</span>
+    </a>
+  </li>
+  <li class="nav-item active" id="report_tab" style="margin-left: 20px;font-weight: bolder;">
+    <a class="nav-link" href="/report" >
+      <span class="nav-link-icon d-md-none d-lg-inline-block">
+        <svg t="1643364122000" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="29349" width="300" height="300"><path d="M777 806.7c0 38.7-31.1 70.3-69.7 70.3H225.9c-38.7 0-69.9-31.6-69.9-70.3V174.4c0-38.7 31.2-70.4 69.9-70.4h481.4c38.7 0 69.7 31.7 69.7 70.4v632.3z" fill="#FFFFFF" p-id="29350"></path><path d="M707.3 886H225.9c-43.5 0-78.9-35.8-78.9-79.3V174.4c0-43.5 35.4-79.4 78.9-79.4h481.4c43.5 0 79.7 35.9 79.7 79.4v632.3c0 43.5-36.2 79.3-79.7 79.3zM225.9 113c-33.7 0-59.9 27.7-59.9 61.4v632.3c0 33.7 26.2 61.3 59.9 61.3h481.4c33.7 0 60.7-27.6 60.7-61.3V174.4c0-33.7-27-61.4-60.7-61.4H225.9z" fill="#282828" p-id="29351"></path><path d="M732 763.1c0 33.3-26.1 60.9-59.4 60.9H251.7c-33.3 0-59.7-27.6-59.7-60.9V226.9c0-33.3 26.4-60.9 59.7-60.9h420.9c33.3 0 59.4 27.5 59.4 60.9v536.2z" fill="#50BCFF" p-id="29352"></path><path d="M361.8 251.9H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9h153.1c4.9 0 8.9 4 8.9 8.9s-3.9 8.9-8.8 8.9zM549.2 313H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9h340.5c4.9 0 8.9 4 8.9 8.9s-3.9 8.9-8.8 8.9zM652 448.4H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9H652c4.9 0 8.9 4 8.9 8.9s-4 8.9-8.9 8.9zM588.4 515.8H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9h379.7c4.9 0 8.9 4 8.9 8.9 0.1 4.9-3.9 8.9-8.8 8.9z" fill="#282828" p-id="29353"></path><path d="M673.3 113.3c0 19.6-15.9 35.5-35.5 35.5h-346c-19.6 0-35.5-15.9-35.5-35.5v-6.7c0-19.6 15.9-35.5 35.5-35.5h346c19.6 0 35.5 15.9 35.5 35.5v6.7z" fill="#1A6DFF" p-id="29354"></path><path d="M637.8 157.6h-346c-24.5 0-44.4-19.9-44.4-44.4v-6.7c0-24.5 19.9-44.4 44.4-44.4h346c24.5 0 44.4 19.9 44.4 44.4v6.7c0 24.5-19.9 44.4-44.4 44.4zM291.9 80c-14.7 0-26.6 11.9-26.6 26.6v6.7c0 14.7 11.9 26.6 26.6 26.6h346c14.7 0 26.6-11.9 26.6-26.6v-6.7c0-14.7-11.9-26.6-26.6-26.6h-346z" fill="#282828" p-id="29355"></path><path d="M849.7 758.4c0 106.3-86.2 192.4-192.4 192.4-106.3 0-192.4-86.2-192.4-192.4C464.8 652.1 551 566 657.3 566c106.2 0 192.4 86.1 192.4 192.4z" fill="#FFFFFF" p-id="29356"></path><path d="M657.3 959.7c-111 0-201.3-90.3-201.3-201.3s90.3-201.3 201.3-201.3 201.3 90.3 201.3 201.3-90.3 201.3-201.3 201.3z m0-384.8c-101.2 0-183.5 82.3-183.5 183.5S556.1 942 657.3 942s183.6-82.3 183.6-183.6c-0.1-101.2-82.4-183.5-183.6-183.5z" fill="#282828" p-id="29357"></path><path d="M657.3 553.6v204.9h203.6c-0.2-112.7-91.2-204-203.6-204.9z" fill="#1A6DFF" p-id="29358"></path><path d="M860.9 767.3H657.3c-4.9 0-8.9-4-8.9-8.9V553.6c0-2.4 0.9-4.6 2.6-6.3 1.7-1.7 3.6-2.4 6.3-2.6 116.9 0.9 212.2 96.8 212.4 213.7 0 2.4-0.9 4.6-2.6 6.3-1.6 1.7-3.9 2.6-6.2 2.6z m-194.8-17.8h185.6C847 649.3 766.2 568 666.1 562.7v186.8z" fill="#282828" p-id="29359"></path><path d="M794.1 903.7c-2.3 0-4.6-0.9-6.3-2.6L652.1 764.7c-3.5-3.5-3.4-9.1 0-12.6 3.5-3.5 9.1-3.4 12.6 0l135.7 136.5c3.5 3.5 3.4 9.1 0 12.6-1.8 1.7-4 2.5-6.3 2.5z" fill="#282828" p-id="29360"></path></svg>
+      </span>
+      <span class="nav-link-title strong-text">测试报告</span>
+    </a>
+  </li>
+</ul>
+{% endblock %}
+
+{% block page_body %}
+<div class="col-12 mb-3">
+    <div class="row row-cards">
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-dark text-white avatar">
+                                CPU
+                            </span>
                         </div>
                         <div class="col">
-                            <a  id="del_directory_confirm" class="btn btn-danger w-100">
-                            确认
-                            </a>
+                            <div class="font-weight-medium">
+                                CPU
+                            </div>
+                            <div class="text-muted">
+                                平均:{{ apm_data.cpu }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-yellow text-white avatar">
+                                MEM
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                内存
+                            </div>
+                            <div class="text-muted">
+                                总共:{{ apm_data.mem }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-green text-white avatar">
+                                FPS
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                流畅度
+                            </div>
+                            <div class="text-muted">
+                                平均:{{ apm_data.fps }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-red text-white avatar">
+                                电量
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                耗电量
+                            </div>
+                            <div class="text-muted">
+                                总共:{{ apm_data.bettery }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-blue text-white avatar">
+                                流量
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                上行
+                            </div>
+                            <div class="text-muted">
+                                总共:{{ apm_data.flow }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-blue text-white avatar">
+                                流量
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                下行
+                            </div>
+                            <div class="text-muted">
+                                总共:{{ apm_data.flow }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -292,43 +175,26 @@
         </div>
     </div>
 </div>
-<script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
-<script src="./static/tabler/dist/js/demo.min.js"></script>
-<!-- JQ JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<!-- Sweetalert2 -->
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Select2-->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<!-- Apexcharts-->
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<!-- Highcharts-->
-<script src="https://cdn.highcharts.com.cn/highstock/highstock.js"></script>
-<script src="https://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
-<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
-<script src="https://code.highcharts.com.cn/highcharts/themes/gray.js"></script>
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <div class='card-title'>CPU（%）</div>
+        </div>
+        <div class="card-body">
+            <div id="chart-social-referrals"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
 <script>
-    $(document).ready(function() {
-        $('.select2-selection--single').select2({
-            theme: "bootstrap-5",
-            containerCssClass: "select2--small",
-            selectionCssClass: "select2--small",
-            dropdownCssClass: "select2--small",
-        });
-        $('.js-example-basic-multiple').select2({
-            theme: "bootstrap-5"
-        });
-    });
-</script>
-<script>
-      // @formatter:off
-      document.addEventListener("DOMContentLoaded", function () {
-      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-social-referrals'), {
-      		chart: {
-      			type: "line",
+    document.addEventListener("DOMContentLoaded", function () {
+        window.ApexCharts && (new ApexCharts(document.getElementById('chart-social-referrals'), {
+            chart: {
+                type: "area",
       			fontFamily: 'inherit',
-      			height: 192,
+      			height: 240,
       			parentHeightOffset: 0,
       			toolbar: {
       				show: true,
@@ -337,8 +203,12 @@
       				enabled: false
       			},
       		},
+      		dataLabels: {
+      			enabled: false,
+      		},
       		fill: {
-      			opacity: 1,
+      			opacity: .16,
+      			type: 'solid'
       		},
       		stroke: {
       			width: 2,
@@ -346,8 +216,13 @@
       			curve: "smooth",
       		},
       		series: [{
-      			name: "id:1",
-      			data: [13281, 8521, 15038, 9983, 15417, 8888, 7052, 14270, 5214, 9587, 5950, 16852, 17836, 12217, 17406, 12262, 9147, 14961, 18292, 15230, 13435, 10649, 5140, 13680,9000]
+      			name: "value",
+      			data: [50, 60, 70, 61, 67, 62, 61, 52, 41, 44, 54, 66, 76, 87, 98, 10, 96, 37,
+                    20, 87, 92, 20, 93, 20, 28, 96, 93, 78, 91, 24, 18, 21, 28, 26, 21, 17, 19,
+                    19, 72, 58, 59, 17, 52, 52, 44, 37, 36, 23, 12, 99, 100, 95, 15, 16, 25, 24,
+                    33, 29, 16, 19, 19, 14, 15, 11, 96, 14, 10, 12, 16, 26, 17, 13, 24, 26, 31,
+                    43, 30, 16, 18, 22, 32, 26, 36, 23, 12, 16, 13, 13, 19, 99, 100, 95, 83, 79,
+                    64, 79, 81, 94, 99, 97, 83, 71, 75, 69, 71, 75, 84, 90, 100, 96, 18, 12, 16, 12, 12, 10, 15, 20, 18, 18]
       		}],
       		grid: {
       			padding: {
@@ -357,11 +232,6 @@
       				bottom: -4
       			},
       			strokeDashArray: 4,
-      			xaxis: {
-      				lines: {
-      					show: true
-      				}
-      			},
       		},
       		xaxis: {
       			labels: {
@@ -370,36 +240,41 @@
       			tooltip: {
       				enabled: false
       			},
+      			axisBorder: {
+      				show: false,
+      			},
       			type: 'time',
       		},
       		yaxis: {
       			labels: {
-      				padding: 4
+      				padding: 5
       			},
       		},
       		labels: [
-      			'00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00',
-                '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00',
-                '22:00', '23:00', '24:00'
+      			'10:20:20', '10:20:21', '10:20:22', '10:20:23', '10:20:24', '10:20:25', '10:20:26',
+                '10:20:27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03',
+                '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10',
+                '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17',
+                '2020-07-18', '2020-07-19', '2020-07-20', '2020-07-21', '2020-07-22', '2020-07-23', '2020-07-24',
+                '2020-07-25', '2020-07-26', '2020-07-27', '2020-07-28', '2020-07-29', '2020-07-30', '2020-07-31',
+                '2020-08-01', '2020-08-02', '2020-08-03', '2020-08-04', '2020-08-05', '2020-08-06', '2020-08-07',
+                '2020-08-08', '2020-08-09', '2020-08-10', '2020-08-11', '2020-08-12', '2020-08-13', '2020-08-14',
+                '2020-08-15', '2020-08-16', '2020-08-17', '2020-08-18', '2020-08-19', '2020-08-20', '2020-08-21',
+                '2020-08-22', '2020-08-23', '2020-08-24', '2020-08-25', '2020-08-26', '2020-08-27', '2020-08-28',
+                '2020-08-29', '2020-08-30', '2020-08-31', '2020-09-01', '2020-09-02', '2020-09-03', '2020-09-04',
+                '2020-09-05', '2020-09-06', '2020-09-07', '2020-09-08', '2020-09-09', '2020-09-10', '2020-09-11',
+                '2020-09-12', '2020-09-13', '2020-09-14', '2020-09-15', '2020-09-16', '2020-09-17', '2020-09-18',
+                '2020-09-19', '2020-09-20', '2020-09-21', '2020-09-22', '2020-09-23', '2020-09-24', '2020-09-25',
+                '2020-09-26', '2020-09-27', '2020-09-28', '2020-09-29', '2020-09-30', '2020-10-01', '2020-10-02',
+                '2020-10-03', '2020-10-04', '2020-10-05', '2020-10-06', '2020-10-07', '2020-10-08', '2020-10-09',
+                '2020-10-10', '2020-10-11', '2020-10-12', '2020-10-13', '2020-10-14', '2020-10-15', '2020-10-16',
+                '2020-10-17'
       		],
-      		colors: ["#3b5998", "#1da1f2", "#ea4c89"],
+      		colors: ["#206bc4"],
       		legend: {
-      			show: true,
-      			position: 'bottom',
-      			offsetY: 12,
-      			markers: {
-      				width: 10,
-      				height: 10,
-      				radius: 100,
-      			},
-      			itemMargin: {
-      				horizontal: 8,
-      				vertical: 8
-      			},
+      			show: false,
       		},
-      	})).render();
-      });
-      // @formatter:on
-    </script>
-</body>
-</html>
+        })).render();
+    });
+</script>
+{% endblock %}
