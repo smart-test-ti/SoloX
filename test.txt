@@ -1,4 +1,0 @@
-com.playit.videoplayer      10.3
-com.playit.videoplayer      10.0
-com.playit.videoplayer      73.3
-com.playit.videoplayer      68.9
