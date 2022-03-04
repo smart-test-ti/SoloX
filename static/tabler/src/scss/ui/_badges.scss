@@ -9,7 +9,6 @@
   font-weight: $headings-font-weight;
   letter-spacing: .04em;
   vertical-align: bottom;
-  text-transform: uppercase;
 
   @at-root a#{&} {
     color: $white;
@@ -23,6 +22,7 @@
     min-height: auto;
     padding: 0;
     border-radius: $border-radius-pill;
+    vertical-align: baseline;
   }
 
   .avatar {
@@ -38,6 +38,12 @@
     font-size: 1rem;
     stroke-width: 2;
   }
+}
+
+.badge-sm {
+  font-size: $h6-font-size;
+  line-height: $h6-line-height;
+  padding: 0 .25rem;
 }
 
 // bordered

@@ -100,6 +100,34 @@ gulp.task('svg-icons', (cb) => {
 })
 
 /**
+ * Generate CHANGELOG.md
+ */
+gulp.task('changelog', (cb) => {
+	const content = YAML.parse(fs.readFileSync('./src/pages/_data/changelog.yml', 'utf8'))
+	let readme = `# Changelog
+
+All notable changes to this project will be documented in this file.\n`
+
+	content.forEach((change) => {
+		readme += `\n\n## \`${change.version}\` - ${change.date}\n\n`
+
+		if(change.description) {
+			readme += `**${change.description}**\n\n`
+		}
+
+		change.changes.forEach((line) => {
+			readme += `- ${line}\n`
+		})
+
+		console.log(change.version);
+	})
+
+	fs.writeFileSync('CHANGELOG.md', readme)
+
+	cb()
+})
+
+/**
  * Check unused Jekyll partials
  */
 gulp.task('unused-files', (cb) => {
@@ -146,8 +174,8 @@ gulp.task('clean-jekyll', (cb) => {
  * Compile SASS to CSS and move it to dist directory
  */
 gulp.task('sass', () => {
-	const g = gulp
-		.src(`${srcDir}/scss/!(_)*.scss`)
+	return gulp
+		.src(argv.withPlugins || BUILD ? `${srcDir}/scss/!(_)*.scss` : `${srcDir}/scss/+(tabler|demo).scss`)
 		.pipe(debug())
 		.pipe(sass({
 			style: 'expanded',
@@ -166,19 +194,17 @@ gulp.task('sass', () => {
 		.pipe(gulp.dest(`${distDir}/css/`))
 		.pipe(browserSync.reload({
 			stream: true,
-		}))
-
-	if (BUILD) {
-		g
-			.pipe(rtlcss())
-			.pipe(rename((path) => {
-				path.basename += '.rtl'
-			}))
-			.pipe(gulp.dest(`${distDir}/css/`))
-	}
-
-	return g
+		}));
 })
+
+gulp.task('css-rtl', function () {
+	return gulp.src(`${distDir}/css/*.css`)
+		.pipe(rtlcss())
+		.pipe(rename((path) => {
+			path.basename += '.rtl'
+		}))
+		.pipe(gulp.dest(`${distDir}/css/`))
+});
 
 /**
  * CSS minify
@@ -492,6 +518,6 @@ gulp.task('clean', gulp.series('clean-dirs', 'clean-jekyll'))
 
 gulp.task('start', gulp.series('clean', 'sass', 'js', 'js-demo', 'mjs', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')))
 
-gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-minify', 'js', 'js-demo', 'mjs', 'copy-images', 'copy-libs', 'add-banner'))
+gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-rtl', 'css-minify', 'js', 'js-demo', 'mjs', 'copy-images', 'copy-libs', 'add-banner'))
 gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'/*, 'build-critical'*/))
 gulp.task('build', gulp.series('build-core', 'build-demo'))

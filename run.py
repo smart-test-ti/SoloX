@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from flask import request
-from view.common import *
 from view.apm import *
+from view.common import *
 import os
 import json
 import time
@@ -31,11 +31,6 @@ def report():
                     'app':json_data['app'],
                     'platform': json_data['platform'],
                     'devices': json_data['devices'],
-                    'cpu': json_data['cpu'],
-                    'mem': json_data['mem'],
-                    'fps': json_data['fps'],
-                    'bettery': json_data['bettery'],
-                    'flow': json_data['flow'],
                     'ctime': json_data['ctime'],
                 }
                 f.close()
@@ -56,7 +51,20 @@ def analysis():
     for dir in dirs:
         if dir == scene:
             try:
-                f = open(f'{report_dir}/{dir}/result.json')
+                if not os.path.exists(f'{report_dir}/{scene}/apm.json'):
+                    cpu_data = file().readLog(scene=scene,filename=f'cpu.log')[1]
+                    cpu_rate = f'{round(sum(cpu_data)/len(cpu_data),2)}%'
+                    apm_dict = {
+                        "cpu":cpu_rate,
+                        "mem":"500MB",
+                        "fps":"25fps",
+                        "flow":"300MB",
+                        "bettery":"100MA"
+                    }
+                    content = json.dumps(apm_dict)
+                    with open(f'{report_dir}/{scene}/apm.json', 'a+', encoding="utf-8") as apmfile:
+                        apmfile.write(content)
+                f = open(f'{report_dir}/{scene}/apm.json')
                 json_data = json.loads(f.read())
                 apm_data['cpu'] = json_data['cpu']
                 apm_data['mem'] = json_data['mem']
@@ -99,7 +107,9 @@ def getCpuRate():
 @app.route('/apm/create/report',methods=['post','get'])
 def makeReport():
     current_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
-    file(fileroot=f'apm_{current_time}').make_report()
+    app = request.args.get('app')
+    devices = request.args.get('devices')
+    file(fileroot=f'apm_{current_time}').make_report(app=app,devices=devices)
     result = {'status': 1}
     return result
 
@@ -120,6 +130,18 @@ def editReport():
         except Exception as e:
             result = {'status': 0,'msg':str(e)}
     return result
+
+@app.route('/apm/log',methods=['post','get'])
+def getLogData():
+    scene = request.args.get('scene')
+    target = request.args.get('target')
+    try:
+        cpu_data = file().readLog(scene=scene,filename=f'{target}.log')[0]
+        result = {'status': 1,'cpu_data':cpu_data}
+    except Exception as e:
+        result = {'status': 0,'msg':str(e)}
+    return result
+
 
 @app.route('/apm/remove/report',methods=['post','get'])
 def removeReport():

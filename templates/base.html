@@ -167,13 +167,13 @@
         }
     });
 
-    function save_img() {
-        let container = document.getElementsByClassName('Body') //page-wrapper
+    function save_img(classname,downloadname) {
+        let container = document.getElementsByClassName(classname) //page-wrapper
         html2canvas(container[0]).then(canvas => {
             let imgData = canvas.toDataURL()
             let link = document.createElement('a')
             link.href = imgData
-            link.download = '报告.png'
+            link.download = downloadname
             let flag = link.click()
             console.log(flag)
         })

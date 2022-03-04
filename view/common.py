@@ -3,6 +3,7 @@ import os
 import subprocess
 import shutil
 import json
+import time
 
 class Devices():
 
@@ -79,19 +80,15 @@ class file():
         with open(f'{self.report_dir}/{filename}', 'a+', encoding="utf-8") as file:
             file.write(content)
 
-    def make_report(self):
+    def make_report(self,app,devices):
+        current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         result_dict = {
-            "app":"com.xxx.xxxx.wechat",
-            "icon":"",
-            "platform":"Android",
-            "devices":"华为Mate20",
-            "cpu":"80%",
-            "mem":"250MB",
-            "fps":"60fps",
-            "bettery":"300mA",
-            "flow":"200MB",
-            "ctime":"2022-2-8 10:10:10"
-            }
+            "app": app,
+            "icon": "",
+            "platform": "Android",
+            "devices": devices,
+            "ctime": current_time
+        }
         content = json.dumps(result_dict)
         self.create_file(filename='result.json',content=content)
         report_new_dir = f'{self.report_dir}/{self.fileroot}'
@@ -104,6 +101,23 @@ class file():
                 shutil.move(filename, report_new_dir)
         if os.path.exists(f'{self.report_dir}/cpu.log'):
              os.remove(f'{self.report_dir}/cpu.log')
+
+    def readLog(self,scene,filename):
+        """读取apmlog文件数据"""
+        log_data_list = []
+        target_data_list = []
+        f = open(f'{self.report_dir}/{scene}/{filename}', "r")
+        lines = f.readlines()
+        for line in lines:
+            log_data_list.append({
+                "x": line.split('=')[0].strip(),
+                "y": int(line.split('=')[1].strip())
+            })
+            target_data_list.append(int(line.split('=')[1].strip()))
+        log_data_list.pop(0)
+        target_data_list.pop(0)
+        return log_data_list,target_data_list
+
 
 class Adb():
 

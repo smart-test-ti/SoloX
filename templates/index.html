@@ -131,7 +131,7 @@
                   for(var i=0;i<data['pkgnames'].length;i++){
                       $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>')
                   }
-                  SwalFire('success','连接成功!',data['devices'],2000)
+                  swal.close()
               }
           }
       });
@@ -236,9 +236,13 @@
       $('#stop-apm').hide()
       $.ajax({
           url: "/apm/create/report",
-          type: "POST",
+          type: "GET",
           async: true,
           cache: false,
+          data:{
+              app:$('#select-app').val(),
+              devices:$('#select-device').val()
+          },
           beforeSend: function () {
               SwalLoading('保存数据','正在保存数据生成报告，请勿离开。')
           },

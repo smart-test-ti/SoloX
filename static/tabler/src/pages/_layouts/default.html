@@ -6,7 +6,7 @@ layout: base
 
 <div class="page">
 	{% if page.layout-sidebar %}
-	{% include layout/sidebar.html dark=page.layout-sidebar-dark right=page.layout-sidebar-right transparent=page.layout-navbar-transparent breakpoint="lg" %}
+		{% include layout/sidebar.html dark=page.layout-sidebar-dark right=page.layout-sidebar-right transparent=page.layout-navbar-transparent breakpoint="lg" %}
 	{% endif %}
 
 	{% unless page.layout-hide-topbar %}
@@ -14,7 +14,7 @@ layout: base
 	{% endunless %}
 
 	<div class="page-wrapper{% if page.layout-wrapper-full %} page-wrapper-full{% endif %}">
-		<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
+		<div class="container-xl">
 			{% include layout/page-header.html %}
 		</div>
 
@@ -23,7 +23,7 @@ layout: base
 			{{ content }}
 			{% else %}
 			{% unless no-container %}
-			<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}{% if page.container-centered %} d-flex flex-column justify-content-center{% endif %}">
+			<div class="container-xl{% if page.container-centered %} d-flex flex-column justify-content-center{% endif %}">
 			{% endunless %}
 				{{ content }}
 			{% unless no-container %}
