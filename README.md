@@ -27,15 +27,15 @@ SoloX - APP性能数据实时收集工具。
 #### 分析
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646124090165-11408e8c-a5ec-45ec-9955-a0ce92f68d10.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
-
+## 安装
 ```
-1.安装Python:3.6+ 
-2.安装依赖：pip3 install -r requirements.txt
+1.Python:3.6+ 
+2.pip3 install -U solox
 ```
 
 ## 启动
 ```
-执行：python3 run.py
+执行：python3 -m solox
 
  * Serving Flask app 'run' (lazy loading)
  * Environment: production

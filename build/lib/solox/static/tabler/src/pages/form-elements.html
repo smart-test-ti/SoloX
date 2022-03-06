@@ -1,0 +1,86 @@
+---
+title: Form elements
+page-header: Form elements
+menu: forms
+libs: nouislider, autosize, tabler-flags, tabler-payments, litepicker, tom-select
+---
+
+<div class="row row-cards">
+	<div class="col-12">
+		<form action="https://httpbin.org/post" method="post" class="card">
+			<div class="card-header">
+				<h4 class="card-title">Form elements</h4>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-xl-4">
+						<div class="row">
+							<div class="col-md-6 col-xl-12">{% include forms/form-elements-1.html %}</div>
+							<div class="col-md-6 col-xl-12">{% include forms/form-elements-2.html %}</div>
+						</div>
+					</div>
+					<div class="col-xl-4">
+						<div class="row">
+							<div class="col-md-6 col-xl-12">{% include forms/form-elements-3.html %}</div>
+							<div class="col-md-6 col-xl-12">{% include forms/form-elements-4.html %}</div>
+						</div>
+					</div>
+					<div class="col-xl-4">
+						<div class="row">
+							<div class="col-md-6 col-xl-12">{% include forms/form-elements-5.html %}</div>
+							<div class="col-md-6 col-xl-12">{% include forms/form-elements-6.html %}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-footer text-end">
+				<div class="d-flex">
+					<a href="#" class="btn btn-link">Cancel</a>
+					<button type="submit" class="btn btn-primary ms-auto">Send data</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Project ID</h3>
+				<p class="card-subtitle">Used when interacting with the API.</p>
+				{% include ui/form/input-icon.html icon="files" value="prj_5ae74426fe935327a8fa178b07d84ad9" readonly=true %}
+			</div>
+			<div class="card-footer">
+				<div class="row align-items-center">
+					<div class="col">Learn more about <a href="#">Project ID</a></div>
+					<div class="col-auto">
+						{% include ui/button.html text="Save" color="primary" %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Node.js Version</h3>
+				<p class="card-subtitle">The version of Node.js that is used in the Build Step and for Serverless Functions. A new Deployment is required for your changes to take effect.</p>
+				<select class="form-select">
+					<option>14.x</option>
+					<option>12.x</option>
+				</select>
+			</div>
+			<div class="card-footer">
+				Learn more about <a href="#">Node.js Version</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		{% include cards/form/layout.html %}
+	</div>
+
+	<div class="col-md-6">
+		{% include cards/form/layout.html horizontal=true title="Horizontal form" %}
+	</div>
+</div>

@@ -1,0 +1,201 @@
+<!doctype html>
+<!--
+* SoloX - Premium and Open Source APM template with high quality testing service.
+* @version 1.0.0
+* @Author Rafa Chen
+* Copyright SoloX.2022
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{% block title %} {% endblock %}</title>
+    <!-- CSS files -->
+    <link rel="icon" href="./static/logo/logo.png">
+    <link rel="stylesheet" href="./static/tabler/dist/css/tabler.min.css">
+    <link href="./static/tabler/dist/css/demo.min.css" rel="stylesheet"/>
+    <!-- Select2-->
+    <link rel="stylesheet" href="./static/css/select2/select2.min.css" />
+    <link rel="stylesheet" href="./static/css/select2/select2-bootstrap-5-theme.min.css" />
+    <link rel="stylesheet" href="./static/css/select2/select2-bootstrap-5-theme.rtl.min.css" />
+     <!-- Sweetalert2-->
+    <link rel="stylesheet" href="./static/css/sweetalert2/sweetalert2.min.css" />
+
+    {% block css %}
+    {% endblock %}
+</head>
+<body class="Body">
+<div class="page">
+    <header class="navbar navbar-expand-md navbar-light d-print-none">
+        <div class="container-xl">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                <a href=".">
+                    <img src="./static/logo/logo.png" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+                </a>
+                <label style="margin-left: 10px;font-weight: bolder;font-style: normal;font-size: 20px;">SoloX</label>
+            </h1>
+            <div class="collapse navbar-collapse" id="navbar-menu" style="margin-left: 20px;">
+                <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
+                    {% block navbar_nav %} {% endblock %}
+                </div>
+            </div>
+            <div class="nav-item dropdown d-none d-md-flex me-3">
+                <a href="#" id="timeline_tab">
+                    <svg t="1645002673922" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3507" width="300" height="300"><path d="M437.6 717.4c0-164.4 133.2-297.6 297.6-297.6 31.4 0 61.6 4.9 90 13.9v-117L588.8 80.2H120.2c-11.6 0-21 9.4-21 21v822.1c0 11.6 9.4 21 21 21h422.4c-64.2-54.6-105-136-105-226.9z" fill="#FFFFFF" p-id="3508"></path><path d="M825.2 449.6c-8.8 0-16-7.2-16-16V323L577.5 91.3c-6.2-6.2-6.2-16.4 0-22.6 6.2-6.2 16.4-6.2 22.6 0L836.5 305c3 3 4.7 7.1 4.7 11.3v117.3c0 8.8-7.2 16-16 16z" fill="#00365B" p-id="3509"></path><path d="M542.7 960H120.2c-20.4 0-37-16.6-37-37V100.9c0-20.4 16.6-37 37-37h468.6c8.8 0 16 7.2 16 16s-7.2 16-16 16H120.2c-2.7 0-5 2.2-5 5V923c0 2.7 2.2 5 5 5h422.5c8.8 0 16 7.2 16 16s-7.2 16-16 16z" fill="#00365B" p-id="3510"></path><path d="M825.2 316.3H588.8V79.9z" fill="#FFFFFF" p-id="3511"></path><path d="M825.2 332.3H588.8c-8.8 0-16-7.2-16-16V79.9c0-6.5 3.9-12.3 9.9-14.8s12.9-1.1 17.4 3.5L836.5 305c4.6 4.6 5.9 11.5 3.5 17.4-2.5 6-8.3 9.9-14.8 9.9z m-220.4-32h181.8L604.8 118.6v181.7z" fill="#00365B" p-id="3512"></path><path d="M735.2 717.4m-205.6 0a205.6 205.6 0 1 0 411.2 0 205.6 205.6 0 1 0-411.2 0Z" fill="#5185D6" p-id="3513"></path><path d="M735.2 747.4c-16.6 0-30-13.4-30-30V593.1c0-16.6 13.4-30 30-30s30 13.4 30 30v124.3c0 16.5-13.4 30-30 30z" fill="#F2F2F2" p-id="3514"></path><path d="M852 789.9c-3.4 0-6.9-0.6-10.3-1.8L725 745.5c-15.6-5.7-23.6-22.9-17.9-38.5s22.9-23.6 38.5-17.9l116.8 42.5c15.6 5.7 23.6 22.9 17.9 38.5-4.5 12.2-16 19.8-28.3 19.8z" fill="#F2F2F2" p-id="3515"></path></svg>
+                </a>
+            </div>
+            <div class="navbar-nav flex-row">
+                <a href="?theme=dark" class="nav-link px-1 hide-theme-dark" style="margin-right: 10px;" title="切换暗黑模式" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
+                </a>
+                <a href="?theme=light" class="nav-link px-1 hide-theme-light mr-2" style="margin-right: 10px;" title="切换日光模式" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="4" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
+                </a>
+            </div>
+            <div class="nav-item dropdown d-none d-md-flex me-3">
+                <a  class="cursor-pointer" id="setting" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd">
+                    <svg t="1646469036410" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="28495" width="200" height="200"><path d="M364.8 998.4c-12.8 0-19.2-6.4-32-6.4-51.2-19.2-102.4-44.8-140.8-83.2-32-25.6-38.4-70.4-25.6-108.8 12.8-25.6 12.8-57.6-6.4-83.2-12.8-25.6-38.4-38.4-70.4-44.8-38.4 0-70.4-32-76.8-76.8C6.4 569.6 0 537.6 0 512s6.4-57.6 6.4-83.2c6.4-38.4 38.4-70.4 83.2-76.8 32-6.4 57.6-19.2 70.4-44.8s12.8-51.2 0-76.8c-19.2-44.8-6.4-89.6 25.6-115.2 44.8-32 89.6-64 140.8-83.2 38.4-12.8 83.2 0 108.8 32 25.6 25.6 51.2 38.4 76.8 38.4 32 0 57.6-12.8 76.8-38.4 25.6-32 70.4-44.8 108.8-32 51.2 19.2 102.4 44.8 140.8 83.2 32 25.6 38.4 70.4 25.6 108.8-12.8 25.6-12.8 57.6 6.4 83.2 12.8 25.6 38.4 38.4 70.4 44.8 44.8 6.4 76.8 32 83.2 76.8-6.4 25.6 0 57.6 0 83.2s-6.4 57.6-6.4 83.2c-6.4 38.4-38.4 70.4-83.2 76.8-32 6.4-57.6 19.2-70.4 44.8-12.8 25.6-19.2 57.6-6.4 83.2 19.2 38.4 6.4 83.2-25.6 108.8-38.4 32-89.6 64-140.8 83.2-38.4 12.8-83.2 0-108.8-32-19.2-25.6-44.8-38.4-70.4-38.4-32 0-57.6 12.8-76.8 38.4-12.8 25.6-38.4 38.4-70.4 38.4z m0-896c-51.2 25.6-89.6 44.8-128 76.8-6.4 0-6.4 12.8 0 12.8 25.6 51.2 19.2 108.8-6.4 153.6s-76.8 76.8-128 83.2c-6.4 0-12.8 6.4-12.8 12.8-6.4 25.6-12.8 44.8-12.8 70.4 0 25.6 6.4 44.8 6.4 70.4 0 6.4 6.4 12.8 12.8 12.8 57.6 6.4 102.4 38.4 128 83.2s32 102.4 6.4 153.6c-6.4 6.4-6.4 12.8 6.4 19.2 38.4 32 76.8 51.2 121.6 70.4 6.4 6.4 12.8-6.4 19.2-6.4 32-44.8 83.2-70.4 134.4-70.4s108.8 25.6 134.4 70.4c6.4 6.4 12.8 12.8 19.2 6.4 44.8-19.2 83.2-38.4 121.6-70.4 6.4-6.4 6.4-12.8 6.4-19.2-25.6-51.2-19.2-108.8 6.4-153.6s76.8-76.8 128-83.2c6.4 0 12.8-6.4 12.8-12.8 6.4-25.6 6.4-44.8 6.4-70.4 0-25.6-6.4-44.8-6.4-70.4 0-6.4-6.4-12.8-12.8-12.8-57.6-6.4-102.4-38.4-128-83.2s-32-108.8-6.4-160c6.4-6.4 6.4-12.8-6.4-19.2-38.4-32-76.8-51.2-121.6-70.4-6.4-6.4-12.8 6.4-19.2 6.4-25.6 51.2-76.8 76.8-134.4 76.8-57.6 0-108.8-25.6-134.4-70.4-6.4 0-12.8-6.4-12.8-6.4zM512 710.4c-108.8 0-198.4-89.6-198.4-198.4S403.2 313.6 512 313.6s198.4 89.6 198.4 198.4-89.6 198.4-198.4 198.4z m0-320C448 390.4 396.8 448 396.8 512S448 633.6 512 633.6 633.6 576 633.6 512 576 390.4 512 390.4z" fill="#5C83E7" p-id="28496"></path></svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-wrapper">
+        <div class="container-xl">
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            {% block page_title %}
+                            {% endblock %}
+                        </h2>
+                    </div>
+                    {% block ms_auto %}{% endblock %}
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="container-xl">
+                {% block page_body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    <footer class="footer footer-transparent d-print-none">
+        <div class="container-xl">
+            <div class="row text-center align-items-center flex-row-reverse">
+                <div class="col-lg-auto ms-lg-auto">
+                    <ul class="list-inline list-inline-dots mb-0">
+                        <li class="list-inline-item"><a href="#" class="link-secondary">文档</a></li>
+                        <li class="list-inline-item"><a href="#" target="_blank" class="link-secondary" rel="noopener">源码</a></li>
+                    </ul>
+                </div>
+                <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                    <ul class="list-inline list-inline-dots mb-0">
+                        <li class="list-inline-item">
+                            Copyright &copy; 2022
+                            <a href="#" class="link-secondary">SoloX</a>. All rights reserved.
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#" class="link-secondary" rel="noopener">
+                                v1.0.0
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
+    <div class="offcanvas-header">
+        <h2 class="offcanvas-title" id="offcanvasEndLabel">设置</h2>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+    </div>
+</div>
+<!-- JQ JS -->
+<script src="./static/js/jq3.6.0/jquery.js"></script>
+<script src="./static/js/jq3.6.0/jquery.min.js"></script>
+<!-- tabler -->
+<script src="./static/tabler/dist/js/tabler.min.js"></script>
+<script src="./static/tabler/dist/js/demo.min.js"></script>
+<!-- Sweetalert2 -->
+<script src="./static/js/sweetalert2/sweetalert2.min.js"></script>
+<!-- Select2-->
+<script src="./static/js/select2/select2.min.js"></script>
+<!-- Apexcharts-->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!-- Highcharts-->
+<script src="https://cdn.highcharts.com.cn/highstock/highstock.js"></script>
+<!--<script src="https://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>-->
+<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+<script src="https://code.highcharts.com.cn/highcharts/themes/gray.js"></script>
+<!-- html2canvas -->
+<script src="./static/js/html2canvas/html2canvas.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.select2-selection--single').select2({
+            theme: "bootstrap-5",
+            containerCssClass: "select2--small",
+            selectionCssClass: "select2--small",
+            dropdownCssClass: "select2--small",
+        });
+        $('.js-example-basic-multiple').select2({
+            theme: "bootstrap-5"
+        });
+    });
+
+
+    function SwalLoading(title,html){
+        Swal.fire({
+            title: title,
+            html: html,
+            timerProgressBar: true,
+            allowOutsideClick: () => false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
+    }
+
+    function SwalFire(icon,title,text,timer=null) {
+        Swal.fire({
+            icon: icon,
+            title: title,
+            text: text,
+            showLoaderOnConfirm: true,
+            showCloseButton: true,
+            showConfirmButton: false,
+            timer:timer,
+            allowOutsideClick: () => true
+        })
+    }
+
+    Highcharts.setOptions({
+        global : {
+            useUTC : false
+        }
+    });
+
+    function save_img(classname,downloadname) {
+        let container = document.getElementsByClassName(classname) //page-wrapper
+        html2canvas(container[0]).then(canvas => {
+            let imgData = canvas.toDataURL()
+            let link = document.createElement('a')
+            link.href = imgData
+            link.download = downloadname
+            let flag = link.click()
+            console.log(flag)
+        })
+    }
+</script>
+{% block js %}
+{% endblock %}
+</body>
+</html>
