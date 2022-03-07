@@ -161,7 +161,8 @@
                       setTimeout(getCpuRate(pkgname,device), 1000);
                   }catch (e) {}
               }else{
-                  SwalFire('error','执行错误',data['msg'],2000)
+                  SwalFire('error','异常，终止执行',data['msg'],2000)
+                  $('#stop-apm').click()
               }
           }
       });
