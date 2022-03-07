@@ -6,7 +6,6 @@ import time
 d = Devices()
 adb = Adb()
 current_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
-report_dir = os.path.join(os.getcwd(), 'report')
 class CPU():
 
     def __init__(self, pkgName ,deviceId):
@@ -43,7 +42,7 @@ class CPU():
         processCpuTime_2 = self.getprocessCpuStat()
         totalCpuTime_2 = self.getTotalCpuStat()
         cpuRate = int((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100)
-        with open(f'{report_dir}/cpu.log', 'a+') as f:
+        with open(f'{file().report_dir}/cpu.log', 'a+') as f:
             f.write(f'{self.apm_time}={str(cpuRate)}' + '\n')
         return cpuRate
 

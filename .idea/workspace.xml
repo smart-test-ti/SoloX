@@ -1,0 +1,1335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="64f61252-f721-47b5-9cbc-d01631cfa676" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/SoloX.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/solox/static/image/readme/analysis.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/solox/static/image/readme/index.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/solox/static/image/readme/report.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MANIFEST.in" beforeDir="false" afterPath="$PROJECT_DIR$/MANIFEST.in" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/__main__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/public/apm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/public/common.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/dist/apexcharts.amd.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/dist/apexcharts.common.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/dist/apexcharts.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/dist/apexcharts.esm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/dist/apexcharts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/dist/apexcharts.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/assets/github-data.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/assets/images/1101098.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/assets/images/clock.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/assets/images/ico-instagram.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/assets/images/ico-messenger.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/assets/irregular-data-series.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/assets/ohlc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/assets/stock-prices.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/assets/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/area/area-datetime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/area/area-github-style.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/area/area-spline.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/area/area-with-missing-data.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/area/area-with-negative.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/area/basic-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/area/stacked-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/area/timeseries-with-irregular-data.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/bar/bar-with-custom-data-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/bar/bar-with-images.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/bar/bar-with-markers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/bar/bar-with-negative.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/bar/basic-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/bar/grouped-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/bar/patterned-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/bar/reversed-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/bar/stacked-bar-100.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/bar/stacked-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/boxPlot/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/boxPlot/boxplot-scatter.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/boxPlot/horizontal-boxplot.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/bubble/3d-bubble.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/bubble/simple-bubble.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/candlestick/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/candlestick/candlestick-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/candlestick/candlestick-category.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/candlestick/candlestick-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/basic-column.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/column-with-data-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/column-with-markers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/column-with-negative.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/column-with-rotated-data-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/column-with-rotated-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/data-color.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/distributed-columns.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/dynamic-loaded-chart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/range-column.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/stacked-column-100.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/stacked-column-with-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/column/stacked-column.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/heatmap/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/heatmap/color-range.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/heatmap/image-fill.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/heatmap/multiple-color-scales-flipped.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/heatmap/multiple-color.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/heatmap/rounded.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/basic-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/brush-charts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/dashed-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/gradient-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/line-with-annotations.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/line-with-data-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/line-with-image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/line-with-missing-data.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/logarithmic-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/realtime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/stepline.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/syncing-charts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/line/zoomable-timeseries.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/misc/annotations-example.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/misc/minMaxPoints.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/misc/range-annotations-inverted-axis-example.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/mixed/line-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/mixed/line-column-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/mixed/line-column.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/mixed/line-scatter.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/mixed/multiple-yaxes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/pie/donut-update.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/pie/donut-with-pattern.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/pie/gradient-donut.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/pie/monochrome-pie.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/pie/pie-with-image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/pie/semi-donut.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/pie/simple-donut.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/pie/simple-pie.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/polarArea/basic-polar-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/polarArea/polar-area-monochrome.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/radar/basic-radar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/radar/radar-multiple-series.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/radar/radar-with-polygon-fill.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/radialBar/circle-chart-multiple.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/radialBar/circle-chart-with-image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/radialBar/circle-chart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/radialBar/circle-custom-angle.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/radialBar/circle-gradient.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/radialBar/semi-circle-chart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/radialBar/stroked-gauge.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/scatter/scatter-basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/scatter/scatter-datetime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/scatter/scatter-images.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/sparklines/sparklines.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/timelines/advanced.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/timelines/controlling-colors.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/timelines/multi-series-group-rows.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/timelines/multi-series.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/timelines/simple.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/treemap/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/treemap/color-scale.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/treemap/distributed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/react/treemap/multi-dimensional.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/area/area-datetime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/area/area-github-style.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/area/area-spline.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/area/area-with-missing-data.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/area/area-with-negative.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/area/basic-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/area/stacked-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/area/timeseries-with-irregular-data.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/bar/bar-with-custom-data-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/bar/bar-with-images.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/bar/bar-with-markers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/bar/bar-with-negative.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/bar/basic-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/bar/grouped-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/bar/patterned-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/bar/reversed-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/bar/stacked-bar-100.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/bar/stacked-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/boxPlot/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/boxPlot/boxplot-scatter.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/boxPlot/horizontal-boxplot.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/bubble/3d-bubble.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/bubble/simple-bubble.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/candlestick/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/candlestick/candlestick-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/candlestick/candlestick-category.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/candlestick/candlestick-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/basic-column.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/column-with-data-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/column-with-markers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/column-with-negative.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/column-with-rotated-data-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/column-with-rotated-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/data-color.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/distributed-columns.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/dynamic-loaded-chart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/histogram.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/range-column.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/stacked-column-100.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/stacked-column-with-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/column/stacked-column.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/dark/assets/scripts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/dark/assets/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/dark/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/material/assets/scripts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/material/assets/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/material/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/modern/assets/data.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/modern/assets/img/banana.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/modern/assets/img/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/modern/assets/img/map.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/modern/assets/img/tellius.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/modern/assets/img/user.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/modern/assets/scripts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/modern/assets/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/modern/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/realtime/assets/edit-on-codepen.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/realtime/assets/scripts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/realtime/assets/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/dashboards/realtime/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/heatmap/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/heatmap/color-range.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/heatmap/image-fill.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/heatmap/multiple-color-scales-flipped.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/heatmap/multiple-color.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/heatmap/rounded.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/basic-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/brush-charts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/dashed-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/gradient-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/line-with-annotations.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/line-with-data-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/line-with-image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/line-with-missing-data.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/logarithmic-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/realtime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/stepline.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/syncing-charts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/line/zoomable-timeseries.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/misc/annotations-example.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/misc/axios.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/misc/custom-legend.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/misc/init-from-attrs.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/misc/jquery.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/misc/minMaxPoints.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/misc/range-annotations-inverted-axis-example.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/mixed/line-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/mixed/line-column-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/mixed/line-column.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/mixed/line-scatter.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/mixed/multiple-yaxes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/pie/donut-update.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/pie/donut-with-pattern.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/pie/gradient-donut.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/pie/monochrome-pie.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/pie/pie-with-image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/pie/semi-donut.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/pie/simple-donut.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/pie/simple-pie.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/polarArea/basic-polar-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/polarArea/polar-area-monochrome.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/radar/basic-radar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/radar/radar-multiple-series.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/radar/radar-with-polygon-fill.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/radialBar/circle-chart-multiple.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/radialBar/circle-chart-with-image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/radialBar/circle-chart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/radialBar/circle-custom-angle.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/radialBar/circle-gradient.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/radialBar/semi-circle-chart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/radialBar/stroked-gauge.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/scatter/scatter-basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/scatter/scatter-datetime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/scatter/scatter-images.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/sparklines/sparklines.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/timelines/advanced.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/timelines/controlling-colors.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/timelines/multi-series-group-rows.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/timelines/multi-series.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/timelines/simple.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/treemap/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/treemap/color-scale.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/treemap/distributed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vanilla-js/treemap/multi-dimensional.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/area/area-datetime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/area/area-github-style.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/area/area-spline.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/area/area-with-missing-data.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/area/area-with-negative.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/area/basic-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/area/stacked-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/area/timeseries-with-irregular-data.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/bar/bar-with-custom-data-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/bar/bar-with-images.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/bar/bar-with-markers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/bar/bar-with-negative.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/bar/basic-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/bar/grouped-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/bar/patterned-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/bar/reversed-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/bar/stacked-bar-100.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/bar/stacked-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/boxPlot/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/boxPlot/boxplot-scatter.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/boxPlot/horizontal-boxplot.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/bubble/3d-bubble.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/bubble/simple-bubble.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/candlestick/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/candlestick/candlestick-bar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/candlestick/candlestick-category.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/candlestick/candlestick-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/basic-column.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/column-with-data-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/column-with-markers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/column-with-negative.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/column-with-rotated-data-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/column-with-rotated-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/data-color.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/distributed-columns.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/dynamic-loaded-chart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/range-column.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/stacked-column-100.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/stacked-column-with-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/column/stacked-column.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/heatmap/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/heatmap/color-range.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/heatmap/image-fill.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/heatmap/multiple-color-scales-flipped.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/heatmap/multiple-color.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/heatmap/rounded.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/basic-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/brush-charts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/dashed-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/gradient-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/line-with-annotations.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/line-with-data-labels.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/line-with-image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/line-with-missing-data.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/logarithmic-line.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/realtime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/stepline.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/syncing-charts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/line/zoomable-timeseries.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/misc/annotations-example.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/misc/minMaxPoints.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/misc/range-annotations-inverted-axis-example.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/mixed/line-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/mixed/line-column-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/mixed/line-column.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/mixed/line-scatter.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/mixed/multiple-yaxes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/pie/donut-update.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/pie/donut-with-pattern.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/pie/gradient-donut.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/pie/monochrome-pie.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/pie/pie-with-image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/pie/semi-donut.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/pie/simple-donut.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/pie/simple-pie.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/polarArea/basic-polar-area.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/polarArea/polar-area-monochrome.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/radar/basic-radar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/radar/radar-multiple-series.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/radar/radar-with-polygon-fill.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/radialBar/circle-chart-multiple.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/radialBar/circle-chart-with-image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/radialBar/circle-chart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/radialBar/circle-custom-angle.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/radialBar/circle-gradient.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/radialBar/semi-circle-chart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/radialBar/stroked-gauge.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/scatter/scatter-basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/scatter/scatter-datetime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/scatter/scatter-images.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/sparklines/sparklines.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/timelines/advanced.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/timelines/controlling-colors.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/timelines/multi-series-group-rows.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/timelines/multi-series.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/timelines/simple.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/treemap/basic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/treemap/color-scale.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/treemap/distributed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/apexcharts-bundle/samples/vue/treemap/multi-dimensional.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/css/select2/select2-bootstrap-5-theme.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/css/select2/select2-bootstrap-5-theme.rtl.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/css/select2/select2.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/css/sweetalert2/sweetalert2.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/image/404.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/image/500.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/image/avatar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/image/empty.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/js/html2canvas/html2canvas.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/js/html2canvas/html2canvas.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/js/jq3.6.0/jquery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/js/jq3.6.0/jquery.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/js/select2/select2.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/js/sweetalert2/sweetalert2.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/logo/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/accordion.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/activity.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/auth-lock.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/blank.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/buttons.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/card-actions.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/cards-masonry.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/cards.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/carousel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/changelog.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/charts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/colors.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/demo.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/demo.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/demo.rtl.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/demo.rtl.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler-flags.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler-flags.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler-flags.rtl.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler-flags.rtl.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler-payments.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler-payments.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler-payments.rtl.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler-payments.rtl.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler-vendors.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler-vendors.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler-vendors.rtl.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler-vendors.rtl.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler.rtl.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/css/tabler.rtl.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/js/demo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/js/demo.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/js/tabler.esm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/js/tabler.esm.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/js/tabler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/js/tabler.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/libs/apexcharts/dist/apexcharts.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/libs/countup.js/dist/countUp.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/libs/jsvectormap/dist/js/jsvectormap.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/libs/jsvectormap/dist/maps/world-merc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/libs/jsvectormap/dist/maps/world.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/libs/litepicker/dist/litepicker.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/libs/nouislider/dist/nouislider.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dist/libs/tom-select/dist/js/tom-select.base.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/alerts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/autosize.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/avatars.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/badges.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/borders.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/breadcrumb.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/browser-support.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/buttons.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/cards.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/carousel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/charts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/colors.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/countup.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/cursors.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/customize.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/divider.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/download.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/dropdowns.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/empty.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/flags.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/form-color-check.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/form-elements.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/form-fieldset.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/form-helpers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/form-image-check.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/form-selectboxes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/form-validation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/getting-started.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/icons.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/input-mask.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/interactions.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/modals.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/page-headers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/payments.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/placeholder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/progress.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/range-slider.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/ribbons.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/skeleton.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/spinners.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/statuses.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/steps.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/switch-icon.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/tables.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/tabs.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/timelines.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/toasts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/tooltips.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/docs/typography.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/dropdowns.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/empty.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/error-404.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/error-500.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/error-maintenance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/forgot-password.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/form-elements.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/gallery.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/icons.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/invoice.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-boxed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-combo.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-condensed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-fluid-vertical.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-fluid.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-horizontal.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-navbar-dark.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-navbar-overlap.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-navbar-sticky.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-rtl.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-vertical-right.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-vertical-transparent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/layout-vertical.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/license.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/lists.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/map-fullsize.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/maps-vector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/maps.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/markdown.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/modals.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/music.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/navigation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/offcanvas.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/pagination.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/placeholder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/playground-dark.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/playground.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/pricing.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/search-results.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/sign-in.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/sign-up.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/components/card-buttons.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/components/card-comments.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/components/card-ribbon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/components/card-tabs-bottom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/components/card-with-image.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/components/empty.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/components/input-colors.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/components/input-image.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/components/simple-avatar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/components/simple-card.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/components/widget-revenue.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/components/widget-sales.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/og.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/projects/dashboard-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/projects/dashboard-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/projects/dashboard-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/sponsor-banner-readme.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/static/tabler-preview.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/tables.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/tabs.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/tasks.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/terms-of-service.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/typography.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/uptime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/users.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/widgets.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/demo/wizard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/demo.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/demo.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/demo.rtl.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/demo.rtl.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler-flags.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler-flags.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler-flags.rtl.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler-flags.rtl.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler-payments.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler-payments.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler-payments.rtl.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler-payments.rtl.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler-vendors.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler-vendors.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler-vendors.rtl.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler-vendors.rtl.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler.rtl.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/css/tabler.rtl.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/js/demo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/js/demo.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/js/tabler.esm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/js/tabler.esm.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/js/tabler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/js/tabler.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/libs/apexcharts/dist/apexcharts.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/libs/countup.js/dist/countUp.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/libs/jsvectormap/dist/js/jsvectormap.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/libs/jsvectormap/dist/maps/world-merc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/libs/jsvectormap/dist/maps/world.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/libs/litepicker/dist/litepicker.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/libs/nouislider/dist/nouislider.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/dist/libs/tom-select/dist/js/tom-select.base.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/gulpfile.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/js/demo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/js/src/autosize.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/js/src/dropdown.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/js/src/input-mask.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/js/src/popover.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/js/src/switch-icon.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/js/src/tab.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/js/src/toast.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/js/src/tooltip.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/js/tabler.esm.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/js/tabler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_docs/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/activity.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/auth-lock.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/blog-single.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/body-placeholder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/card-group.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/card-image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/card-tabs.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/card.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/carousel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/charts/active-users.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/charts/heatmap.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/charts/new-clients.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/charts/revenue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/charts/sales.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/charts/total-sales.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/code.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/comments.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/company-employees.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/company-lookup.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/configuration.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/credit-card.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/development-activity.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/forgot-password.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/form/layout.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/gallery-photo.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/icons-banner.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/icons.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/invoice.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/invoices.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/map-vector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/map.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/most-visited-pages.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/music/track-info.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/music/tracks-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/navbar-notifications.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/order-statistics.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/placeholder/card-1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/placeholder/card-2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/placeholder/card-3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/placeholder/card-4.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/placeholder/card-5.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/placeholder/card-6.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/pricing-card.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/profile-2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/profile-edit-big.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/profile-edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/profile-timeline.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/profile.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/project-kanban.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/project-progress.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/project-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/ribbon.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/sign-in.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/sign-up.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/small-stats-2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/small-stats-3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/small-stats.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/social-traffic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/sponsor.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/store-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/store-product-grid.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/store-product.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/subscribe.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/table-users.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/tabs.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/tasks.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/timeline.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/user-card-bg.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/user-card-big.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/user-card.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/user-info.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/users-list-2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/users-list-headers.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/cards/users-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/docs/chart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/docs/menu.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/docs/plugin.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/example.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/example/colors-table.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/forms/form-elements-1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/forms/form-elements-2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/forms/form-elements-3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/forms/form-elements-4.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/forms/form-elements-5.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/forms/form-elements-6.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/js/countup.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/js/nouislider.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/analytics.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/banner.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/css.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/debug.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/footer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/header-actions/add-board.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/header-actions/breadcrumb.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/header-actions/buttons.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/header-actions/calendar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/header-actions/photos.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/header-actions/print.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/header-actions/users.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/headers/page-header-1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/headers/page-header-2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/headers/page-header-3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/headers/page-header-4.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/headers/page-header-5.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/headers/uptime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/homepage.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/js.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/layouts-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/layouts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/modals-capture.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/modals.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/navbar-logo.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/navbar-menu.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/navbar-search.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/navbar-side.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/navbar-toggler.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/navbar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/og.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/page-header.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/sentry.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/layout/sidebar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/activity.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/buttons-table.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/calendar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/demo-layout.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/dropdown/days.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/checkboxes-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/fieldset.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-checkboxes-inline.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-checkboxes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-color.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-colorpicker.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-datalist.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-file.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-icon-separated.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-icon.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-image-people.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-radios-inline.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-radios.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-range.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-selectgroups.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-sizes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-toggle-single.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input-toggle.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/input.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/select.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/selectgroup-payments.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/selectgroup-project-manager.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/form/validation-states.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/modals/danger.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/modals/deactivate.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/modals/full-width.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/modals/large.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/modals/report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/modals/scrollable.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/modals/simple.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/modals/small.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/modals/success.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/modals/team.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/nav/nav-aside.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/parts/tasks.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/redirect.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/settings.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/alert.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/avatar-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/avatar-upload.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/avatar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/badge.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/breadcrumb.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/button.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/card-dropdown.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/carousel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/chart-heatmap.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/chart-sparkline.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/chart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/datepicker.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/dropdown-menu-all.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/dropdown-menu.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/empty.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/flag.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/form/check.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/form/input-file.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/form/input-group.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/form/input-icon.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/form/input-mask.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/form/input-selectgroup.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/form/textarea-autosize.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/hr.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/icon.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/illustration.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/image.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/map-vector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/map.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/modal.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/modal/close.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/modal/footer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/modal/header.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/nav.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/pagination.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/payment.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/progress-description.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/progress.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/range.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/ribbon.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/select.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/spinner.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/stars.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/status-dot.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/status-indicator.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/status.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/steps.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/svg.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/switch-icon.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/table.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/toast.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_includes/ui/trending.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_layouts/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_layouts/card.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_layouts/default.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_layouts/docs.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_layouts/error.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_layouts/homepage.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_layouts/markdown.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_layouts/redirect.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/_layouts/single.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/accordion.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/activity.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/auth-lock.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/blank.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/buttons.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/card-actions.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/cards-masonry.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/cards.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/carousel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/changelog.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/charts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/colors.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/dropdowns.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/empty.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/error-404.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/error-500.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/error-maintenance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/forgot-password.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/form-elements.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/gallery.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/icons.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/invoice.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-boxed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-combo.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-condensed.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-fluid-vertical.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-fluid.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-horizontal.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-navbar-dark.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-navbar-overlap.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-navbar-sticky.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-rtl.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-vertical-right.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-vertical-transparent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/layout-vertical.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/license.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/lists.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/map-fullsize.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/maps-vector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/maps.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/modals.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/music.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/navigation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/offcanvas.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/pagination.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/placeholder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/playground-dark.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/pricing.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/search-results.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/sign-in.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/sign-up.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/tables.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/tabs.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/tasks.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/terms-of-service.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/typography.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/uptime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/users.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/widgets.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/pages/wizard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/components/card-buttons.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/components/card-comments.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/components/card-ribbon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/components/card-tabs-bottom.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/components/card-with-image.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/components/empty.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/components/input-colors.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/components/input-image.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/components/simple-avatar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/components/simple-card.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/components/widget-revenue.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/components/widget-sales.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/og.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/projects/dashboard-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/projects/dashboard-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/projects/dashboard-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/sponsor-banner-readme.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/static/tabler-preview.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/static/tabler/src/stories/Button.stories.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/templates/404.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/templates/500.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/templates/analysis.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/templates/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/templates/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/templates/report.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/view/apis.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/solox/view/pages.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/solox-1.0.6-py3-none-any.whl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/solox-1.0.6.tar.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solox.egg-info/PKG-INFO" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/solox.egg-info/SOURCES.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/solox.egg-info/dependency_links.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/solox.egg-info/requires.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/solox.egg-info/top_level.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/solox/public/apm.py" beforeDir="false" afterPath="$PROJECT_DIR$/solox/public/apm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solox/public/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/solox/public/common.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solox/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/solox/templates/index.html" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-1781393439">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.13" value="1" />
+          <entry key="project.open.time.2" value="2" />
+          <entry key="project.opened" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="HTML" value="7" />
+          <entry key="Ini" value="2" />
+          <entry key="Markdown" value="1" />
+          <entry key="PLAIN_TEXT" value="4" />
+          <entry key="Python" value="6" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="HTML" value="2" />
+          <entry key="Markdown" value="6" />
+          <entry key="PLAIN_TEXT" value="29" />
+          <entry key="Python" value="57" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/solox/public/common.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="209">
+              <caret line="78" column="32" selection-start-line="78" selection-start-column="32" selection-end-line="78" selection-end-column="32" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/solox/templates/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="22" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/solox/templates/report.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="227">
+              <caret line="25" column="7" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/solox/view/apis.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#27#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/solox/public/apm.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LICENSE">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" selection-start-line="1" selection-end-line="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/setup.cfg">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/setup.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="136">
+                <caret line="8" column="82" selection-start-line="8" selection-start-column="78" selection-end-line="8" selection-end-column="82" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MANIFEST.in">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="68" selection-start-line="1" selection-start-column="68" selection-end-line="1" selection-end-column="68" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>create_file</find>
+      <find>report_dir</find>
+      <find>solox</find>
+      <find>/solox</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/LICENSE" />
+        <option value="$PROJECT_DIR$/package.py" />
+        <option value="$PROJECT_DIR$/solox/package.sh" />
+        <option value="$PROJECT_DIR$/package.sh" />
+        <option value="$PROJECT_DIR$/MANIFEST.in" />
+        <option value="$PROJECT_DIR$/solox/public/common.py" />
+        <option value="$PROJECT_DIR$/solox/public/apm.py" />
+        <option value="$PROJECT_DIR$/solox/templates/index.html" />
+        <option value="$PROJECT_DIR$/solox/templates/404.html" />
+        <option value="$PROJECT_DIR$/solox/templates/500.html" />
+        <option value="$PROJECT_DIR$/solox/templates/analysis.html" />
+        <option value="$PROJECT_DIR$/solox/templates/report.html" />
+        <option value="$PROJECT_DIR$/setup.py" />
+        <option value="$PROJECT_DIR$/README.md" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/solox/static/tabler/package.json" />
+      <path value="$PROJECT_DIR$/solox/static/tabler/src/pages/_data/package.json" />
+    </packageJsonPaths>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="25" />
+    <option name="width" value="1440" />
+    <option name="height" value="769" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="SoloX" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SoloX" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SoloX" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SoloX" type="462c0819:PsiDirectoryNode" />
+              <item name="solox" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SoloX" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SoloX" type="462c0819:PsiDirectoryNode" />
+              <item name="solox" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SoloX" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SoloX" type="462c0819:PsiDirectoryNode" />
+              <item name="solox" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="image" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SoloX" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SoloX" type="462c0819:PsiDirectoryNode" />
+              <item name="solox" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/solox/static/image/readme" />
+      <recent name="$PROJECT_DIR$/solox/templates" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/solox" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="64f61252-f721-47b5-9cbc-d01631cfa676" name="Default Changelist" comment="" />
+      <created>1646632738177</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1646632738177</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="25" width="1440" height="769" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25679544" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.32935917" />
+      <window_info anchor="bottom" id="Python Console" order="12" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/package.py" />
+    <entry file="file://$PROJECT_DIR$/solox/__main__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/solox/view/apis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.cfg">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MANIFEST.in">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="68" selection-start-line="1" selection-start-column="68" selection-end-line="1" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="34" lean-forward="true" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LICENSE">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/solox/public/common.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="78" column="32" selection-start-line="78" selection-start-column="32" selection-end-line="78" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/solox/templates/404.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="47" selection-start-line="17" selection-start-column="47" selection-end-line="17" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/solox/templates/500.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="85" lean-forward="true" selection-start-line="14" selection-start-column="85" selection-end-line="14" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/solox/templates/analysis.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="36" column="30" selection-start-line="36" selection-start-column="30" selection-end-line="36" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/solox/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="22" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/solox/public/apm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/solox/templates/report.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="25" column="7" selection-start-line="25" selection-start-column="7" selection-end-line="25" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="136">
+            <caret line="8" column="82" selection-start-line="8" selection-start-column="78" selection-end-line="8" selection-end-column="82" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

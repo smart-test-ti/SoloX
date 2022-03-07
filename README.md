@@ -6,7 +6,7 @@
 <br>
 </p>
 <p align="center">
-<a href="#" target="__blank"><img src="https://img.shields.io/static/v1?label=Demo&message=preview&color=228be6" alt="SmartTest preview"></a>
+<a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=1.0.10&color=228be6" alt="SmartTest preview"></a>
 <br>
 </p>
 
@@ -19,13 +19,13 @@ SoloX - APP性能数据实时收集工具。
 
 ## 功能
 #### 首页
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646124096293-844c676f-2d4e-443b-a74c-29fe40d523d1.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646636392193-c16d5102-9dc3-49d3-a3fe-eede97c6f2aa.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 #### 报告
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646124102808-1c14c403-0813-49d9-bb2e-ebb915af9066.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646636399507-513b79ce-e21d-42ae-a17b-1c5bb6fefed2.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 #### 分析
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646124090165-11408e8c-a5ec-45ec-9955-a0ce92f68d10.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646636405058-5293c9fa-fa52-471b-8e44-69cf3c60e12c.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 ## 安装
 ```

@@ -51,7 +51,7 @@ class Devices():
 
     def checkPkgname(self,pkgname):
         flag = True
-        replace_list = ['com.android','com.google','com.xiaomi','com.miui','com.mi','android']
+        replace_list = ['com.android','com.google','com.xiaomi','com.miui','com.mi']
         for i in replace_list:
             if i in pkgname:
                 flag = False
@@ -72,7 +72,15 @@ class file():
 
     def __init__(self, fileroot='.'):
         self.fileroot = fileroot
-        self.report_dir = os.path.join(os.getcwd(), 'report')
+        self.report_dir = self.get_repordir()
+
+
+    def get_repordir(self):
+        report_dir = os.path.join(os.getcwd(), 'report')
+        if not os.path.exists(report_dir):
+            os.mkdir(report_dir)
+        return report_dir
+
 
     def create_file(self,filename,content=''):
         if not os.path.exists(f'{self.report_dir}'):
