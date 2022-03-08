@@ -10,7 +10,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     install_requires=['flask>=2.0.1','requests'],
-    version='1.0.11',
+    version='1.0.13',
     long_description=long_description,
     long_description_content_type="text/markdown",
     description="APP性能测试 - Simple test in SoloX",
