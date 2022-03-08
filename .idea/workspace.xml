@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="64f61252-f721-47b5-9cbc-d01631cfa676" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solox/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/solox/templates/index.html" afterDir="false" />
-    </list>
+    <list default="true" id="64f61252-f721-47b5-9cbc-d01631cfa676" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,11 +12,12 @@
     <session id="-1781393439">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.13" value="1" />
           <entry key="project.open.time.17" value="1" />
           <entry key="project.open.time.2" value="2" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -46,7 +44,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/solox/public/common.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1241">
+            <state relative-caret-position="1326">
               <caret line="78" column="32" selection-start-line="78" selection-start-column="32" selection-end-line="78" selection-end-column="32" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
@@ -59,13 +57,7 @@
         <entry file="file://$PROJECT_DIR$/solox/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="258">
-              <caret line="164" column="40" lean-forward="true" selection-start-line="164" selection-start-column="18" selection-end-line="164" selection-end-column="40" />
-              <folding>
-                <element signature="e#21357#21637#0#HTML" />
-                <element signature="e#21656#22003#0#HTML" />
-                <element signature="e#22034#22717#0#HTML" />
-                <element signature="e#22746#23427#0#HTML" />
-              </folding>
+              <caret line="164" column="40" selection-start-line="164" selection-start-column="18" selection-end-line="164" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -214,9 +206,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1440" height="769" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26037195" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2639485" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -275,16 +266,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="125">
           <caret line="36" column="30" selection-start-line="36" selection-start-column="30" selection-end-line="36" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/solox/public/common.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1241">
-          <caret line="78" column="32" selection-start-line="78" selection-start-column="32" selection-end-line="78" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -348,16 +329,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/solox/public/common.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1326">
+          <caret line="78" column="32" selection-start-line="78" selection-start-column="32" selection-end-line="78" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/solox/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="258">
-          <caret line="164" column="40" lean-forward="true" selection-start-line="164" selection-start-column="18" selection-end-line="164" selection-end-column="40" />
-          <folding>
-            <element signature="e#21357#21637#0#HTML" />
-            <element signature="e#21656#22003#0#HTML" />
-            <element signature="e#22034#22717#0#HTML" />
-            <element signature="e#22746#23427#0#HTML" />
-          </folding>
+          <caret line="164" column="40" selection-start-line="164" selection-start-column="18" selection-end-line="164" selection-end-column="40" />
         </state>
       </provider>
     </entry>
