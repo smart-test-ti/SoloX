@@ -8,7 +8,7 @@ def main():
     try:
         pool = multiprocessing.Pool(processes=2)
         pool.apply_async(open_url)
-        pool.apply_async(main)
+        pool.apply_async(start_web)
         pool.close()
         pool.join()
     except KeyboardInterrupt:

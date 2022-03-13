@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 from flask import Flask
 import webbrowser
-import multiprocessing
 import requests
 from .view.apis import api
 from .view.pages import page
