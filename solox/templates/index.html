@@ -68,7 +68,7 @@
       <div class="dropdown-divider"></div>
       <h6 class="dropdown-header">性能指标设置</h6>
       <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2" id="cpu_checkbox" type="checkbox" checked name="cpu"> CPU</label>
-      <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2" id="mem_checkbox" type="checkbox" name="mem"> 内存</label>
+      <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2" id="mem_checkbox" type="checkbox" checked name="mem"> 内存</label>
       <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2" id="fps_checkbox" type="checkbox" name="fps"> 流畅度</label>
       <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2" id="battery_checkbox" type="checkbox" name="battery"> 耗电量</label>
       <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2" id="up_flow_checkbox" type="checkbox" name="up_flow"> 上行流量</label>
@@ -84,7 +84,7 @@
   </div>
   <div class="apm-data mt-1" style="width: 75%">
     <div id="cpu" class="mb-3" style="min-width:400px;height:300px"></div>
-    <div id="mem"  style="min-width:400px;height:300px;display: none"></div>
+    <div id="mem"  style="min-width:400px;height:300px"></div>
   </div>
 </div>
 {% endblock %}
@@ -161,8 +161,41 @@
                       setTimeout(getCpuRate(pkgname,device), 1000);
                   }catch (e) {}
               }else{
-                  SwalFire('error','异常，终止执行',data['msg'],2000)
-                  $('#stop-apm').click()
+                  SwalFire('error','终止执行',data['msg'],2000)
+                  setTimeout(function () {
+                      $('#stop-apm').click()
+                  }, 2000);
+              }
+          }
+      });
+  }
+
+  function getMemPss(pkgname,device)  {
+      $.ajax({
+          url: "/apm/mem",
+          type: "GET",
+          async: true,
+          cache: false,
+          data:{
+              pkgname:pkgname,
+              device:device
+          },
+          beforeSend: function () {},
+          complete: function () {},
+          success: function (data) {
+              if(data['status'] == 1){
+                  try {
+                      var series = mem_chart.series[0]
+                      var x = (new Date()).getTime(),
+                          y = data['pss'];
+                      series.addPoint([x, y], true, true);
+                      setTimeout(getMemPss(pkgname,device), 1000);
+                  }catch (e) {}
+              }else{
+                  SwalFire('error','终止执行',data['msg'],2000)
+                  setTimeout(function () {
+                      $('#stop-apm').click()
+                  }, 2000);
               }
           }
       });
@@ -206,39 +239,6 @@
   }]
 
 
-  function mem_initialize(){
-      //初始化mem
-      var mem_chart = Highcharts.stockChart('mem', {
-          rangeSelector: rangeSelector,
-          credits:{
-              enabled: false
-          },
-          title : {
-              text : '内存（MA）'
-          },
-          tooltip: {
-              split: false
-          },
-          scrollbar : {
-			enabled : false
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              max:1000,
-              min:0,
-              tickInterval:10,
-              opposite:false
-          },
-          series : series
-      });
-      return mem_chart
-  }
-
   function cpu_initialize(){
       //初始化cpu
       var cpu_chart = Highcharts.stockChart('cpu', {
@@ -272,11 +272,45 @@
       return cpu_chart
   }
 
+  function mem_initialize(){
+      //初始化mem
+      var mem_chart = Highcharts.stockChart('mem', {
+          rangeSelector: rangeSelector,
+          title : {
+              text : 'MEM（MB）'
+          },
+          tooltip: {
+              split: false
+          },
+          credits:{
+              enabled: false
+          },
+          scrollbar : {
+			enabled : true
+          },
+          navigator : {
+              enabled : false
+          },
+          exporting: {
+              enabled: false
+          },
+          yAxis: {
+              max:1000,
+              min:0,
+              tickInterval:10,
+              opposite:false
+          },
+          series : series
+      });
+      return mem_chart
+  }
+
   var cpu_chart = cpu_initialize()
   var mem_chart = mem_initialize()
 
   $('#stop-apm').click(function () {
       cpu_initialize()
+      mem_initialize()
       $('#run-apm').show()
       $('#stop-apm').hide()
       $.ajax({
@@ -298,45 +332,89 @@
       });
   })
 
+  function start_collect_cpu(device,pkgname){
+      cpu_initialize()
+      cpu_chart = Highcharts.stockChart('cpu', {
+          chart : {
+              events : {
+                  load : getCpuRate(pkgname,device)
+              }
+          },
+          rangeSelector: rangeSelector,
+          title : {
+              text : 'CPU（%）'
+          },
+          tooltip: {
+              split: false
+          },
+          credits:{
+              enabled: false
+          },
+          scrollbar : {
+              enabled : true
+          },
+          navigator : {
+              enabled : false
+          },
+          exporting: {
+              enabled: false
+          },
+          yAxis: {
+              max:100,
+              min:0,
+              tickInterval:10,
+              opposite:false
+          },
+          series : series
+      });
+
+  }
+
+  function start_collect_mem(device,pkgname){
+      mem_initialize()
+      mem_chart = Highcharts.stockChart('mem', {
+          chart : {
+              events : {
+                  load : getMemPss(pkgname,device)
+              }
+          },
+          rangeSelector: rangeSelector,
+          title : {
+              text : 'MEM（MB）'
+          },
+          tooltip: {
+              split: false
+          },
+          credits:{
+              enabled: false
+          },
+          scrollbar : {
+              enabled : true
+          },
+          navigator : {
+              enabled : false
+          },
+          exporting: {
+              enabled: false
+          },
+          yAxis: {
+              max:10000,
+              min:0,
+              tickInterval:10,
+              opposite:false
+          },
+          series : series
+      });
+
+  }
+
 
   $('#run-apm').click(function () {
       let device = $('#select-device').val()
       let pkgname = $('#select-app').val()
       if(device && pkgname){
-          cpu_initialize()
-          cpu_chart = Highcharts.stockChart('cpu', {
-              chart : {
-                  events : {
-                      load : getCpuRate(pkgname,device)
-                  }
-              },
-              rangeSelector: rangeSelector,
-              title : {
-                  text : 'CPU（%）'
-              },
-              tooltip: {
-                  split: false
-              },
-              credits:{
-                  enabled: false
-              },
-              scrollbar : {
-                  enabled : true
-              },
-              navigator : {
-                  enabled : false
-              },
-              exporting: {
-                  enabled: false
-              },
-              yAxis: {
-                  max:100,
-                  min:0,
-                  tickInterval:10,
-                  opposite:false
-              },
-              series : series
-          });
+          start_collect_cpu(device,pkgname)
+          start_collect_mem(device,pkgname)
           $('#stop-apm').show()
           $('#run-apm').hide()
       }else{
