@@ -4,6 +4,7 @@ import subprocess
 import shutil
 import json
 import time
+from logzero import logger
 
 class Devices():
 
@@ -44,9 +45,8 @@ class Devices():
         flag = len(result) > 0
         try:
             pid = (0,result[0].split()[1])[flag]
-        except Exception as e:
-            print(str(e))
-            pid = None    
+        except Exception:
+            pid = None
         return pid
 
     def checkPkgname(self,pkgname):
@@ -55,7 +55,7 @@ class Devices():
         for i in replace_list:
             if i in pkgname:
                 flag = False
-        return flag        
+        return flag
 
 
     def getPkgname(self):
@@ -74,13 +74,11 @@ class file():
         self.fileroot = fileroot
         self.report_dir = self.get_repordir()
 
-
     def get_repordir(self):
         report_dir = os.path.join(os.getcwd(), 'report')
         if not os.path.exists(report_dir):
             os.mkdir(report_dir)
         return report_dir
-
 
     def create_file(self,filename,content=''):
         if not os.path.exists(f'{self.report_dir}'):

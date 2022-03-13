@@ -50,16 +50,57 @@ class MEM():
     def __init__(self, pkgName ,deviceId):
         self.pkgName = pkgName
         self.deviceId = deviceId
+        self.apm_time = time.strftime("%H:%M:%S", time.localtime())
 
     def getProcessMem(self):
         """获取进程内存Total、NativeHeap、NativeHeap;单位MB"""
         pid = d.getPid(pkgName=self.pkgName,deviceId=self.deviceId)
-        cmd = f'adb shell dumpsys meminfo {pid}'
+        cmd = f'dumpsys meminfo {pid}'
         output = adb.shell(cmd)
         m = re.search(r'TOTAL\s*(\d+)', output)
         m1 = re.search(r'Native Heap\s*(\d+)', output)
         m2 = re.search(r'Dalvik Heap\s*(\d+)', output)
         PSS = round(float(float(m.group(1))) / 1024, 2)
-        NativeHeap = round(float(float(m1.group(1))) / 1024, 2)
-        DalvikHeap = round(float(float(m2.group(1))) / 1024, 2)
-        return PSS, NativeHeap, DalvikHeap
+        with open(f'{file().report_dir}/mem.log', 'a+') as f:
+            f.write(f'{self.apm_time}={str(PSS)}' + '\n')
+        # NativeHeap = round(float(float(m1.group(1))) / 1024, 2)
+        # DalvikHeap = round(float(float(m2.group(1))) / 1024, 2)
+        return PSS
+
+class Flow():
+
+    def __init__(self, pkgName ,deviceId):
+        self.pkgName = pkgName
+        self.deviceId = deviceId
+        self.apm_time = time.strftime("%H:%M:%S", time.localtime())
+
+    def getUpFlow(self):
+        """获取上行流量，单位Kb/s"""
+        pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
+        cmd = f'cat /proc/{pid}/net/dev |grep wlan0'
+        output = adb.shell(cmd)
+        m = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output)
+        if m:
+            sendNum = float(m.group(2))
+        else:
+            print("Couldn't get rx and tx data from: %s!" % output)
+            sendNum = 0.0
+        with open(f'{file().report_dir}/upflow.log', 'a+') as f:
+            f.write(f'{self.apm_time}={str(sendNum)}' + '\n')
+        return sendNum
+
+
+    def getDownFlow(self):
+        """获取下行流量，单位Kb/s"""
+        pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
+        cmd = f'cat /proc/{pid}/net/dev |grep wlan0'
+        output = adb.shell(cmd)
+        m = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output)
+        if m:
+            recNum = float(m.group(1))
+        else:
+            print("Couldn't get rx and tx data from: %s!" % output)
+            recNum = 0.0
+        with open(f'{file().report_dir}/downflow.log', 'a+') as f:
+            f.write(f'{self.apm_time}={str(recNum)}' + '\n')
+        return recNum

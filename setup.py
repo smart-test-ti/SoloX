@@ -9,8 +9,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    install_requires=['flask>=2.0.1','requests'],
-    version='1.0.13',
+    install_requires=['flask>=2.0.1','requests','logzero'],
+    version='1.0.15',
     long_description=long_description,
     long_description_content_type="text/markdown",
     description="APP性能测试 - Simple test in SoloX",

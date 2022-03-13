@@ -11,6 +11,20 @@ api = Blueprint("api",__name__)
 d = Devices()
 
 
+@api.route('/apm/initialize',methods=['post','get'])
+def initialize():
+    try:
+        report_dir = os.path.join(os.getcwd(), 'report')
+        for f in os.listdir(report_dir):
+            filename = os.path.join(report_dir, f)
+            if f.split(".")[-1] in ['log','json']:
+                os.remove(filename)
+        result = {'status': 1, 'msg': 'initialize env success'}
+    except Exception as e:
+        result = {'status': 0, 'msg': str(e)}
+    return result
+
+
 @api.route('/device/ids',methods=['post','get'])
 def deviceids():
     deviceids = d.getDeviceIds()
@@ -29,9 +43,32 @@ def getCpuRate():
     deviceId = d.getIdbyDevice(device)
     pid = d.getPid(deviceId=deviceId,pkgName=pkgname)
     if pid:
-        cpu = CPU(pkgName=pkgname,deviceId=deviceId)
-        cpuRate = cpu.getSingCpuRate()
-        result = {'status': 1, 'cpuRate': cpuRate}
+        try:
+            cpu = CPU(pkgName=pkgname,deviceId=deviceId)
+            cpuRate = cpu.getSingCpuRate()
+            result = {'status': 1, 'cpuRate': cpuRate}
+        except Exception as e:
+            print(str(e))
+            result = {'status': 0, 'msg': f'{str(e)}'}
+    else:
+        result = {'status': 0, 'msg': f'未发现{pkgname}的进程'}
+
+    return result
+
+@api.route('/apm/mem',methods=['post','get'])
+def getMEM():
+    pkgname = request.args.get('pkgname')
+    device = request.args.get('device')
+    deviceId = d.getIdbyDevice(device)
+    pid = d.getPid(deviceId=deviceId,pkgName=pkgname)
+    if pid:
+        try:
+            mem = MEM(pkgName=pkgname,deviceId=deviceId)
+            pss = mem.getProcessMem()
+            result = {'status': 1, 'pss': pss}
+        except Exception as e:
+            print(str(e))
+            result = {'status': 0, 'msg': f'{str(e)}'}
     else:
         result = {'status': 0, 'msg': f'未发现{pkgname}的进程'}
 
