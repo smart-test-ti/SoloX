@@ -1,17 +1,7 @@
-from flask import Blueprint, render_template
-from flask import request
-import sys
-from ..public.apm import *
-from ..public.common import *
-import os
-import json
-import time
-import shutil
+from . import *
+
 
 page = Blueprint("page",__name__)
-
-d = Devices()
-
 
 @page.app_errorhandler(404)
 def page_404(e):

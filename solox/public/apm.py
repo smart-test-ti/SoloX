@@ -1,7 +1,5 @@
-import re
+from . import *
 from .common import *
-from functools import reduce
-import time
 
 d = Devices()
 adb = Adb()
@@ -83,7 +81,7 @@ class Flow():
         if m:
             sendNum = float(m.group(2))
         else:
-            print("Couldn't get rx and tx data from: %s!" % output)
+            logger.info("Couldn't get rx and tx data from: %s!" % output)
             sendNum = 0.0
         with open(f'{file().report_dir}/upflow.log', 'a+') as f:
             f.write(f'{self.apm_time}={str(sendNum)}' + '\n')
@@ -99,7 +97,7 @@ class Flow():
         if m:
             recNum = float(m.group(1))
         else:
-            print("Couldn't get rx and tx data from: %s!" % output)
+            logger.info("Couldn't get rx and tx data from: %s!" % output)
             recNum = 0.0
         with open(f'{file().report_dir}/downflow.log', 'a+') as f:
             f.write(f'{self.apm_time}={str(recNum)}' + '\n')

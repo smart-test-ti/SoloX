@@ -1,14 +1,6 @@
-from flask import Blueprint
-from flask import request
-from ..public.apm import *
-from ..public.common import *
-import os
-import json
-import time
-import shutil
+from . import *
 
 api = Blueprint("api",__name__)
-d = Devices()
 
 
 @api.route('/apm/initialize',methods=['post','get'])

@@ -1,10 +1,4 @@
-import re
-import os
-import subprocess
-import shutil
-import json
-import time
-from logzero import logger
+from . import *
 
 class Devices():
 
@@ -55,7 +49,7 @@ class Devices():
         for i in replace_list:
             if i in pkgname:
                 flag = False
-        return flag
+        return flag        
 
 
     def getPkgname(self):
