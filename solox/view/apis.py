@@ -1,5 +1,6 @@
 from . import *
 
+
 api = Blueprint("api",__name__)
 
 
@@ -7,10 +8,11 @@ api = Blueprint("api",__name__)
 def initialize():
     try:
         report_dir = os.path.join(os.getcwd(), 'report')
-        for f in os.listdir(report_dir):
-            filename = os.path.join(report_dir, f)
-            if f.split(".")[-1] in ['log','json']:
-                os.remove(filename)
+        if os.path.exists(report_dir):
+            for f in os.listdir(report_dir):
+                filename = os.path.join(report_dir, f)
+                if f.split(".")[-1] in ['log','json']:
+                    os.remove(filename)
         result = {'status': 1, 'msg': 'initialize env success'}
     except Exception as e:
         result = {'status': 0, 'msg': str(e)}

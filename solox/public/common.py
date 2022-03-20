@@ -99,8 +99,6 @@ class file():
             filename = os.path.join(self.report_dir, f)
             if f.split(".")[-1] in ['log','json']:
                 shutil.move(filename, report_new_dir)
-        if os.path.exists(f'{self.report_dir}/cpu.log'):
-             os.remove(f'{self.report_dir}/cpu.log')
 
     def readLog(self,scene,filename):
         """读取apmlog文件数据"""
