@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     install_requires=['flask>=2.0.1','requests','logzero','Flask-SocketIO==4.3.1',
                       'python-engineio==3.13.2','python-socketio==4.6.0'],
-    version='1.0.19',
+    version='1.0.20',
     long_description=long_description,
     long_description_content_type="text/markdown",
     description="APP性能测试 - Simple test in SoloX",

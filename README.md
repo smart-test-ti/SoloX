@@ -6,36 +6,41 @@
 <br>
 </p>
 <p align="center">
-<a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=1.0.11&color=228be6" alt="SmartTest preview"></a>
+<a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=1.0.20&color=228be6" alt="solox preview"></a>
 <br>
 </p>
 
 ## SoloX
 
-SoloX - APP性能数据实时收集工具。
+SoloX - Real-time collection tool for APP performance data.
 
-我们致力于解决低效、繁琐的测试执行，我们的目标是Simple Test In SoloX !
+We are committed to solving inefficient, cumbersome test execution, and our goal is Simple Test In SoloX!
 
 
-## 功能
-#### 首页
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646636392193-c16d5102-9dc3-49d3-a3fe-eede97c6f2aa.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+## Features
+#### Home
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879609256-929d6eb3-67d6-4d15-a41f-e3510f7ce7a9.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
-#### 报告
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646636399507-513b79ce-e21d-42ae-a17b-1c5bb6fefed2.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+#### Logcat
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879631071-078b2185-0cbd-409c-9212-485f5841766d.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
-#### 分析
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1646636405058-5293c9fa-fa52-471b-8e44-69cf3c60e12c.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
-## 安装
+#### Report
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879616511-15f271b7-2761-43c5-a86c-50f82bc68f32.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+
+#### Analysis
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879625064-85c3bd4a-d147-440d-8a1c-5c406c630e36.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+
+## Installation
 ```
 1.Python:3.6+ 
 2.pip3 install -U solox
 ```
 
-## 启动
+## Run locally
+
 ```
-执行：python3 -m solox
+cmd：python3 -m solox
 
  * Serving Flask app 'run' (lazy loading)
  * Environment: production
