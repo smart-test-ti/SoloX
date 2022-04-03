@@ -55,7 +55,7 @@ def analysis():
                     cpu_data = file().readLog(scene=scene,filename=f'cpu.log')[1]
                     cpu_rate = f'{round(sum(cpu_data)/len(cpu_data),2)}%'
                     mem_data = file().readLog(scene=scene, filename=f'mem.log')[1]
-                    mem_avg = f'{round(sum(mem_data)/len(mem_data),2)}%'
+                    mem_avg = f'{round(sum(mem_data)/len(mem_data),2)}MB'
                     flow_send_data = file().readLog(scene=scene, filename=f'upflow.log')[1]
                     flow_send_data_all = f'{round(flow_send_data[len(flow_send_data)-1] - flow_send_data[0],2)}MB'
                     flow_recv_data = file().readLog(scene=scene, filename=f'downflow.log')[1]
