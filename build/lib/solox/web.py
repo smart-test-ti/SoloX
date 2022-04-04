@@ -9,6 +9,8 @@ from threading import Lock
 from flask_socketio import SocketIO,disconnect
 import multiprocessing
 import subprocess
+import time
+import os
 
 
 app = Flask(__name__,template_folder='templates',static_folder='static')
@@ -22,6 +24,8 @@ thread_lock = Lock()
 @socketio.on('connect', namespace='/logcat')
 def test_connect():
     socketio.emit('start connect', {'data': 'Connected'}, namespace='/logcat')
+    if not os.path.exists('adblog'):
+        os.mkdir('adblog')
     global thread
     thread = True
     with thread_lock:
@@ -30,14 +34,20 @@ def test_connect():
 
 def background_thread():
     global thread
-    while thread:
-        socketio.sleep(1)
-        file_out = subprocess.Popen('ping www.baidu.com', shell=True, stdout=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT)
-        line = file_out.stdout.readline()
-        if subprocess.Popen.poll(file_out) == 0:
-            break
-        socketio.emit('message', {'data': line.decode('utf-8')}, namespace='/logcat')
+    try:
+        current_time = time.strftime("%Y%m%d%H", time.localtime())
+        logcat = subprocess.Popen(f'adb logcat *:E > ./adblog/{current_time}_adb.log', stdout=subprocess.PIPE,shell=True)
+        file = f"./adblog/{current_time}_adb.log"
+        with open(file, "r") as f:
+            while thread:
+                socketio.sleep(1)
+                for line in f.readlines():
+                    socketio.emit('message', {'data': line}, namespace='/logcat')
+        if logcat.poll() == 0:
+            thread = False
+    except Exception:
+        pass
+
 
 
 @socketio.on('disconnect_request', namespace='/logcat')
