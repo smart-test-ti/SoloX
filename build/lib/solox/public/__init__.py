@@ -7,8 +7,7 @@ import subprocess
 import re
 from logzero import logger
 from functools import reduce
-
-
+import platform
 
 
 

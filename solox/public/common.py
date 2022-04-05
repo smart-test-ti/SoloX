@@ -35,7 +35,10 @@ class Devices():
 
     def getPid(self,deviceId,pkgName):
         """获取对应包名的pid"""
-        result = os.popen(f"adb -s {deviceId} shell ps | grep {pkgName}").readlines()
+        if platform.system() != 'Windows':
+            result = os.popen(f"adb -s {deviceId} shell ps | grep {pkgName}").readlines()
+        else:
+            result = os.popen(f"adb -s {deviceId} shell ps | findstr {pkgName}").readlines()
         flag = len(result) > 0
         try:
             pid = (0,result[0].split()[1])[flag]
@@ -45,7 +48,7 @@ class Devices():
 
     def checkPkgname(self,pkgname):
         flag = True
-        replace_list = ['com.android','com.google','com.xiaomi','com.miui','com.mi']
+        replace_list = ['com.google']
         for i in replace_list:
             if i in pkgname:
                 flag = False

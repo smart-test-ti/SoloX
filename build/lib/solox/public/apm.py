@@ -24,7 +24,10 @@ class CPU():
 
     def getTotalCpuStat(self):
         """获取某个时刻的总cpu损耗"""
-        cmd = f'cat /proc/stat |grep ^cpu\ '
+        if platform.system() != 'Windows':
+            cmd = f'cat /proc/stat |grep ^cpu\ '
+        else:
+            cmd = f'cat /proc/stat |findstr ^cpu\ '
         result = adb.shell(cmd)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
@@ -76,7 +79,10 @@ class Flow():
     def getUpFlow(self):
         """获取上行流量，单位MB"""
         pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
-        cmd = f'cat /proc/{pid}/net/dev |grep wlan0'
+        if platform.system() != 'Windows':
+            cmd = f'cat /proc/{pid}/net/dev |grep wlan0'
+        else:
+            cmd = f'cat /proc/{pid}/net/dev |findstr wlan0'
         output = adb.shell(cmd)
         m = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output)
         if m:
@@ -92,7 +98,10 @@ class Flow():
     def getDownFlow(self):
         """获取下行流量，单位MB"""
         pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
-        cmd = f'cat /proc/{pid}/net/dev |grep wlan0'
+        if platform.system() != 'Windows':
+            cmd = f'cat /proc/{pid}/net/dev |grep wlan0'
+        else:
+            cmd = f'cat /proc/{pid}/net/dev |findstr wlan0'
         output = adb.shell(cmd)
         m = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output)
         time.sleep(1)

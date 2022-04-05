@@ -55,3 +55,8 @@ cmd：python3 -m solox
  * Debugger PIN: 906-499-328
 
 ```
+
+## 交流群
+
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1649153463915-e846d2fa-861c-4d1c-9a0a-1f2e4d5a3b86.png?x-oss-process=image%2Fformat%2Cpng%2Fresize%2Cw_750%2Climit_0"  width="100%">
+
