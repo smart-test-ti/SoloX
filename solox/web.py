@@ -2,7 +2,6 @@ from __future__ import absolute_import
 
 import platform
 import re
-
 from flask import Flask
 import webbrowser
 import requests
