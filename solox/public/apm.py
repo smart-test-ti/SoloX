@@ -25,9 +25,9 @@ class CPU():
     def getTotalCpuStat(self):
         """获取某个时刻的总cpu损耗"""
         if platform.system() != 'Windows':
-            cmd = f'cat /proc/stat |grep ^cpu\ '
+            cmd = f'cat /proc/stat |grep ^cpu'
         else:
-            cmd = f'cat /proc/stat |findstr ^cpu\ '
+            cmd = f'cat /proc/stat |findstr ^cpu'
         result = adb.shell(cmd)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
