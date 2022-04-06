@@ -73,11 +73,14 @@ def check_port(port):
     else:
         port_cmd = 'netstat -ano | findstr {}'.format(port)
         r = os.popen(port_cmd)
-        if len(r.readlines()) == 0:
+        # 获取5000端口的程序的pid，先保存在一个列表中，后面需要用，
+        # 否则后面调用读取，指针会到末尾，会造成索引越界
+        r_data_list = r.readlines()
+        if len(r_data_list) == 0:
             return
         else:
             pid_list = []
-            for line in r.readlines():
+            for line in r_data_list:
                 line = line.strip()
                 pid = re.findall(r'[1-9]\d*', line)
                 pid_list.append(pid[-1])
