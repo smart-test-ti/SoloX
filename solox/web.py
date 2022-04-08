@@ -93,7 +93,7 @@ def get_running_status():
     """get solox server status"""
     try:
         r = requests.get(f'http://localhost:5000', timeout=2.0)
-        flag = (False, True)[r.status_code == 200]
+        flag = (True, False)[r.status_code == 200]
         return flag
     except requests.exceptions.ConnectionError:
         pass
