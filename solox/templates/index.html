@@ -191,12 +191,12 @@
           complete: function () {},
           success: function (data) {
               console.log(data['pkgnames'])
-              if(data['status'] != 1 ){
-                  SwalFire('error','Connet failed !','Please check if the device is connected',2000)
-              }else if(data['deviceids'].length > 1){
-                  SwalFire('error','More than 1 device connected!',data['deviceids'],2000)
+              if(data['status'] != 1 ) {
+                  SwalFire('error', 'Connet failed !', 'Please check if the device is connected', 2000)
               }else{
-                  $('#select-device').append('<option>'+data['devices']+'</option>')
+                  for(var i=0;i<data['devices'].length;i++){
+                      $('#select-device').append('<option>'+data['devices'][i]+'</option>')
+                  }
                   for(var i=0;i<data['pkgnames'].length;i++){
                       $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>')
                   }
