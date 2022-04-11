@@ -22,7 +22,6 @@ def report():
     dirs = os.listdir(report_dir)
     apm_data = []
     for dir in dirs:
-        logger.info(dir)
         if dir.split(".")[-1] not in ['log','json']:
             try:
                 f = open(f'{report_dir}/{dir}/result.json')
@@ -37,7 +36,6 @@ def report():
                 f.close()
                 apm_data.append(dict_data)
             except Exception as e:
-                print(e)
                 continue
     apm_data_len = len(apm_data)
     logger.info(apm_data_len)
