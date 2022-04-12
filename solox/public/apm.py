@@ -88,8 +88,7 @@ class Flow():
         if m:
             sendNum = round(float(float(m.group(2)) / 1024 /1024 ),2)
         else:
-            logger.info("Couldn't get rx and tx data from: %s!" % output)
-            sendNum = 0.0
+            logger.error("Couldn't get rx and tx data from: %s!" % output)
         with open(f'{file().report_dir}/upflow.log', 'a+') as f:
             f.write(f'{self.apm_time}={str(sendNum)}' + '\n')
         return sendNum
@@ -108,7 +107,7 @@ class Flow():
         if m:
             recNum = round(float(float(m.group(1)) / 1024 / 1024),2)
         else:
-            logger.info("Couldn't get rx and tx data from: %s!" % output)
+            logger.error("Couldn't get rx and tx data from: %s!" % output)
         with open(f'{file().report_dir}/downflow.log', 'a+') as f:
             f.write(f'{self.apm_time}={str(recNum)}' + '\n')
         return recNum
