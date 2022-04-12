@@ -13,7 +13,8 @@ class Devices:
         for i in range(1, len(Ids) - 1):
             output = re.findall(r'^[\w\d.:-]+\t[\w]+$', Ids[i])[0]
             id, state = str(output).split('\t')
-            deviceIds.append(id)
+            if state == 'device':
+                deviceIds.append(id)
         return deviceIds
 
     def getDevicesName(self, deviceId):
