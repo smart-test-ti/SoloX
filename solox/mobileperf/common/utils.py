@@ -74,7 +74,7 @@ class FileUtils(object):
     def get_top_dir():
         dir = os.path.dirname(BaseDir)
         path = os.path.dirname(dir)
-        print("path:%s"%path)
+        # print("path:%s"%path)
         return path
 
     @staticmethod

@@ -21,24 +21,25 @@ import sys
 import platform
 import traceback
 
-BaseDir=os.path.dirname(__file__)
-sys.path.append(os.path.join(BaseDir,'../..'))
-from datetime import datetime,timedelta
+BaseDir = os.path.dirname(__file__)
+sys.path.append(os.path.join(BaseDir, '../..'))
+from datetime import datetime, timedelta
 from mobileperf.common.log import logger
-from mobileperf.common.utils import TimeUtils,FileUtils
+from mobileperf.common.utils import TimeUtils, FileUtils
 from mobileperf.android.globaldata import RuntimeData
+
 
 class ADB(object):
     '''本地ADB
     '''
     os_name = None
     adb_path = None
-    
+
     def __init__(self, device_id=None):
-        self._adb_path = ADB.get_adb_path()     # adb.exe程序的绝对路径
-        self._device_id = device_id     # 设备id adb serialNum
+        self._adb_path = ADB.get_adb_path()  # adb.exe程序的绝对路径
+        self._device_id = device_id  # 设备id adb serialNum
         self._need_quote = None
-        self._logcat_handle=[]
+        self._logcat_handle = []
         self._system_version = None
         self._sdk_version = None
         self._phone_brand = None
@@ -46,15 +47,15 @@ class ADB(object):
         self._os_name = None
         self.before_connect = True
         self.after_connect = True
-        
-    @property    
+
+    @property
     def DEVICEID(self):
         return self._device_id
-    
+
     @staticmethod
     def get_adb_path():
         '''返回adb.exe的绝对路径。优先使用指定的adb，若环境变量未指定，则返回当前脚本tools目录下的adb
-        
+
         :return: 返回adb.exe的绝对路径
         :rtype: str
         '''
@@ -66,18 +67,18 @@ class ADB(object):
         # 判断系统默认adb是否可用，如果系统有配，默认优先用系统的，避免5037端口冲突
         proc = subprocess.Popen('adb devices', stdout=subprocess.PIPE, shell=True)
         result = proc.stdout.read()
-        logger.debug(result)
+        # logger.debug(result)
         if not isinstance(result, str):
-            result = str(result,'utf-8')
+            result = str(result, 'utf-8')
         # 说明自带adb  windows上返回结果不是这样 另外有可能第一次执行，adb会不正常
         if result and "command not found" not in result:
             ADB.adb_path = "adb"
-            logger.debug("system have adb")
+            # logger.debug("system have adb")
             return ADB.adb_path
-        logger.debug("system have no adb")
+        # logger.debug("system have no adb")
         cur_path = os.path.dirname(os.path.abspath(__file__))
         ADB.os_name = platform.system()
-        logger.debug("platform :" + ADB.os_name)
+        # logger.debug("platform :" + ADB.os_name)
         if ADB.os_name == "Windows":
             ADB.adb_path = os.path.join(cur_path, u'adb.exe')
         elif ADB.os_name == "Darwin":
@@ -115,8 +116,8 @@ class ADB(object):
         if not isinstance(result, str):
             result = result.decode('utf-8')
         result = result.replace('\r', '').splitlines()
-        logger.debug("adb devices:")
-        logger.debug(result)
+        # logger.debug("adb devices:")
+        # logger.debug(result)
         device_list = []
         for device in result[1:]:
             if len(device) <= 1 or not '\t' in device: continue
@@ -128,41 +129,41 @@ class ADB(object):
     @staticmethod
     def recover():
         if ADB.checkAdbNormal():
-            logger.debug("adb is normal")
+            # logger.debug("adb is normal")
             return
         else:
-            logger.error("adb is not normal")
+            # logger.error("adb is not normal")
             ADB.kill_server()
             ADB.start_server()
 
     @staticmethod
     def checkAdbNormal():
         sub = subprocess.Popen("adb devices", stdout=subprocess.PIPE, shell=True)
-        adbRet = str(sub.stdout.read(),"utf-8")
+        adbRet = str(sub.stdout.read(), "utf-8")
         sub.wait()
-        logger.debug("adb device ret:%s" % adbRet)
+        # logger.debug("adb device ret:%s" % adbRet)
         if not adbRet:
-            logger.debug("devices list maybe is empty")
+            # logger.debug("devices list maybe is empty")
             return True
         else:
             if "daemon not running." in adbRet:
-                logger.warning("daemon not running.")
+                # logger.warning("daemon not running.")
                 return False
             elif "ADB server didn't ACK" in adbRet:
-                logger.warning("error: ADB server didn't ACK,kill occupy 5037 port process")
+                # logger.warning("error: ADB server didn't ACK,kill occupy 5037 port process")
                 return False
             else:
                 return True
 
     @staticmethod
     def kill_server():
-        logger.warning("kill-server")
+        # logger.warning("kill-server")
         os.system("adb kill-server")
 
     @staticmethod
     def start_server():
         ADB.killOccupy5037Process()
-        logger.warning("fork-server")
+        # logger.warning("fork-server")
         os.system("adb fork-server server -a")
 
     @staticmethod
@@ -172,24 +173,25 @@ class ADB(object):
             ret = sub.stdout.read()
             sub.wait()
             if not ret:
-                logger.debug("netstat is empty")
+                # logger.debug("netstat is empty")
                 return
             lines = ret.splitlines()
             for line in lines:
                 if "LISTENING" in line:
-                    logger.debug(line)
+                    # logger.debug(line)
                     pid = line.split()[-1]
                     sub = subprocess.Popen('tasklist |findstr %s' % pid, stdout=subprocess.PIPE, shell=True)
                     ret = sub.stdout.read()
                     sub.wait()
                     process = ret.split()[0]
-                    logger.debug("pid:%s ,process:%s occupy 5037 port" % (pid, process))
+                    # logger.debug("pid:%s ,process:%s occupy 5037 port" % (pid, process))
                     #                 DDMS会用到adb 杀了adb会导致 IDE调试或控制台可能不正常，后面需要改环境变量
                     subprocess.Popen("taskkill /T /F /PID %s" % pid, stdout=subprocess.PIPE, shell=True)
-                    logger.debug("kill process %s" % process)
+                    # logger.debug("kill process %s" % process)
                     break
             else:
-                logger.debug("don't have process occupy 5037")
+                pass
+                # logger.debug("don't have process occupy 5037")
 
     def _timer(self, process, timeout):
         '''进程超时器，监控adb同步命令执行是否超时，超时强制结束执行。当timeout<=0时，永不超时
@@ -202,7 +204,7 @@ class ADB(object):
             num += 1
             time.sleep(0.1)
         if process.poll() == None:
-            logger.warning("%d process timeout,force close" % process.pid)
+            # logger.warning("%d process timeout,force close" % process.pid)
             process.terminate()
 
     def _run_cmd_once(self, cmd, *argv, **kwds):
@@ -228,7 +230,7 @@ class ADB(object):
         #        logger.debug('ADB cmd:' + " ".join(cmdlet))
         #         logger.debug(cmdlet)
         cmdStr = " ".join(cmdlet)
-        logger.debug(cmdStr)
+        # logger.debug(cmdStr)
         process = None
         #       windows上 不要传cmdStr 目录有空格，会报错
         #         if ADB.os_name == "Windows":
@@ -283,7 +285,7 @@ class ADB(object):
         self.after_connect = True
         after = time.time()
         time_consume = after - before
-        logger.info(cmdStr + " time consume: " + str(time_consume))
+        # logger.info(cmdStr + " time consume: " + str(time_consume))
         if not isinstance(out, str):
             try:
                 out = str(out, "utf8")
@@ -316,8 +318,9 @@ class ADB(object):
         # 如果失去连接后，adb又正常连接了
         if not self.before_connect and self.after_connect:
             cpu_uptime_file = os.path.join(RuntimeData.package_save_path, "uptime.txt")
-            with open(cpu_uptime_file, "a+",encoding = "utf-8") as writer:
-                writer.write(TimeUtils.getCurrentTimeUnderline() + " /proc/uptime:" + self.run_adb_cmd("shell cat /proc/uptime") + "\n")
+            with open(cpu_uptime_file, "a+", encoding="utf-8") as writer:
+                writer.write(TimeUtils.getCurrentTimeUnderline() + " /proc/uptime:" + self.run_adb_cmd(
+                    "shell cat /proc/uptime") + "\n")
             self.before_connect = True
         ret = self.run_adb_cmd('shell', '%s' % cmd, **kwds)
         # 当 adb 命令传入 sync=False时，ret是Poen对象
@@ -340,17 +343,17 @@ class ADB(object):
         self.file_log_line_num = 0
         self.log_file_create_time = None
         logs = []
-        logger.debug("logcat_thread_func")
+        # logger.debug("logcat_thread_func")
         log_is_none = 0
         while self._logcat_running:
             try:
                 log = self._log_pipe.stdout.readline().strip()
                 if not isinstance(log, str):
                     try:
-                        log = str(log,"utf8")
+                        log = str(log, "utf8")
                     except Exception as e:
                         log = repr(log)
-                        logger.error('str error:'+log)
+                        logger.error('str error:' + log)
                         logger.error(e)
                 if log:
                     log_is_none = 0
@@ -376,13 +379,13 @@ class ADB(object):
                         if not self.log_file_create_time:
                             self.log_file_create_time = TimeUtils.getCurrentTimeUnderline()
                         logcat_file = os.path.join(save_dir,
-                                                'logcat_%s.log' % self.log_file_create_time)
+                                                   'logcat_%s.log' % self.log_file_create_time)
                         self.append_log_line_num = 0
                         self.save(logcat_file, logs)
                         logs = []
                     # 新建文件
                     if self.file_log_line_num > 600000:
-                    # if self.file_log_line_num > 200:
+                        # if self.file_log_line_num > 200:
                         self.file_log_line_num = 0
                         self.log_file_create_time = TimeUtils.getCurrentTimeUnderline()
                         logcat_file = os.path.join(save_dir, 'logcat_%s.log' % self.log_file_create_time)
@@ -400,10 +403,9 @@ class ADB(object):
 
     def save(self, save_file_path, loglist):
         logcat_file = os.path.join(save_file_path)
-        with open(logcat_file, 'a+',encoding="utf-8") as logcat_f:
+        with open(logcat_file, 'a+', encoding="utf-8") as logcat_f:
             for log in loglist:
                 logcat_f.write(log + "\n")
-
 
     def start_logcat(self, save_dir, process_list=[], params=''):
         '''运行logcat进程
@@ -490,12 +492,12 @@ class ADB(object):
         for src_file_path in self.list_dir_between_time(src_path, start_timestamp, end_timestamp):
             self.pull_file(src_file_path, dst_path)
 
-    def screencap_out(self,pc_save_path):
-        result = self.run_adb_cmd('exec-out screencap -p %s'%pc_save_path, timeout=20)
+    def screencap_out(self, pc_save_path):
+        result = self.run_adb_cmd('exec-out screencap -p %s' % pc_save_path, timeout=20)
         return result
 
-    def screencap(self,save_path):
-        result = self.run_shell_cmd('screencap -p %s'%save_path, timeout=20)
+    def screencap(self, save_path):
+        result = self.run_shell_cmd('screencap -p %s' % save_path, timeout=20)
         return result
 
     def delete_file(self, file_path):
@@ -661,7 +663,7 @@ class ADB(object):
             activity_line_split = activity_line.split(' ')
         else:
             return activity_name
-        logger.debug('dumpsys window windows命令activity_line_split结果: %s' % activity_line_split)
+        # logger.debug('dumpsys window windows命令activity_line_split结果: %s' % activity_line_split)
         if len(activity_line_split) > 1:
             if activity_line_split[1] == 'u0':
                 activity_name = activity_line_split[2].rstrip('}')
@@ -709,13 +711,13 @@ class ADB(object):
         for line in lines:
             if "ACTIVITY" in line:
                 line = line.strip()
-                logger.debug("dumpsys activity top info line :" + line)
+                # logger.debug("dumpsys activity top info line :" + line)
                 activity_info = line.split()[1]
                 if "." in line:
                     top_activity = activity_info.replace("/", "")
                 else:
                     top_activity = activity_info.split("/")[1]
-                logger.debug("dump activity top activity:" + top_activity)
+                # logger.debug("dump activity top activity:" + top_activity)
                 return top_activity
         return top_activity
 
@@ -731,12 +733,12 @@ class ADB(object):
         for line in lines:
             if "MOVE_TO_FOREGROUND" in line:
                 last_activity_line = line.strip()
-        logger.debug("dumpsys usagestats MOVE_TO_FOREGROUND lastline :" + last_activity_line)
+        # logger.debug("dumpsys usagestats MOVE_TO_FOREGROUND lastline :" + last_activity_line)
         if len(last_activity_line.split("class=")) > 1:
             top_activity = last_activity_line.split("class=")[1]
             if " " in top_activity:
                 top_activity = top_activity.split()[0]
-        logger.debug("dumpsys usagestats top activity:" + top_activity)
+        # logger.debug("dumpsys usagestats top activity:" + top_activity)
         return top_activity
 
     # turandot测试通过
@@ -786,7 +788,7 @@ class ADB(object):
         heapfile = "/data/local/tmp/%s_dumpheap_%s.hprof" % (package, TimeUtils.getCurrentTimeUnderline())
         self.run_shell_cmd("am dumpheap %s %s" % (package, heapfile))
         time.sleep(10)
-        self.pull_file(heapfile,save_path)
+        self.pull_file(heapfile, save_path)
 
     def dump_native_heap(self, package, save_path):
         native_heap_file = "/data/local/tmp/%s_native_heap_%s.txt" % (package, TimeUtils.getCurrentTimeUnderline())
@@ -1002,13 +1004,13 @@ class ADB(object):
                 if len(items) < 9:
                     err_msg = "ps命令返回格式错误：\n%s" % lines[i]
                     if len(items) == 8:
-                        result_list.append({'uid':items[0],'pid': int(items[1]), 'ppid': int(items[2]),
-                                            'proc_name': items[7],'status': items[-2]})
+                        result_list.append({'uid': items[0], 'pid': int(items[1]), 'ppid': int(items[2]),
+                                            'proc_name': items[7], 'status': items[-2]})
                     else:
                         logger.error(err_msg)
                 else:
-                    result_list.append({'uid': items[0],'pid': int(items[1]), 'ppid': int(items[2]),
-                                        'proc_name': items[8],'status': items[-2]})
+                    result_list.append({'uid': items[0], 'pid': int(items[1]), 'ppid': int(items[2]),
+                                        'proc_name': items[8], 'status': items[-2]})
             else:
                 idx = 4
                 cmd = items[idx]
@@ -1020,8 +1022,8 @@ class ADB(object):
                 if cmd[0] == '{' and cmd[-1] == '}': cmd = items[idx]
                 ppid = 0
                 if items[1].isdigit(): ppid = int(items[1])  # 有些版本中没有ppid
-                result_list.append({'pid': int(items[0]), 'uid': items[1],'ppid': ppid,
-                                    'proc_name': cmd,'status': items[-2]})
+                result_list.append({'pid': int(items[0]), 'uid': items[1], 'ppid': ppid,
+                                    'proc_name': cmd, 'status': items[-2]})
         return result_list
 
     def kill_process(self, process_name):
