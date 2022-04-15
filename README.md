@@ -6,7 +6,7 @@
 <br>
 </p>
 <p align="center">
-<a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=1.0.31&color=228be6" alt="solox preview"></a>
+<a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=1.0.32&color=228be6" alt="solox preview"></a>
 <br>
 </p>
 
@@ -56,7 +56,10 @@ cmd：python3 -m solox
 
 ```
 
-## 交流群
+## References
+https://github.com/alibaba/mobileperf
+
+## Comminicate
 
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1649153463915-e846d2fa-861c-4d1c-9a0a-1f2e4d5a3b86.png?x-oss-process=image%2Fformat%2Cpng%2Fresize%2Cw_750%2Climit_0"  width="100%">
 
