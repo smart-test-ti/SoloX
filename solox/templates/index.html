@@ -94,7 +94,7 @@
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="cpu_checkbox" type="checkbox" checked name="cpu"> CPU</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_checkbox" type="checkbox" checked name="mem"> Memory</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> Network Data</label>
-            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" disabled> FPS</label>
+            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" checked> FPS</label>
             <h6 class="dropdown-header">Other target</h6>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" disabled> Battery</label>
             <div class="dropdown-divider"></div>
@@ -113,7 +113,9 @@
         <div id="cpu" class="mb-3 cpu" style="min-width:400px;height:300px"></div>
         <div id="mem"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
         <div id="flow_send"  class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
-        <div id="flow_recv"  clams="Network-Data" style="min-width:400px;height:300px"></div>
+        <div id="flow_recv"  class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
+        <div id="fps" class="mb-3 fps" style="min-width:400px;height:300px"></div>
+        <div id="jank" class="fps" style="min-width:400px;height:300px"></div>
     </div>
 
     <div class="logcat-data" style="width: 75%;display:none">
@@ -338,6 +340,70 @@
       });
   }
 
+  function getFps(pkgname,device)  {
+      $.ajax({
+          url: "/apm/fps",
+          type: "GET",
+          async: true,
+          cache: false,
+          data:{
+              pkgname:pkgname,
+              device:device
+          },
+          beforeSend: function () {},
+          complete: function () {},
+          success: function (data) {
+              console.log(data)
+              if(data['status'] == 1){
+                  try {
+                      var series = fps_chart.series[0]
+                      var x = (new Date()).getTime(),
+                          y = data['fps'];
+                      series.addPoint([x, y], true, true);
+                      setTimeout(getFps(pkgname,device), 2000);
+                  }catch (e) {}
+              }else{
+                  SwalFire('error','Stop testing',data['msg'],2000)
+                  setTimeout(function () {
+                      $('#stop-apm').click()
+                  }, 3000);
+              }
+          }
+      });
+  }
+
+  function getJank(pkgname,device)  {
+      $.ajax({
+          url: "/apm/fps",
+          type: "GET",
+          async: true,
+          cache: false,
+          data:{
+              pkgname:pkgname,
+              device:device
+          },
+          beforeSend: function () {},
+          complete: function () {},
+          success: function (data) {
+              console.log(data)
+              if(data['status'] == 1){
+                  try {
+                      var series = jank_chart.series[0]
+                      var x = (new Date()).getTime(),
+                          y = data['jank'];
+                      series.addPoint([x, y], true, true);
+                      setTimeout(getJank(pkgname,device), 2000);
+                  }catch (e) {}
+              }else{
+                  SwalFire('error','Stop testing',data['msg'],2000)
+                  setTimeout(function () {
+                      $('#stop-apm').click()
+                  }, 3000);
+              }
+          }
+      });
+  }
+
   var rangeSelector =  {
       buttons: [{
           count: 1,
@@ -498,10 +564,78 @@
       return down_flow_chart
   }
 
+  function fps_initialize(){
+      //初始化fps
+      var fps_chart = Highcharts.stockChart('fps', {
+          rangeSelector: rangeSelector,
+          title : {
+              text : 'FPS（HZ）'
+          },
+          tooltip: {
+              split: false
+          },
+          credits:{
+              enabled: false
+          },
+          scrollbar : {
+			enabled : true
+          },
+          navigator : {
+              enabled : false
+          },
+          exporting: {
+              enabled: false
+          },
+          yAxis: {
+              max:100,
+              min:0,
+              tickInterval:10,
+              opposite:false
+          },
+          series : series
+      });
+      return fps_chart
+  }
+
+  function jank_initialize(){
+      //初始化jank
+      var jank_chart = Highcharts.stockChart('jank', {
+          rangeSelector: rangeSelector,
+          title : {
+              text : 'Jank'
+          },
+          tooltip: {
+              split: false
+          },
+          credits:{
+              enabled: false
+          },
+          scrollbar : {
+			enabled : true
+          },
+          navigator : {
+              enabled : false
+          },
+          exporting: {
+              enabled: false
+          },
+          yAxis: {
+              max:100,
+              min:0,
+              tickInterval:10,
+              opposite:false
+          },
+          series : series
+      });
+      return jank_chart
+  }
+
   var cpu_chart = cpu_initialize()
   var mem_chart = mem_initialize()
   var up_flow_chart = up_flow_initialize()
   var down_flow_chart = down_flow_initialize()
+  var fps_chart = fps_initialize()
+  var jank_chart = jank_initialize()
 
   function start_collect_cpu(device,pkgname){
       cpu_initialize()
@@ -649,6 +783,82 @@
 
   }
 
+  function start_collect_fps(device,pkgname){
+      fps_initialize()
+      fps_chart = Highcharts.stockChart('fps', {
+          chart : {
+              events : {
+                  load : getFps(pkgname,device)
+              }
+          },
+          rangeSelector: rangeSelector,
+          title : {
+              text : 'FPS（HZ）'
+          },
+          tooltip: {
+              split: false
+          },
+          credits:{
+              enabled: false
+          },
+          scrollbar : {
+              enabled : true
+          },
+          navigator : {
+              enabled : false
+          },
+          exporting: {
+              enabled: false
+          },
+          yAxis: {
+              max:100,
+              min:0,
+              tickInterval:10,
+              opposite:false
+          },
+          series : series
+      });
+
+  }
+
+  function start_collect_jank(device,pkgname){
+      jank_initialize()
+      jank_chart = Highcharts.stockChart('jank', {
+          chart : {
+              events : {
+                  load : getJank(pkgname,device)
+              }
+          },
+          rangeSelector: rangeSelector,
+          title : {
+              text : 'JANK'
+          },
+          tooltip: {
+              split: false
+          },
+          credits:{
+              enabled: false
+          },
+          scrollbar : {
+              enabled : true
+          },
+          navigator : {
+              enabled : false
+          },
+          exporting: {
+              enabled: false
+          },
+          yAxis: {
+              max:100,
+              min:0,
+              tickInterval:10,
+              opposite:false
+          },
+          series : series
+      });
+
+  }
+
 
   $('#run-apm').click(function () {
       initialize_apm()
@@ -659,6 +869,8 @@
           start_collect_mem(device,pkgname)
           start_collect_upflow(device,pkgname)
           start_collect_downflow(device,pkgname)
+          start_collect_fps(device,pkgname)
+          start_collect_jank(device,pkgname)
           $('#stop-apm').show()
           $('#run-apm').hide()
       }else{

@@ -42,6 +42,7 @@ class Devices:
             result = os.popen(f"adb -s {deviceId} shell ps | grep {pkgName}").readlines()
         else:
             result = os.popen(f"adb -s {deviceId} shell ps | findstr {pkgName}").readlines()
+
         flag = len(result) > 0
         try:
             pid = (0, result[0].split()[1])[flag]

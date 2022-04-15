@@ -38,7 +38,6 @@ def report():
             except Exception as e:
                 continue
     apm_data_len = len(apm_data)
-    logger.info(apm_data_len)
     return render_template('report.html',**locals())
 
 @page.route('/analysis',methods=['post','get'])
@@ -56,6 +55,10 @@ def analysis():
                     cpu_rate = f'{round(sum(cpu_data)/len(cpu_data),2)}%'
                     mem_data = file().readLog(scene=scene, filename=f'mem.log')[1]
                     mem_avg = f'{round(sum(mem_data)/len(mem_data),2)}MB'
+                    fps_data = file().readLog(scene=scene,filename=f'fps.log')[1]
+                    fps_avg = f'{int(sum(fps_data)/len(fps_data))}hz/s'
+                    jank_data = file().readLog(scene=scene, filename=f'jank.log')[1]
+                    jank_avg = f'{int(sum(jank_data)/len(jank_data))}'
                     flow_send_data = file().readLog(scene=scene, filename=f'upflow.log')[1]
                     flow_send_data_all = f'{round(flow_send_data[len(flow_send_data)-1] - flow_send_data[0],2)}MB'
                     flow_recv_data = file().readLog(scene=scene, filename=f'downflow.log')[1]
@@ -63,7 +66,8 @@ def analysis():
                     apm_dict = {
                         "cpu":cpu_rate,
                         "mem":mem_avg,
-                        "fps":"25fps",
+                        "fps":fps_avg,
+                        "jank":jank_avg,
                         "flow_send":flow_send_data_all,
                         "flow_recv":flow_recv_data_all,
                         "bettery":"100MA"
@@ -76,6 +80,7 @@ def analysis():
                 apm_data['cpu'] = json_data['cpu']
                 apm_data['mem'] = json_data['mem']
                 apm_data['fps'] = json_data['fps']
+                apm_data['jank'] = json_data['jank']
                 apm_data['bettery'] = json_data['bettery']
                 apm_data['flow_send'] = json_data['flow_send']
                 apm_data['flow_recv'] = json_data['flow_recv']

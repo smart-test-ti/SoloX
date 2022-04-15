@@ -1,4 +1,3 @@
-from . import *
 from .common import *
 
 d = Devices()
@@ -111,3 +110,26 @@ class Flow():
         with open(f'{file().report_dir}/downflow.log', 'a+') as f:
             f.write(f'{self.apm_time}={str(recNum)}' + '\n')
         return recNum
+
+class FPS():
+
+    def __init__(self, pkgName ,deviceId):
+        self.pkgName = pkgName
+        self.deviceId = deviceId
+        self.apm_time = time.strftime("%H:%M:%S", time.localtime())
+
+    def getFPS(self):
+        monitor = FPSMonitor(self.deviceId, self.pkgName, 1)
+        monitor.start(TimeUtils.getCurrentTimeUnderline())
+        collect_fps,collect_jank = monitor.stop()
+        time.sleep(1)
+        with open(f'{file().report_dir}/fps.log', 'a+') as f:
+            f.write(f'{self.apm_time}={str(collect_fps)}' + '\n')
+        with open(f'{file().report_dir}/jank.log', 'a+') as f:
+            f.write(f'{self.apm_time}={str(collect_jank)}' + '\n')
+        return collect_fps,collect_jank
+
+
+if __name__ == '__main__':
+    fps = FPS("com.playit.videoplayer",'ca6bd5a5')
+    print(fps.getFPS())
