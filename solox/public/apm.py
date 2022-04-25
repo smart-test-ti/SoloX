@@ -2,14 +2,12 @@ from .common import *
 
 d = Devices()
 adb = Adb()
-current_time = time.strftime("%H:%M:%S", time.localtime())
 class CPU():
 
     def __init__(self, pkgName ,deviceId):
         self.pkgName = pkgName
         self.deviceId = deviceId
-        # self.cpufile = file().create_file(filename='cpu.log')
-        self.apm_time = time.strftime("%H:%M:%S", time.localtime())
+        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getprocessCpuStat(self):
         """获取某个时刻的某个进程的cpu损耗"""
@@ -50,7 +48,7 @@ class MEM():
     def __init__(self, pkgName ,deviceId):
         self.pkgName = pkgName
         self.deviceId = deviceId
-        self.apm_time = time.strftime("%H:%M:%S", time.localtime())
+        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getProcessMem(self):
         """获取进程内存Total、NativeHeap、NativeHeap;单位MB"""
@@ -73,7 +71,7 @@ class Flow():
     def __init__(self, pkgName ,deviceId):
         self.pkgName = pkgName
         self.deviceId = deviceId
-        self.apm_time = time.strftime("%H:%M:%S", time.localtime())
+        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getUpFlow(self):
         """获取上行流量，单位MB"""
@@ -116,7 +114,7 @@ class FPS():
     def __init__(self, pkgName ,deviceId):
         self.pkgName = pkgName
         self.deviceId = deviceId
-        self.apm_time = time.strftime("%H:%M:%S", time.localtime())
+        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getFPS(self):
         monitor = FPSMonitor(self.deviceId, self.pkgName, 1)

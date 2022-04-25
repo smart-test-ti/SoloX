@@ -6,13 +6,13 @@
 <br>
 </p>
 <p align="center">
-<a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=1.0.33&color=228be6" alt="solox preview"></a>
+<a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=1.0.34&color=228be6" alt="solox preview"></a>
 <br>
 </p>
 
 ## SoloX
 
-SoloX - Real-time collection tool for APP performance data.
+SoloX - Real-time collection tool for Android performance data.
 
 We are committed to solving inefficient, cumbersome test execution, and our goal is Simple Test In SoloX!
 

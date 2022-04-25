@@ -22,11 +22,23 @@ def deviceids():
     """get devices info"""
     deviceids = d.getDeviceIds()
     devices = d.getDevices()
-    pkgnames = d.getPkgname()
+    pkgnames = d.getPkgname(deviceids[0])
     if len(deviceids)>0:
         result = {'status':1,'deviceids':deviceids,'devices':devices,'pkgnames':pkgnames}
     else:
         result = {'status':0,'msg':'no devices'}
+    return result
+
+@api.route('/device/packagenames',methods=['post','get'])
+def packageNames():
+    """get devices info"""
+    device = request.args.get('device')
+    deviceId = d.getIdbyDevice(device)
+    pkgnames = d.getPkgname(deviceId)
+    if len(pkgnames)>0:
+        result = {'status':1,'pkgnames':pkgnames}
+    else:
+        result = {'status':0,'msg':'no pkgnames'}
     return result
 
 @api.route('/apm/cpu',methods=['post','get'])

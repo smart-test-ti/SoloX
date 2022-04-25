@@ -162,7 +162,36 @@
 
   $('#debug-connect').click(function () {
       initialize_env()
-  })
+  });
+
+  $('#select-device').change(function() {
+      $.ajax({
+          url: "/device/packagenames",
+          type: "GET",
+          async: true,
+          cache: false,
+          data:{
+              'device':this.value
+          },
+          beforeSend: function () {
+              $('#select-app').empty()
+              $('#select-app').append('<option></option>')
+              SwalLoading('Package initialization!','Initializing Packages, please wait。')
+          },
+          complete: function () {},
+          success: function (data) {
+              if(data['status'] != 1 ) {
+                  SwalFire('error', 'Connet failed !', 'Please check if the device is connected', 2000)
+              }else{
+                  for(var i=0;i<data['pkgnames'].length;i++){
+                      $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>')
+                  }
+                  swal.close()
+              }
+          }
+      });
+
+  });
 
 
   function initialize_apm(){

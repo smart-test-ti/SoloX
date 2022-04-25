@@ -33,6 +33,7 @@ class Devices:
 
     def getIdbyDevice(self, deviceinfo):
         """根据设备信息获取对应设备id"""
+        print(deviceinfo)
         deviceId = re.sub(u"\\(.*?\\)|\\{.*?}|\\[.*?]", "", deviceinfo)
         return deviceId
 
@@ -58,9 +59,9 @@ class Devices:
                 flag = False
         return flag
 
-    def getPkgname(self):
+    def getPkgname(self,devicesId):
         """获取手机所有包名"""
-        pkginfo = os.popen("adb shell pm list package")
+        pkginfo = os.popen(f"adb -s {devicesId} shell pm list package")
         pkglist = []
         for p in pkginfo:
             p = p.lstrip('package').lstrip(":").strip()
