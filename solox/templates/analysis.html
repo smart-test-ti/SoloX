@@ -355,7 +355,7 @@
         });
     });
 
-    var jank_chart = new ApexCharts(document.querySelector("#chart-jank"), options('bar'));
+    var jank_chart = new ApexCharts(document.querySelector("#chart-jank"), options('area'));
     jank_chart.render();
     $('#jank_loading').click(function () {
         $.ajax({
@@ -383,7 +383,7 @@
         });
     });
 
-    var fps_chart = new ApexCharts(document.querySelector("#chart-fps"), options('bar'));
+    var fps_chart = new ApexCharts(document.querySelector("#chart-fps"), options('area'));
     fps_chart.render();
     $('#fps_loading').click(function () {
         $.ajax({
@@ -439,7 +439,7 @@
         });
     });
 
-    var network_send_chart = new ApexCharts(document.querySelector("#chart-networkdata-send"), options('bar',false));
+    var network_send_chart = new ApexCharts(document.querySelector("#chart-networkdata-send"), options('area',false));
     network_send_chart.render();
     $('#networkdata_send_loading').click(function () {
         $.ajax({
@@ -467,7 +467,7 @@
     });
 
 
-    var network_recv_chart = new ApexCharts(document.querySelector("#chart-networkdata-recv"), options('bar',false));
+    var network_recv_chart = new ApexCharts(document.querySelector("#chart-networkdata-recv"), options('area',false));
     network_recv_chart.render();
     $('#networkdata_recv_loading').click(function () {
         $.ajax({

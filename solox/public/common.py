@@ -33,7 +33,6 @@ class Devices:
 
     def getIdbyDevice(self, deviceinfo):
         """根据设备信息获取对应设备id"""
-        print(deviceinfo)
         deviceId = re.sub(u"\\(.*?\\)|\\{.*?}|\\[.*?]", "", deviceinfo)
         return deviceId
 
@@ -140,8 +139,8 @@ class file:
 
 class Adb:
 
-    def shell(self, cmd):
-        run_cmd = f'adb shell {cmd}'
+    def shell(self, cmd ,deviceId):
+        run_cmd = f'adb -s {deviceId} shell {cmd}'
         result = subprocess.Popen(run_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[
             0].decode("utf-8").strip()
         return result

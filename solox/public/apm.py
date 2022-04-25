@@ -13,7 +13,7 @@ class CPU():
         """获取某个时刻的某个进程的cpu损耗"""
         pid = d.getPid(pkgName=self.pkgName,deviceId=self.deviceId)
         cmd = f'cat /proc/{pid}/stat'
-        result = adb.shell(cmd)
+        result = adb.shell(cmd=cmd,deviceId=self.deviceId)
         r = re.compile("\\s+")
         toks = r.split(result)
         processCpu = float(int(toks[13]) + int(toks[14]));
@@ -25,7 +25,7 @@ class CPU():
             cmd = f'cat /proc/stat |grep ^cpu'
         else:
             cmd = f'cat /proc/stat |findstr ^cpu'
-        result = adb.shell(cmd)
+        result = adb.shell(cmd=cmd,deviceId=self.deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
         idleCpu = float(toks[3])
@@ -54,7 +54,7 @@ class MEM():
         """获取进程内存Total、NativeHeap、NativeHeap;单位MB"""
         pid = d.getPid(pkgName=self.pkgName,deviceId=self.deviceId)
         cmd = f'dumpsys meminfo {pid}'
-        output = adb.shell(cmd)
+        output = adb.shell(cmd=cmd,deviceId=self.deviceId)
         m = re.search(r'TOTAL\s*(\d+)', output)
         m1 = re.search(r'Native Heap\s*(\d+)', output)
         m2 = re.search(r'Dalvik Heap\s*(\d+)', output)
@@ -80,7 +80,7 @@ class Flow():
             cmd = f'cat /proc/{pid}/net/dev |grep wlan0'
         else:
             cmd = f'cat /proc/{pid}/net/dev |findstr wlan0'
-        output = adb.shell(cmd)
+        output = adb.shell(cmd=cmd,deviceId=self.deviceId)
         m = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output)
         if m:
             sendNum = round(float(float(m.group(2)) / 1024 /1024 ),2)
@@ -98,7 +98,7 @@ class Flow():
             cmd = f'cat /proc/{pid}/net/dev |grep wlan0'
         else:
             cmd = f'cat /proc/{pid}/net/dev |findstr wlan0'
-        output = adb.shell(cmd)
+        output = adb.shell(cmd=cmd,deviceId=self.deviceId)
         m = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output)
         time.sleep(1)
         if m:

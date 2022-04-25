@@ -24,7 +24,6 @@ sys.path.append(os.path.join(BaseDir, '../..'))
 
 from ...mobileperf.common.basemonitor import Monitor
 from ...mobileperf.android.tools.androiddevice import AndroidDevice
-from ...mobileperf.common.log import logger
 from ...mobileperf.common.utils import TimeUtils
 
 collect_fps = 0
