@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## Welcome to SoloX
 
 You can use the [editor on GitHub](https://github.com/rafa0128/SoloX/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
