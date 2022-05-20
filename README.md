@@ -55,6 +55,17 @@ cmd：python3 -m solox
  * Debugger PIN: 906-499-328
 
 ```
+## Stargazers
+
+[![Stargazers over time](https://starchart.cc/smart-test-ti/SoloX.svg)](https://starchart.cc/smart-test-ti/SoloX)
+
+
+## Contributors
+
+<a href="https://github.com/smart-test-ti/SoloX/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=smart-test-ti/SoloX" />
+</a>
+
 
 ## References
 https://github.com/alibaba/mobileperf
