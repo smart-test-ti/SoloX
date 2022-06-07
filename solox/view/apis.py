@@ -4,7 +4,7 @@ api = Blueprint("api",__name__)
 
 @api.route('/apm/initialize',methods=['post','get'])
 def initialize():
-    """初始化apm环境"""
+    """initialize apm env"""
     try:
         report_dir = os.path.join(os.getcwd(), 'report')
         if os.path.exists(report_dir):
@@ -19,19 +19,31 @@ def initialize():
 
 @api.route('/device/ids',methods=['post','get'])
 def deviceids():
-    """获取设备包名信息"""
+    """get devices info"""
     deviceids = d.getDeviceIds()
     devices = d.getDevices()
-    pkgnames = d.getPkgname()
+    pkgnames = d.getPkgname(deviceids[0])
     if len(deviceids)>0:
         result = {'status':1,'deviceids':deviceids,'devices':devices,'pkgnames':pkgnames}
     else:
         result = {'status':0,'msg':'no devices'}
     return result
 
+@api.route('/device/packagenames',methods=['post','get'])
+def packageNames():
+    """get devices info"""
+    device = request.args.get('device')
+    deviceId = d.getIdbyDevice(device)
+    pkgnames = d.getPkgname(deviceId)
+    if len(pkgnames)>0:
+        result = {'status':1,'pkgnames':pkgnames}
+    else:
+        result = {'status':0,'msg':'no pkgnames'}
+    return result
+
 @api.route('/apm/cpu',methods=['post','get'])
 def getCpuRate():
-    """获取进程cpu损耗占比"""
+    """get process cpu rate"""
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
     deviceId = d.getIdbyDevice(device)
@@ -51,7 +63,7 @@ def getCpuRate():
 
 @api.route('/apm/mem',methods=['post','get'])
 def getMEM():
-    """获取内存损耗"""
+    """get memery data"""
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
     deviceId = d.getIdbyDevice(device)
@@ -71,7 +83,7 @@ def getMEM():
 
 @api.route('/apm/flow',methods=['post','get'])
 def getFlow():
-    """获取流量损耗"""
+    """get network data"""
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
     deviceId = d.getIdbyDevice(device)
@@ -88,6 +100,25 @@ def getFlow():
     else:
         result = {'status': 0, 'msg': f'未发现{pkgname}的进程'}
 
+    return result
+
+@api.route('/apm/fps',methods=['post','get'])
+def getFps():
+    """get fps data"""
+    pkgname = request.args.get('pkgname')
+    device = request.args.get('device')
+    deviceId = d.getIdbyDevice(device)
+    pid = d.getPid(deviceId=deviceId,pkgName=pkgname)
+    if pid:
+        try:
+            fps_monitor = FPS(pkgName=pkgname,deviceId=deviceId)
+            fps,jank = fps_monitor.getFPS()
+            result = {'status': 1, 'fps': fps,'jank':jank}
+        except Exception as e:
+            logger.error(f'Get fps failed:{str(e)}')
+            result = {'status': 0, 'msg': f'{str(e)}'}
+    else:
+        result = {'status': 0, 'msg': f'未发现{pkgname}的进程'}
     return result
 
 @api.route('/apm/create/report',methods=['post','get'])

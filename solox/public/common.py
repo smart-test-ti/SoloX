@@ -42,6 +42,7 @@ class Devices:
             result = os.popen(f"adb -s {deviceId} shell ps | grep {pkgName}").readlines()
         else:
             result = os.popen(f"adb -s {deviceId} shell ps | findstr {pkgName}").readlines()
+
         flag = len(result) > 0
         try:
             pid = (0, result[0].split()[1])[flag]
@@ -57,9 +58,9 @@ class Devices:
                 flag = False
         return flag
 
-    def getPkgname(self):
+    def getPkgname(self,devicesId):
         """获取手机所有包名"""
-        pkginfo = os.popen("adb shell pm list package")
+        pkginfo = os.popen(f"adb -s {devicesId} shell pm list package")
         pkglist = []
         for p in pkginfo:
             p = p.lstrip('package').lstrip(":").strip()
@@ -138,8 +139,8 @@ class file:
 
 class Adb:
 
-    def shell(self, cmd):
-        run_cmd = f'adb shell {cmd}'
+    def shell(self, cmd ,deviceId):
+        run_cmd = f'adb -s {deviceId} shell {cmd}'
         result = subprocess.Popen(run_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[
             0].decode("utf-8").strip()
         return result

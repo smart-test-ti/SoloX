@@ -6,13 +6,13 @@
 <br>
 </p>
 <p align="center">
-<a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=1.0.29&color=228be6" alt="solox preview"></a>
+<a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=1.0.36&color=228be6" alt="solox preview"></a>
 <br>
 </p>
 
 ## SoloX
 
-SoloX - Real-time collection tool for APP performance data.
+SoloX - Real-time collection tool for Android performance data.
 
 We are committed to solving inefficient, cumbersome test execution, and our goal is Simple Test In SoloX!
 
@@ -55,8 +55,18 @@ cmd：python3 -m solox
  * Debugger PIN: 906-499-328
 
 ```
+## Stargazers
 
-## 交流群
+[![Stargazers over time](https://starchart.cc/smart-test-ti/SoloX.svg)](https://starchart.cc/smart-test-ti/SoloX)
 
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1649153463915-e846d2fa-861c-4d1c-9a0a-1f2e4d5a3b86.png?x-oss-process=image%2Fformat%2Cpng%2Fresize%2Cw_750%2Climit_0"  width="100%">
+
+## Contributors
+
+<a href="https://github.com/smart-test-ti/SoloX/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=smart-test-ti/SoloX" />
+</a>
+
+
+## References
+https://github.com/alibaba/mobileperf
 

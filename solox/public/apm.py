@@ -1,22 +1,19 @@
-from . import *
 from .common import *
 
 d = Devices()
 adb = Adb()
-current_time = time.strftime("%H:%M:%S", time.localtime())
 class CPU():
 
     def __init__(self, pkgName ,deviceId):
         self.pkgName = pkgName
         self.deviceId = deviceId
-        # self.cpufile = file().create_file(filename='cpu.log')
-        self.apm_time = time.strftime("%H:%M:%S", time.localtime())
+        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getprocessCpuStat(self):
         """获取某个时刻的某个进程的cpu损耗"""
         pid = d.getPid(pkgName=self.pkgName,deviceId=self.deviceId)
         cmd = f'cat /proc/{pid}/stat'
-        result = adb.shell(cmd)
+        result = adb.shell(cmd=cmd,deviceId=self.deviceId)
         r = re.compile("\\s+")
         toks = r.split(result)
         processCpu = float(int(toks[13]) + int(toks[14]));
@@ -28,7 +25,7 @@ class CPU():
             cmd = f'cat /proc/stat |grep ^cpu'
         else:
             cmd = f'cat /proc/stat |findstr ^cpu'
-        result = adb.shell(cmd)
+        result = adb.shell(cmd=cmd,deviceId=self.deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
         idleCpu = float(toks[3])
@@ -51,13 +48,13 @@ class MEM():
     def __init__(self, pkgName ,deviceId):
         self.pkgName = pkgName
         self.deviceId = deviceId
-        self.apm_time = time.strftime("%H:%M:%S", time.localtime())
+        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getProcessMem(self):
         """获取进程内存Total、NativeHeap、NativeHeap;单位MB"""
         pid = d.getPid(pkgName=self.pkgName,deviceId=self.deviceId)
         cmd = f'dumpsys meminfo {pid}'
-        output = adb.shell(cmd)
+        output = adb.shell(cmd=cmd,deviceId=self.deviceId)
         m = re.search(r'TOTAL\s*(\d+)', output)
         m1 = re.search(r'Native Heap\s*(\d+)', output)
         m2 = re.search(r'Dalvik Heap\s*(\d+)', output)
@@ -74,7 +71,7 @@ class Flow():
     def __init__(self, pkgName ,deviceId):
         self.pkgName = pkgName
         self.deviceId = deviceId
-        self.apm_time = time.strftime("%H:%M:%S", time.localtime())
+        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getUpFlow(self):
         """获取上行流量，单位MB"""
@@ -83,13 +80,12 @@ class Flow():
             cmd = f'cat /proc/{pid}/net/dev |grep wlan0'
         else:
             cmd = f'cat /proc/{pid}/net/dev |findstr wlan0'
-        output = adb.shell(cmd)
+        output = adb.shell(cmd=cmd,deviceId=self.deviceId)
         m = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output)
         if m:
             sendNum = round(float(float(m.group(2)) / 1024 /1024 ),2)
         else:
-            logger.info("Couldn't get rx and tx data from: %s!" % output)
-            sendNum = 0.0
+            logger.error("Couldn't get rx and tx data from: %s!" % output)
         with open(f'{file().report_dir}/upflow.log', 'a+') as f:
             f.write(f'{self.apm_time}={str(sendNum)}' + '\n')
         return sendNum
@@ -102,13 +98,36 @@ class Flow():
             cmd = f'cat /proc/{pid}/net/dev |grep wlan0'
         else:
             cmd = f'cat /proc/{pid}/net/dev |findstr wlan0'
-        output = adb.shell(cmd)
+        output = adb.shell(cmd=cmd,deviceId=self.deviceId)
         m = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output)
         time.sleep(1)
         if m:
             recNum = round(float(float(m.group(1)) / 1024 / 1024),2)
         else:
-            logger.info("Couldn't get rx and tx data from: %s!" % output)
+            logger.error("Couldn't get rx and tx data from: %s!" % output)
         with open(f'{file().report_dir}/downflow.log', 'a+') as f:
             f.write(f'{self.apm_time}={str(recNum)}' + '\n')
         return recNum
+
+class FPS():
+
+    def __init__(self, pkgName ,deviceId):
+        self.pkgName = pkgName
+        self.deviceId = deviceId
+        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+
+    def getFPS(self):
+        monitor = FPSMonitor(self.deviceId, self.pkgName, 1)
+        monitor.start(TimeUtils.getCurrentTimeUnderline())
+        collect_fps,collect_jank = monitor.stop()
+        time.sleep(1)
+        with open(f'{file().report_dir}/fps.log', 'a+') as f:
+            f.write(f'{self.apm_time}={str(collect_fps)}' + '\n')
+        with open(f'{file().report_dir}/jank.log', 'a+') as f:
+            f.write(f'{self.apm_time}={str(collect_jank)}' + '\n')
+        return collect_fps,collect_jank
+
+
+if __name__ == '__main__':
+    fps = FPS("com.playit.videoplayer",'ca6bd5a5')
+    print(fps.getFPS())

@@ -82,34 +82,55 @@
                                 Memory
                             </div>
                             <div class="text-muted">
-                                All：{{ apm_data.mem }}
+                                Avg：{{ apm_data.mem }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--<div class="col-sm-6 col-lg-2">-->
-            <!--<div class="card card-sm">-->
-                <!--<div class="card-body">-->
-                    <!--<div class="row align-items-center">-->
-                        <!--<div class="col-auto">-->
-                            <!--<span class="bg-green text-white avatar">-->
-                                <!--FPS-->
-                            <!--</span>-->
-                        <!--</div>-->
-                        <!--<div class="col">-->
-                            <!--<div class="font-weight-medium">-->
-                                <!--FPS-->
-                            <!--</div>-->
-                            <!--<div class="text-muted">-->
-                                <!--Avg：{{ apm_data.fps }}-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-green text-white avatar">
+                                FPS
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                FPS
+                            </div>
+                            <div class="text-muted">
+                                Avg：{{ apm_data.fps }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-green text-white avatar">
+                                Jank
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                Jank
+                            </div>
+                            <div class="text-muted">
+                                Avg：{{ apm_data.jank }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
                 <div class="card-body">
@@ -187,6 +208,38 @@
             <div id="chart-mem"></div>
         </div>
     </div>
+    <div class="card fps-card mt-3">
+        <div class="card-header">
+            <div class='card-title'>FPS（HZ）</div>
+            <div class="card-actions btn-actions">
+                <a class="btn-action cursor-pointer" id="fps_loading">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                </a>
+                <a class="btn-action cursor-pointer" id="fps_png" onclick="save_img('fps-card','fps.png')">
+                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="chart-fps"></div>
+        </div>
+    </div>
+    <div class="card jank-card mt-3">
+        <div class="card-header">
+            <div class='card-title'>JANK</div>
+            <div class="card-actions btn-actions">
+                <a class="btn-action cursor-pointer" id="jank_loading">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                </a>
+                <a class="btn-action cursor-pointer" id="jank_png" onclick="save_img('jank-card','jank.png')">
+                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="chart-jank"></div>
+        </div>
+    </div>
     <div class="card networkdata-send-card mt-3">
         <div class="card-header">
             <div class='card-title'>Send Network Data（MB）</div>
@@ -219,6 +272,7 @@
             <div id="chart-networkdata-recv"></div>
         </div>
     </div>
+
 </div>
 {% endblock %}
 
@@ -228,6 +282,8 @@
     $(document).ready(function() {
         $('#cpu_loading').click()
         $('#mem_loading').click()
+        $('#fps_loading').click()
+        $('#jank_loading').click()
         $('#networkdata_send_loading').click()
         $('#networkdata_recv_loading').click()
     });
@@ -299,6 +355,62 @@
         });
     });
 
+    var jank_chart = new ApexCharts(document.querySelector("#chart-jank"), options('area'));
+    jank_chart.render();
+    $('#jank_loading').click(function () {
+        $.ajax({
+            url: '/apm/log',
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                scene:'{{ scene }}',
+                target:'jank'
+            },
+            beforeSend: function () {
+                SwalLoading('Loading','')
+            },
+            complete: function () {
+                swal.close()
+            },
+            success: function (data) {
+                console.log(data['log_data'])
+                jank_chart.updateSeries([{
+                    name: 'jank value',
+                    data: data['log_data']
+                }])
+            }
+        });
+    });
+
+    var fps_chart = new ApexCharts(document.querySelector("#chart-fps"), options('area'));
+    fps_chart.render();
+    $('#fps_loading').click(function () {
+        $.ajax({
+            url: '/apm/log',
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                scene:'{{ scene }}',
+                target:'fps'
+            },
+            beforeSend: function () {
+                SwalLoading('Loading','')
+            },
+            complete: function () {
+                swal.close()
+            },
+            success: function (data) {
+                console.log(data['log_data'])
+                fps_chart.updateSeries([{
+                    name: 'fps value',
+                    data: data['log_data']
+                }])
+            }
+        });
+    });
+
     var mem_chart = new ApexCharts(document.querySelector("#chart-mem"), options('area'));
     mem_chart.render();
     $('#mem_loading').click(function () {
@@ -327,7 +439,7 @@
         });
     });
 
-    var network_send_chart = new ApexCharts(document.querySelector("#chart-networkdata-send"), options('bar',false));
+    var network_send_chart = new ApexCharts(document.querySelector("#chart-networkdata-send"), options('area',false));
     network_send_chart.render();
     $('#networkdata_send_loading').click(function () {
         $.ajax({
@@ -346,7 +458,6 @@
                 swal.close()
             },
             success: function (data) {
-                console.log(data['log_data'])
                 network_send_chart.updateSeries([{
                     name: 'network data',
                     data: data['log_data']
@@ -356,7 +467,7 @@
     });
 
 
-    var network_recv_chart = new ApexCharts(document.querySelector("#chart-networkdata-recv"), options('bar',false));
+    var network_recv_chart = new ApexCharts(document.querySelector("#chart-networkdata-recv"), options('area',false));
     network_recv_chart.render();
     $('#networkdata_recv_loading').click(function () {
         $.ajax({
@@ -375,7 +486,6 @@
                 swal.close()
             },
             success: function (data) {
-                console.log(data)
                 network_recv_chart.updateSeries([{
                     name: 'network data',
                     data: data['log_data']
