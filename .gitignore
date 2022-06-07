@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 .idea
+solox/logs
 pypi.sh
 report
 __pycache__/
