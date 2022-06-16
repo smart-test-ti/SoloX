@@ -20,13 +20,16 @@ def initialize():
 @api.route('/device/ids',methods=['post','get'])
 def deviceids():
     """get devices info"""
-    deviceids = d.getDeviceIds()
-    devices = d.getDevices()
-    pkgnames = d.getPkgname(deviceids[0])
-    if len(deviceids)>0:
-        result = {'status':1,'deviceids':deviceids,'devices':devices,'pkgnames':pkgnames}
-    else:
-        result = {'status':0,'msg':'no devices'}
+    try:
+        deviceids = d.getDeviceIds()
+        devices = d.getDevices()
+        pkgnames = d.getPkgname(deviceids[0])
+        if len(deviceids)>0:
+            result = {'status':1,'deviceids':deviceids,'devices':devices,'pkgnames':pkgnames}
+        else:
+            result = {'status':0,'msg':'no devices,please try adb devices!'}
+    except:
+        result = {'status': 0, 'msg': 'no devices,please try adb devices!'}
     return result
 
 @api.route('/device/packagenames',methods=['post','get'])

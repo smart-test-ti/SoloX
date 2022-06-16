@@ -6,7 +6,7 @@
 <br>
 </p>
 <p align="center">
-<a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=1.0.36&color=228be6" alt="solox preview"></a>
+<a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=1.0.42&color=228be6" alt="solox preview"></a>
 <br>
 </p>
 
@@ -35,12 +35,13 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 ```
 1.Python:3.6+ 
 2.pip3 install -U solox
+3.install adb
 ```
 
 ## Run locally
 
 ```
-cmd：python3 -m solox
+   python3 -m solox
 
  * Serving Flask app 'run' (lazy loading)
  * Environment: production
