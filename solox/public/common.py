@@ -58,7 +58,7 @@ class Devices:
                 flag = False
         return flag
 
-    def getPkgname(self,devicesId):
+    def getPkgname(self, devicesId):
         """获取手机所有包名"""
         pkginfo = os.popen(f"adb -s {devicesId} shell pm list package")
         pkglist = []
@@ -139,7 +139,12 @@ class file:
 
 class Adb:
 
-    def shell(self, cmd ,deviceId):
+    # todo adb改造
+    def __init__(self, device_id=None):
+        self._device_id = device_id
+        self._sdk_version = None
+
+    def shell(self, cmd, deviceId):
         run_cmd = f'adb -s {deviceId} shell {cmd}'
         result = subprocess.Popen(run_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[
             0].decode("utf-8").strip()

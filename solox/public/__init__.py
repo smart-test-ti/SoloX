@@ -8,4 +8,3 @@ import re
 from logzero import logger
 from functools import reduce
 import platform
-from ..mobileperf.android.fps import *
