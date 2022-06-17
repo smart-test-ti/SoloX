@@ -92,8 +92,8 @@ def check_port(port):
 def get_running_status():
     """get solox server status"""
     try:
-        r = requests.get(f'http://localhost:5000', timeout=2.0)
-        flag = (True, False)[r.status_code == 200]
+        r = requests.get(f'http://localhost:5001', timeout=2.0)
+        flag = (False, True)[r.status_code == 200]
         return flag
     except requests.exceptions.ConnectionError:
         pass
@@ -107,19 +107,19 @@ def open_url():
     while flag:
         logger.info('Start solox server...')
         flag = get_running_status()
-    webbrowser.open(f'http://localhost:5000', new=2)
+    webbrowser.open(f'http://localhost:5001', new=2)
     logger.info('Running on http://localhost:5000 (Press CTRL+C to quit)')
 
 
 def start_web():
     """启动solox服务"""
-    socketio.run(app, host='0.0.0.0', debug=False, port=5000)
+    socketio.run(app, host='0.0.0.0', debug=False, port=5001)
     # app.run(debug=False, host='0.0.0.0', port=5000)
 
 
 def main():
     try:
-        check_port(port=5000)
+        check_port(port=5001)
         pool = multiprocessing.Pool(processes=2)
         pool.apply_async(start_web)
         pool.apply_async(open_url)

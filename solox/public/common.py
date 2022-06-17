@@ -1,4 +1,10 @@
-from . import *
+import json
+import os
+import platform
+import re
+import shutil
+import subprocess
+import time
 
 
 class Devices:
@@ -138,11 +144,6 @@ class file:
 
 
 class Adb:
-
-    # todo adb改造
-    def __init__(self, device_id=None):
-        self._device_id = device_id
-        self._sdk_version = None
 
     def shell(self, cmd, deviceId):
         run_cmd = f'adb -s {deviceId} shell {cmd}'

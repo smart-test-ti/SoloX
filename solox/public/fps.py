@@ -1,21 +1,15 @@
 ﻿# -*- coding: utf-8 -*-
 
 import datetime
-import os
 import queue
 import re
-import sys
 import threading
 import time
-import logging
 import traceback
+from logzero import logger
+from solox.public.common import Adb
 
-BaseDir = os.path.dirname(__file__)
-sys.path.append(os.path.join(BaseDir, '../..'))
-logger = logging.getLogger(__name__)
-# from ...mobileperf.common.basemonitor import Monitor, logger
-# from ...mobileperf.android.tools.androiddevice import AndroidDevice
-# from ...mobileperf.common.utils import TimeUtils
+adb = Adb()
 
 collect_fps = 0
 collect_jank = 0
@@ -46,10 +40,10 @@ class SurfaceStatsCollector(object):
             try:
                 self.focus_window = self.get_focus_activity()
                 # 如果self.focus_window里包含字符'$'，必须将其转义
-                if (self.focus_window.find('$') != -1):
+                if self.focus_window.find('$') != -1:
                     self.focus_window = self.focus_window.replace('$', '\$')
-            except:
-                logger.warn(u'无法动态获取当前Activity名称，使用page_flip统计全屏帧率！')
+            except Exception:
+                logger.warning(u'无法动态获取当前Activity名称，使用page_flip统计全屏帧率！')
                 self.use_legacy_method = True
                 self.surface_before = self._get_surface_stats_legacy()
         else:
@@ -72,9 +66,36 @@ class SurfaceStatsCollector(object):
                 self.fps_queue.task_done()
 
     def get_focus_activity(self):
-        """通过dumpsys window windows获取activity名称  window名?
         """
-        return self.device.adb.get_focus_activity()
+        通过dumpsys window windows获取activity名称  window名?
+        """
+        activity_name = ''
+        activity_line = ''
+        dumpsys_result = adb.shell(cmd='dumpsys window windows', deviceId=self.device)
+        dumpsys_result_list = dumpsys_result.split('\n')
+        for line in dumpsys_result_list:
+            if line.find('mCurrentFocus') != -1:
+                activity_line = line.strip()
+        if activity_line:
+            activity_line_split = activity_line.split(' ')
+        else:
+            return activity_name
+        if len(activity_line_split) > 1:
+            if activity_line_split[1] == 'u0':
+                activity_name = activity_line_split[2].rstrip('}')
+            else:
+                activity_name = activity_line_split[1]
+        return activity_name
+
+    def get_foreground_process(self):
+        """
+        :return: 当前前台进程名,对get_focus_activity的返回结果加以处理
+        """
+        focus_activity = self.get_focus_activity()
+        if focus_activity:
+            return focus_activity.split("/")[0]
+        else:
+            return ""
 
     def _calculate_results(self, refresh_period, timestamps):
         """Returns a list of SurfaceStatsCollector.Result.
@@ -286,13 +307,15 @@ class SurfaceStatsCollector(object):
         """
         # The command returns nothing if it is supported, otherwise returns many
         # lines of result just like 'dumpsys SurfaceFlinger'.
-        if self.focus_window == None:
-            results = self.device.adb.run_shell_cmd(
-                'dumpsys SurfaceFlinger --latency-clear')
+        if self.focus_window is None:
+            results = adb.shell(cmd='dumpsys SurfaceFlinger --latency-clear', deviceId=self.device)
         else:
-            results = self.device.adb.run_shell_cmd(
-                'dumpsys SurfaceFlinger --latency-clear %s' % self.focus_window)
+            results = adb.shell(cmd='dumpsys SurfaceFlinger --latency-clear %s' % self.focus_window, deviceId=self.device)
         return not len(results)
+
+    def get_sdk_version(self):
+        sdk_version = int(adb.shell(cmd='getprop ro.build.version.sdk', deviceId=self.device))
+        return sdk_version
 
     def _get_surfaceflinger_frame_data(self):
         """Returns collected SurfaceFlinger frame timing data.
@@ -350,15 +373,12 @@ class SurfaceStatsCollector(object):
         timestamps = []
         nanoseconds_per_second = 1e9
         pending_fence_timestamp = (1 << 63) - 1
-        if self.device.adb.get_sdk_version() >= 26:
-            results = self.device.adb.run_shell_cmd(
-                'dumpsys SurfaceFlinger --latency %s' % self.focus_window)
+        if self.get_sdk_version() >= 26:
+            results = adb.shell(
+                cmd='dumpsys SurfaceFlinger --latency %s' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
             refresh_period = int(results[0]) / nanoseconds_per_second
-            results = self.device.adb.run_shell_cmd('dumpsys gfxinfo %s framestats' % self.package_name)
-            #             logger.debug(results)
-            #        把dumpsys gfxinfo package_name framestats的结果封装成   dumpsys SurfaceFlinger --latency的结果
-            # 方便后面计算fps jank统一处理
+            results = adb.shell(cmd='dumpsys gfxinfo %s framestats' % self.package_name, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
             if not len(results):
                 return (None, None)
@@ -387,8 +407,8 @@ class SurfaceStatsCollector(object):
                 if 2 == PROFILEDATA_line:
                     break
         else:
-            results = self.device.adb.run_shell_cmd(
-                'dumpsys SurfaceFlinger --latency %s' % self.focus_window)
+            results = adb.shell(
+                cmd='dumpsys SurfaceFlinger --latency %s' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
             logger.debug("dumpsys SurfaceFlinger --latency result:")
             logger.debug(results)
@@ -430,7 +450,7 @@ class SurfaceStatsCollector(object):
         cur_surface = None
         timestamp = datetime.datetime.now()
         # 这个命令可能需要root
-        ret = self.device.adb.run_shell_cmd("service call SurfaceFlinger 1013")
+        ret = adb.shell(cmd="service call SurfaceFlinger 1013", deviceId=self.device)
         if not ret:
             return None
         match = re.search('^Result: Parcel\((\w+)', ret)
@@ -502,8 +522,8 @@ class FPSMonitor(Monitor):
         self.device = device_id
         self.timeout = timeout
         # todo 判断是否为当前启动的进程
-        # if not package_name:
-        #     package_name = self.device.adb.get_foreground_process()
+        if not package_name:
+            package_name = self.device.adb.get_foreground_process()
         self.package = package_name
         self.fpscollector = SurfaceStatsCollector(self.device, self.frequency, package_name, fps_queue,
                                                   self.jank_threshold, self.use_legacy)

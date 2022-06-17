@@ -1,5 +1,11 @@
-from .common import *
-from .fps import *
+import datetime
+import platform
+import re
+import time
+from functools import reduce
+from logzero import logger
+from solox.public.common import Devices, Adb, file
+from solox.public.fps import FPSMonitor, TimeUtils
 
 d = Devices()
 adb = Adb()
@@ -19,7 +25,7 @@ class CPU:
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile("\\s+")
         toks = r.split(result)
-        processCpu = float(int(toks[13]) + int(toks[14]));
+        processCpu = float(int(toks[13]) + int(toks[14]))
         return processCpu
 
     def getTotalCpuStat(self):
@@ -32,7 +38,7 @@ class CPU:
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
         idleCpu = float(toks[3])
-        totalCpu = float(reduce(lambda x, y: int(x) + int(y), toks));
+        totalCpu = float(reduce(lambda x, y: int(x) + int(y), toks))
         return totalCpu
 
     def getSingCpuRate(self):
@@ -122,15 +128,16 @@ class FPS:
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getFPS(self):
-        monitor = FPSMonitor(device_id=self.deviceId, package_name=self.pkgName, frequency=1, start_time=TimeUtils.getCurrentTimeUnderline())
-        monitor.start()
-        collect_fps, collect_jank = monitor.stop()
+        monitors = FPSMonitor(device_id=self.deviceId, package_name=self.pkgName, frequency=1,
+                              start_time=TimeUtils.getCurrentTimeUnderline())
+        monitors.start()
+        collects_fps, collects_jank = monitors.stop()
         time.sleep(1)
         with open(f'{file().report_dir}/fps.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(collect_fps)}' + '\n')
+            f.write(f'{self.apm_time}={str(collects_fps)}' + '\n')
         with open(f'{file().report_dir}/jank.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(collect_jank)}' + '\n')
-        return collect_fps, collect_jank
+            f.write(f'{self.apm_time}={str(collects_jank)}' + '\n')
+        return collects_fps, collects_jank
 
 
 if __name__ == '__main__':
