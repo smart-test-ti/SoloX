@@ -7,22 +7,193 @@
 -->
 <html lang="en">
 <head>
+    <script>
+    ((document) => {
+        'use strict';
+        let fastNode;
+        let failed;
+        let isRunning;
+        const DEST_LIST = [
+            'cdn.jsdelivr.net',
+            'fastly.jsdelivr.net',
+            'gcore.jsdelivr.net',
+            'testingcf.jsdelivr.net',
+            'test1.jsdelivr.net'
+        ];
+        const PREFIX = '//';
+        const SOURCE = DEST_LIST[0];
+        const starTime = Date.now();
+        const TIMEOUT = 2000;
+        const STORE_KEY = 'jsdelivr-auto-fallback';
+        const TEST_PATH = '/gh/PipecraftNet/jsdelivr-auto-fallback@main/empty.css?';
+        const shouldReplace = (text) => text && text.includes(PREFIX + SOURCE);
+        const replace = (text) => text.replace(PREFIX + SOURCE, PREFIX + fastNode);
+        const setTimeout = window.setTimeout;
+        const $ = document.querySelectorAll.bind(document);
+
+        const replaceElementSrc = () => {
+            let element;
+            let value;
+            for (element of $('link[rel="stylesheet"]')) {
+                value = element.href;
+                if (shouldReplace(value) && !value.includes(TEST_PATH)) {
+                    element.href = replace(value);
+                }
+            }
+
+            for (element of $('script')) {
+                value = element.src;
+                if (shouldReplace(value)) {
+                    const newNode = document.createElement('script');
+                    newNode.src = replace(value);
+                    element.defer = true;
+                    element.src = '';
+                    element.before(newNode);
+                    element.remove();
+                }
+            }
+
+            for (element of $('img')) {
+                value = element.src;
+                if (shouldReplace(value)) {
+                    // Used to cancel loading. Without this line it will remain pending status.
+                    element.src = '';
+                    element.src = replace(value);
+                }
+            }
+
+            // All elements that have a style attribute
+            for (element of $('*[style]')) {
+                value = element.getAttribute('style');
+                if (shouldReplace(value)) {
+                    element.setAttribute('style', replace(value));
+                }
+            }
+
+            for (element of $('style')) {
+                value = element.innerHTML;
+                if (shouldReplace(value)) {
+                    element.innerHTML = replace(value);
+                }
+            }
+        };
+
+        const tryReplace = () => {
+            if (!isRunning && failed && fastNode) {
+                console.warn(SOURCE + ' is not available. Use ' + fastNode);
+                isRunning = true;
+                setTimeout(replaceElementSrc, 0);
+                // Some need to wait for a while
+                setTimeout(replaceElementSrc, 20);
+                // Replace dynamically added elements
+                setInterval(replaceElementSrc, 500);
+            }
+        };
+
+        const checkAvailable = (url, callback) => {
+            let timeoutId;
+            const newNode = document.createElement('link');
+            const handleResult = (isSuccess) => {
+                if (!timeoutId) {
+                    return;
+                }
+
+                clearTimeout(timeoutId);
+                timeoutId = 0;
+                // Used to cancel loading. Without this line it will remain pending status.
+                if (!isSuccess) newNode.href = 'data:text/plain;base64,';
+                newNode.remove();
+                callback(isSuccess);
+            };
+
+            timeoutId = setTimeout(handleResult, TIMEOUT);
+
+            newNode.addEventListener('error', () => handleResult(false));
+            newNode.addEventListener('load', () => handleResult(true));
+            newNode.rel = 'stylesheet';
+            newNode.text = 'text/css';
+            newNode.href = url + TEST_PATH + starTime;
+            document.head.insertAdjacentElement('afterbegin', newNode);
+        };
+
+        const cached = (() => {
+            try {
+                return Object.assign(
+                    {},
+                    JSON.parse(localStorage.getItem(STORE_KEY) || '{}')
+                );
+            } catch {
+                return {};
+            }
+        })();
+
+        const main = () => {
+            cached.time = starTime;
+            cached.failed = false;
+            cached.fastNode = null;
+
+            for (const url of DEST_LIST) {
+                checkAvailable('https://' + url, (isAvailable) => {
+                    // console.log(url, Date.now() - starTime, Boolean(isAvailable));
+                    if (!isAvailable && url === SOURCE) {
+                        failed = true;
+                        cached.failed = true;
+                    }
+
+                    if (isAvailable && !fastNode) {
+                        fastNode = url;
+                    }
+
+                    if (isAvailable && !cached.fastNode) {
+                        cached.fastNode = url;
+                    }
+
+                    tryReplace();
+                });
+            }
+
+            setTimeout(() => {
+                // If all domains are timeout
+                if (failed && !fastNode) {
+                    fastNode = DEST_LIST[1];
+                    tryReplace();
+                }
+
+                localStorage.setItem(STORE_KEY, JSON.stringify(cached));
+            }, TIMEOUT + 100);
+        };
+
+        if (
+            cached.time &&
+            starTime - cached.time < 60 * 60 * 1000 &&
+            cached.failed &&
+            cached.fastNode
+        ) {
+            failed = true;
+            fastNode = cached.fastNode;
+            tryReplace();
+            setTimeout(main, 1000);
+        } else {
+            main();
+        }
+    })(document);
+    </script>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>{% block title %} {% endblock %}</title>
     <!-- CSS files -->
     <link rel="icon" href="./static/logo/logo.png">
-    <link rel="stylesheet" href="./static/tabler/dist/css/tabler.min.css">
-    <link href="./static/tabler/dist/css/demo.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="./static/css/tabler.min.css">
+    <link rel="stylesheet" href="./static/css/tabler.demo.min.css" />
     <!-- Select2-->
-    <link rel="stylesheet" href="./static/css/select2/select2.min.css" />
-    <link rel="stylesheet" href="./static/css/select2/select2-bootstrap-5-theme.min.css" />
-    <link rel="stylesheet" href="./static/css/select2/select2-bootstrap-5-theme.rtl.min.css" />
+    <link rel="stylesheet" href="./static/css/select2.min.css" />
+    <link rel="stylesheet" href="./static/css/select2-bootstrap-5-theme.min.css" />
+    <link rel="stylesheet" href="./static/css/select2-bootstrap-5-theme.rtl.min.css" />
      <!-- Sweetalert2-->
-    <link rel="stylesheet" href="./static/css/sweetalert2/sweetalert2.min.css" />
+    <link rel="stylesheet" href="./static/css/sweetalert2.min.css" />
     <!--highlight-->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
+    <link rel="stylesheet" href="./static/css/highlight.min.css">
 
     {% block css %}
     {% endblock %}
@@ -83,8 +254,8 @@
             <div class="row text-center align-items-center flex-row-reverse">
                 <div class="col-lg-auto ms-lg-auto">
                     <ul class="list-inline list-inline-dots mb-0">
-                        <li class="list-inline-item"><a href="https://github.com/rafa0128/SoloX/blob/master/README.md" target="_blank" class="link-secondary">Documentation</a></li>
-                        <li class="list-inline-item"><a href="https://github.com/rafa0128/SoloX" target="_blank" class="link-secondary" rel="noopener">Source code</a></li>
+                        <li class="list-inline-item"><a href="https://github.com/smart-test-ti/SoloX/blob/master/README.md" target="_blank" class="link-secondary">Documentation</a></li>
+                        <li class="list-inline-item"><a href="https://github.com/smart-test-ti/SoloX" target="_blank" class="link-secondary" rel="noopener">Source code</a></li>
                     </ul>
                 </div>
                 <div class="col-12 col-lg-auto mt-3 mt-lg-0">
@@ -116,27 +287,25 @@
     </div>
 </div>
 <!-- JQ JS -->
-<script src="./static/js/jq3.6.0/jquery.js"></script>
-<script src="./static/js/jq3.6.0/jquery.min.js"></script>
+<script src="./static/js/jquery.min.js"></script>
 <!-- tabler -->
-<script src="./static/tabler/dist/js/tabler.min.js"></script>
-<script src="./static/tabler/dist/js/demo.min.js"></script>
+<script src="./static/js/tabler.min.js"></script>
+<script src="./static/js/tabler.demo.min.js"></script>
 <!-- Sweetalert2 -->
-<script src="./static/js/sweetalert2/sweetalert2.min.js"></script>
+<script src="./static/js/sweetalert2.min.js"></script>
 <!-- Select2-->
-<script src="./static/js/select2/select2.min.js"></script>
+<script src="./static/js/select2.min.js"></script>
 <!-- Apexcharts-->
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="./static/js/apexcharts.js"></script>
 <!-- highlight -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+<script src="./static/js/highlight.min.js"></script>
 <!-- Highcharts-->
 <script src="https://cdn.highcharts.com.cn/highstock/highstock.js"></script>
-<!--<script src="https://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>-->
-<!--<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>-->
 <script src="https://code.highcharts.com.cn/highcharts/themes/gray.js"></script>
+
 <!-- html2canvas -->
-<script src="./static/js/html2canvas/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
+<script src="./static/js/html2canvas.min.js"></script>
+<script src="./static/js/socket.io.js"></script>
 <script>
     $(document).ready(function() {
         $('.select2-selection--single').select2({

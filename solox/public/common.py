@@ -1,4 +1,10 @@
-from . import *
+import json
+import os
+import platform
+import re
+import shutil
+import subprocess
+import time
 
 
 class Devices:
@@ -58,7 +64,7 @@ class Devices:
                 flag = False
         return flag
 
-    def getPkgname(self,devicesId):
+    def getPkgname(self, devicesId):
         """获取手机所有包名"""
         pkginfo = os.popen(f"adb -s {devicesId} shell pm list package")
         pkglist = []
@@ -139,7 +145,7 @@ class file:
 
 class Adb:
 
-    def shell(self, cmd ,deviceId):
+    def shell(self, cmd, deviceId):
         run_cmd = f'adb -s {deviceId} shell {cmd}'
         result = subprocess.Popen(run_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[
             0].decode("utf-8").strip()

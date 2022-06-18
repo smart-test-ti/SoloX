@@ -95,8 +95,7 @@
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_checkbox" type="checkbox" checked name="mem"> Memory</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> Network Data</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" checked> FPS</label>
-            <h6 class="dropdown-header">Other target</h6>
-            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" disabled> Battery</label>
+            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" checked> Battery</label>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item">
                 <svg t="1647500286053" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="38058" width="2000" height="2000"><path d="M972.8 266.24c0 5.12-5.12 10.24-10.24 10.24h-235.52c-5.12 0-10.24-5.12-10.24-10.24v-35.84c0-5.12 5.12-10.24 10.24-10.24h235.52c5.12 0 10.24 5.12 10.24 10.24v35.84z m0 117.76c0 5.12-5.12 10.24-10.24 10.24h-235.52c-5.12 0-10.24-5.12-10.24-10.24v-40.96c0-5.12 5.12-10.24 10.24-10.24h235.52c5.12 0 10.24 5.12 10.24 10.24v40.96z m51.2-158.72c0-35.84-25.6-61.44-61.44-61.44h-235.52c-35.84 0-61.44 25.6-61.44 61.44v512h358.4v-512z m-179.2 583.68c20.48 0 35.84 15.36 35.84 35.84 0 20.48-15.36 35.84-35.84 35.84-20.48 0-35.84-15.36-35.84-35.84 0-20.48 15.36-35.84 35.84-35.84zM665.6 870.4c0 35.84 25.6 61.44 61.44 61.44h235.52c35.84 0 61.44-25.6 61.44-61.44v-112.64h-358.4V870.4z" p-id="38059"></path><path d="M629.76 855.04h-76.8v-112.64h76.8v-102.4h-563.2V117.76H921.6v15.36H983.04v-10.24c0-40.96-30.72-71.68-71.68-71.68H71.68C30.72 51.2 0 81.92 0 122.88V665.6c0 40.96 30.72 71.68 71.68 71.68h368.64v112.64H296.96c-20.48 0-35.84 20.48-35.84 40.96s15.36 35.84 35.84 35.84h348.16c-10.24-15.36-15.36-30.72-15.36-46.08v-25.6z" p-id="38060"></path></svg>
@@ -112,10 +111,12 @@
     <div class="apm-data mt-1" style="width: 75%;">
         <div id="cpu" class="mb-3 cpu" style="min-width:400px;height:300px"></div>
         <div id="mem"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
-        <div id="flow_send"  class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
-        <div id="flow_recv"  class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
         <div id="fps" class="mb-3 fps" style="min-width:400px;height:300px"></div>
-        <div id="jank" class="fps" style="min-width:400px;height:300px"></div>
+        <div id="jank" class="fps mb-3" style="min-width:400px;height:300px"></div>
+        <div id="battery" class="mb-3 battery" style="min-width:400px;height:300px"></div>
+        <div id="flow_send" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
+        <div id="flow_recv" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
+
     </div>
 
     <div class="logcat-data" style="width: 75%;display:none">
@@ -259,6 +260,36 @@
                           y = data['cpuRate'];
                       series.addPoint([x, y], true, true);
                       setTimeout(getCpuRate(pkgname,device), 2000);
+                  }catch (e) {}
+              }else{
+                  SwalFire('error','Stop testing',data['msg'],2000)
+                  setTimeout(function () {
+                      $('#stop-apm').click()
+                  }, 2000);
+              }
+          }
+      });
+  }
+
+  function getBattery(device){
+      $.ajax({
+          url: "/apm/battery",
+          type: "GET",
+          async: true,
+          cache: false,
+          data:{
+              device:device
+          },
+          beforeSend: function () {},
+          complete: function () {},
+          success: function (data) {
+              if(data['status'] == 1){
+                  try {
+                      var series = battery_chart.series[0]
+                      var x = (new Date()).getTime(),
+                          y = data['battery'];
+                      series.addPoint([x, y], true, true);
+                      setTimeout(getBattery(device), 2000);
                   }catch (e) {}
               }else{
                   SwalFire('error','Stop testing',data['msg'],2000)
@@ -498,6 +529,39 @@
       return cpu_chart
   }
 
+  function battery_initialize(){
+      //初始化battery
+      var battery_chart = Highcharts.stockChart('battery', {
+          rangeSelector: rangeSelector,
+          title : {
+              text : 'Battery（%）'
+          },
+          tooltip: {
+              split: false
+          },
+          credits:{
+              enabled: false
+          },
+          scrollbar : {
+			enabled : true
+          },
+          navigator : {
+              enabled : false
+          },
+          exporting: {
+              enabled: false
+          },
+          yAxis: {
+              max:100,
+              min:0,
+              tickInterval:10,
+              opposite:false
+          },
+          series : series
+      });
+      return battery_chart
+  }
+
   function mem_initialize(){
       //初始化mem
       var mem_chart = Highcharts.stockChart('mem', {
@@ -665,6 +729,7 @@
   var down_flow_chart = down_flow_initialize()
   var fps_chart = fps_initialize()
   var jank_chart = jank_initialize()
+  var battery_chart = battery_initialize()
 
   function start_collect_cpu(device,pkgname){
       cpu_initialize()
@@ -703,6 +768,45 @@
       });
 
   }
+
+  function start_collect_battery(device){
+      battery_initialize()
+      battery_chart = Highcharts.stockChart('battery', {
+          chart : {
+              events : {
+                  load : getBattery(device)
+              }
+          },
+          rangeSelector: rangeSelector,
+          title : {
+              text : 'Battery（%）'
+          },
+          tooltip: {
+              split: false
+          },
+          credits:{
+              enabled: false
+          },
+          scrollbar : {
+              enabled : true
+          },
+          navigator : {
+              enabled : false
+          },
+          exporting: {
+              enabled: false
+          },
+          yAxis: {
+              max:100,
+              min:0,
+              tickInterval:10,
+              opposite:false
+          },
+          series : series
+      });
+
+  }
+
 
   function start_collect_mem(device,pkgname){
       mem_initialize()
@@ -900,6 +1004,7 @@
           start_collect_downflow(device,pkgname)
           start_collect_fps(device,pkgname)
           start_collect_jank(device,pkgname)
+          start_collect_battery(device)
           $('#stop-apm').show()
           $('#run-apm').hide()
       }else{
