@@ -19,7 +19,8 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 
 ## Features
 #### Home
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879609256-929d6eb3-67d6-4d15-a41f-e3510f7ce7a9.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+<img src="https://user-images.githubusercontent.com/29191106/174444639-9798a0b8-30ea-4678-a2b1-842b6a293d69.png"  width="100%">
+
 
 #### Logcat
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879631071-078b2185-0cbd-409c-9212-485f5841766d.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
@@ -29,7 +30,8 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879616511-15f271b7-2761-43c5-a86c-50f82bc68f32.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 #### Analysis
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879625064-85c3bd4a-d147-440d-8a1c-5c406c630e36.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+<img src="https://user-images.githubusercontent.com/29191106/174444708-70621044-f836-446f-852f-05925e60cada.png"  width="100%">
+
 
 ## Installation
 ```
