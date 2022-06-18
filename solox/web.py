@@ -1,19 +1,21 @@
 from __future__ import absolute_import
-
-import platform
-import re
-from flask import Flask
-import webbrowser
-import requests
-from .view.apis import api
-from .view.pages import page
-from logzero import logger
-from threading import Lock
-from flask_socketio import SocketIO, disconnect
 import multiprocessing
 import subprocess
 import time
 import os
+import platform
+import re
+import webbrowser
+import requests
+
+from solox.public.apm import adb, d
+from solox.view.apis import api
+from solox.view.pages import page
+from logzero import logger
+from threading import Lock
+from flask_socketio import SocketIO, disconnect
+from flask import Flask
+
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.register_blueprint(api)
@@ -92,7 +94,7 @@ def check_port(port):
 def get_running_status():
     """get solox server status"""
     try:
-        r = requests.get(f'http://localhost:5001', timeout=2.0)
+        r = requests.get(f'http://localhost:5000', timeout=2.0)
         flag = (False, True)[r.status_code == 200]
         return flag
     except requests.exceptions.ConnectionError:
@@ -107,23 +109,26 @@ def open_url():
     while flag:
         logger.info('Start solox server...')
         flag = get_running_status()
-    webbrowser.open(f'http://localhost:5001', new=2)
+    webbrowser.open(f'http://localhost:5000', new=2)
     logger.info('Running on http://localhost:5000 (Press CTRL+C to quit)')
 
 
 def start_web():
     """启动solox服务"""
-    socketio.run(app, host='0.0.0.0', debug=False, port=5001)
-    # app.run(debug=False, host='0.0.0.0', port=5000)
+    socketio.run(app, host='0.0.0.0', debug=False, port=5000)
 
 
 def main():
     try:
-        check_port(port=5001)
+        check_port(port=5000)
         pool = multiprocessing.Pool(processes=2)
         pool.apply_async(start_web)
         pool.apply_async(open_url)
         pool.close()
         pool.join()
     except KeyboardInterrupt:
+        # 退出时恢复手机充电状态
+        for device in d.getDeviceIds():
+            cmd = 'dumpsys battery set status 2'
+            adb.shell(cmd=cmd, deviceId=device)
         logger.info('Stop solox server success')

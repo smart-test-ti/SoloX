@@ -70,4 +70,5 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 
 ## References
 https://github.com/alibaba/mobileperf
+>fps&jank 的收集和统计参考了 mobileperf 
 

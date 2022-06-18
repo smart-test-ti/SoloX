@@ -1,10 +1,10 @@
 import json
 import os
+import traceback
 
 from flask import Blueprint
 from flask import render_template
 from flask import request
-import traceback
 
 from solox.public.common import file
 
@@ -66,6 +66,10 @@ def analysis():
                 if not os.path.exists(f'{report_dir}/{scene}/apm.json'):
                     cpu_data = file().readLog(scene=scene, filename=f'cpu.log')[1]
                     cpu_rate = f'{round(sum(cpu_data) / len(cpu_data), 2)}%'
+
+                    battery_data = file().readLog(scene=scene, filename=f'battery.log')[1]
+                    battery_rate = f'{round(sum(battery_data) / len(battery_data), 2)}%'
+
                     mem_data = file().readLog(scene=scene, filename=f'mem.log')[1]
                     mem_avg = f'{round(sum(mem_data) / len(mem_data), 2)}MB'
                     fps_data = file().readLog(scene=scene, filename=f'fps.log')[1]
@@ -83,7 +87,7 @@ def analysis():
                         "jank": jank_avg,
                         "flow_send": flow_send_data_all,
                         "flow_recv": flow_recv_data_all,
-                        "bettery": "100MA"
+                        "battery": battery_rate
                     }
                     content = json.dumps(apm_dict)
                     with open(f'{report_dir}/{scene}/apm.json', 'a+', encoding="utf-8") as apmfile:
@@ -94,7 +98,7 @@ def analysis():
                 apm_data['mem'] = json_data['mem']
                 apm_data['fps'] = json_data['fps']
                 apm_data['jank'] = json_data['jank']
-                apm_data['bettery'] = json_data['bettery']
+                apm_data['battery'] = json_data['battery']
                 apm_data['flow_send'] = json_data['flow_send']
                 apm_data['flow_recv'] = json_data['flow_recv']
                 f.close()
@@ -102,4 +106,4 @@ def analysis():
             except Exception as e:
                 traceback.print_exc()
                 break
-    return render_template('/analysis.html', **locals())
+    return render_template('analysis.html', **locals())

@@ -6,7 +6,7 @@ from flask import request
 from logzero import logger
 from flask import Blueprint
 
-from solox.public.apm import CPU, MEM, Flow, FPS
+from solox.public.apm import CPU, MEM, Flow, FPS, Battery
 from solox.public.common import Devices, file
 
 d = Devices()
@@ -139,6 +139,22 @@ def getFps():
             result = {'status': 0, 'msg': f'{str(e)}'}
     else:
         result = {'status': 0, 'msg': f'未发现{pkgname}的进程'}
+    return result
+
+
+@api.route('/apm/battery', methods=['post', 'get'])
+def getBattery():
+    """get Battery data"""
+    device = request.args.get('device')
+    deviceId = d.getIdbyDevice(device)
+    try:
+        battery_monitor = Battery(deviceId=deviceId)
+        battery = battery_monitor.getBattery()
+        result = {'status': 1, 'battery': battery}
+    except Exception as e:
+        logger.error(f'Get fps failed:{str(e)}')
+        result = {'status': 0, 'msg': f'{str(e)}'}
+
     return result
 
 

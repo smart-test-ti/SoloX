@@ -77,6 +77,28 @@ class MEM:
         return PSS
 
 
+class Battery:
+    def __init__(self, deviceId):
+        self.deviceId = deviceId
+        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+
+    def getBattery(self):
+        """获取手机电量"""
+        # 切换手机电池为非充电状态
+        cmd = 'dumpsys battery set status 1'
+        adb.shell(cmd=cmd, deviceId=self.deviceId)
+        # 获取手机电量
+        cmd = 'dumpsys battery'
+        output = adb.shell(cmd=cmd, deviceId=self.deviceId)
+        battery = int(re.findall(u'level:\s?(\d+)', output)[0])
+        #
+        # battery = re.search(r'level\s*(\d+)', output)
+        time.sleep(1)
+        with open(f'{file().report_dir}/battery.log', 'a+') as f:
+            f.write(f'{self.apm_time}={str(battery)}' + '\n')
+        return battery
+
+
 class Flow:
 
     def __init__(self, pkgName, deviceId):
