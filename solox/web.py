@@ -8,7 +8,8 @@ import re
 import webbrowser
 import requests
 
-from solox.public.apm import adb, d
+from solox.public.apm import d
+from solox.public.adb import adb
 from solox.view.apis import api
 from solox.view.pages import page
 from logzero import logger
@@ -75,7 +76,7 @@ def check_port(port):
     else:
         port_cmd = 'netstat -ano | findstr {}'.format(port)
         r = os.popen(port_cmd)
-        # 获取5000端口的程序的pid，先保存在一个列表中，后面需要用，
+        # 获取50002端口的程序的pid，先保存在一个列表中，后面需要用，
         # 否则后面调用读取，指针会到末尾，会造成索引越界
         r_data_list = r.readlines()
         if len(r_data_list) == 0:
@@ -91,10 +92,10 @@ def check_port(port):
             os.system(pid_cmd)
 
 
-def get_running_status():
+def get_running_status(port: int):
     """get solox server status"""
     try:
-        r = requests.get(f'http://localhost:5000', timeout=2.0)
+        r = requests.get(f'http://localhost:{port}', timeout=2.0)
         flag = (False, True)[r.status_code == 200]
         return flag
     except requests.exceptions.ConnectionError:
@@ -103,27 +104,32 @@ def get_running_status():
         pass
 
 
-def open_url():
+def open_url(port: int):
     """监听并打开solox启动后的url"""
     flag = True
     while flag:
         logger.info('Start solox server...')
-        flag = get_running_status()
-    webbrowser.open(f'http://localhost:5000', new=2)
-    logger.info('Running on http://localhost:5000 (Press CTRL+C to quit)')
+        flag = get_running_status(port)
+    webbrowser.open(f'http://localhost:{port}', new=2)
+    logger.info(f'Running on http://localhost:{port} (Press CTRL+C to quit)')
 
 
-def start_web():
+def start_web(port: int):
     """启动solox服务"""
-    socketio.run(app, host='0.0.0.0', debug=False, port=5000)
+    socketio.run(app, host='0.0.0.0', debug=False, port=port)
 
 
-def main():
+def main(port=5000):
+    """
+    启动入口
+    :param port: 默认5000端口
+    :return:
+    """
     try:
-        check_port(port=5000)
+        check_port(port=port)
         pool = multiprocessing.Pool(processes=2)
-        pool.apply_async(start_web)
-        pool.apply_async(open_url)
+        pool.apply_async(start_web, [port])
+        pool.apply_async(open_url, [port])
         pool.close()
         pool.join()
     except KeyboardInterrupt:

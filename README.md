@@ -39,6 +39,8 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 ```
 
 ## Run locally
+### default
+>the startup port defaults to 5000.
 
 ```
    python3 -m solox
@@ -55,6 +57,13 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
  * Debugger is active!
  * Debugger PIN: 906-499-328
 
+```
+
+### custom
+>custom startup port, support command line input.
+
+```shell
+python -m solox --port=50003
 ```
 ## Stargazers
 
