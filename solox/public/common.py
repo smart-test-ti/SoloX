@@ -3,18 +3,20 @@ import os
 import platform
 import re
 import shutil
-import subprocess
 import time
+
+from solox.public.adb import adb
 
 
 class Devices:
 
     def __init__(self, platform='mac'):
         self.platform = platform
+        self.adb = adb.adb_path
 
     def getDeviceIds(self):
         """获取所有连接成功的设备id"""
-        Ids = list(os.popen("adb devices").readlines())
+        Ids = list(os.popen(f"{self.adb} devices").readlines())
         deviceIds = []
         for i in range(1, len(Ids) - 1):
             output = re.findall(r'^[\w\d.:-]+\t[\w]+$', Ids[i])[0]
@@ -25,7 +27,7 @@ class Devices:
 
     def getDevicesName(self, deviceId):
         """获取对应设备Id的设备名称"""
-        devices_name = os.popen(f'adb -s {deviceId} shell getprop ro.product.model').readlines()
+        devices_name = os.popen(f'{self.adb} -s {deviceId} shell getprop ro.product.model').readlines()
         return devices_name[0].strip()
 
     def getDevices(self):
@@ -45,9 +47,9 @@ class Devices:
     def getPid(self, deviceId, pkgName):
         """获取对应包名的pid"""
         if platform.system() != 'Windows':
-            result = os.popen(f"adb -s {deviceId} shell ps | grep {pkgName}").readlines()
+            result = os.popen(f"{self.adb} -s {deviceId} shell ps | grep {pkgName}").readlines()
         else:
-            result = os.popen(f"adb -s {deviceId} shell ps | findstr {pkgName}").readlines()
+            result = os.popen(f"{self.adb} -s {deviceId} shell ps | findstr {pkgName}").readlines()
 
         flag = len(result) > 0
         try:
@@ -66,7 +68,7 @@ class Devices:
 
     def getPkgname(self, devicesId):
         """获取手机所有包名"""
-        pkginfo = os.popen(f"adb -s {devicesId} shell pm list package")
+        pkginfo = os.popen(f"{self.adb} -s {devicesId} shell pm list package")
         pkglist = []
         for p in pkginfo:
             p = p.lstrip('package').lstrip(":").strip()
@@ -142,11 +144,3 @@ class file:
                 target_data_list.append(float(line.split('=')[1].strip()))
         return log_data_list, target_data_list
 
-
-class Adb:
-
-    def shell(self, cmd, deviceId):
-        run_cmd = f'adb -s {deviceId} shell {cmd}'
-        result = subprocess.Popen(run_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[
-            0].decode("utf-8").strip()
-        return result

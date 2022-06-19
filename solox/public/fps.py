@@ -6,9 +6,7 @@ import threading
 import time
 import traceback
 from logzero import logger
-from solox.public.common import Adb
-
-adb = Adb()
+from solox.public.adb import adb
 
 collect_fps = 0
 collect_jank = 0
@@ -365,9 +363,6 @@ class SurfaceStatsCollector(object):
         # 9223372036854775807     3618849592155   9223372036854775807
         # 9223372036854775807     3618866251530   9223372036854775807
 
-        # Google Pixel 2 Android8.0 dumpsys SurfaceFlinger --latency window 结果
-        # C:\Users\luke01>adb -s HT7B81A05143 shell dumpsys SurfaceFlinger --latency window_name
-        # 16666666
         refresh_period = None
         timestamps = []
         nanoseconds_per_second = 1e9

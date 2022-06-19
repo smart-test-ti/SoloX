@@ -4,11 +4,12 @@ import re
 import time
 from functools import reduce
 from logzero import logger
-from solox.public.common import Devices, Adb, file
+
+from solox.public.adb import adb
+from solox.public.common import Devices, file
 from solox.public.fps import FPSMonitor, TimeUtils
 
 d = Devices()
-adb = Adb()
 
 
 class CPU:
@@ -91,8 +92,6 @@ class Battery:
         cmd = 'dumpsys battery'
         output = adb.shell(cmd=cmd, deviceId=self.deviceId)
         battery = int(re.findall(u'level:\s?(\d+)', output)[0])
-        #
-        # battery = re.search(r'level\s*(\d+)', output)
         time.sleep(1)
         with open(f'{file().report_dir}/battery.log', 'a+') as f:
             f.write(f'{self.apm_time}={str(battery)}' + '\n')
