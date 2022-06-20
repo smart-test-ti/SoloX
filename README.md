@@ -41,6 +41,8 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 ```
 
 ## Run locally
+### default
+>the startup host and port defaults to 0.0.0.0 and 5000.
 
 ```
    python3 -m solox
@@ -52,11 +54,18 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
  * Debug mode: on
  * Running on all addresses.
    WARNING: This is a development server. Do not use it in a production deployment.
- * Running on http://xx.xx.xx.xx:5000/ (Press CTRL+C to quit)
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 906-499-328
 
+```
+
+### custom
+>custom startup host and port, support command line input.
+
+```shell
+python -m solox --host=0.0.0.0 --port=50003
 ```
 ## Stargazers
 

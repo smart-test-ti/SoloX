@@ -177,12 +177,12 @@
           beforeSend: function () {
               $('#select-app').empty()
               $('#select-app').append('<option></option>')
-              SwalLoading('Package initialization!','Initializing Packages, please wait。')
+              SwalLoading('Package initialization!','Initializing Packages, please wait.')
           },
           complete: function () {},
           success: function (data) {
               if(data['status'] != 1 ) {
-                  SwalFire('error', 'Connet failed !', 'Please check if the device is connected', 2000)
+                  SwalFire('error', 'Connet failed !', 'Please check if the device is connected.', 2000)
               }else{
                   for(var i=0;i<data['pkgnames'].length;i++){
                       $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>')
@@ -218,13 +218,13 @@
               $('#select-device').empty()
               $('#select-app').empty()
               $('#select-app').append('<option></option>')
-              SwalLoading('Device initialization!','Initializing device environment, please wait。')
+              SwalLoading('Device initialization!','Initializing device environment, please wait.')
           },
           complete: function () {},
           success: function (data) {
               console.log(data['pkgnames'])
               if(data['status'] != 1 ) {
-                  SwalFire('error', 'Connet failed !', 'Please check if the device is connected', 2000)
+                  SwalFire('error', 'Connet failed !', 'Please check if the device is connected.', 2000)
               }else{
                   for(var i=0;i<data['devices'].length;i++){
                       $('#select-device').append('<option>'+data['devices'][i]+'</option>')

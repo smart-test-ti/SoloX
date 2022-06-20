@@ -8,14 +8,14 @@ import re
 import webbrowser
 import requests
 
-from solox.public.apm import adb, d
+from solox.public.apm import d
+from solox.public.adb import adb
 from solox.view.apis import api
 from solox.view.pages import page
 from logzero import logger
 from threading import Lock
 from flask_socketio import SocketIO, disconnect
 from flask import Flask
-
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.register_blueprint(api)
@@ -75,7 +75,7 @@ def check_port(port):
     else:
         port_cmd = 'netstat -ano | findstr {}'.format(port)
         r = os.popen(port_cmd)
-        # 获取5000端口的程序的pid，先保存在一个列表中，后面需要用，
+        # 获取50002端口的程序的pid，先保存在一个列表中，后面需要用，
         # 否则后面调用读取，指针会到末尾，会造成索引越界
         r_data_list = r.readlines()
         if len(r_data_list) == 0:
@@ -91,11 +91,17 @@ def check_port(port):
             os.system(pid_cmd)
 
 
-def get_running_status():
-    """get solox server status"""
+def get_running_status(host: str, port: int):
+    """
+    get solox server status
+    :param host:
+    :param port:
+    :return:
+    """
     try:
-        r = requests.get(f'http://localhost:5000', timeout=2.0)
-        flag = (False, True)[r.status_code == 200]
+        r = requests.get(f'http://{host}:{port}', timeout=2.0)
+        # True和False对应的数值是1和0
+        flag = (True, False)[r.status_code == 200]
         return flag
     except requests.exceptions.ConnectionError:
         pass
@@ -103,27 +109,43 @@ def get_running_status():
         pass
 
 
-def open_url():
-    """监听并打开solox启动后的url"""
+def open_url(host: str, port: int):
+    """
+    Listen and open the url after solox is started
+    :param host:
+    :param port:
+    :return:
+    """
     flag = True
     while flag:
         logger.info('Start solox server...')
-        flag = get_running_status()
-    webbrowser.open(f'http://localhost:5000', new=2)
-    logger.info('Running on http://localhost:5000 (Press CTRL+C to quit)')
+        flag = get_running_status(host, port)
+    webbrowser.open(f'http://{host}:{port}', new=2)
+    logger.info(f'Running on http://{host}:{port} (Press CTRL+C to quit)')
 
 
-def start_web():
-    """启动solox服务"""
-    socketio.run(app, host='0.0.0.0', debug=False, port=5000)
+def start_web(host: str, port: int):
+    """
+    Start the solox service
+    :param host:
+    :param port:
+    :return:
+    """
+    socketio.run(app, host=host, debug=False, port=port)
 
 
-def main():
+def main(host='0.0.0.0', port=5000):
+    """
+    启动入口
+    :param host: 0.0.0.0
+    :param port: 默认5000端口
+    :return:
+    """
     try:
-        check_port(port=5000)
+        check_port(port=port)
         pool = multiprocessing.Pool(processes=2)
-        pool.apply_async(start_web)
-        pool.apply_async(open_url)
+        pool.apply_async(start_web, (host, port))
+        pool.apply_async(open_url, (host, port))
         pool.close()
         pool.join()
     except KeyboardInterrupt:
