@@ -17,7 +17,6 @@ from threading import Lock
 from flask_socketio import SocketIO, disconnect
 from flask import Flask
 
-
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.register_blueprint(api)
 app.register_blueprint(page)
@@ -92,11 +91,17 @@ def check_port(port):
             os.system(pid_cmd)
 
 
-def get_running_status(port: int):
-    """get solox server status"""
+def get_running_status(host: str, port: int):
+    """
+    get solox server status
+    :param host:
+    :param port:
+    :return:
+    """
     try:
-        r = requests.get(f'http://localhost:{port}', timeout=2.0)
-        flag = (False, True)[r.status_code == 200]
+        r = requests.get(f'http://{host}:{port}', timeout=2.0)
+        # True和False对应的数值是1和0
+        flag = (True, False)[r.status_code == 200]
         return flag
     except requests.exceptions.ConnectionError:
         pass
@@ -104,32 +109,43 @@ def get_running_status(port: int):
         pass
 
 
-def open_url(port: int):
-    """监听并打开solox启动后的url"""
+def open_url(host: str, port: int):
+    """
+    Listen and open the url after solox is started
+    :param host:
+    :param port:
+    :return:
+    """
     flag = True
     while flag:
         logger.info('Start solox server...')
-        flag = get_running_status(port)
-    webbrowser.open(f'http://localhost:{port}', new=2)
-    logger.info(f'Running on http://localhost:{port} (Press CTRL+C to quit)')
+        flag = get_running_status(host, port)
+    webbrowser.open(f'http://{host}:{port}', new=2)
+    logger.info(f'Running on http://{host}:{port} (Press CTRL+C to quit)')
 
 
-def start_web(port: int):
-    """启动solox服务"""
-    socketio.run(app, host='0.0.0.0', debug=False, port=port)
+def start_web(host: str, port: int):
+    """
+    Start the solox service
+    :param host:
+    :param port:
+    :return:
+    """
+    socketio.run(app, host=host, debug=False, port=port)
 
 
-def main(port=5000):
+def main(host='0.0.0.0', port=5000):
     """
     启动入口
+    :param host: 0.0.0.0
     :param port: 默认5000端口
     :return:
     """
     try:
         check_port(port=port)
         pool = multiprocessing.Pool(processes=2)
-        pool.apply_async(start_web, [port])
-        pool.apply_async(open_url, [port])
+        pool.apply_async(start_web, (host, port))
+        pool.apply_async(open_url, (host, port))
         pool.close()
         pool.join()
     except KeyboardInterrupt:
