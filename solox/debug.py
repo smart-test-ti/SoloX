@@ -10,12 +10,13 @@ import requests
 
 from solox.public.apm import d
 from solox.public.adb import adb
-from solox.view.apis import api
-from solox.view.pages import page
+from view.apis import api
+from view.pages import page
 from logzero import logger
 from threading import Lock
 from flask_socketio import SocketIO, disconnect
 from flask import Flask
+import fire as fire
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.register_blueprint(api)
@@ -134,7 +135,7 @@ def start_web(host: str, port: int):
     socketio.run(app, host=host, debug=False, port=port)
 
 
-def server(host='0.0.0.0', port=5000):
+def main(host='0.0.0.0', port=5000):
     """
     启动入口
     :param host: 0.0.0.0
@@ -156,3 +157,7 @@ def server(host='0.0.0.0', port=5000):
             cmd = 'dumpsys battery set status 2'
             adb.shell(cmd=cmd, deviceId=device)
         logger.info('Stop solox server success')
+
+
+if __name__ == '__main__':
+    fire.Fire(main)

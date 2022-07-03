@@ -23,7 +23,8 @@ def page_500(e):
 
 @page.route('/')
 def index():
-    return render_template('index.html', **locals())
+    platform = request.args.get('platform')
+    return render_template('index.html',**locals())
 
 
 @page.route('/report')
