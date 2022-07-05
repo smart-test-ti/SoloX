@@ -8,8 +8,8 @@ import re
 import webbrowser
 import requests
 
-from solox.public.apm import d
-from solox.public.adb import adb
+from public.apm import d
+from public.adb import adb
 from view.apis import api
 from view.pages import page
 from logzero import logger

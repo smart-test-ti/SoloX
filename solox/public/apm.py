@@ -5,9 +5,9 @@ import time
 from functools import reduce
 from logzero import logger
 
-from solox.public.adb import adb
-from solox.public.common import Devices, file
-from solox.public.fps import FPSMonitor, TimeUtils
+from public.adb import adb
+from public.common import Devices, file
+from public.fps import FPSMonitor, TimeUtils
 
 d = Devices()
 
@@ -162,5 +162,5 @@ class FPS:
 
 
 if __name__ == '__main__':
-    fps = FPS("com.playit.videoplayer", 'ca6bd5a5')
+    fps = FPS("xx.xx.xxx", 'ca6bd5a5')
     print(fps.getFPS())

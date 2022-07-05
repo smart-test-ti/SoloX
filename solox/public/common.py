@@ -5,7 +5,7 @@ import re
 import shutil
 import time
 
-from solox.public.adb import adb
+from public.adb import adb
 
 
 class Devices:
@@ -13,6 +13,13 @@ class Devices:
     def __init__(self, platform='mac'):
         self.platform = platform
         self.adb = adb.adb_path
+
+    def execCmd(self,cmd):
+        """执行命令获取终端打印结果"""
+        r = os.popen(cmd)
+        text = r.read()
+        r.close()
+        return text
 
     def getDeviceIds(self):
         """获取所有连接成功的设备id"""
@@ -75,6 +82,24 @@ class Devices:
             if self.checkPkgname(p):
                 pkglist.append(p)
         return pkglist
+
+    def getDeviceInfoByiOS(self):
+        """获取所有连接成功的iOS设备列表"""
+        deviceResult = json.loads(self.execCmd('tidevice list --json'))
+        deviceInfo = []
+        for i in range(len(deviceResult)):
+            deviceName = deviceResult[i]['name']
+            deviceUdid = deviceResult[i]['udid']
+            deviceInfo.append(f'{deviceName}:{deviceUdid}')
+        return deviceInfo
+
+    def getPkgnameByiOS(self,udid):
+        """获取对应iOS设备所有包名"""
+        pkgResult = self.execCmd(f'tidevice --udid {udid} applist').split('\n')
+        pkgNames = []
+        for i in range(len(pkgResult)):
+            pkgNames.append(pkgResult[i].split(' ')[0])
+        return pkgNames
 
 
 class file:

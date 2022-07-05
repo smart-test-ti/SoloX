@@ -6,8 +6,8 @@ from flask import request
 from logzero import logger
 from flask import Blueprint
 
-from solox.public.apm import CPU, MEM, Flow, FPS, Battery
-from solox.public.common import Devices, file
+from public.apm import CPU, MEM, Flow, FPS, Battery
+from public.common import Devices, file
 
 d = Devices()
 api = Blueprint("api", __name__)
@@ -32,29 +32,47 @@ def initialize():
 @api.route('/device/ids', methods=['post', 'get'])
 def deviceids():
     """get devices info"""
+    platform = request.args.get('platform')
     try:
-        deviceids = d.getDeviceIds()
-        devices = d.getDevices()
-        pkgnames = d.getPkgname(deviceids[0])
-        if len(deviceids) > 0:
-            result = {'status': 1, 'deviceids': deviceids, 'devices': devices, 'pkgnames': pkgnames}
+        if platform == 'Android':
+            deviceids = d.getDeviceIds()
+            devices = d.getDevices()
+            if len(deviceids) > 0:
+                pkgnames = d.getPkgname(deviceids[0])
+                result = {'status': 1, 'deviceids': deviceids, 'devices': devices, 'pkgnames': pkgnames}
+            else:
+                result = {'status': 0, 'msg': 'no devices'}
+        elif platform == 'iOS':
+            deviceinfos = d.getDeviceInfoByiOS()
+            if len(deviceinfos) > 0:
+                pkgnames = d.getPkgnameByiOS(deviceinfos[0].split(':')[1])
+                result = {'status': 1, 'deviceids': deviceinfos, 'devices': deviceinfos, 'pkgnames': pkgnames}
+            else:
+                result = {'status': 0, 'msg': 'no devices'}
         else:
-            result = {'status': 0, 'msg': 'no devices,please try adb devices!'}
+            result = {'status': 0, 'msg': f'no this platform = {platform}'}
     except:
-        result = {'status': 0, 'msg': 'no devices,please try adb devices!'}
+        result = {'status': 0, 'msg': 'devices connect error!'}
     return result
-
 
 @api.route('/device/packagenames', methods=['post', 'get'])
 def packageNames():
-    """get devices info"""
+    """get devices packageNames"""
+    platform = request.args.get('platform')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device)
-    pkgnames = d.getPkgname(deviceId)
-    if len(pkgnames) > 0:
-        result = {'status': 1, 'pkgnames': pkgnames}
+    if platform == 'Android':
+        deviceId = d.getIdbyDevice(device)
+        pkgnames = d.getPkgname(deviceId)
+    elif platform == 'iOS':
+        udid = device.split(':')[1]
+        pkgnames = d.getPkgnameByiOS(udid)
     else:
-        result = {'status': 0, 'msg': 'no pkgnames'}
+        result = {'status': 0, 'msg': f'no platform = {platform}'}
+        return result
+    if len(pkgnames)>0:
+        result = {'status':1,'pkgnames':pkgnames}
+    else:
+        result = {'status':0,'msg':'no pkgnames'}
     return result
 
 
