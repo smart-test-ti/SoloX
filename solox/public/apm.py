@@ -97,6 +97,11 @@ class Battery:
             f.write(f'{self.apm_time}={str(battery)}' + '\n')
         return battery
 
+    def SetBattery(self):
+        """重置手机充电状态"""
+        # 退出时恢复手机充电状态
+        cmd = 'dumpsys battery set status 2'
+        adb.shell(cmd=cmd, deviceId=self.deviceId)
 
 class Flow:
 
@@ -162,5 +167,5 @@ class FPS:
 
 
 if __name__ == '__main__':
-    fps = FPS("com.playit.videoplayer", 'ca6bd5a5')
+    fps = FPS("com.xx.xxx", 'ca6bd5a5')
     print(fps.getFPS())

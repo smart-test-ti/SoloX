@@ -131,7 +131,12 @@ def start_web(host: str, port: int):
     :param port:
     :return:
     """
-    socketio.run(app, host=host, debug=False, port=port)
+    try:
+        socketio.run(app, host=host, debug=False, port=port)
+    except KeyboardInterrupt:
+        logger.info('stop socketio success')
+    except Exception:
+        pass
 
 
 def main(host='0.0.0.0', port=5000):
@@ -149,8 +154,6 @@ def main(host='0.0.0.0', port=5000):
         pool.close()
         pool.join()
     except KeyboardInterrupt:
-        # 退出时恢复手机充电状态
-        for device in d.getDeviceIds():
-            cmd = 'dumpsys battery set status 2'
-            adb.shell(cmd=cmd, deviceId=device)
-        logger.info('Stop solox server success')
+        logger.info('stop solox server success')
+    except Exception:
+        pass
