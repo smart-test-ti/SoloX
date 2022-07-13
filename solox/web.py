@@ -7,7 +7,8 @@ import platform
 import re
 import webbrowser
 import requests
-
+import socket
+import sys
 from solox.public.apm import d
 from solox.public.adb import adb
 from solox.view.apis import api
@@ -63,6 +64,29 @@ def disconnect_request():
     thread = False
     disconnect()
 
+def checkPyVer():
+    """
+    :func: check python version
+    """
+    if int(platform.python_version().split('.')[0]) == 3:
+        logger.error('python version must be >2,your python version is {}'.format(platform.python_version()))
+        logger.error('please install python::3 and pip3 install -U solox')
+        sys.exit()
+
+def _hostIP():
+    """
+    :func: get local ip
+    :return: ip
+    """
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('8.8.8.8', 80))
+        ip = s.getsockname()[0]
+    except Exception as e:
+        raise e
+    finally:
+        s.close()
+    return ip
 
 def check_port(port):
     """
@@ -147,6 +171,7 @@ def main(host='0.0.0.0', port=5000):
     :return:
     """
     try:
+        checkPyVer()
         check_port(port=port)
         pool = multiprocessing.Pool(processes=2)
         pool.apply_async(start_web, (host, port))
