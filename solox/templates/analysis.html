@@ -110,6 +110,7 @@
                 </div>
             </div>
         </div>
+        {% if platform == 'Android' %}
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
                 <div class="card-body">
@@ -152,6 +153,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
                 <div class="card-body">
@@ -245,6 +247,7 @@
             <div id="chart-fps"></div>
         </div>
     </div>
+    {% if platform == 'Android' %}
     <div class="card jank-card mt-3">
         <div class="card-header">
             <div class='card-title'>JANK</div>
@@ -277,9 +280,14 @@
             <div id="chart-battery"></div>
         </div>
     </div>
+    {% endif %}
     <div class="card networkdata-send-card mt-3">
         <div class="card-header">
+            {% if platform == 'Android' %}
             <div class='card-title'>Send Network Data（MB）</div>
+            {% else %}
+            <div class='card-title'>Send Network Data（MB）</div>
+            {% endif %}
             <div class="card-actions btn-actions">
                 <a class="btn-action cursor-pointer" id="networkdata_send_loading">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
@@ -295,7 +303,11 @@
     </div>
     <div class="card networkdata-recv-card mt-3">
         <div class="card-header">
+            {% if platform == 'Android' %}
             <div class='card-title'>Recv Network Data（MB）</div>
+            {% else %}
+            <div class='card-title'>Recv Network Data（KB）</div>
+            {% endif %}
             <div class="card-actions btn-actions">
                 <a class="btn-action cursor-pointer" id="networkdata_recv_loading">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
@@ -316,14 +328,18 @@
 {% block js %}
 <script>
 
+    const platform = '{{ platform }}';
+
     $(document).ready(function() {
-        $('#cpu_loading').click()
-        $('#mem_loading').click()
-        $('#fps_loading').click()
-        $('#jank_loading').click()
-        $('#battery_loading').click()
-        $('#networkdata_send_loading').click()
-        $('#networkdata_recv_loading').click()
+        $('#cpu_loading').click();
+        $('#mem_loading').click();
+        $('#fps_loading').click();
+        if(platform == 'Android'){
+            $('#jank_loading').click();
+            $('#battery_loading').click();
+        }
+        $('#networkdata_send_loading').click();
+        $('#networkdata_recv_loading').click();
     });
 
     function options(type,dataLabels=false) {
@@ -384,7 +400,6 @@
                 swal.close()
             },
             success: function (data) {
-                console.log(data['log_data'])
                 cpu_chart.updateSeries([{
                     name: 'cpu rate',
                     data: data['log_data']
@@ -393,61 +408,61 @@
         });
     });
 
-    var battery_chart = new ApexCharts(document.querySelector("#chart-battery"), options('area'));
-    battery_chart.render();
-    $('#battery_loading').click(function () {
-        $.ajax({
-            url: '/apm/log',
-            type: "GET",
-            async: true,
-            cache: false,
-            data:{
-                scene:'{{ scene }}',
-                target:'battery'
-            },
-            beforeSend: function () {
-                SwalLoading('Loading','')
-            },
-            complete: function () {
-                swal.close()
-            },
-            success: function (data) {
-                console.log(data['log_data'])
-                battery_chart.updateSeries([{
-                    name: 'electric quantity',
-                    data: data['log_data']
-                }])
-            }
+    if(platform == 'Android'){
+        var battery_chart = new ApexCharts(document.querySelector("#chart-battery"), options('area'));
+        battery_chart.render();
+        $('#battery_loading').click(function () {
+            $.ajax({
+                url: '/apm/log',
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    scene:'{{ scene }}',
+                    target:'battery'
+                },
+                beforeSend: function () {
+                    SwalLoading('Loading','')
+                },
+                complete: function () {
+                    swal.close();
+                },
+                success: function (data) {
+                    battery_chart.updateSeries([{
+                        name: 'electric quantity',
+                        data: data['log_data']
+                    }])
+                }
+            });
         });
-    });
 
-    var jank_chart = new ApexCharts(document.querySelector("#chart-jank"), options('area'));
-    jank_chart.render();
-    $('#jank_loading').click(function () {
-        $.ajax({
-            url: '/apm/log',
-            type: "GET",
-            async: true,
-            cache: false,
-            data:{
-                scene:'{{ scene }}',
-                target:'jank'
-            },
-            beforeSend: function () {
-                SwalLoading('Loading','')
-            },
-            complete: function () {
-                swal.close()
-            },
-            success: function (data) {
-                console.log(data['log_data'])
-                jank_chart.updateSeries([{
-                    name: 'jank value',
-                    data: data['log_data']
-                }])
-            }
+        var jank_chart = new ApexCharts(document.querySelector("#chart-jank"), options('area'));
+        jank_chart.render();
+        $('#jank_loading').click(function () {
+            $.ajax({
+                url: '/apm/log',
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    scene:'{{ scene }}',
+                    target:'jank'
+                },
+                beforeSend: function () {
+                    SwalLoading('Loading','')
+                },
+                complete: function () {
+                    swal.close();
+                },
+                success: function (data) {
+                    jank_chart.updateSeries([{
+                        name: 'jank value',
+                        data: data['log_data']
+                    }])
+                }
+            });
         });
-    });
+    }
 
     var fps_chart = new ApexCharts(document.querySelector("#chart-fps"), options('area'));
     fps_chart.render();
@@ -468,7 +483,6 @@
                 swal.close()
             },
             success: function (data) {
-                console.log(data['log_data'])
                 fps_chart.updateSeries([{
                     name: 'fps value',
                     data: data['log_data']
@@ -496,7 +510,6 @@
                 swal.close()
             },
             success: function (data) {
-                console.log(data['log_data'])
                 mem_chart.updateSeries([{
                     name: 'mem value',
                     data: data['log_data']

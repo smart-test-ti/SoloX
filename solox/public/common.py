@@ -10,7 +10,7 @@ from public.adb import adb
 
 class Devices:
 
-    def __init__(self, platform='mac'):
+    def __init__(self, platform='Android'):
         self.platform = platform
         self.adb = adb.adb_path
 
@@ -20,6 +20,12 @@ class Devices:
         text = r.read()
         r.close()
         return text
+
+    def _filterType(self):
+        """根据系统选择管道过滤方式"""
+        filtertype = ('grep','findstr')[platform.system() == 'Windows']
+        print(filtertype)
+        return filtertype
 
     def getDeviceIds(self):
         """获取所有连接成功的设备id"""
@@ -46,18 +52,17 @@ class Devices:
             Devices.append(f'{id}({devices_name})')
         return Devices
 
-    def getIdbyDevice(self, deviceinfo):
+    def getIdbyDevice(self, deviceinfo,platform):
         """根据设备信息获取对应设备id"""
-        deviceId = re.sub(u"\\(.*?\\)|\\{.*?}|\\[.*?]", "", deviceinfo)
+        if platform == 'Android':
+            deviceId = re.sub(u"\\(.*?\\)|\\{.*?}|\\[.*?]", "", deviceinfo)
+        else:
+            deviceId = deviceinfo.split(':')[1]
         return deviceId
 
     def getPid(self, deviceId, pkgName):
         """获取对应包名的pid"""
-        if platform.system() != 'Windows':
-            result = os.popen(f"{self.adb} -s {deviceId} shell ps | grep {pkgName}").readlines()
-        else:
-            result = os.popen(f"{self.adb} -s {deviceId} shell ps | findstr {pkgName}").readlines()
-
+        result = os.popen(f"{self.adb} -s {deviceId} shell ps | {self._filterType()} {pkgName}").readlines()
         flag = len(result) > 0
         try:
             pid = (0, result[0].split()[1])[flag]
@@ -120,12 +125,12 @@ class file:
         with open(f'{self.report_dir}/{filename}', 'a+', encoding="utf-8") as file:
             file.write(content)
 
-    def make_report(self, app, devices):
+    def make_report(self, app, devices, platform='Android'):
         current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         result_dict = {
             "app": app,
             "icon": "",
-            "platform": "Android",
+            "platform": platform,
             "devices": devices,
             "ctime": current_time
         }
@@ -168,4 +173,92 @@ class file:
                 })
                 target_data_list.append(float(line.split('=')[1].strip()))
         return log_data_list, target_data_list
+
+
+    def approximateSize(self,size, a_kilobyte_is_1024_bytes=True):
+        '''
+        convert a file size to human-readable form.
+        Keyword arguments:
+        size -- file size in bytes
+        a_kilobyte_is_1024_bytes -- if True (default),use multiples of 1024
+                                    if False, use multiples of 1000
+        Returns: string
+        '''
+
+        suffixes = {1000: ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+                    1024: ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']}
+
+        if size < 0:
+            raise ValueError('number must be non-negative')
+
+        multiple = 1024 if a_kilobyte_is_1024_bytes else 1000
+
+        for suffix in suffixes[multiple]:
+            size /= multiple
+            if size < multiple:
+                return '{0:.2f} {1}'.format(size, suffix)
+
+
+    def _setAndroidPerfs(self,scene):
+        """汇总Android的APM数据"""
+        cpu_data = self.readLog(scene=scene, filename=f'cpu.log')[1]
+        cpu_rate = f'{round(sum(cpu_data) / len(cpu_data), 2)}%'
+
+        battery_data = self.readLog(scene=scene, filename=f'battery.log')[1]
+        battery_rate = f'{round(sum(battery_data) / len(battery_data), 2)}%'
+
+        mem_data = self.readLog(scene=scene, filename=f'mem.log')[1]
+        mem_avg = f'{round(sum(mem_data) / len(mem_data), 2)}MB'
+
+        fps_data = self.readLog(scene=scene, filename=f'fps.log')[1]
+        fps_avg = f'{int(sum(fps_data) / len(fps_data))}hz/s'
+
+        jank_data = self.readLog(scene=scene, filename=f'jank.log')[1]
+        jank_avg = f'{int(sum(jank_data) / len(jank_data))}'
+
+        flow_send_data = self.readLog(scene=scene, filename=f'upflow.log')[1]
+        flow_send_data_all = f'{round(flow_send_data[len(flow_send_data) - 1] - flow_send_data[0], 2)}MB'
+
+        flow_recv_data = self.readLog(scene=scene, filename=f'downflow.log')[1]
+        flow_recv_data_all = f'{round(flow_recv_data[len(flow_recv_data) - 1] - flow_recv_data[0], 2)}MB'
+        apm_dict = {
+            "cpu": cpu_rate,
+            "mem": mem_avg,
+            "fps": fps_avg,
+            "jank": jank_avg,
+            "flow_send": flow_send_data_all,
+            "flow_recv": flow_recv_data_all,
+            "battery": battery_rate
+        }
+
+        return apm_dict
+
+    def _setiOSPerfs(self, scene):
+        """汇总iOS的APM数据"""
+        cpu_data = self.readLog(scene=scene, filename=f'cpu.log')[1]
+        cpu_rate = f'{round(sum(cpu_data) / len(cpu_data), 2)}%'
+
+        mem_data = self.readLog(scene=scene, filename=f'mem.log')[1]
+        mem_avg = f'{round(sum(mem_data) / len(mem_data), 2)}MB'
+
+        fps_data = self.readLog(scene=scene, filename=f'fps.log')[1]
+        fps_avg = f'{int(sum(fps_data) / len(fps_data))}hz/s'
+
+        flow_send_data = self.readLog(scene=scene, filename=f'upflow.log')[1]
+        flow_send_data_all = f'{self.approximateSize(sum(flow_send_data))}'
+
+        flow_recv_data = self.readLog(scene=scene, filename=f'downflow.log')[1]
+        flow_recv_data_all = f'{self.approximateSize(sum(flow_recv_data))}'
+
+        apm_dict = {
+            "cpu": cpu_rate,
+            "mem": mem_avg,
+            "fps": fps_avg,
+            "flow_send": flow_send_data_all,
+            "flow_recv": flow_recv_data_all,
+            "jank": 0,
+            "battery": 0
+        }
+
+        return apm_dict
 
