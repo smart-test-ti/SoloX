@@ -163,7 +163,7 @@ def start_web(host: str, port: int):
         pass
 
 
-def main(host='0.0.0.0', port=5000):
+def main(host=_hostIP(), port=50003):
     """
     启动入口
     :param host: 0.0.0.0
