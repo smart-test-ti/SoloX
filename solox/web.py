@@ -68,7 +68,7 @@ def checkPyVer():
     """
     :func: check python version
     """
-    if int(platform.python_version().split('.')[0]) == 3:
+    if int(platform.python_version().split('.')[0]) < 3:
         logger.error('python version must be >2,your python version is {}'.format(platform.python_version()))
         logger.error('please install python::3 and pip3 install -U solox')
         sys.exit()
