@@ -52,10 +52,10 @@ python3 -m solox --host=0.0.0.0 --port=50003
 ```
 ## Features
 #### Home
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1658068238447-22798ff6-1396-4e4c-9f7e-d72b8b21408e.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1658069390168-89455311-c990-4acf-9d51-a7d38da7152b.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 
-#### Logcat
+#### Error Log
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879631071-078b2185-0cbd-409c-9212-485f5841766d.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 
