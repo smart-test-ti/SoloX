@@ -9,8 +9,6 @@ import webbrowser
 import requests
 import socket
 import sys
-from solox.public.apm import d
-from solox.public.adb import adb
 from solox.view.apis import api
 from solox.view.pages import page
 from logzero import logger
@@ -28,7 +26,7 @@ thread_lock = Lock()
 
 
 @socketio.on('connect', namespace='/logcat')
-def test_connect():
+def connect():
     socketio.emit('start connect', {'data': 'Connected'}, namespace='/logcat')
     if not os.path.exists('adblog'):
         os.mkdir('adblog')
@@ -36,10 +34,10 @@ def test_connect():
     thread = True
     with thread_lock:
         if thread:
-            thread = socketio.start_background_task(target=background_thread)
+            thread = socketio.start_background_task(target=backgroundThread)
 
 
-def background_thread():
+def backgroundThread():
     global thread
     try:
         current_time = time.strftime("%Y%m%d%H", time.localtime())
@@ -58,7 +56,7 @@ def background_thread():
 
 
 @socketio.on('disconnect_request', namespace='/logcat')
-def disconnect_request():
+def disconnect():
     global thread
     logger.warning('Logcat client disconnected')
     thread = False
@@ -88,7 +86,7 @@ def _hostIP():
         s.close()
     return ip
 
-def check_port(port):
+def _listeningPort(port):
     """
     Detect whether the port is occupied and clean up
     :param port: System port
@@ -115,7 +113,7 @@ def check_port(port):
             os.system(pid_cmd)
 
 
-def get_running_status(host: str, port: int):
+def _getServerStatus(host: str, port: int):
     """
     get solox server status
     :param host:
@@ -133,7 +131,7 @@ def get_running_status(host: str, port: int):
         pass
 
 
-def open_url(host: str, port: int):
+def _openUrl(host: str, port: int):
     """
     Listen and open the url after solox is started
     :param host:
@@ -142,13 +140,13 @@ def open_url(host: str, port: int):
     """
     flag = True
     while flag:
-        logger.info('Start solox server...')
-        flag = get_running_status(host, port)
-    webbrowser.open(f'http://{host}:{port}', new=2)
-    logger.info(f'Running on http://{host}:{port} (Press CTRL+C to quit)')
+        logger.info('start solox server...')
+        flag = _getServerStatus(host, port)
+    webbrowser.open(f'http://{host}:{port}/?platform=Android', new=2)
+    logger.info(f'Running on http://{host}:{port}/?platform=Android (Press CTRL+C to quit)')
 
 
-def start_web(host: str, port: int):
+def _startServer(host: str, port: int):
     """
     Start the solox service
     :param host:
@@ -157,11 +155,8 @@ def start_web(host: str, port: int):
     """
     try:
         socketio.run(app, host=host, debug=False, port=port)
-    except KeyboardInterrupt:
-        logger.info('stop socketio success')
     except Exception:
         pass
-
 
 def main(host=_hostIP(), port=50003):
     """
@@ -172,13 +167,14 @@ def main(host=_hostIP(), port=50003):
     """
     try:
         checkPyVer()
-        check_port(port=port)
+        _listeningPort(port=port)
         pool = multiprocessing.Pool(processes=2)
-        pool.apply_async(start_web, (host, port))
-        pool.apply_async(open_url, (host, port))
+        pool.apply_async(_startServer, (host, port))
+        pool.apply_async(_openUrl, (host, port))
         pool.close()
         pool.join()
-    except KeyboardInterrupt:
-        logger.info('stop solox server success')
     except Exception:
         pass
+    except KeyboardInterrupt:
+        logger.info('stop solox success')
+

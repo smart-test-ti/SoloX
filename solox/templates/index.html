@@ -4,12 +4,32 @@
 
 {% block css %}{% endblock %}
 
-{% block page_title %}Performance Testing{% endblock %}
+{% block page_title %}
+{% if platform == 'Android' %}
+<a class="btn btn-primary" href="/?platform=Android">
+    <svg t="1651055484580" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2077" width="2000" height="2000"><path d="M133.336 914.896a381.336 81.488 0 1 0 762.672 0 381.336 81.488 0 1 0-762.672 0Z" fill="#B8CBCD" p-id="2078"></path><path d="M373.336 769.4a87.68 87.68 0 0 1-24-3.4v123.4a56 56 0 1 0 112 0v-120h-88z" fill="#B2EDA6" p-id="2079"></path><path d="M405.336 961.4c-39.696 0-72-32.296-72-72V766a16.008 16.008 0 0 1 20.36-15.392 72.248 72.248 0 0 0 19.64 2.792h88a16 16 0 0 1 16 16v120c0 39.704-32.304 72-72 72z m-40-176.32v104.32c0 22.056 17.944 40 40 40s40-17.944 40-40v-104h-72c-2.664 0-5.328-0.112-8-0.32z" fill="#3C663E" p-id="2080"></path><path d="M661.336 769.4c8.328 0 16.36-1.232 24-3.4v123.4a56 56 0 1 1-112 0v-120h88z" fill="#B2EDA6" p-id="2081"></path><path d="M629.336 961.4c-39.696 0-72-32.296-72-72v-120a16 16 0 0 1 16-16h88c6.496 0 13.096-0.936 19.64-2.792a15.984 15.984 0 0 1 20.368 15.392v123.4c-0.008 39.704-32.312 72-72.008 72z m-40-176v104c0 22.056 17.944 40 40 40s40-17.944 40-40v-104.32c-2.672 0.208-5.344 0.32-8 0.32h-72z" fill="#3C663E" p-id="2082"></path><path d="M765.336 393.4v368c0 35.344-104.824 64-244 64s-252-28.656-252-64v-368" fill="#B2EDA6" p-id="2083"></path><path d="M521.336 841.4c-92.696 0-268-16.72-268-80v-368a16 16 0 0 1 32 0v368c0 14.352 80.296 48 236 48 157.888 0 228-34.784 228-48v-368a16 16 0 0 1 32 0v368c0 55.264-130.592 80-260 80zM649.336 197.4a23.984 23.984 0 0 1-16.968-40.968l108-108a23.984 23.984 0 0 1 33.936 0 23.984 23.984 0 0 1 0 33.936l-108 108a23.928 23.928 0 0 1-16.968 7.032zM397.336 197.4a23.904 23.904 0 0 1-16.968-7.032l-108-108a23.984 23.984 0 0 1 0-33.936 23.984 23.984 0 0 1 33.936 0l108 108a23.984 23.984 0 0 1-16.968 40.968z" fill="#3C663E" p-id="2084"></path><path d="M877.336 661.4a56 56 0 1 1-112 0v-224a56 56 0 1 1 112 0v224z" fill="#B2EDA6" p-id="2085"></path><path d="M821.336 733.4c-39.696 0-72-32.296-72-72v-224c0-39.704 32.304-72 72-72s72 32.296 72 72v224c0 39.704-32.304 72-72 72z m0-336c-22.056 0-40 17.944-40 40v224c0 22.056 17.944 40 40 40s40-17.944 40-40v-224c0-22.056-17.944-40-40-40z" fill="#3C663E" p-id="2086"></path><path d="M269.336 661.4a56 56 0 1 1-112 0v-224a56 56 0 1 1 112 0v224z" fill="#B2EDA6" p-id="2087"></path><path d="M213.336 733.4c-39.696 0-72-32.296-72-72v-224c0-39.704 32.304-72 72-72s72 32.296 72 72v224c0 39.704-32.304 72-72 72z m0-336c-22.056 0-40 17.944-40 40v224c0 22.056 17.944 40 40 40s40-17.944 40-40v-224c0-22.056-17.944-40-40-40z" fill="#3C663E" p-id="2088"></path><path d="M725.336 809.4a24 24 0 0 1-24-24v-352a24 24 0 1 1 48 0v352a24 24 0 0 1-24 24z" fill="#3C663E" p-id="2089"></path><path d="M309.336 809.4a24 24 0 0 1-24-24v-352a24 24 0 1 1 48 0v352a24 24 0 0 1-24 24zM381.336 817.728a16 16 0 0 1-16-16V433.4a16 16 0 0 1 32 0v368.328a16 16 0 0 1-16 16z" fill="#FFFFFF" p-id="2090"></path><path d="M517.336 145.4c-136.968 0-248 111.032-248 248 0 35.344 112.824 64 252 64s244-28.656 244-64c0-136.968-111.04-248-248-248z" fill="#B2EDA6" p-id="2091"></path><path d="M521.336 473.4c-92.696 0-268-16.72-268-80 0-145.568 118.432-264 264-264s264 118.432 264 264c0 55.264-130.592 80-260 80z m-4-312c-127.928 0-232 104.08-232 232 0 14.352 80.296 48 236 48 157.888 0 228-34.784 228-48 0-127.92-104.08-232-232-232z" fill="#3C663E" p-id="2092"></path><path d="M413.336 321.4m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#FFFFFF" p-id="2093"></path><path d="M413.336 369.4c-26.472 0-48-21.528-48-48s21.528-48 48-48 48 21.528 48 48c0 26.464-21.536 48-48 48z m0-64c-8.824 0-16 7.176-16 16 0 8.816 7.176 16 16 16s16-7.184 16-16c0-8.824-7.176-16-16-16z" fill="#3C663E" p-id="2094"></path><path d="M621.336 321.4m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#FFFFFF" p-id="2095"></path><path d="M621.336 369.4c-26.472 0-48-21.528-48-48s21.528-48 48-48 48 21.528 48 48c0 26.464-21.536 48-48 48z m0-64c-8.824 0-16 7.176-16 16 0 8.816 7.176 16 16 16s16-7.184 16-16c0-8.824-7.176-16-16-16z" fill="#3C663E" p-id="2096"></path><path d="M629.336 969.4c-44.112 0-80-35.888-80-80v-32.392c-21.176 0.584-42.728 0.504-64-0.248v32.64c0 44.112-35.888 80-80 80s-80-35.888-80-80v-54.616c-59.92-16.544-88-37.52-88-65.384V737.52a73.848 73.848 0 0 1-24 3.872c-44.112 0-80-35.888-80-80v-224c0-44.112 35.888-80 80-80a79.52 79.52 0 0 1 33.496 7.352c14.36-136.56 130.2-243.352 270.504-243.352s256.136 106.792 270.504 243.36a79.52 79.52 0 0 1 33.496-7.352c44.112 0 80 35.888 80 80v224c0 44.112-35.888 80-80 80a73.848 73.848 0 0 1-24-3.872v31.872c0 28.168-28.832 49.976-88 66.416v53.584c0 44.104-35.888 80-80 80z m-56-161.392a24 24 0 0 1 24 24v57.392c0 17.648 14.352 32 32 32s32-14.352 32-32v-72.208c0-11.136 7.648-20.808 18.488-23.36 46.368-10.944 64.912-22.48 69.512-27.232v-105.2c0-13.256 3.992-24 17.248-24s15.248 10.744 15.248 24c0 7.504 7.504 32 39.504 32 17.648 0 32-14.352 32-32v-224c0-17.648-14.352-32-32-32s-40 14.352-40 32c0 13.256-2.744 24-16 24s-16-22.24-16-35.504l-8-32.504c0-123.52-100.488-224-224-224s-224 109.64-224 233.152l-8.504 34.848c0 13.256-2.248 24-15.504 24s-17.248-15.992-17.248-29.248c0-17.648-21.104-26.752-38.752-26.752s-32 14.352-32 32v224c0 17.648 14.352 32 32 32 36 0 41-22.992 41-30.504 0-13.256-2.232-25.144 11.016-25.144 13.256 0 19.984 10.384 19.984 23.64v104.72c4.976 4.712 23.784 15.824 69.544 26.68a24 24 0 0 1 18.456 23.352v73.248c0 17.648 14.352 32 32 32s32-14.352 32-32v-57.84c0-6.624 2.736-12.952 7.56-17.496a24.032 24.032 0 0 1 17.928-6.464c35.92 2.24 73.696 2.384 109.208 0.448l1.312-0.024z" fill="#3C663E" p-id="2097"></path><path d="M521.336 841.4c-92.696 0-268-16.72-268-80v-368a16 16 0 0 1 32 0v368c0 14.352 80.296 48 236 48 157.888 0 228-34.784 228-48v-368a16 16 0 0 1 32 0v368c0 55.264-130.592 80-260 80z" fill="#3C663E" p-id="2098"></path></svg>
+    Android
+</a>
+<a class="btn btn-default" href="/?platform=iOS" style="margin-left: 10px">
+    <svg t="1656846283611" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3683" width="200" height="200"><path d="M649.785306 161.506856C707.566241 88.169516 694.232179 8.165145 689.787492 1.498114c-6.667031-6.667031-93.338433 6.667031-153.341711 86.671402-53.336247 73.33734-53.336247 153.341711-46.669217 160.008742C496.443594 254.845289 583.114997 248.178259 649.785306 161.506856L649.785306 161.506856zM649.785306 161.506856M794.237643 534.860588c-6.667031-106.672495 93.338433-173.342804 113.339526-186.676866l0-6.667031c0 0-86.671402-106.672495-213.34499-100.005464-80.004371 6.667031-120.006557 46.669217-173.342804 46.669217-66.67031 0-126.673588-46.669217-200.010928-46.669217-60.003278 0-233.346082 53.336247-246.680145 280.015299C63.086584 748.205579 223.095326 959.328225 283.098605 999.330411c60.003278 40.002186 100.005464 26.668124 166.675774-6.667031 33.335154-20.001093 140.00765-26.668124 200.010928 13.334062 73.33734 26.668124 180.009835 6.667031 300.016392-260.014206C934.245292 748.205579 800.904674 714.870423 794.237643 534.860588L794.237643 534.860588zM794.237643 534.860588" p-id="3684"></path></svg>
+    iOS
+</a>
+{% elif platform == 'iOS' %}
+<a class="btn btn-default" href="/?platform=Android">
+    <svg t="1651055484580" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2077" width="2000" height="2000"><path d="M133.336 914.896a381.336 81.488 0 1 0 762.672 0 381.336 81.488 0 1 0-762.672 0Z" fill="#B8CBCD" p-id="2078"></path><path d="M373.336 769.4a87.68 87.68 0 0 1-24-3.4v123.4a56 56 0 1 0 112 0v-120h-88z" fill="#B2EDA6" p-id="2079"></path><path d="M405.336 961.4c-39.696 0-72-32.296-72-72V766a16.008 16.008 0 0 1 20.36-15.392 72.248 72.248 0 0 0 19.64 2.792h88a16 16 0 0 1 16 16v120c0 39.704-32.304 72-72 72z m-40-176.32v104.32c0 22.056 17.944 40 40 40s40-17.944 40-40v-104h-72c-2.664 0-5.328-0.112-8-0.32z" fill="#3C663E" p-id="2080"></path><path d="M661.336 769.4c8.328 0 16.36-1.232 24-3.4v123.4a56 56 0 1 1-112 0v-120h88z" fill="#B2EDA6" p-id="2081"></path><path d="M629.336 961.4c-39.696 0-72-32.296-72-72v-120a16 16 0 0 1 16-16h88c6.496 0 13.096-0.936 19.64-2.792a15.984 15.984 0 0 1 20.368 15.392v123.4c-0.008 39.704-32.312 72-72.008 72z m-40-176v104c0 22.056 17.944 40 40 40s40-17.944 40-40v-104.32c-2.672 0.208-5.344 0.32-8 0.32h-72z" fill="#3C663E" p-id="2082"></path><path d="M765.336 393.4v368c0 35.344-104.824 64-244 64s-252-28.656-252-64v-368" fill="#B2EDA6" p-id="2083"></path><path d="M521.336 841.4c-92.696 0-268-16.72-268-80v-368a16 16 0 0 1 32 0v368c0 14.352 80.296 48 236 48 157.888 0 228-34.784 228-48v-368a16 16 0 0 1 32 0v368c0 55.264-130.592 80-260 80zM649.336 197.4a23.984 23.984 0 0 1-16.968-40.968l108-108a23.984 23.984 0 0 1 33.936 0 23.984 23.984 0 0 1 0 33.936l-108 108a23.928 23.928 0 0 1-16.968 7.032zM397.336 197.4a23.904 23.904 0 0 1-16.968-7.032l-108-108a23.984 23.984 0 0 1 0-33.936 23.984 23.984 0 0 1 33.936 0l108 108a23.984 23.984 0 0 1-16.968 40.968z" fill="#3C663E" p-id="2084"></path><path d="M877.336 661.4a56 56 0 1 1-112 0v-224a56 56 0 1 1 112 0v224z" fill="#B2EDA6" p-id="2085"></path><path d="M821.336 733.4c-39.696 0-72-32.296-72-72v-224c0-39.704 32.304-72 72-72s72 32.296 72 72v224c0 39.704-32.304 72-72 72z m0-336c-22.056 0-40 17.944-40 40v224c0 22.056 17.944 40 40 40s40-17.944 40-40v-224c0-22.056-17.944-40-40-40z" fill="#3C663E" p-id="2086"></path><path d="M269.336 661.4a56 56 0 1 1-112 0v-224a56 56 0 1 1 112 0v224z" fill="#B2EDA6" p-id="2087"></path><path d="M213.336 733.4c-39.696 0-72-32.296-72-72v-224c0-39.704 32.304-72 72-72s72 32.296 72 72v224c0 39.704-32.304 72-72 72z m0-336c-22.056 0-40 17.944-40 40v224c0 22.056 17.944 40 40 40s40-17.944 40-40v-224c0-22.056-17.944-40-40-40z" fill="#3C663E" p-id="2088"></path><path d="M725.336 809.4a24 24 0 0 1-24-24v-352a24 24 0 1 1 48 0v352a24 24 0 0 1-24 24z" fill="#3C663E" p-id="2089"></path><path d="M309.336 809.4a24 24 0 0 1-24-24v-352a24 24 0 1 1 48 0v352a24 24 0 0 1-24 24zM381.336 817.728a16 16 0 0 1-16-16V433.4a16 16 0 0 1 32 0v368.328a16 16 0 0 1-16 16z" fill="#FFFFFF" p-id="2090"></path><path d="M517.336 145.4c-136.968 0-248 111.032-248 248 0 35.344 112.824 64 252 64s244-28.656 244-64c0-136.968-111.04-248-248-248z" fill="#B2EDA6" p-id="2091"></path><path d="M521.336 473.4c-92.696 0-268-16.72-268-80 0-145.568 118.432-264 264-264s264 118.432 264 264c0 55.264-130.592 80-260 80z m-4-312c-127.928 0-232 104.08-232 232 0 14.352 80.296 48 236 48 157.888 0 228-34.784 228-48 0-127.92-104.08-232-232-232z" fill="#3C663E" p-id="2092"></path><path d="M413.336 321.4m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#FFFFFF" p-id="2093"></path><path d="M413.336 369.4c-26.472 0-48-21.528-48-48s21.528-48 48-48 48 21.528 48 48c0 26.464-21.536 48-48 48z m0-64c-8.824 0-16 7.176-16 16 0 8.816 7.176 16 16 16s16-7.184 16-16c0-8.824-7.176-16-16-16z" fill="#3C663E" p-id="2094"></path><path d="M621.336 321.4m-32 0a32 32 0 1 0 64 0 32 32 0 1 0-64 0Z" fill="#FFFFFF" p-id="2095"></path><path d="M621.336 369.4c-26.472 0-48-21.528-48-48s21.528-48 48-48 48 21.528 48 48c0 26.464-21.536 48-48 48z m0-64c-8.824 0-16 7.176-16 16 0 8.816 7.176 16 16 16s16-7.184 16-16c0-8.824-7.176-16-16-16z" fill="#3C663E" p-id="2096"></path><path d="M629.336 969.4c-44.112 0-80-35.888-80-80v-32.392c-21.176 0.584-42.728 0.504-64-0.248v32.64c0 44.112-35.888 80-80 80s-80-35.888-80-80v-54.616c-59.92-16.544-88-37.52-88-65.384V737.52a73.848 73.848 0 0 1-24 3.872c-44.112 0-80-35.888-80-80v-224c0-44.112 35.888-80 80-80a79.52 79.52 0 0 1 33.496 7.352c14.36-136.56 130.2-243.352 270.504-243.352s256.136 106.792 270.504 243.36a79.52 79.52 0 0 1 33.496-7.352c44.112 0 80 35.888 80 80v224c0 44.112-35.888 80-80 80a73.848 73.848 0 0 1-24-3.872v31.872c0 28.168-28.832 49.976-88 66.416v53.584c0 44.104-35.888 80-80 80z m-56-161.392a24 24 0 0 1 24 24v57.392c0 17.648 14.352 32 32 32s32-14.352 32-32v-72.208c0-11.136 7.648-20.808 18.488-23.36 46.368-10.944 64.912-22.48 69.512-27.232v-105.2c0-13.256 3.992-24 17.248-24s15.248 10.744 15.248 24c0 7.504 7.504 32 39.504 32 17.648 0 32-14.352 32-32v-224c0-17.648-14.352-32-32-32s-40 14.352-40 32c0 13.256-2.744 24-16 24s-16-22.24-16-35.504l-8-32.504c0-123.52-100.488-224-224-224s-224 109.64-224 233.152l-8.504 34.848c0 13.256-2.248 24-15.504 24s-17.248-15.992-17.248-29.248c0-17.648-21.104-26.752-38.752-26.752s-32 14.352-32 32v224c0 17.648 14.352 32 32 32 36 0 41-22.992 41-30.504 0-13.256-2.232-25.144 11.016-25.144 13.256 0 19.984 10.384 19.984 23.64v104.72c4.976 4.712 23.784 15.824 69.544 26.68a24 24 0 0 1 18.456 23.352v73.248c0 17.648 14.352 32 32 32s32-14.352 32-32v-57.84c0-6.624 2.736-12.952 7.56-17.496a24.032 24.032 0 0 1 17.928-6.464c35.92 2.24 73.696 2.384 109.208 0.448l1.312-0.024z" fill="#3C663E" p-id="2097"></path><path d="M521.336 841.4c-92.696 0-268-16.72-268-80v-368a16 16 0 0 1 32 0v368c0 14.352 80.296 48 236 48 157.888 0 228-34.784 228-48v-368a16 16 0 0 1 32 0v368c0 55.264-130.592 80-260 80z" fill="#3C663E" p-id="2098"></path></svg>
+    Android
+</a>
+<a class="btn btn-primary" style="margin-left: 10px" href="/?platform=iOS">
+    <svg t="1656846283611" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3683" width="200" height="200"><path d="M649.785306 161.506856C707.566241 88.169516 694.232179 8.165145 689.787492 1.498114c-6.667031-6.667031-93.338433 6.667031-153.341711 86.671402-53.336247 73.33734-53.336247 153.341711-46.669217 160.008742C496.443594 254.845289 583.114997 248.178259 649.785306 161.506856L649.785306 161.506856zM649.785306 161.506856M794.237643 534.860588c-6.667031-106.672495 93.338433-173.342804 113.339526-186.676866l0-6.667031c0 0-86.671402-106.672495-213.34499-100.005464-80.004371 6.667031-120.006557 46.669217-173.342804 46.669217-66.67031 0-126.673588-46.669217-200.010928-46.669217-60.003278 0-233.346082 53.336247-246.680145 280.015299C63.086584 748.205579 223.095326 959.328225 283.098605 999.330411c60.003278 40.002186 100.005464 26.668124 166.675774-6.667031 33.335154-20.001093 140.00765-26.668124 200.010928 13.334062 73.33734 26.668124 180.009835 6.667031 300.016392-260.014206C934.245292 748.205579 800.904674 714.870423 794.237643 534.860588L794.237643 534.860588zM794.237643 534.860588" p-id="3684" data-spm-anchor-id="a313x.7781069.0.i1" class="selected" fill="#ffffff"></path></svg>
+    iOS
+</a>
+{% endif %}
+{% endblock %}
 
 {% block navbar_nav %}
 <ul class="navbar-nav">
     <li class="nav-item active" id="apm_tab" style="margin-left: 20px;font-weight: bolder;">
-        <a class="nav-link" href="." >
+        <a class="nav-link" href="/?platform=Android" >
             <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <svg t="1635060342196" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="82258" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FBD000" p-id="82259"></path><path d="M949.6 848H92.8c-4.8 0-8-3.2-8-8s3.2-8 8-8h856.8c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#074370" p-id="82260"></path><path d="M903.2 776c0 35.2-28.8 64-64 64H203.2c-35.2 0-64-28.8-64-64V293.6c0-35.2 28.8-64 64-64h636c35.2 0 64 28.8 64 64V776z" fill="#415E6D" p-id="82261"></path><path d="M839.2 797.6H203.2c-35.2 0-64-28.8-64-64V776c0 35.2 28.8 64 64 64h636c35.2 0 64-28.8 64-64v-42.4c0 35.2-28.8 64-64 64z" fill="#324D5B" p-id="82262"></path><path d="M839.2 229.6H203.2c-35.2 0-64 28.8-64 64V728h764V293.6c0-35.2-28.8-64-64-64z" fill="#EAEAEA" p-id="82263"></path><path d="M901.6 736H144c-4.8 0-8-3.2-8-8s3.2-8 8-8h757.6c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#074370" p-id="82264"></path><path d="M816 784m-24 0a24 24 0 1 0 48 0 24 24 0 1 0-48 0Z" fill="#28A5C6" p-id="82265"></path><path d="M216 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#3AD0F9" p-id="82266"></path><path d="M280 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#FF4848" p-id="82267"></path><path d="M344 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#75B600" p-id="82268"></path><path d="M408 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#FFFFFF" p-id="82269"></path><path d="M904 592h-72c-4.8 0-8-3.2-8-8s4-8 8-8h71.2c4.8 0 8 3.2 8 8s-3.2 8-7.2 8zM639.2 664c-3.2 0-6.4-2.4-8-5.6L592 523.2l-14.4 63.2c-0.8 4-4 6.4-8 6.4H391.2c-4 0-7.2-2.4-8-6.4l-21.6-119.2-17.6 73.6c-0.8 4-5.6 7.2-9.6 5.6-4-0.8-7.2-5.6-5.6-9.6L355.2 424c0.8-4 4-6.4 8-6.4s7.2 3.2 8 6.4l27.2 152h166.4L584 488.8c0.8-3.2 4-8.8 8-8.8s6.4 4.8 8 8.8l38.4 132.8 40.8-224.8c0.8-4 4-6.4 8-6.4s7.2 2.4 8 6.4L732 576h76c4.8 0 8 3.2 8 8s-3.2 8-8 8H725.6c-4 0-7.2-2.4-8-6.4l-30.4-146.4-40 218.4c-0.8 3.2-4 6.4-8 6.4 0.8 0 0.8 0 0 0zM305.6 680c-4 0-7.2-2.4-8-6.4L268 536l-15.2 50.4c-0.8 3.2-4 5.6-8 5.6H146.4c-4.8 0-8-3.2-8-8s3.2-8 8-8h92.8l22.4-74.4c0.8-3.2 4.8-5.6 8-5.6 4 0 6.4 2.4 7.2 6.4l28.8 132.8 11.2-47.2c0.8-4 5.6-7.2 9.6-5.6 4 0.8 7.2 5.6 5.6 9.6l-19.2 82.4c0 3.2-4 5.6-7.2 5.6z" fill="#074370" p-id="82270"></path><path d="M776 304h-56c-4.8 0-8-3.2-8-8s3.2-8 8-8h56c4.8 0 8 3.2 8 8s-3.2 8-8 8zM672 304H488c-4 0-8-3.2-8-8s3.2-8 8-8h184c4 0 8 3.2 8 8s-3.2 8-8 8zM424 304H224c-4.8 0-8-3.2-8-8s4-8 8-8h200c4.8 0 8 3.2 8 8s-4 8-8 8zM711.2 344H584c-4.8 0-8-3.2-8-8s3.2-8 8-8h127.2c4.8 0 8 3.2 8 8s-3.2 8-8 8zM528 344H224c-4.8 0-8-3.2-8-8s4-8 8-8h304c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#ADADAD" p-id="82271"></path><path d="M840 848H200c-40 0-72-32-72-72V296c0-40 32-72 72-72h640c40 0 72 32 72 72v480c0 40-32 72-72 72zM200 240c-31.2 0-56 24.8-56 56v480c0 31.2 24.8 56 56 56h640c31.2 0 56-24.8 56-56V296c0-31.2-24.8-56-56-56H200z" fill="#074370" p-id="82272"></path><path d="M864 553.6c-4.8 0-8-3.2-8-8v-80c0-4.8 3.2-8 8-8s8 3.2 8 8v80c0 4.8-3.2 8-8 8zM864 425.6c-4.8 0-8-3.2-8-8V312c0-22.4-17.6-40-40-40H408c-4.8 0-8-3.2-8-8s3.2-8 8-8h408c31.2 0 56 24.8 56 56v105.6c0 4.8-3.2 8-8 8zM345.6 272H224c-4.8 0-8-3.2-8-8s3.2-8 8-8h121.6c4.8 0 8 3.2 8 8s-4 8-8 8zM64 464c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32z m0-48c-8.8 0-16 7.2-16 16s7.2 16 16 16 16-7.2 16-16-7.2-16-16-16zM656 176c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32z m0-48c-8.8 0-16 7.2-16 16s7.2 16 16 16 16-7.2 16-16-7.2-16-16-16zM474.4 124c0-3.2-3.2-6.4-8-7.2l-15.2-2.4c-4-0.8-8.8-4.8-8.8-8.8l-2.4-15.2c-0.8-4-4-8-7.2-8s-6.4 3.2-7.2 8l-2.4 15.2c-0.8 4-4.8 8.8-8.8 8.8l-15.2 2.4c-4 0.8-8 4-8 7.2s3.2 6.4 8 7.2l15.2 2.4c4 0.8 8.8 4.8 8.8 8.8l2.4 15.2c0.8 4 4 8 7.2 8s6.4-3.2 7.2-8l2.4-16.8c0.8-4 4.8-8 8.8-8.8l14.4-0.8c5.6-1.6 8.8-4 8.8-7.2zM502.4 928c0-3.2-3.2-6.4-8-7.2l-15.2-2.4c-4-0.8-8.8-4.8-8.8-8.8l-2.4-15.2c-0.8-4-4-8-7.2-8s-6.4 3.2-7.2 8l-2.4 15.2c-0.8 4-4.8 8.8-8.8 8.8l-15.2 2.4c-4 0.8-8 4-8 7.2s3.2 6.4 8 7.2l15.2 2.4c4 0.8 8.8 4.8 8.8 8.8l2.4 15.2c0.8 4 4 8 7.2 8s6.4-3.2 7.2-8l2.4-16.8c0.8-4 4.8-8 8.8-8.8l14.4-0.8c5.6-1.6 8.8-4 8.8-7.2z" fill="#FFFFFF" p-id="82273"></path></svg>
             </span>
@@ -52,15 +72,15 @@
             <!--<option>Warning</option>-->
             <!--<option>Error</option>-->
         <!--</select>-->
-        <!--<a id="logcat-start" class="btn" onclick="start_log()">-->
+        <!--<a id="logcat_start" class="btn" onclick="startLogcat()">-->
             <!--<svg t="1647757457022" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="21859" width="200" height="200"><path d="M511.4 512.1m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" fill="#006DFC" p-id="21860"></path><path d="M658.4 555.6L475.5 661.1c-33.4 19.3-75-4.8-75-43.3V406.6c0-38.5 41.7-62.6 75-43.3l182.9 105.6c33.3 19.3 33.3 67.4 0 86.7z" fill="#FFFFFF" p-id="21861"></path></svg>-->
             <!--Start-->
         <!--</a>-->
-        <!--<a id="logcat-stop" class="btn" onclick="stop_log()"  style="display: none">-->
+        <!--<a id="logcat_stop" class="btn" onclick="stopLogcat()"  style="display: none">-->
             <!--<svg t="1638096947956" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="235254" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#EE827F" p-id="235255"></path><path d="M512 512m-443.191534 0a443.191534 443.191534 0 1 0 886.383068 0 443.191534 443.191534 0 1 0-886.383068 0Z" fill="#E64537" p-id="235256"></path><path d="M0 512C0 794.638448 229.180952 1023.8194 512 1023.8194V0C229.180952 0 0 229.180952 0 512z" fill="#FEFFFF" opacity=".1" p-id="235257"></path><path d="M477.866667 683.208466H375.647266c-1.083598 0-1.986596-0.902998-1.986596-1.986597V342.597531c0-1.083598 0.902998-1.986596 1.986596-1.986596h102.4c1.083598 0 1.986596 0.902998 1.986596 1.986596v338.443739c-0.1806 1.264198-1.083598 2.167196-2.167195 2.167196zM648.352734 683.208466h-102.4c-1.083598 0-1.986596-0.902998-1.986596-1.986597V342.597531c0-1.083598 0.902998-1.986596 1.986596-1.986596H648.352734c1.083598 0 1.986596 0.902998 1.986596 1.986596v338.443739c0 1.264198-0.902998 2.167196-1.986596 2.167196z" fill="#FFFFFF" p-id="235258"></path></svg>-->
             <!--Stop-->
         <!--</a>-->
-        <a id="logcat-copy" class="btn" onclick="copyLogcat()">
+        <a id="logcat-copy" class="btn" onclick="cppyLogcat()">
             <svg t="1647757557543" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="26288" width="200" height="200"><path d="M943.4112 480.3072v101.3248c0 95.5904-61.3376 176.7936-146.7904 206.4896 7.936-22.6304 12.288-46.8992 12.288-72.192V437.248c0-120.7808-97.8944-218.6752-218.6752-218.6752H311.6032c-25.1904 0-49.3568 4.3008-71.8848 12.1344 29.8496-85.248 110.9504-146.432 206.3872-146.432h278.6816c120.7808 0 218.6752 97.8944 218.6752 218.6752v177.3568z" fill="#FFD833" p-id="26289"></path><path d="M943.4112 454.7072c-14.1312 0-25.6 11.4688-25.6 25.6v101.3248c0 64.9728-32.6144 124.416-84.6336 159.744 0.8704-8.448 1.3312-16.896 1.3312-25.4464V437.2992c0-134.7072-109.568-244.2752-244.2752-244.2752H311.6032c-8.3456 0-16.6912 0.4096-24.9856 1.28a193.05984 193.05984 0 0 1 159.5392-84.3776h278.6816c106.4448 0 193.0752 86.5792 193.0752 193.0752 0 14.1312 11.4688 25.6 25.6 25.6s25.6-11.4688 25.6-25.6c0-134.656-109.568-244.2752-244.2752-244.2752H446.1056c-89.5488 0-171.776 48.9472-214.6304 127.6928a41.69216 41.69216 0 0 0-5.0688 21.4528c-94.8736 28.5184-164.1984 116.6336-164.1984 220.672v306.3808c0 127.0272 103.3728 230.4 230.4 230.4h306.3808c101.6832 0 188.1088-66.2016 218.624-157.7984 91.0848-37.4272 151.4496-126.5152 151.4496-225.8944V480.3072c-0.0512-14.1312-11.52-25.6-25.6512-25.6z m-344.4224 459.4176H292.608c-98.816 0-179.2-80.384-179.2-179.2V428.544c0-98.816 80.384-179.2 179.2-179.2h306.3808c98.816 0 179.2 80.384 179.2 179.2v306.3808c0 15.3088-1.9456 30.1056-5.5296 44.288l-0.1536 0.4608c-0.4096 1.1264-0.7168 2.2528-0.9216 3.3792-21.1456 75.52-90.4704 131.072-172.5952 131.072z" fill="#44454A" p-id="26290"></path><path d="M943.4112 428.8512c-14.1312 0-25.6-11.4688-25.6-25.6v-17.92c0-14.1312 11.4688-25.6 25.6-25.6s25.6 11.4688 25.6 25.6v17.92c0 14.1312-11.4688 25.6-25.6 25.6z" fill="#44454A" p-id="26291"></path></svg>
             Copy
         </a>
@@ -94,6 +114,7 @@
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="cpu_checkbox" type="checkbox" checked name="cpu"> CPU</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_checkbox" type="checkbox" checked name="mem"> Memory</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> Network Data</label>
+            {% if platform == 'Android' %}
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" checked> FPS</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" checked> Battery</label>
             <div class="dropdown-divider"></div>
@@ -106,17 +127,19 @@
                     </label>
                 </span>
             </a>
+            {% endif %}
         </div>
     </div>
     <div class="apm-data mt-1" style="width: 75%;">
         <div id="cpu" class="mb-3 cpu" style="min-width:400px;height:300px"></div>
         <div id="mem"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
+        <div id="flow_send" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
+        <div id="flow_recv" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
+        {% if platform == 'Android' %}
         <div id="fps" class="mb-3 fps" style="min-width:400px;height:300px"></div>
         <div id="jank" class="fps mb-3" style="min-width:400px;height:300px"></div>
         <div id="battery" class="mb-3 battery" style="min-width:400px;height:300px"></div>
-        <div id="flow_send" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
-        <div id="flow_recv" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
-
+        {% endif %}
     </div>
 
     <div class="logcat-data dropdown-menu dropdown-menu-demo" style="width: 75%;display:none">
@@ -129,41 +152,41 @@
 {% block js %}
 <script>
 
-  $(document).ready(function() {
+    const platform = '{{ platform }}'; // 平台
+    var stop = false; // 任务状态
 
-      $('#debug-connect').click()
+    const NETWORK_UNIT = {
+        Android:'MB',
+        iOS:'KB'
+    };
 
-      $(".form-check-input").each(function(){
-          $(this).change(function() {
-              let flag1 = $(this).is(':checked');
-              if(flag1){
-                  $("."+$(this).prop('name')).show()
-              }else{
-                  $("."+$(this).prop('name')).hide()
-              }
-          });
-      });
+    function ruteCheck(){
+        if(['Android','iOS'].indexOf(platform) === -1 && platform){
+            this.location.href = '/?platform=Android';
+        }
+    }
 
-      $('#logcat-switch').change(function() {
-          let flag1 = $(this).is(':checked');
-          if(flag1){
-              $('.apm-btn-list').hide()
-              $('.apm-data').hide()
-              $('.logcat-btn-list').show()
-              $('.logcat-data').show()
+    $(document).ready(function() {
 
-          }else{
-              $('.logcat-btn-list').hide()
-              $('.logcat-data').hide()
-              $('.apm-btn-list').show()
-              $('.apm-data').show()
-          }
-      });
+        ruteCheck();
+
+        $('#debug-connect').click();
+
+        $(".form-check-input").each(function(){
+            $(this).change(function() {
+                let flag1 = $(this).is(':checked');
+                if(flag1){
+                    $("."+$(this).prop('name')).show()
+                }else{
+                    $("."+$(this).prop('name')).hide()
+                }
+            });
+        });
   });
 
-  $('#debug-connect').click(function () {
-      initialize_env()
-  });
+    $('#debug-connect').click(function () {
+        initialize_env()
+    });
 
   $('#select-device').change(function() {
       $.ajax({
@@ -172,17 +195,18 @@
           async: true,
           cache: false,
           data:{
-              'device':this.value
+              platform:platform,
+              device:this.value
           },
           beforeSend: function () {
               $('#select-app').empty()
               $('#select-app').append('<option></option>')
-              SwalLoading('Package initialization!','Initializing Packages, please wait.')
+              SwalLoading('Package initialization!','Initializing Packages, please wait。')
           },
           complete: function () {},
           success: function (data) {
               if(data['status'] != 1 ) {
-                  SwalFire('error', 'Connet failed !', 'Please check if the device is connected.', 2000)
+                  SwalFire('error', 'Connet failed !', 'Please check if the device is connected', 2000)
               }else{
                   for(var i=0;i<data['pkgnames'].length;i++){
                       $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>')
@@ -210,29 +234,29 @@
 
   function initialize_env(){
       $.ajax({
-          url: "/device/ids",
-          type: "POST",
+          url: "/device/ids?platform="+platform,
+          type: "GET",
           async: true,
           cache: false,
           beforeSend: function () {
-              $('#select-device').empty()
-              $('#select-app').empty()
-              $('#select-app').append('<option></option>')
-              SwalLoading('Device initialization!','Initializing device environment, please wait.')
+              $('#select-device').empty();
+              $('#select-app').empty();
+              $('#select-app').append('<option></option>');
+              SwalLoading('Device initialization!','Initializing device environment, please wait。');
           },
           complete: function () {},
           success: function (data) {
-              console.log(data['pkgnames'])
+              console.log(data);
               if(data['status'] != 1 ) {
-                  SwalFire('error', 'Connet failed !', 'Please check if the device is connected.', 2000)
+                  SwalFire('error', 'Connet failed !', 'Please check if the device is connected', 2000);
               }else{
                   for(var i=0;i<data['devices'].length;i++){
-                      $('#select-device').append('<option>'+data['devices'][i]+'</option>')
+                      $('#select-device').append('<option>'+data['devices'][i]+'</option>');
                   }
                   for(var i=0;i<data['pkgnames'].length;i++){
-                      $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>')
+                      $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>');
                   }
-                  swal.close()
+                  swal.close();
               }
           }
       });
@@ -247,25 +271,26 @@
           async: true,
           cache: false,
           data:{
+              platform:platform,
               pkgname:pkgname,
               device:device
           },
           beforeSend: function () {},
           complete: function () {},
           success: function (data) {
-              if(data['status'] == 1){
-                  try {
-                      var series = cpu_chart.series[0]
-                      var x = (new Date()).getTime(),
-                          y = data['cpuRate'];
-                      series.addPoint([x, y], true, true);
-                      setTimeout(getCpuRate(pkgname,device), 2000);
-                  }catch (e) {}
-              }else{
-                  SwalFire('error','Stop testing',data['msg'],2000)
-                  setTimeout(function () {
-                      $('#stop-apm').click()
-                  }, 2000);
+              console.log(data)
+              if(stop == false){
+                  if(data['status'] == 1){
+                      try {
+                          var series = cpu_chart.series[0];
+                          var x = (new Date()).getTime(),
+                              y = data['cpuRate'];
+                          series.addPoint([x, y], true, true);
+                          setTimeout(getCpuRate(pkgname,device), 2000);
+                      }catch (e) {}
+                  }else{
+                      SwalFire('error','something error',data['msg'],2000);
+                  }
               }
           }
       });
@@ -278,24 +303,25 @@
           async: true,
           cache: false,
           data:{
+              platform:platform,
               device:device
           },
           beforeSend: function () {},
           complete: function () {},
           success: function (data) {
-              if(data['status'] == 1){
-                  try {
-                      var series = battery_chart.series[0]
-                      var x = (new Date()).getTime(),
-                          y = data['battery'];
-                      series.addPoint([x, y], true, true);
-                      setTimeout(getBattery(device), 2000);
-                  }catch (e) {}
-              }else{
-                  SwalFire('error','Stop testing',data['msg'],2000)
-                  setTimeout(function () {
-                      $('#stop-apm').click()
-                  }, 2000);
+              if(stop == false){
+                  console.log(data)
+                  if(data['status'] == 1){
+                      try {
+                          var series = battery_chart.series[0];
+                          var x = (new Date()).getTime(),
+                              y = data['battery'];
+                          series.addPoint([x, y], true, true);
+                          setTimeout(getBattery(device), 2000);
+                      }catch (e) {}
+                  }else{
+                      SwalFire('error','something error',data['msg'],2000);
+                  }
               }
           }
       });
@@ -308,25 +334,26 @@
           async: true,
           cache: false,
           data:{
+              platform:platform,
               pkgname:pkgname,
               device:device
           },
           beforeSend: function () {},
           complete: function () {},
           success: function (data) {
-              if(data['status'] == 1){
-                  try {
-                      var series = mem_chart.series[0]
-                      var x = (new Date()).getTime(),
-                          y = data['pss'];
-                      series.addPoint([x, y], true, true);
-                      setTimeout(getMemPss(pkgname,device), 2000);
-                  }catch (e) {}
-              }else{
-                  SwalFire('error','Stop testing',data['msg'],2000)
-                  setTimeout(function () {
-                      $('#stop-apm').click()
-                  }, 2000);
+              console.log(data)
+              if(stop == false){
+                  if(data['status'] == 1){
+                      try {
+                          var series = mem_chart.series[0];
+                          var x = (new Date()).getTime(),
+                              y = data['pss'];
+                          series.addPoint([x, y], true, true);
+                          setTimeout(getMemPss(pkgname,device), 2000);
+                      }catch (e) {}
+                  }else{
+                      SwalFire('error','something error',data['msg'],2000);
+                  }
               }
           }
       });
@@ -334,11 +361,12 @@
 
   function getUpFlow(pkgname,device)  {
       $.ajax({
-          url: "/apm/flow",
+          url: "/apm/upflow",
           type: "GET",
           async: true,
           cache: false,
           data:{
+              platform:platform,
               pkgname:pkgname,
               device:device
           },
@@ -346,21 +374,22 @@
           complete: function () {},
           success: function (data) {
               console.log(data)
-              if(data['status'] == 1){
-                  try {
-                      var series = up_flow_chart.series[0]
-                      var x = (new Date()).getTime(),
-                          y = data['send'];
-                      series.addPoint([x, y], true, true);
-                      setTimeout(getUpFlow(pkgname,device), 3000);
-                  }catch (e) {
-                      console.log(e)
+              console.log(stop)
+              if(stop == false){
+                  if(data['status'] == 1){
+                      try {
+                          var series = up_flow_chart.series[0];
+                          var x = (new Date()).getTime(),
+                              y = data['data'];
+                          console.log(y)
+                          series.addPoint([x, y], true, true);
+                          setTimeout(getUpFlow(pkgname,device), 2000);
+                      }catch (e) {
+                          console.log(e)
+                      }
+                  }else{
+                      SwalFire('error','something error',data['msg'],2000);
                   }
-              }else{
-                  SwalFire('error','Stop testing',data['msg'],2000)
-                  setTimeout(function () {
-                      $('#stop-apm').click()
-                  }, 2000);
               }
           }
       });
@@ -368,11 +397,12 @@
 
   function getDownFlow(pkgname,device)  {
       $.ajax({
-          url: "/apm/flow",
+          url: "/apm/downflow",
           type: "GET",
           async: true,
           cache: false,
           data:{
+              platform:platform,
               pkgname:pkgname,
               device:device
           },
@@ -380,21 +410,22 @@
           complete: function () {},
           success: function (data) {
               console.log(data)
-              if(data['status'] == 1){
-                  try {
-                      var series = down_flow_chart.series[0]
-                      var x = (new Date()).getTime(),
-                          y = data['recv'];
-                      series.addPoint([x, y], true, true);
-                      setTimeout(getDownFlow(pkgname,device), 3000);
-                  }catch (e) {
-                      console.log(e)
+              console.log(stop)
+              if(stop == false){
+                  if(data['status'] == 1){
+                      try {
+                          var series = down_flow_chart.series[0];
+                          var x = (new Date()).getTime(),
+                              y = data['data'];
+                          console.log(y)
+                          series.addPoint([x, y], true, true);
+                          setTimeout(getDownFlow(pkgname,device), 2000);
+                      }catch (e) {
+                          console.log(e)
+                      }
+                  }else{
+                      SwalFire('error','something error',data['msg'],2000);
                   }
-              }else{
-                  SwalFire('error','Stop testing',data['msg'],2000)
-                  setTimeout(function () {
-                      $('#stop-apm').click()
-                  }, 2000);
               }
           }
       });
@@ -407,6 +438,7 @@
           async: true,
           cache: false,
           data:{
+              platform:platform,
               pkgname:pkgname,
               device:device
           },
@@ -414,19 +446,18 @@
           complete: function () {},
           success: function (data) {
               console.log(data)
-              if(data['status'] == 1){
-                  try {
-                      var series = fps_chart.series[0]
-                      var x = (new Date()).getTime(),
-                          y = data['fps'];
-                      series.addPoint([x, y], true, true);
-                      setTimeout(getFps(pkgname,device), 2000);
-                  }catch (e) {}
-              }else{
-                  SwalFire('error','Stop testing',data['msg'],2000)
-                  setTimeout(function () {
-                      $('#stop-apm').click()
-                  }, 3000);
+              if(stop == false){
+                  if(data['status'] == 1){
+                      try {
+                          var series = fps_chart.series[0];
+                          var x = (new Date()).getTime(),
+                              y = data['fps'];
+                          series.addPoint([x, y], true, true);
+                          setTimeout(getFps(pkgname,device), 2000);
+                      }catch (e) {}
+                  }else{
+                      SwalFire('error','something error',data['msg'],2000);
+                  }
               }
           }
       });
@@ -439,6 +470,7 @@
           async: true,
           cache: false,
           data:{
+              platform:platform,
               pkgname:pkgname,
               device:device
           },
@@ -446,19 +478,18 @@
           complete: function () {},
           success: function (data) {
               console.log(data)
-              if(data['status'] == 1){
-                  try {
-                      var series = jank_chart.series[0]
-                      var x = (new Date()).getTime(),
-                          y = data['jank'];
-                      series.addPoint([x, y], true, true);
-                      setTimeout(getJank(pkgname,device), 2000);
-                  }catch (e) {}
-              }else{
-                  SwalFire('error','Stop testing',data['msg'],2000)
-                  setTimeout(function () {
-                      $('#stop-apm').click()
-                  }, 3000);
+              if(stop == false){
+                  if(data['status'] == 1){
+                      try {
+                          var series = jank_chart.series[0];
+                          var x = (new Date()).getTime(),
+                              y = data['jank'];
+                          series.addPoint([x, y], true, true);
+                          setTimeout(getJank(pkgname,device), 2000);
+                      }catch (e) {}
+                  }else{
+                      SwalFire('error','something error',data['msg'],2000);
+                  }
               }
           }
       });
@@ -479,7 +510,7 @@
       }],
       inputEnabled: false,
       selected: 0
-  }
+  };
 
   var series =  [{
       name : 'value',
@@ -494,14 +525,14 @@
           }
           return data;
       }())
-  }]
+  }];
 
-  function cpu_initialize(){
-      //初始化cpu
-      var cpu_chart = Highcharts.stockChart('cpu', {
+  function highcharts_initialize(apmType,title){
+      //charts初始化
+      let apm_chart = Highcharts.stockChart(apmType, {
           rangeSelector: rangeSelector,
           title : {
-              text : 'CPU（%）'
+              text : title
           },
           tooltip: {
               split: false
@@ -519,229 +550,88 @@
               enabled: false
           },
           yAxis: {
-              max:100,
-              min:0,
-              tickInterval:10,
               opposite:false
           },
           series : series
       });
+      return apm_chart
+
+  };
+
+  function cpu_initialize(){
+      //初始化cpu
+      let cpu_chart = highcharts_initialize('cpu','CPU（%）');
       return cpu_chart
   }
 
   function battery_initialize(){
       //初始化battery
-      var battery_chart = Highcharts.stockChart('battery', {
-          rangeSelector: rangeSelector,
-          title : {
-              text : 'Battery（%）'
-          },
-          tooltip: {
-              split: false
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-			enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              max:100,
-              min:0,
-              tickInterval:10,
-              opposite:false
-          },
-          series : series
-      });
-      return battery_chart
+      if(platform === 'Android'){
+          let battery_chart = highcharts_initialize('battery','Battery（%）');
+          return battery_chart
+      }else{
+          return null
+      }
+
   }
 
   function mem_initialize(){
       //初始化mem
-      var mem_chart = Highcharts.stockChart('mem', {
-          rangeSelector: rangeSelector,
-          title : {
-              text : 'MEM（MB）'
-          },
-          tooltip: {
-              split: false
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-			enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              max:3000,
-              min:0,
-              tickInterval:500,
-              opposite:false
-          },
-          series : series
-      });
+      let mem_chart = highcharts_initialize('mem','MEM（MB）');
       return mem_chart
   }
 
   function up_flow_initialize(){
       //初始化send flow
-      var up_flow_chart = Highcharts.stockChart('flow_send', {
-          rangeSelector: rangeSelector,
-          title : {
-              text : 'Send Network Data（MB）'
-          },
-          tooltip: {
-              split: true
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-			enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              tickInterval:500,
-              opposite:false
-          },
-          series : series
-      });
+      let up_flow_chart = highcharts_initialize('flow_send','Send Network Data（'+NETWORK_UNIT[platform]+'）');
       return up_flow_chart
   }
 
   function down_flow_initialize(){
       //初始化Recv flow
-      var down_flow_chart = Highcharts.stockChart('flow_recv', {
-          rangeSelector: rangeSelector,
-          title : {
-              text : 'Recv Network Data（MB）'
-          },
-          tooltip: {
-              split: true
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-			enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              tickInterval:500,
-              opposite:false
-          },
-          series : series
-      });
+      let down_flow_chart = highcharts_initialize('flow_recv','Recv Network Data（'+NETWORK_UNIT[platform]+'）');
       return down_flow_chart
   }
 
   function fps_initialize(){
       //初始化fps
-      var fps_chart = Highcharts.stockChart('fps', {
-          rangeSelector: rangeSelector,
-          title : {
-              text : 'FPS（HZ）'
-          },
-          tooltip: {
-              split: false
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-			enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              max:100,
-              min:0,
-              tickInterval:10,
-              opposite:false
-          },
-          series : series
-      });
-      return fps_chart
+      if(platform === 'Android'){
+          let fps_chart = highcharts_initialize('fps','FPS（HZ）');
+          return fps_chart
+      }else{
+          return null
+      }
   }
 
   function jank_initialize(){
       //初始化jank
-      var jank_chart = Highcharts.stockChart('jank', {
-          rangeSelector: rangeSelector,
-          title : {
-              text : 'Jank'
-          },
-          tooltip: {
-              split: false
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-			enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              max:100,
-              min:0,
-              tickInterval:10,
-              opposite:false
-          },
-          series : series
-      });
-      return jank_chart
+      if(platform === 'Android'){
+          let jank_chart = highcharts_initialize('jank','Jank');
+          return jank_chart
+      }else{
+          return null
+      }
   }
 
-  var cpu_chart = cpu_initialize()
-  var mem_chart = mem_initialize()
-  var up_flow_chart = up_flow_initialize()
-  var down_flow_chart = down_flow_initialize()
-  var fps_chart = fps_initialize()
-  var jank_chart = jank_initialize()
-  var battery_chart = battery_initialize()
+  var cpu_chart = cpu_initialize();
+  var mem_chart = mem_initialize();
+  var up_flow_chart = up_flow_initialize();
+  var down_flow_chart = down_flow_initialize();
+  var fps_chart = fps_initialize();
+  var jank_chart = jank_initialize();
+  var battery_chart = battery_initialize();
 
-  function start_collect_cpu(device,pkgname){
-      cpu_initialize()
-      cpu_chart = Highcharts.stockChart('cpu', {
+  function collectPers(device,pkgname=null,type,title,func){
+      // 收集性能数据初始化
+      let chartPers = Highcharts.stockChart(type, {
           chart : {
               events : {
-                  load : getCpuRate(pkgname,device)
+                  load : func
               }
           },
           rangeSelector: rangeSelector,
           title : {
-              text : 'CPU（%）'
+              text : title
           },
           tooltip: {
               split: false
@@ -759,18 +649,23 @@
               enabled: false
           },
           yAxis: {
-              max:100,
-              min:0,
-              tickInterval:10,
               opposite:false
           },
           series : series
       });
 
+      return chartPers;
+
+  }
+
+  function start_collect_cpu(device,pkgname){
+      cpu_initialize();
+      cpu_chart = collectPers(device,pkgname,'cpu','CPU（%）',getCpuRate(pkgname,device));
+
   }
 
   function start_collect_battery(device){
-      battery_initialize()
+      battery_initialize();
       battery_chart = Highcharts.stockChart('battery', {
           chart : {
               events : {
@@ -797,9 +692,6 @@
               enabled: false
           },
           yAxis: {
-              max:100,
-              min:0,
-              tickInterval:10,
               opposite:false
           },
           series : series
@@ -807,224 +699,66 @@
 
   }
 
-
   function start_collect_mem(device,pkgname){
-      mem_initialize()
-      mem_chart = Highcharts.stockChart('mem', {
-          chart : {
-              events : {
-                  load : getMemPss(pkgname,device)
-              }
-          },
-          rangeSelector: rangeSelector,
-          title : {
-              text : 'MEM（MB）'
-          },
-          tooltip: {
-              split: false
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-              enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              max:3000,
-              min:0,
-              tickInterval:500,
-              opposite:false
-          },
-          series : series
-      });
-
+      mem_initialize();
+      mem_chart = collectPers(device,pkgname,'mem','MEM（MB）',getMemPss(pkgname,device));
   }
 
   function start_collect_upflow(device,pkgname){
-      up_flow_initialize()
-      up_flow_chart = Highcharts.stockChart('flow_send', {
-          chart : {
-              events : {
-                  load : getUpFlow(pkgname,device)
-              }
-          },
-          rangeSelector: rangeSelector,
-          title : {
-              text : 'Send Network Data（MB）'
-          },
-          tooltip: {
-              split: false
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-              enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              opposite:false
-          },
-          series : series
-      });
-
+      up_flow_initialize();
+      up_flow_chart = collectPers(device,pkgname,'flow_send','Send Network Data（KB）',getUpFlow(pkgname,device));
   }
 
   function start_collect_downflow(device,pkgname){
-      down_flow_initialize()
-      down_flow_chart = Highcharts.stockChart('flow_recv', {
-          chart : {
-              events : {
-                  load : getDownFlow(pkgname,device)
-              }
-          },
-          rangeSelector: rangeSelector,
-          title : {
-              text : 'Recv Network Data（MB）'
-          },
-          tooltip: {
-              split: false
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-              enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              opposite:false
-          },
-          series : series
-      });
-
+      down_flow_initialize();
+      down_flow_chart = collectPers(device,pkgname,'flow_recv','Recv Network Data（KB）',getDownFlow(pkgname,device));
   }
 
   function start_collect_fps(device,pkgname){
-      fps_initialize()
-      fps_chart = Highcharts.stockChart('fps', {
-          chart : {
-              events : {
-                  load : getFps(pkgname,device)
-              }
-          },
-          rangeSelector: rangeSelector,
-          title : {
-              text : 'FPS（HZ）'
-          },
-          tooltip: {
-              split: false
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-              enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              max:100,
-              min:0,
-              tickInterval:10,
-              opposite:false
-          },
-          series : series
-      });
-
+      fps_initialize();
+      fps_chart = collectPers(device,pkgname,'fps','FPS（HZ）',getFps(pkgname,device));
   }
 
   function start_collect_jank(device,pkgname){
-      jank_initialize()
-      jank_chart = Highcharts.stockChart('jank', {
-          chart : {
-              events : {
-                  load : getJank(pkgname,device)
-              }
-          },
-          rangeSelector: rangeSelector,
-          title : {
-              text : 'JANK'
-          },
-          tooltip: {
-              split: false
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-              enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              max:100,
-              min:0,
-              tickInterval:10,
-              opposite:false
-          },
-          series : series
-      });
-
+      jank_initialize();
+      jank_chart = collectPers(device,pkgname,'jank','JANK',getJank(pkgname,device));
   }
 
 
   $('#run-apm').click(function () {
-      initialize_apm()
-      let device = $('#select-device').val()
-      let pkgname = $('#select-app').val()
+      stop = false;
+      $('#stop-apm').show();
+      $('#run-apm').hide();
+      initialize_apm();
+      let device = $('#select-device').val();
+      let pkgname = $('#select-app').val();
       if(device && pkgname){
-          start_collect_cpu(device,pkgname)
-          start_collect_mem(device,pkgname)
-          start_collect_upflow(device,pkgname)
-          start_collect_downflow(device,pkgname)
-          start_collect_fps(device,pkgname)
-          start_collect_jank(device,pkgname)
-          start_collect_battery(device)
-          $('#stop-apm').show()
-          $('#run-apm').hide()
+          start_collect_cpu(device,pkgname);
+          start_collect_mem(device,pkgname);
+          start_collect_upflow(device,pkgname);
+          start_collect_downflow(device,pkgname);
+          if(platform === 'Android'){
+               start_collect_fps(device,pkgname);
+               start_collect_jank(device,pkgname);
+               start_collect_battery(device);
+          }
+
       }else{
           SwalFire('error','Execution error','No device or package name selected',2000)
       }
   })
 
   $('#stop-apm').click(function () {
-      cpu_initialize()
-      mem_initialize()
-      up_flow_initialize()
-      down_flow_initialize()
-      $('#run-apm').show()
-      $('#stop-apm').hide()
+      stop = true;
+      $('#run-apm').show();
+      $('#stop-apm').hide();
       $.ajax({
           url: "/apm/create/report",
           type: "GET",
           async: true,
           cache: false,
           data:{
+              platform:platform,
               app:$('#select-app').val(),
               devices:$('#select-device').val()
           },
@@ -1040,6 +774,23 @@
               }
           }
       });
+  });
+
+
+  $('#logcat-switch').change(function() {
+      let  flag= $(this).is(':checked');
+      if(flag){
+          $('.apm-btn-list').hide();
+          $('.apm-data').hide();
+          $('.logcat-btn-list').show();
+          $('.logcat-data').show();
+      }else{
+          $('.logcat-btn-list').hide();
+          $('.logcat-data').hide();
+          $('.apm-btn-list').show();
+          $('.apm-data').show();
+
+      }
   });
 
   var status = false;
@@ -1063,16 +814,16 @@
   };
 
   function stopLogcat() {
-      $('#logcat-stop').hide();
-      $('#logcat-start').show();
+      $('#logcat_stop').hide();
+      $('#logcat_start').show();
       status = false;
       socket.emit('disconnect_request');
 
   };
 
-  function copyLogcat() {
-      let content = $("#logcat-content");
-        content.select();
+  function cppyLogcat() {
+      let url_content = $("#logcat-content");
+        url_content.select();
         document.execCommand("copy");
         SwalFire('success','Copy Success','',1000);
 

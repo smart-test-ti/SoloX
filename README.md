@@ -12,7 +12,7 @@
 
 ## SoloX
 
-SoloX - Real-time collection tool for Android performance data.
+SoloX - Real-time collection tool for Android/iOS performance data.
 
 We are committed to solving inefficient, cumbersome test execution, and our goal is Simple Test In SoloX!
 
@@ -25,7 +25,7 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 
 ## Run locally
 ### default
->the startup host and port defaults to 0.0.0.0 and 5000.
+>the startup host and port defaults to 0.0.0.0 and 50003.
 
 ```
    python3 -m solox
@@ -52,7 +52,12 @@ python3 -m solox --host=0.0.0.0 --port=50003
 ```
 ## Features
 #### Home
-<img src="https://user-images.githubusercontent.com/29191106/174444639-9798a0b8-30ea-4678-a2b1-842b6a293d69.png"  width="100%">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1658068238447-22798ff6-1396-4e4c-9f7e-d72b8b21408e.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+
+
+#### Logcat
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879631071-078b2185-0cbd-409c-9212-485f5841766d.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+
 
 #### Report
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879616511-15f271b7-2761-43c5-a86c-50f82bc68f32.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">

@@ -23,7 +23,8 @@ def page_500(e):
 
 @page.route('/')
 def index():
-    return render_template('index.html', **locals())
+    platform = request.args.get('platform')
+    return render_template('index.html',**locals())
 
 
 @page.route('/report')
@@ -57,41 +58,20 @@ def report():
 def analysis():
     scene = request.args.get('scene')
     app = request.args.get('app')
+    platform = request.args.get('platform')
     report_dir = os.path.join(os.getcwd(), 'report')
     dirs = os.listdir(report_dir)
+    f = file()
     apm_data = {}
     for dir in dirs:
         if dir == scene:
             try:
                 if not os.path.exists(f'{report_dir}/{scene}/apm.json'):
-                    cpu_data = file().readLog(scene=scene, filename=f'cpu.log')[1]
-                    cpu_rate = f'{round(sum(cpu_data) / len(cpu_data), 2)}%'
-
-                    battery_data = file().readLog(scene=scene, filename=f'battery.log')[1]
-                    battery_rate = f'{round(sum(battery_data) / len(battery_data), 2)}%'
-
-                    mem_data = file().readLog(scene=scene, filename=f'mem.log')[1]
-                    mem_avg = f'{round(sum(mem_data) / len(mem_data), 2)}MB'
-                    fps_data = file().readLog(scene=scene, filename=f'fps.log')[1]
-                    fps_avg = f'{int(sum(fps_data) / len(fps_data))}hz/s'
-                    jank_data = file().readLog(scene=scene, filename=f'jank.log')[1]
-                    jank_avg = f'{int(sum(jank_data) / len(jank_data))}'
-                    flow_send_data = file().readLog(scene=scene, filename=f'upflow.log')[1]
-                    flow_send_data_all = f'{round(flow_send_data[len(flow_send_data) - 1] - flow_send_data[0], 2)}MB'
-                    flow_recv_data = file().readLog(scene=scene, filename=f'downflow.log')[1]
-                    flow_recv_data_all = f'{round(flow_recv_data[len(flow_recv_data) - 1] - flow_recv_data[0], 2)}MB'
-                    apm_dict = {
-                        "cpu": cpu_rate,
-                        "mem": mem_avg,
-                        "fps": fps_avg,
-                        "jank": jank_avg,
-                        "flow_send": flow_send_data_all,
-                        "flow_recv": flow_recv_data_all,
-                        "battery": battery_rate
-                    }
+                    apm_dict = f._setAndroidPerfs(scene) if platform == 'Android' else f._setiOSPerfs(scene)
                     content = json.dumps(apm_dict)
                     with open(f'{report_dir}/{scene}/apm.json', 'a+', encoding="utf-8") as apmfile:
                         apmfile.write(content)
+
                 f = open(f'{report_dir}/{scene}/apm.json')
                 json_data = json.loads(f.read())
                 apm_data['cpu'] = json_data['cpu']

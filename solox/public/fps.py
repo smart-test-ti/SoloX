@@ -554,7 +554,7 @@ class FPSMonitor(Monitor):
 
 
 if __name__ == '__main__':
-    monitor = FPSMonitor(device_id='ca6bd5a5', package_name="com.playit.videoplayer", frequency=1, start_time=TimeUtils.getCurrentTimeUnderline())
+    monitor = FPSMonitor(device_id='ca6bd5a5', package_name="com.xxx.xxx", frequency=1, start_time=TimeUtils.getCurrentTimeUnderline())
     monitor.start()
     monitor.stop()
     print(collect_fps)

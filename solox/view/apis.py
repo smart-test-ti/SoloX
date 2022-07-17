@@ -5,6 +5,7 @@ import time
 from flask import request
 from logzero import logger
 from flask import Blueprint
+import traceback
 
 from solox.public.apm import CPU, MEM, Flow, FPS, Battery
 from solox.public.common import Devices, file
@@ -26,135 +27,155 @@ def initialize():
         result = {'status': 1, 'msg': 'initialize env success'}
     except Exception as e:
         result = {'status': 0, 'msg': str(e)}
+
     return result
 
 
 @api.route('/device/ids', methods=['post', 'get'])
 def deviceids():
     """get devices info"""
+    platform = request.args.get('platform')
     try:
-        deviceids = d.getDeviceIds()
-        devices = d.getDevices()
-        pkgnames = d.getPkgname(deviceids[0])
-        if len(deviceids) > 0:
-            result = {'status': 1, 'deviceids': deviceids, 'devices': devices, 'pkgnames': pkgnames}
+        if platform == 'Android':
+            deviceids = d.getDeviceIds()
+            devices = d.getDevices()
+            if len(deviceids) > 0:
+                pkgnames = d.getPkgname(deviceids[0])
+                result = {'status': 1, 'deviceids': deviceids, 'devices': devices, 'pkgnames': pkgnames}
+            else:
+                result = {'status': 0, 'msg': 'no devices'}
+        elif platform == 'iOS':
+            deviceinfos = d.getDeviceInfoByiOS()
+            if len(deviceinfos) > 0:
+                pkgnames = d.getPkgnameByiOS(deviceinfos[0].split(':')[1])
+                result = {'status': 1, 'deviceids': deviceinfos, 'devices': deviceinfos, 'pkgnames': pkgnames}
+            else:
+                result = {'status': 0, 'msg': 'no devices'}
         else:
-            result = {'status': 0, 'msg': 'no devices,please try adb devices!'}
+            result = {'status': 0, 'msg': f'no this platform = {platform}'}
     except:
-        result = {'status': 0, 'msg': 'no devices,please try adb devices!'}
+        result = {'status': 0, 'msg': 'devices connect error!'}
     return result
-
 
 @api.route('/device/packagenames', methods=['post', 'get'])
 def packageNames():
-    """get devices info"""
+    """get devices packageNames"""
+    platform = request.args.get('platform')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device)
-    pkgnames = d.getPkgname(deviceId)
-    if len(pkgnames) > 0:
-        result = {'status': 1, 'pkgnames': pkgnames}
+    if platform == 'Android':
+        deviceId = d.getIdbyDevice(device)
+        pkgnames = d.getPkgname(deviceId)
+    elif platform == 'iOS':
+        udid = device.split(':')[1]
+        pkgnames = d.getPkgnameByiOS(udid)
     else:
-        result = {'status': 0, 'msg': 'no pkgnames'}
+        result = {'status': 0, 'msg': f'no platform = {platform}'}
+        return result
+    if len(pkgnames)>0:
+        result = {'status':1,'pkgnames':pkgnames}
+    else:
+        result = {'status':0,'msg':'no pkgnames'}
     return result
 
 
 @api.route('/apm/cpu', methods=['post', 'get'])
 def getCpuRate():
     """get process cpu rate"""
+    platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device)
-    pid = d.getPid(deviceId=deviceId, pkgName=pkgname)
-    if pid:
-        try:
-            cpu = CPU(pkgName=pkgname, deviceId=deviceId)
-            cpuRate = cpu.getSingCpuRate()
-            result = {'status': 1, 'cpuRate': cpuRate}
-        except Exception as e:
-            logger.error(f'Get cpu failed:{str(e)}')
-            result = {'status': 0, 'msg': f'{str(e)}'}
-    else:
-        result = {'status': 0, 'msg': f'未发现{pkgname}的进程'}
-
+    deviceId = d.getIdbyDevice(device,platform)
+    try:
+        cpu = CPU(pkgName=pkgname, deviceId=deviceId,platform=platform)
+        cpuRate = cpu.getSingCpuRate()
+        result = {'status': 1, 'cpuRate': cpuRate}
+    except Exception as e:
+        logger.error(f'get cpu failed:{str(e)}')
+        traceback.print_exc()
+        result = {'status': 0, 'msg': f'{str(e)}'}
     return result
 
 
 @api.route('/apm/mem', methods=['post', 'get'])
 def getMEM():
     """get memery data"""
+    platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device)
-    pid = d.getPid(deviceId=deviceId, pkgName=pkgname)
-    if pid:
-        try:
-            mem = MEM(pkgName=pkgname, deviceId=deviceId)
-            pss = mem.getProcessMem()
-            result = {'status': 1, 'pss': pss}
-        except Exception as e:
-            logger.error(f'Get mem failed:{str(e)}')
-            result = {'status': 0, 'msg': f'{str(e)}'}
-    else:
-        result = {'status': 0, 'msg': f'未发现{pkgname}的进程'}
-
+    deviceId = d.getIdbyDevice(device,platform)
+    try:
+        mem = MEM(pkgName=pkgname, deviceId=deviceId,platform=platform)
+        pss = mem.getProcessMem()
+        result = {'status': 1, 'pss': pss}
+    except Exception as e:
+        logger.error(f'get mem failed:{str(e)}')
+        result = {'status': 0, 'msg': f'{str(e)}'}
     return result
 
 
-@api.route('/apm/flow', methods=['post', 'get'])
-def getFlow():
+@api.route('/apm/upflow', methods=['post', 'get'])
+def getupFlow():
     """get network data"""
+    platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device)
-    pid = d.getPid(deviceId=deviceId, pkgName=pkgname)
-    if pid:
-        try:
-            flow = Flow(pkgName=pkgname, deviceId=deviceId)
-            send = flow.getUpFlow()
-            recv = flow.getDownFlow()
-            result = {'status': 1, 'send': send, 'recv': recv}
-        except Exception as e:
-            logger.error(f'Get flow failed:{str(e)}')
-            result = {'status': 0, 'msg': f'{str(e)}'}
-    else:
-        result = {'status': 0, 'msg': f'未发现{pkgname}的进程'}
+    deviceId = d.getIdbyDevice(device,platform)
+    try:
+        flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
+        data = flow.getUpFlow()
+        result = {'status': 1, 'data': data}
+    except Exception as e:
+        logger.error(f'get upflow failed:{str(e)}')
+        result = {'status': 0, 'msg': f'{str(e)}'}
+    return result
 
+@api.route('/apm/downflow', methods=['post', 'get'])
+def getdownFlow():
+    """get network data"""
+    platform = request.args.get('platform')
+    pkgname = request.args.get('pkgname')
+    device = request.args.get('device')
+    deviceId = d.getIdbyDevice(device,platform)
+    try:
+        flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
+        data = flow.getDownFlow()
+        result = {'status': 1, 'data': data}
+    except Exception as e:
+        logger.error(f'get downflow failed:{str(e)}')
+        result = {'status': 0, 'msg': f'{str(e)}'}
     return result
 
 
 @api.route('/apm/fps', methods=['post', 'get'])
 def getFps():
     """get fps data"""
+    platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device)
-    pid = d.getPid(deviceId=deviceId, pkgName=pkgname)
-    if pid:
-        try:
-            fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId)
-            fps, jank = fps_monitor.getFPS()
-            result = {'status': 1, 'fps': fps, 'jank': jank}
-        except Exception as e:
-            logger.error(f'Get fps failed:{str(e)}')
-            result = {'status': 0, 'msg': f'{str(e)}'}
-    else:
-        result = {'status': 0, 'msg': f'未发现{pkgname}的进程'}
+    deviceId = d.getIdbyDevice(device,platform)
+    try:
+        fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId, platform=platform)
+        fps, jank = fps_monitor.getFPS()
+        result = {'status': 1, 'fps': fps, 'jank': jank}
+    except Exception as e:
+        logger.error(f'get fps failed:{str(e)}')
+        result = {'status': 0, 'msg': f'{str(e)}'}
     return result
 
 
 @api.route('/apm/battery', methods=['post', 'get'])
 def getBattery():
     """get Battery data"""
+    platform = request.args.get('platform')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device)
+    deviceId = d.getIdbyDevice(device,platform)
     try:
         battery_monitor = Battery(deviceId=deviceId)
         battery = battery_monitor.getBattery()
         result = {'status': 1, 'battery': battery}
     except Exception as e:
-        logger.error(f'Get fps failed:{str(e)}')
+        logger.error(f'get battery failed:{str(e)}')
         result = {'status': 0, 'msg': f'{str(e)}'}
-
     return result
 
 
@@ -162,10 +183,11 @@ def getBattery():
 def makeReport():
     """创建测试报告记录"""
     current_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
+    platform = request.args.get('platform')
     app = request.args.get('app')
     devices = request.args.get('devices')
     try:
-        file(fileroot=f'apm_{current_time}').make_report(app=app, devices=devices)
+        file(fileroot=f'apm_{current_time}').make_report(app=app, devices=devices, platform=platform)
         result = {'status': 1}
     except Exception as e:
         result = {'status': 0, 'msg': str(e)}
