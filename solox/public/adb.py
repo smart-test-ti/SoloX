@@ -3,13 +3,15 @@
 
 """
 @Author  :  Lijiawei
-@Date    :  2022/6/19 09:47
+@Date    :  2022/6/19
 @Desc    :  adb line.
+@Update  :  2022/7/14 by Rafa chen
 """
 import os
 import platform
 import stat
 import subprocess
+from logzero import logger
 
 STATICPATH = os.path.dirname(os.path.realpath(__file__))
 DEFAULT_ADB_PATH = {
@@ -47,6 +49,14 @@ def builtin_adb_path():
     system = platform.system()
     machine = platform.machine()
     adb_path = DEFAULT_ADB_PATH.get('{}-{}'.format(system, machine))
+    proc = subprocess.Popen('adb devices', stdout=subprocess.PIPE, shell=True)
+    result = proc.stdout.read()
+    if not isinstance(result, str):
+        result = str(result, 'utf-8')
+    if result and "command not found" not in result:
+        adb_path = "adb"
+        return adb_path
+
     if not adb_path:
         adb_path = DEFAULT_ADB_PATH.get(system)
     if not adb_path:
