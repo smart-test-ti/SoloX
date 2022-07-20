@@ -4,17 +4,17 @@ import time
 from functools import reduce
 from logzero import logger
 import tidevice
-from solox.public._iosPerf import DataType,Performance
-# from tidevice._perf import DataType,Performance
+from solox.public._iosPerf import DataType, Performance
 from solox.public.adb import adb
 from solox.public.common import Devices, file
 from solox.public.fps import FPSMonitor, TimeUtils
 
 d = Devices()
 
+
 class CPU:
 
-    def __init__(self, pkgName, deviceId,platform='Android'):
+    def __init__(self, pkgName, deviceId, platform='Android'):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
@@ -59,7 +59,7 @@ class CPU:
 
 
 class MEM:
-    def __init__(self, pkgName, deviceId,platform='Android'):
+    def __init__(self, pkgName, deviceId, platform='Android'):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
@@ -112,9 +112,10 @@ class Battery:
         cmd = 'dumpsys battery set status 2'
         adb.shell(cmd=cmd, deviceId=self.deviceId)
 
+
 class Flow:
 
-    def __init__(self, pkgName, deviceId,platform='Android'):
+    def __init__(self, pkgName, deviceId, platform='Android'):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
@@ -160,7 +161,7 @@ class Flow:
 
 class FPS:
 
-    def __init__(self, pkgName, deviceId,platform='Android'):
+    def __init__(self, pkgName, deviceId, platform='Android'):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
@@ -185,11 +186,12 @@ class FPS:
             time.sleep(1)
             with open(f'{file().report_dir}/fps.log', 'a+') as f:
                 f.write(f'{self.apm_time}={str(fps)}' + '\n')
-            return fps,0
+            return fps, 0
 
-class iosAPM():
 
-    def __init__(self, pkgName ,deviceId=tidevice.Device()):
+class iosAPM:
+
+    def __init__(self, pkgName, deviceId=tidevice.Device()):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
@@ -199,14 +201,14 @@ class iosAPM():
         self.fps = DataType.FPS
         self.perfs = 0
 
-    def callback(self,_type: DataType, value: dict):
+    def callback(self, _type: DataType, value: dict):
         logger.info(f'{_type}:{value}')
         # self.perfs = value['value']
         # with open(f'{file().report_dir}/fps.log', 'a+') as f:
         #     f.write(f'{self.apm_time}={str(value[fps])}' + '\n')
 
-    def getPerformance(self,perfTpe:DataType):
-        perf = Performance(self.deviceId,[perfTpe])# DataType.MEMORY, DataType.NETWORK, DataType.FPS
+    def getPerformance(self, perfTpe: DataType):
+        perf = Performance(self.deviceId, [perfTpe])  # DataType.MEMORY, DataType.NETWORK, DataType.FPS
 
         perfValue = perf.start(self.pkgName, callback=self.callback)
 
@@ -214,8 +216,6 @@ class iosAPM():
 
         # time.sleep(2)
         # perf.stop()
-
-
 
 
 if __name__ == '__main__':

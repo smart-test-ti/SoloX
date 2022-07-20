@@ -7,13 +7,14 @@ import time
 
 from solox.public.adb import adb
 
+
 class Devices:
 
     def __init__(self, platform='Android'):
         self.platform = platform
         self.adb = adb.adb_path
 
-    def execCmd(self,cmd):
+    def execCmd(self, cmd):
         """执行命令获取终端打印结果"""
         r = os.popen(cmd)
         text = r.read()
@@ -22,7 +23,7 @@ class Devices:
 
     def _filterType(self):
         """根据系统选择管道过滤方式"""
-        filtertype = ('grep','findstr')[platform.system() == 'Windows']
+        filtertype = ('grep', 'findstr')[platform.system() == 'Windows']
         print(filtertype)
         return filtertype
 
@@ -51,7 +52,7 @@ class Devices:
             Devices.append(f'{id}({devices_name})')
         return Devices
 
-    def getIdbyDevice(self, deviceinfo,platform):
+    def getIdbyDevice(self, deviceinfo, platform):
         """根据设备信息获取对应设备id"""
         if platform == 'Android':
             deviceId = re.sub(u"\\(.*?\\)|\\{.*?}|\\[.*?]", "", deviceinfo)
@@ -97,7 +98,7 @@ class Devices:
             deviceInfo.append(f'{deviceName}:{deviceUdid}')
         return deviceInfo
 
-    def getPkgnameByiOS(self,udid):
+    def getPkgnameByiOS(self, udid):
         """获取对应iOS设备所有包名"""
         pkgResult = self.execCmd(f'tidevice --udid {udid} applist').split('\n')
         pkgNames = []
@@ -173,16 +174,15 @@ class file:
                 target_data_list.append(float(line.split('=')[1].strip()))
         return log_data_list, target_data_list
 
-
-    def approximateSize(self,size, a_kilobyte_is_1024_bytes=True):
-        '''
+    def approximateSize(self, size, a_kilobyte_is_1024_bytes=True):
+        """
         convert a file size to human-readable form.
         Keyword arguments:
         size -- file size in bytes
         a_kilobyte_is_1024_bytes -- if True (default),use multiples of 1024
                                     if False, use multiples of 1000
         Returns: string
-        '''
+        """
 
         suffixes = {1000: ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
                     1024: ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']}
@@ -197,8 +197,7 @@ class file:
             if size < multiple:
                 return '{0:.2f} {1}'.format(size, suffix)
 
-
-    def _setAndroidPerfs(self,scene):
+    def _setAndroidPerfs(self, scene):
         """汇总Android的APM数据"""
         cpu_data = self.readLog(scene=scene, filename=f'cpu.log')[1]
         cpu_rate = f'{round(sum(cpu_data) / len(cpu_data), 2)}%'
@@ -244,10 +243,10 @@ class file:
         # fps_avg = f'{int(sum(fps_data) / len(fps_data))}HZ/s'
 
         flow_send_data = self.readLog(scene=scene, filename=f'upflow.log')[1]
-        flow_send_data_all = f'{round((sum(flow_send_data)),2)}KB'
+        flow_send_data_all = f'{round((sum(flow_send_data)), 2)}KB'
 
         flow_recv_data = self.readLog(scene=scene, filename=f'downflow.log')[1]
-        flow_recv_data_all = f'{round((sum(flow_recv_data)),2)}KB'
+        flow_recv_data_all = f'{round((sum(flow_recv_data)), 2)}KB'
 
         apm_dict = {
             "cpu": cpu_rate,
@@ -260,4 +259,3 @@ class file:
         }
 
         return apm_dict
-
