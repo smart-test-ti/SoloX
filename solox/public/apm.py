@@ -120,8 +120,8 @@ class Flow:
         self.platform = platform
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
-    def getUpFlow(self):
-        """获取上行流量，单位MB"""
+    def getNetWorkData(self):
+        """获取上下行流量，单位MB"""
         if self.platform == 'Android':
             pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
             cmd = f'cat /proc/{pid}/net/dev |{d._filterType()} wlan0'
@@ -129,34 +129,19 @@ class Flow:
             m = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output)
             if m:
                 sendNum = round(float(float(m.group(2)) / 1024 / 1024), 2)
-            else:
-                raise ValueError("Couldn't get rx and tx data from: %s!" % output)
-        else:
-            apm = iosAPM(self.pkgName)
-            sendNum = round(float(apm.getPerformance(apm.network)[1]), 2)
-        with open(f'{file().report_dir}/upflow.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(sendNum)}' + '\n')
-        return sendNum
-
-    def getDownFlow(self):
-        """获取下行流量，单位MB"""
-        if self.platform == 'Android':
-            pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
-            cmd = f'cat /proc/{pid}/net/dev |{d._filterType()} wlan0'
-            output = adb.shell(cmd=cmd, deviceId=self.deviceId)
-            m = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output)
-            time.sleep(1)
-            if m:
                 recNum = round(float(float(m.group(1)) / 1024 / 1024), 2)
             else:
                 raise ValueError("Couldn't get rx and tx data from: %s!" % output)
         else:
             apm = iosAPM(self.pkgName)
-            recNum = round(float(apm.getPerformance(apm.network)[0]), 2)
+            apm_data = apm.getPerformance(apm.network)
+            sendNum = round(float(apm_data[1]), 2)
+            recNum = round(float(apm_data[0]), 2)
+        with open(f'{file().report_dir}/upflow.log', 'a+') as f:
+            f.write(f'{self.apm_time}={str(sendNum)}' + '\n')
         with open(f'{file().report_dir}/downflow.log', 'a+') as f:
             f.write(f'{self.apm_time}={str(recNum)}' + '\n')
-        return recNum
-
+        return sendNum,recNum
 
 class FPS:
 

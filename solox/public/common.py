@@ -23,7 +23,6 @@ class Devices:
     def _filterType(self):
         """根据系统选择管道过滤方式"""
         filtertype = ('grep','findstr')[platform.system() == 'Windows']
-        print(filtertype)
         return filtertype
 
     def getDeviceIds(self):

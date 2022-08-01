@@ -37,7 +37,7 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
  * Debug mode: on
  * Running on all addresses.
    WARNING: This is a development server. Do not use it in a production deployment.
- * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+ * Running on http://0.0.0.0:50003/ (Press CTRL+C to quit)
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 906-499-328
@@ -65,19 +65,7 @@ python3 -m solox --host=0.0.0.0 --port=50003
 #### Analysis
 <img src="https://user-images.githubusercontent.com/29191106/174444708-70621044-f836-446f-852f-05925e60cada.png"  width="100%">
 
-## Stargazers
 
-[![Stargazers over time](https://starchart.cc/smart-test-ti/SoloX.svg)](https://starchart.cc/smart-test-ti/SoloX)
-
-
-## Contributors
-
-<a href="https://github.com/smart-test-ti/SoloX/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=smart-test-ti/SoloX" />
-</a>
-
-
-## References
+## Thanks
 https://github.com/alibaba/mobileperf
->fps&jank 的收集和统计参考了 mobileperf 
-
+https://github.com/alibaba/taobao-iphone-device

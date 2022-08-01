@@ -113,8 +113,8 @@ def getMEM():
     return result
 
 
-@api.route('/apm/upflow', methods=['post', 'get'])
-def getupFlow():
+@api.route('/apm/network', methods=['post', 'get'])
+def getNetWorkData():
     """get network data"""
     platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
@@ -122,29 +122,12 @@ def getupFlow():
     deviceId = d.getIdbyDevice(device,platform)
     try:
         flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
-        data = flow.getUpFlow()
-        result = {'status': 1, 'data': data}
+        data = flow.getNetWorkData()
+        result = {'status': 1, 'upflow': data[0],'downflow': data[1]}
     except Exception as e:
-        logger.error(f'get upflow failed:{str(e)}')
+        logger.error(f'get network data failed:{str(e)}')
         result = {'status': 0, 'msg': f'{str(e)}'}
     return result
-
-@api.route('/apm/downflow', methods=['post', 'get'])
-def getdownFlow():
-    """get network data"""
-    platform = request.args.get('platform')
-    pkgname = request.args.get('pkgname')
-    device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device,platform)
-    try:
-        flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
-        data = flow.getDownFlow()
-        result = {'status': 1, 'data': data}
-    except Exception as e:
-        logger.error(f'get downflow failed:{str(e)}')
-        result = {'status': 0, 'msg': f'{str(e)}'}
-    return result
-
 
 @api.route('/apm/fps', methods=['post', 'get'])
 def getFps():
