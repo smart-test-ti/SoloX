@@ -6,7 +6,7 @@ from flask import Blueprint
 from flask import render_template
 from flask import request
 
-from public.common import file
+from solox.public.common import file
 
 page = Blueprint("page", __name__)
 
