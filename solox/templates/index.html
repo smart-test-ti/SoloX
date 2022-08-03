@@ -372,8 +372,6 @@
           beforeSend: function () {},
           complete: function () {},
           success: function (data) {
-              console.log(data)
-              console.log(stop)
               if(stop == false){
                   if(data['status'] == 1){
                       try {
@@ -603,9 +601,13 @@
 
   function fps_initialize(){
       //初始化fps
-      let title = platform == 'Android' ? 'FPS and Jank' : 'FPS（HZ）';
-      let fps_chart = highcharts_initialize('fps',title);
-      return fps_chart;
+      if(platform === 'Android'){
+          let title = 'FPS and Jank';
+          let fps_chart = highcharts_initialize('fps',title);
+          return fps_chart
+      }else{
+          return null
+      }
   }
 
   var cpu_chart = cpu_initialize();
