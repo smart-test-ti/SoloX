@@ -16,7 +16,7 @@ setuptools.setup(
     version=__version__,
     long_description=long_description,
     long_description_content_type="text/markdown",
-    description="APP性能测试 - Simple test in SoloX",
+    description="SoloX - Real-time collection tool for Android/iOS performance data.",
     packages=setuptools.find_namespace_packages(include=["solox", "solox.*"], ),
     include_package_data=True
 )

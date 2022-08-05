@@ -52,11 +52,11 @@ python3 -m solox --host=0.0.0.0 --port=50003
 ```
 ## Features
 #### Home
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1658069390168-89455311-c990-4acf-9d51-a7d38da7152b.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1659519461516-871ecf61-4745-4c92-bf01-96fe0f7be560.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 
 #### Error Log
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879631071-078b2185-0cbd-409c-9212-485f5841766d.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1659519461659-555b7fe9-b4c1-44dc-b1f8-7ae9a9595150.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 
 #### Report
@@ -67,5 +67,6 @@ python3 -m solox --host=0.0.0.0 --port=50003
 
 
 ## Thanks
-https://github.com/alibaba/mobileperf
-https://github.com/alibaba/taobao-iphone-device
+- https://github.com/alibaba/mobileperf
+
+- https://github.com/alibaba/taobao-iphone-device

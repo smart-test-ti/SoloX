@@ -125,13 +125,17 @@ class Flow:
         if self.platform == 'Android':
             pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
             cmd = f'cat /proc/{pid}/net/dev |{d._filterType()} wlan0'
-            output = adb.shell(cmd=cmd, deviceId=self.deviceId)
-            m = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output)
-            if m:
-                sendNum = round(float(float(m.group(2)) / 1024 / 1024), 2)
-                recNum = round(float(float(m.group(1)) / 1024 / 1024), 2)
-            else:
-                raise ValueError("Couldn't get rx and tx data from: %s!" % output)
+            output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
+            m_pre = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output_pre)
+            sendNum_pre = round(float(float(m_pre.group(2)) / 1024 / 1024), 2)
+            recNum_pre = round(float(float(m_pre.group(1)) / 1024 / 1024), 2)
+            time.sleep(1)
+            output_final = adb.shell(cmd=cmd, deviceId=self.deviceId)
+            m_final = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output_final)
+            sendNum_final = round(float(float(m_final.group(2)) / 1024 / 1024), 2)
+            recNum_final = round(float(float(m_final.group(1)) / 1024 / 1024), 2)
+            sendNum = sendNum_final - sendNum_pre
+            recNum = recNum_final - recNum_pre
         else:
             apm = iosAPM(self.pkgName)
             apm_data = apm.getPerformance(apm.network)
