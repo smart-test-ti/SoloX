@@ -90,9 +90,8 @@ def getCpuRate():
         cpuRate = cpu.getSingCpuRate()
         result = {'status': 1, 'cpuRate': cpuRate}
     except Exception as e:
-        logger.error(f'get cpu failed:{str(e)}')
-        traceback.print_exc()
-        result = {'status': 0, 'msg': f'{str(e)}'}
+        logger.error(f'get cpu failed : {str(e)}')
+        result = {'status': 1, 'cpuRate': 0}
     return result
 
 
@@ -108,8 +107,8 @@ def getMEM():
         pss = mem.getProcessMem()
         result = {'status': 1, 'pss': pss}
     except Exception as e:
-        logger.error(f'get mem failed:{str(e)}')
-        result = {'status': 0, 'msg': f'{str(e)}'}
+        logger.error(f'get mem failed : {str(e)}')
+        result = {'status': 1, 'pss': 0}
     return result
 
 
@@ -125,8 +124,8 @@ def getNetWorkData():
         data = flow.getNetWorkData()
         result = {'status': 1, 'upflow': data[0],'downflow': data[1]}
     except Exception as e:
-        logger.error(f'get network data failed:{str(e)}')
-        result = {'status': 0, 'msg': f'{str(e)}'}
+        logger.error(f'get network data failed : {str(e)}')
+        result = {'status': 1, 'upflow': 0, 'downflow': 0}
     return result
 
 @api.route('/apm/fps', methods=['post', 'get'])
@@ -141,8 +140,8 @@ def getFps():
         fps, jank = fps_monitor.getFPS()
         result = {'status': 1, 'fps': fps, 'jank': jank}
     except Exception as e:
-        logger.error(f'get fps failed:{str(e)}')
-        result = {'status': 0, 'msg': f'{str(e)}'}
+        logger.error(f'get fps failed : {str(e)}')
+        result = {'status': 1, 'fps': 0, 'jank': 0}
     return result
 
 
@@ -157,8 +156,8 @@ def getBattery():
         battery = battery_monitor.getBattery()
         result = {'status': 1, 'battery': battery}
     except Exception as e:
-        logger.error(f'get battery failed:{str(e)}')
-        result = {'status': 0, 'msg': f'{str(e)}'}
+        logger.error(f'get battery failed : {str(e)}')
+        result = {'status': 1, 'battery': 0}
     return result
 
 
