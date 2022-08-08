@@ -33,8 +33,9 @@ def report():
     if not os.path.exists(report_dir):
         os.mkdir(report_dir)
     dirs = os.listdir(report_dir)
+    dir_list = reversed(sorted(dirs, key=lambda x: os.path.getmtime(os.path.join(report_dir, x))))
     apm_data = []
-    for dir in dirs:
+    for dir in dir_list:
         if dir.split(".")[-1] not in ['log', 'json']:
             try:
                 f = open(f'{report_dir}/{dir}/result.json')

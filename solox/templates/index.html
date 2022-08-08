@@ -114,8 +114,8 @@
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="cpu_checkbox" type="checkbox" checked name="cpu"> CPU</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_checkbox" type="checkbox" checked name="mem"> Memory</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> Network Data</label>
-            {% if platform == 'Android' %}
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" checked> FPS</label>
+            {% if platform == 'Android' %}
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" checked> Battery</label>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item">
@@ -136,8 +136,9 @@
         <div id="network" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
         {% if platform == 'Android' %}
         <div id="fps" class="mb-3 fps" style="min-width:400px;height:300px"></div>
-        <!--<div id="jank" class="fps mb-3" style="min-width:400px;height:300px"></div>-->
         <div id="battery" class="mb-3 battery" style="min-width:400px;height:300px"></div>
+        {% else %}
+        <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:300px"></div>
         {% endif %}
     </div>
 
@@ -153,11 +154,6 @@
 
     const platform = '{{ platform }}'; // 平台
     var stop = false; // 任务状态
-
-    const NETWORK_UNIT = {
-        Android:'MB',
-        iOS:'KB'
-    };
 
     function ruteCheck(){
         if(['Android','iOS'].indexOf(platform) === -1 && platform){
@@ -383,7 +379,7 @@
                               y_down = data['downflow'];
                           seriesUpFlow.addPoint([x_up, y_up], true, true);
                           seriesDownFlow.addPoint([x_down, y_down], true, true);
-                          setTimeout(getNetWork(pkgname,device), 2000);
+                          setTimeout(getNetWork(pkgname,device), 1000);
                       }catch (e) {
                           console.log(e)
                       }
@@ -414,14 +410,16 @@
                   if(data['status'] == 1){
                       try {
                           let seriesFps = fps_chart.series[0];
-                          let seriesJank = fps_chart.series[1];
                           let x_fps = (new Date()).getTime(),
                               y_fps = data['fps'];
-                          let x_jsnk = (new Date()).getTime(),
-                              y_jank = data['jank'];
                           seriesFps.addPoint([x_fps, y_fps], true, true);
-                          seriesJank.addPoint([x_jsnk, y_jank], true, true);
-                          setTimeout(getFps(pkgname,device), 2000);
+                          if(platform == 'Android'){
+                              let seriesJank = fps_chart.series[1];
+                              let x_jsnk = (new Date()).getTime(),
+                                  y_jank = data['jank'];
+                              seriesJank.addPoint([x_jsnk, y_jank], true, true);
+                          }
+                          setTimeout(getFps(pkgname,device), 1000);
                       }catch (e) {}
                   }else{
                       SwalFire('error','something error',data['msg'],2000);
@@ -519,6 +517,21 @@
       }())
   }];
 
+  var seriesFpsbyiOS =  [{
+      name : 'fps',
+      pointInterval: 120 * 1000,
+      data : (function () {
+          var data = [], time = (new Date()).getTime(), i;
+          for (i = -999; i <= 0; i += 1) {
+              data.push([
+                  time + i * 1000,
+                  Math.round(0)
+              ]);
+          }
+          return data;
+      }())
+  }];
+
   function highcharts_initialize(apmType,title){
       //charts初始化
       let seriesFinal = series;
@@ -526,6 +539,10 @@
       switch (apmType) {
           case 'fps':
               seriesFinal = seriesFps;
+              legend = true;
+              break;
+          case 'fps_ios':
+              seriesFinal = seriesFpsbyiOS;
               legend = true;
               break;
           case 'network':
@@ -606,7 +623,9 @@
           let fps_chart = highcharts_initialize('fps',title);
           return fps_chart
       }else{
-          return null
+          let title = 'FPS(HZ/s)';
+          let fps_chart = highcharts_initialize('fps_ios',title);
+          return fps_chart
       }
   }
 
@@ -623,6 +642,10 @@
       switch (type) {
           case 'fps':
               seriesFinal = seriesFps;
+              legend = true;
+              break;
+          case 'fps_ios':
+              seriesFinal = seriesFpsbyiOS;
               legend = true;
               break;
           case 'network':
@@ -725,8 +748,13 @@
 
   function start_collect_fps(device,pkgname){
       fps_initialize();
-      let title = platform == 'Android' ? 'FPS and Jank' : 'FPS（HZ）';
-      fps_chart = collectPers(device,pkgname,'fps',title,getFps(pkgname,device));
+      if(platform == 'Android'){
+          let title = 'FPS and Jank';
+          fps_chart = collectPers(device,pkgname,'fps',title,getFps(pkgname,device));
+      }else{
+          let title = 'FPS（HZ）';
+          fps_chart = collectPers(device,pkgname,'fps_ios',title,getFps(pkgname,device));
+      }
   }
 
 
@@ -741,8 +769,8 @@
           start_collect_cpu(device,pkgname);
           start_collect_mem(device,pkgname);
           start_collect_network(device,pkgname);
+          start_collect_fps(device,pkgname);
           if(platform === 'Android'){
-               start_collect_fps(device,pkgname);
                start_collect_battery(device);
           }
 

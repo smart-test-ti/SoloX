@@ -105,11 +105,13 @@ def gen_stimestamp(seconds: Optional[float] = None) -> str:
 
 
 def iter_fps(d: BaseDevice) -> Iterator[Any]:
+    index = 0
     with d.instruments_context() as ts:
         for data in ts.iter_opengl_data():
-            print(data)
+            if index != 1:
+                index = index + 1
+                continue
             fps = data['CoreAnimationFramesPerSecond']  # fps from GPU
-            print("FPS:", fps)
             yield DataType.FPS, {"fps": fps, "time": time.time(), "value": fps}
 
 

@@ -240,8 +240,8 @@ class file:
         mem_data = self.readLog(scene=scene, filename=f'mem.log')[1]
         mem_avg = f'{round(sum(mem_data) / len(mem_data), 2)}MB'
 
-        # fps_data = self.readLog(scene=scene, filename=f'fps.log')[1]
-        # fps_avg = f'{int(sum(fps_data) / len(fps_data))}HZ/s'
+        fps_data = self.readLog(scene=scene, filename=f'fps.log')[1]
+        fps_avg = f'{int(sum(fps_data) / len(fps_data))}HZ/s'
 
         flow_send_data = self.readLog(scene=scene, filename=f'upflow.log')[1]
         flow_send_data_all = f'{round((sum(flow_send_data)),2)}MB'
@@ -252,7 +252,7 @@ class file:
         apm_dict = {
             "cpu": cpu_rate,
             "mem": mem_avg,
-            "fps": 0,
+            "fps": fps_avg,
             "flow_send": flow_send_data_all,
             "flow_recv": flow_recv_data_all,
             "jank": 0,

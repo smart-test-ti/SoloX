@@ -89,7 +89,6 @@
                 </div>
             </div>
         </div>
-        {% if platform == 'Android' %}
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
                 <div class="card-body">
@@ -111,6 +110,7 @@
                 </div>
             </div>
         </div>
+        {% if platform == 'Android' %}
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
                 <div class="card-body">
@@ -231,7 +231,6 @@
             <div id="chart-mem"></div>
         </div>
     </div>
-    {% if platform == 'Android' %}
     <div class="card fps-card mt-3">
         <div class="card-header">
             <div class='card-title'>FPS（HZ）</div>
@@ -248,6 +247,7 @@
             <div id="chart-fps"></div>
         </div>
     </div>
+    {% if platform == 'Android' %}
     <div class="card jank-card mt-3">
         <div class="card-header">
             <div class='card-title'>JANK</div>

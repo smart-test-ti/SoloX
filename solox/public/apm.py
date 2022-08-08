@@ -162,7 +162,6 @@ class FPS:
                                   start_time=TimeUtils.getCurrentTimeUnderline())
             monitors.start()
             fps, jank = monitors.stop()
-            time.sleep(1)
             with open(f'{file().report_dir}/fps.log', 'a+') as f:
                 f.write(f'{self.apm_time}={str(fps)}' + '\n')
             with open(f'{file().report_dir}/jank.log', 'a+') as f:
@@ -171,7 +170,6 @@ class FPS:
         else:
             apm = iosAPM(self.pkgName)
             fps = int(apm.getPerformance(apm.fps))
-            time.sleep(1)
             with open(f'{file().report_dir}/fps.log', 'a+') as f:
                 f.write(f'{self.apm_time}={str(fps)}' + '\n')
             return fps,0
@@ -209,6 +207,6 @@ class iosAPM():
 
 if __name__ == '__main__':
     # logger.info(apm.perfs)
-    apm = iosAPM("com.linkbox.app.ios")
-    _perfValue = apm.getPerformance(apm.network)
+    apm = iosAPM("com.xxx.app.ios")
+    _perfValue = apm.getPerformance(apm.fps)
     logger.info(_perfValue)
