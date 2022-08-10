@@ -612,7 +612,7 @@
 
   function network_initialize(){
       //初始化network
-      let network_chart = highcharts_initialize('network','Network Data（MB）');
+      let network_chart = highcharts_initialize('network','Network Data（KB)');
       return network_chart
   }
 
@@ -743,7 +743,7 @@
 
   function start_collect_network(device,pkgname){
       network_initialize();
-      network_chart = collectPers(device,pkgname,'network','Network Data（MB）',getNetWork(pkgname,device));
+      network_chart = collectPers(device,pkgname,'network','Network Data（KB）',getNetWork(pkgname,device));
   }
 
   function start_collect_fps(device,pkgname){

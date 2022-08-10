@@ -4,8 +4,8 @@ import time
 from functools import reduce
 from logzero import logger
 import tidevice
-from solox.public._iosPerf import DataType,Performance
-# from tidevice._perf import DataType,Performance
+import solox.public._iosPerf as iosP
+from solox.public.iosperf._perf import DataType,Performance
 from solox.public.adb import adb
 from solox.public.common import Devices, file
 from solox.public.fps import FPSMonitor, TimeUtils
@@ -127,15 +127,15 @@ class Flow:
             cmd = f'cat /proc/{pid}/net/dev |{d._filterType()} wlan0'
             output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
             m_pre = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output_pre)
-            sendNum_pre = round(float(float(m_pre.group(2)) / 1024 / 1024), 5)
-            recNum_pre = round(float(float(m_pre.group(1)) / 1024 / 1024), 5)
+            sendNum_pre = round(float(float(m_pre.group(2)) / 1024), 2)
+            recNum_pre = round(float(float(m_pre.group(1)) / 1024), 2)
             time.sleep(1)
             output_final = adb.shell(cmd=cmd, deviceId=self.deviceId)
             m_final = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output_final)
-            sendNum_final = round(float(float(m_final.group(2)) / 1024 / 1024), 5)
-            recNum_final = round(float(float(m_final.group(1)) / 1024 / 1024), 5)
-            sendNum = round(float(sendNum_final - sendNum_pre), 5)
-            recNum = round(float(recNum_final - recNum_pre), 5)
+            sendNum_final = round(float(float(m_final.group(2)) / 1024), 2)
+            recNum_final = round(float(float(m_final.group(1)) / 1024), 2)
+            sendNum = round(float(sendNum_final - sendNum_pre), 2)
+            recNum = round(float(recNum_final - recNum_pre), 2)
         else:
             apm = iosAPM(self.pkgName)
             apm_data = apm.getPerformance(apm.network)
@@ -185,28 +185,35 @@ class iosAPM():
         self.network = DataType.NETWORK
         self.fps = DataType.FPS
         self.perfs = 0
+        self.downflow = 0
+        self.upflow = 0
 
     def callback(self,_type: DataType, value: dict):
-        logger.info(f'{_type}:{value}')
-        # self.perfs = value['value']
-        # with open(f'{file().report_dir}/fps.log', 'a+') as f:
-        #     f.write(f'{self.apm_time}={str(value[fps])}' + '\n')
+        if _type == 'network':
+            self.downflow = value['downFlow']
+            self.upflow = value['upFlow']
+        else:
+            self.perfs = value['value']
+
+
 
     def getPerformance(self,perfTpe:DataType):
-        perf = Performance(self.deviceId,[perfTpe])# DataType.MEMORY, DataType.NETWORK, DataType.FPS
-
-        perfValue = perf.start(self.pkgName, callback=self.callback)
-
-        return perfValue
-
-        # time.sleep(2)
-        # perf.stop()
-
+        perf = iosP.Performance(self.deviceId,[perfTpe])
+        perf_value = perf.start(self.pkgName, callback=self.callback)
+        if perfTpe == DataType.NETWORK:
+            perf = Performance(self.deviceId, [perfTpe])
+            perf.start(self.pkgName, callback=self.callback)
+            time.sleep(3)
+            perf.stop()
+            perf_value = self.downflow, self.upflow
+        return perf_value
 
 
 
 if __name__ == '__main__':
-    # logger.info(apm.perfs)
     apm = iosAPM("com.xxx.app.ios")
-    _perfValue = apm.getPerformance(apm.fps)
-    logger.info(_perfValue)
+    value = apm.getPerformance(apm.memory)
+    logger.info(value)
+
+
+

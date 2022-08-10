@@ -215,10 +215,10 @@ class file:
         jank_avg = f'{int(sum(jank_data) / len(jank_data))}'
 
         flow_send_data = self.readLog(scene=scene, filename=f'upflow.log')[1]
-        flow_send_data_all = f'{round((sum(flow_send_data)),2)}MB'
+        flow_send_data_all = f'{round(float(sum(flow_send_data) / 1024 ),2)}MB'
 
         flow_recv_data = self.readLog(scene=scene, filename=f'downflow.log')[1]
-        flow_recv_data_all = f'{round((sum(flow_recv_data)),2)}MB'
+        flow_recv_data_all = f'{round(float(sum(flow_recv_data) / 1024 ),2)}MB'
 
         apm_dict = {
             "cpu": cpu_rate,
@@ -244,10 +244,10 @@ class file:
         fps_avg = f'{int(sum(fps_data) / len(fps_data))}HZ/s'
 
         flow_send_data = self.readLog(scene=scene, filename=f'upflow.log')[1]
-        flow_send_data_all = f'{round((sum(flow_send_data)),2)}MB'
+        flow_send_data_all = f'{round(float(sum(flow_send_data) / 1024 ),2)}MB'
 
         flow_recv_data = self.readLog(scene=scene, filename=f'downflow.log')[1]
-        flow_recv_data_all = f'{round((sum(flow_recv_data)),2)}MB'
+        flow_recv_data_all = f'{round(float(sum(flow_recv_data) / 1024 ),2)}MB'
 
         apm_dict = {
             "cpu": cpu_rate,
