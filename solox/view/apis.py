@@ -1,18 +1,33 @@
 import os
 import shutil
 import time
-
-from flask import request
+from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
-import traceback
-
 from solox.public.apm import CPU, MEM, Flow, FPS, Battery
 from solox.public.common import Devices, file
 
 d = Devices()
 api = Blueprint("api", __name__)
 
+
+@api.route('/apm/cookie', methods=['post', 'get'])
+def setCookie():
+    """set apm data to cookie"""
+    cpuWarning = request.args.get('cpuWarning')
+    memWarning = request.args.get('memWarning')
+    fpsWarning = request.args.get('fpsWarning')
+    netdataRecvWarning = request.args.get('netdataRecvWarning')
+    netdataSendWarning = request.args.get('netdataSendWarning')
+    betteryWarning = request.args.get('betteryWarning')
+    resp = make_response('set cookie ok')
+    resp.set_cookie('cpuWarning', cpuWarning)
+    resp.set_cookie('memWarning', memWarning)
+    resp.set_cookie('fpsWarning', fpsWarning)
+    resp.set_cookie('netdataRecvWarning', netdataRecvWarning)
+    resp.set_cookie('netdataSendWarning', netdataSendWarning)
+    resp.set_cookie('betteryWarning', betteryWarning)
+    return resp
 
 @api.route('/apm/initialize', methods=['post', 'get'])
 def initialize():
@@ -163,7 +178,7 @@ def getBattery():
 
 @api.route('/apm/create/report', methods=['post', 'get'])
 def makeReport():
-    """创建测试报告记录"""
+    """Create test report records"""
     current_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
     platform = request.args.get('platform')
     app = request.args.get('app')
@@ -178,14 +193,14 @@ def makeReport():
 
 @api.route('/apm/edit/report', methods=['post', 'get'])
 def editReport():
-    """编辑测试报告记录"""
+    """Edit test report records"""
     old_scene = request.args.get('old_scene')
     new_scene = request.args.get('new_scene')
     report_dir = os.path.join(os.getcwd(), 'report')
     if old_scene == new_scene:
-        result = {'status': 0, 'msg': 'scene名称没有改变'}
+        result = {'status': 0, 'msg': 'scene not changed'}
     elif os.path.exists(f'{report_dir}/{new_scene}'):
-        result = {'status': 0, 'msg': 'scene名称已经存在'}
+        result = {'status': 0, 'msg': 'scene existed'}
     else:
         try:
             new_scene = new_scene.replace('/', '_').replace(' ', '').replace('&', '_')
@@ -198,7 +213,7 @@ def editReport():
 
 @api.route('/apm/log', methods=['post', 'get'])
 def getLogData():
-    """获取apm详细数据"""
+    """Get apm detailed data"""
     scene = request.args.get('scene')
     target = request.args.get('target')
     try:
@@ -211,7 +226,7 @@ def getLogData():
 
 @api.route('/apm/remove/report', methods=['post', 'get'])
 def removeReport():
-    """移除测试报告记录"""
+    """Remove test report record"""
     scene = request.args.get('scene')
     report_dir = os.path.join(os.getcwd(), 'report')
     try:

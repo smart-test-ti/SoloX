@@ -58,6 +58,9 @@ python3 -m solox --host=0.0.0.0 --port=50003
 #### Error Log
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1659519461659-555b7fe9-b4c1-44dc-b1f8-7ae9a9595150.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
+#### Setting
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1660214339174-d04146cb-4293-4c0b-add6-bca2fcd9e72b.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+
 
 #### Report
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879616511-15f271b7-2761-43c5-a86c-50f82bc68f32.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">

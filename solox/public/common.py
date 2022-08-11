@@ -4,7 +4,6 @@ import platform
 import re
 import shutil
 import time
-
 from solox.public.adb import adb
 
 class Devices:
@@ -14,19 +13,19 @@ class Devices:
         self.adb = adb.adb_path
 
     def execCmd(self,cmd):
-        """执行命令获取终端打印结果"""
+        """Execute the command to get the terminal print result"""
         r = os.popen(cmd)
         text = r.read()
         r.close()
         return text
 
     def _filterType(self):
-        """根据系统选择管道过滤方式"""
+        """Select the pipe filtering method according to the system"""
         filtertype = ('grep','findstr')[platform.system() == 'Windows']
         return filtertype
 
     def getDeviceIds(self):
-        """获取所有连接成功的设备id"""
+        """Get all connected device ids"""
         Ids = list(os.popen(f"{self.adb} devices").readlines())
         deviceIds = []
         for i in range(1, len(Ids) - 1):
@@ -37,12 +36,12 @@ class Devices:
         return deviceIds
 
     def getDevicesName(self, deviceId):
-        """获取对应设备Id的设备名称"""
+        """Get the device name of the Android corresponding device ID"""
         devices_name = os.popen(f'{self.adb} -s {deviceId} shell getprop ro.product.model').readlines()
         return devices_name[0].strip()
 
     def getDevices(self):
-        """获取所有设备"""
+        """Get all Android devices"""
         Devices = []
         DeviceIds = self.getDeviceIds()
         for id in DeviceIds:
@@ -51,7 +50,7 @@ class Devices:
         return Devices
 
     def getIdbyDevice(self, deviceinfo,platform):
-        """根据设备信息获取对应设备id"""
+        """Obtain the corresponding device id according to the Android device information"""
         if platform == 'Android':
             deviceId = re.sub(u"\\(.*?\\)|\\{.*?}|\\[.*?]", "", deviceinfo)
         else:
@@ -59,7 +58,7 @@ class Devices:
         return deviceId
 
     def getPid(self, deviceId, pkgName):
-        """获取对应包名的pid"""
+        """Get the pid corresponding to the Android package name"""
         result = os.popen(f"{self.adb} -s {deviceId} shell ps | {self._filterType()} {pkgName}").readlines()
         flag = len(result) > 0
         try:
@@ -77,7 +76,7 @@ class Devices:
         return flag
 
     def getPkgname(self, devicesId):
-        """获取手机所有包名"""
+        """Get all package names of Android devices"""
         pkginfo = os.popen(f"{self.adb} -s {devicesId} shell pm list package")
         pkglist = []
         for p in pkginfo:
@@ -87,7 +86,7 @@ class Devices:
         return pkglist
 
     def getDeviceInfoByiOS(self):
-        """获取所有连接成功的iOS设备列表"""
+        """Get a list of all successfully connected iOS devices"""
         deviceResult = json.loads(self.execCmd('tidevice list --json'))
         deviceInfo = []
         for i in range(len(deviceResult)):
@@ -97,7 +96,7 @@ class Devices:
         return deviceInfo
 
     def getPkgnameByiOS(self,udid):
-        """获取对应iOS设备所有包名"""
+        """Get all package names of the corresponding iOS device"""
         pkgResult = self.execCmd(f'tidevice --udid {udid} applist').split('\n')
         pkgNames = []
         for i in range(len(pkgResult)):
@@ -152,7 +151,7 @@ class file:
             return 'int'
 
     def readLog(self, scene, filename):
-        """读取apmlog文件数据"""
+        """Read apmlog file data"""
         log_data_list = []
         target_data_list = []
         f = open(f'{self.report_dir}/{scene}/{filename}', "r")
@@ -198,7 +197,7 @@ class file:
 
 
     def _setAndroidPerfs(self,scene):
-        """汇总Android的APM数据"""
+        """Aggregate APM data for Android"""
         cpu_data = self.readLog(scene=scene, filename=f'cpu.log')[1]
         cpu_rate = f'{round(sum(cpu_data) / len(cpu_data), 2)}%'
 
@@ -233,7 +232,7 @@ class file:
         return apm_dict
 
     def _setiOSPerfs(self, scene):
-        """汇总iOS的APM数据"""
+        """Aggregate APM data for iOS"""
         cpu_data = self.readLog(scene=scene, filename=f'cpu.log')[1]
         cpu_rate = f'{round(sum(cpu_data) / len(cpu_data), 2)}%'
 

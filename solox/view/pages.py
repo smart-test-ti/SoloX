@@ -1,11 +1,9 @@
 import json
 import os
 import traceback
-
 from flask import Blueprint
 from flask import render_template
 from flask import request
-
 from solox.public.common import file
 
 page = Blueprint("page", __name__)
@@ -24,6 +22,12 @@ def page_500(e):
 @page.route('/')
 def index():
     platform = request.args.get('platform')
+    cpuWarning = (0, request.cookies.get('cpuWarning'))[request.cookies.get('cpuWarning') not in [None, 'NaN']]
+    memWarning = (0, request.cookies.get('memWarning'))[request.cookies.get('memWarning') not in [None, 'NaN']]
+    fpsWarning = (0, request.cookies.get('fpsWarning'))[request.cookies.get('fpsWarning') not in [None, 'NaN']]
+    netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
+    netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
+    betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
     return render_template('index.html',**locals())
 
 

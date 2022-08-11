@@ -21,7 +21,7 @@ class CPU:
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getprocessCpuStat(self):
-        """获取某个时刻的某个进程的cpu损耗"""
+        """Get the cpu usage of a process at a certain time"""
         pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
         cmd = f'cat /proc/{pid}/stat'
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
@@ -31,17 +31,17 @@ class CPU:
         return processCpu
 
     def getTotalCpuStat(self):
-        """获取某个时刻的总cpu损耗"""
+        """Get the total cpu usage at a certain time"""
+
         cmd = f'cat /proc/stat |{d._filterType()} ^cpu'
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
-        idleCpu = float(toks[3])
         totalCpu = float(reduce(lambda x, y: int(x) + int(y), toks))
         return totalCpu
 
     def getSingCpuRate(self):
-        """获取进程损耗cpu的占比%"""
+        """Get the cpu usage of a process"""
         if self.platform == 'Android':
             processCpuTime_1 = self.getprocessCpuStat()
             totalCpuTime_1 = self.getTotalCpuStat()
@@ -66,7 +66,7 @@ class MEM:
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getProcessMem(self):
-        """获取进程内存Total、NativeHeap、NativeHeap;单位MB"""
+        """Get the Total、NativeHeap、NativeHeap"""
         if self.platform == 'Android':
             pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
             cmd = f'dumpsys meminfo {pid}'
@@ -75,7 +75,7 @@ class MEM:
             # m1 = re.search(r'Native Heap\s*(\d+)', output)
             # m2 = re.search(r'Dalvik Heap\s*(\d+)', output)
             time.sleep(1)
-            PSS = round(float(float(m.group(1))) / 1024, 2)
+            PSS = round(float(float(m.group(1))) / 1024, 2) # MB
             # NativeHeap = round(float(float(m1.group(1))) / 1024, 2)
             # DalvikHeap = round(float(float(m2.group(1))) / 1024, 2)
         else:
@@ -93,11 +93,11 @@ class Battery:
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getBattery(self):
-        """获取Android手机电量"""
-        # 切换手机电池为非充电状态
+        """Get android battery"""
+        # Switch mobile phone battery to non-charging state
         cmd = 'dumpsys battery set status 1'
         adb.shell(cmd=cmd, deviceId=self.deviceId)
-        # 获取手机电量
+        # Get phone battery
         cmd = 'dumpsys battery'
         output = adb.shell(cmd=cmd, deviceId=self.deviceId)
         battery = int(re.findall(u'level:\s?(\d+)', output)[0])
@@ -107,8 +107,7 @@ class Battery:
         return battery
 
     def SetBattery(self):
-        """重置手机充电状态"""
-        # 退出时恢复手机充电状态
+        """Reset phone charging status"""
         cmd = 'dumpsys battery set status 2'
         adb.shell(cmd=cmd, deviceId=self.deviceId)
 
@@ -121,7 +120,7 @@ class Flow:
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getNetWorkData(self):
-        """获取上下行流量，单位MB"""
+        """Get the upflow and downflow data"""
         if self.platform == 'Android':
             pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
             cmd = f'cat /proc/{pid}/net/dev |{d._filterType()} wlan0'
@@ -156,7 +155,7 @@ class FPS:
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getFPS(self):
-        """获取fps、jank"""
+        """get fps、jank"""
         if self.platform == 'Android':
             monitors = FPSMonitor(device_id=self.deviceId, package_name=self.pkgName, frequency=1,
                                   start_time=TimeUtils.getCurrentTimeUnderline())
