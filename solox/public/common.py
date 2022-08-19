@@ -198,64 +198,85 @@ class file:
 
     def _setAndroidPerfs(self,scene):
         """Aggregate APM data for Android"""
-        cpu_data = self.readLog(scene=scene, filename=f'cpu.log')[1]
-        cpu_rate = f'{round(sum(cpu_data) / len(cpu_data), 2)}%'
 
-        battery_data = self.readLog(scene=scene, filename=f'battery.log')[1]
-        battery_rate = f'{round(sum(battery_data) / len(battery_data), 2)}%'
+        cpuAppData = self.readLog(scene=scene, filename=f'cpu_app.log')[1]
+        cpuAppRate = f'{round(sum(cpuAppData) / len(cpuAppData), 2)}%'
 
-        mem_data = self.readLog(scene=scene, filename=f'mem.log')[1]
-        mem_avg = f'{round(sum(mem_data) / len(mem_data), 2)}MB'
+        cpuSystemData = self.readLog(scene=scene, filename=f'cpu_sys.log')[1]
+        cpuSystemRate = f'{round(sum(cpuSystemData) / len(cpuSystemData), 2)}%'
 
-        fps_data = self.readLog(scene=scene, filename=f'fps.log')[1]
-        fps_avg = f'{int(sum(fps_data) / len(fps_data))}HZ/s'
+        batteryLevelData = self.readLog(scene=scene, filename=f'battery_level.log')[1]
+        batteryLevel = f'{round(sum(batteryLevelData) / len(batteryLevelData), 2)}%'
 
-        jank_data = self.readLog(scene=scene, filename=f'jank.log')[1]
-        jank_avg = f'{int(sum(jank_data) / len(jank_data))}'
+        batteryTemlData = self.readLog(scene=scene, filename=f'battery_tem.log')[1]
+        batteryTeml = f'{round((sum(batteryTemlData) / 10) / len(batteryTemlData), 2)}°C'
 
-        flow_send_data = self.readLog(scene=scene, filename=f'upflow.log')[1]
-        flow_send_data_all = f'{round(float(sum(flow_send_data) / 1024 ),2)}MB'
+        totalPassData = self.readLog(scene=scene, filename=f'mem_total.log')[1]
+        totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
 
-        flow_recv_data = self.readLog(scene=scene, filename=f'downflow.log')[1]
-        flow_recv_data_all = f'{round(float(sum(flow_recv_data) / 1024 ),2)}MB'
+        nativePassData = self.readLog(scene=scene, filename=f'mem_native.log')[1]
+        nativePassAvg = f'{round(sum(nativePassData) / len(nativePassData), 2)}MB'
+
+        dalvikPassData = self.readLog(scene=scene, filename=f'mem_dalvik.log')[1]
+        dalvikPassAvg = f'{round(sum(dalvikPassData) / len(dalvikPassData), 2)}MB'
+
+        fpsData = self.readLog(scene=scene, filename=f'fps.log')[1]
+        fpsAvg = f'{int(sum(fpsData) / len(fpsData))}HZ/s'
+
+        jankData = self.readLog(scene=scene, filename=f'jank.log')[1]
+        jankAvg = f'{int(sum(jankData) / len(jankData))}'
+
+        flowSendData = self.readLog(scene=scene, filename=f'upflow.log')[1]
+        flowSend = f'{round(float(sum(flowSendData) / 1024 ),2)}MB'
+
+        flowRecvData = self.readLog(scene=scene, filename=f'downflow.log')[1]
+        flowRecv = f'{round(float(sum(flowRecvData) / 1024 ),2)}MB'
 
         apm_dict = {
-            "cpu": cpu_rate,
-            "mem": mem_avg,
-            "fps": fps_avg,
-            "jank": jank_avg,
-            "flow_send": flow_send_data_all,
-            "flow_recv": flow_recv_data_all,
-            "battery": battery_rate
+            "cpuAppRate": cpuAppRate,
+            "cpuSystemRate": cpuSystemRate,
+            "totalPassAvg": totalPassAvg,
+            "nativePassAvg": nativePassAvg,
+            "dalvikPassAvg": dalvikPassAvg,
+            "fps": fpsAvg,
+            "jank": jankAvg,
+            "flow_send": flowSend,
+            "flow_recv": flowRecv,
+            "batteryLevel": batteryLevel,
+            "batteryTeml":batteryTeml
         }
 
         return apm_dict
 
     def _setiOSPerfs(self, scene):
         """Aggregate APM data for iOS"""
-        cpu_data = self.readLog(scene=scene, filename=f'cpu.log')[1]
-        cpu_rate = f'{round(sum(cpu_data) / len(cpu_data), 2)}%'
+        cpuAppData = self.readLog(scene=scene, filename=f'cpu_app.log')[1]
+        cpuAppRate = f'{round(sum(cpuAppData) / len(cpuAppData), 2)}%'
 
-        mem_data = self.readLog(scene=scene, filename=f'mem.log')[1]
-        mem_avg = f'{round(sum(mem_data) / len(mem_data), 2)}MB'
+        totalPassData = self.readLog(scene=scene, filename=f'mem_total.log')[1]
+        totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
 
-        fps_data = self.readLog(scene=scene, filename=f'fps.log')[1]
-        fps_avg = f'{int(sum(fps_data) / len(fps_data))}HZ/s'
+        fpsData = self.readLog(scene=scene, filename=f'fps.log')[1]
+        fpsAvg = f'{int(sum(fpsData) / len(fpsData))}HZ/s'
 
-        flow_send_data = self.readLog(scene=scene, filename=f'upflow.log')[1]
-        flow_send_data_all = f'{round(float(sum(flow_send_data) / 1024 ),2)}MB'
+        flowSendData = self.readLog(scene=scene, filename=f'upflow.log')[1]
+        flowSend = f'{round(float(sum(flowSendData) / 1024 ),2)}MB'
 
-        flow_recv_data = self.readLog(scene=scene, filename=f'downflow.log')[1]
-        flow_recv_data_all = f'{round(float(sum(flow_recv_data) / 1024 ),2)}MB'
+        flowRecvData = self.readLog(scene=scene, filename=f'downflow.log')[1]
+        flowRecv = f'{round(float(sum(flowRecvData) / 1024 ),2)}MB'
 
         apm_dict = {
-            "cpu": cpu_rate,
-            "mem": mem_avg,
-            "fps": fps_avg,
-            "flow_send": flow_send_data_all,
-            "flow_recv": flow_recv_data_all,
+            "cpuAppRate": cpuAppRate,
+            "cpuSystemRate": 0,
+            "totalPassAvg": totalPassAvg,
+            "nativePassAvg": 0,
+            "dalvikPassAvg": 0,
+            "fps": fpsAvg,
             "jank": 0,
-            "battery": 0
+            "flow_send": flowSend,
+            "flow_recv": flowRecv,
+            "batteryLevel": 0,
+            "batteryTeml": 0
         }
 
         return apm_dict

@@ -79,11 +79,15 @@ def analysis():
 
                 f = open(f'{report_dir}/{scene}/apm.json')
                 json_data = json.loads(f.read())
-                apm_data['cpu'] = json_data['cpu']
-                apm_data['mem'] = json_data['mem']
+                apm_data['cpuAppRate'] = json_data['cpuAppRate']
+                apm_data['cpuSystemRate'] = json_data['cpuSystemRate']
+                apm_data['totalPassAvg'] = json_data['totalPassAvg']
+                apm_data['nativePassAvg'] = json_data['nativePassAvg']
+                apm_data['dalvikPassAvg'] = json_data['dalvikPassAvg']
                 apm_data['fps'] = json_data['fps']
                 apm_data['jank'] = json_data['jank']
-                apm_data['battery'] = json_data['battery']
+                apm_data['batteryLevel'] = json_data['batteryLevel']
+                apm_data['batteryTeml'] = json_data['batteryTeml']
                 apm_data['flow_send'] = json_data['flow_send']
                 apm_data['flow_recv'] = json_data['flow_recv']
                 f.close()

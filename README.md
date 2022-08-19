@@ -52,7 +52,7 @@ python3 -m solox --host=0.0.0.0 --port=50003
 ```
 ## Features
 #### Home
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1659519461516-871ecf61-4745-4c92-bf01-96fe0f7be560.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1660883990523-03354c72-6144-4e43-a1fb-080fc1a0e299.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 
 #### Error Log
@@ -66,7 +66,7 @@ python3 -m solox --host=0.0.0.0 --port=50003
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879616511-15f271b7-2761-43c5-a86c-50f82bc68f32.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 #### Analysis
-<img src="https://user-images.githubusercontent.com/29191106/174444708-70621044-f836-446f-852f-05925e60cada.png"  width="100%">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1660883991330-67bab00c-1001-477a-b32f-7c8aa7906481.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 
 ## Thanks

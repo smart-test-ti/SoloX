@@ -4,6 +4,7 @@ import time
 from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
+# import traceback
 from solox.public.apm import CPU, MEM, Flow, FPS, Battery
 from solox.public.common import Devices, file
 
@@ -99,14 +100,20 @@ def getCpuRate():
     platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device,platform)
+    deviceId = d.getIdbyDevice(device, platform)
     try:
-        cpu = CPU(pkgName=pkgname, deviceId=deviceId,platform=platform)
-        cpuRate = cpu.getSingCpuRate()
-        result = {'status': 1, 'cpuRate': cpuRate}
+        cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform)
+        appCpuRate, systemCpuRate = cpu.getCpuRate()
+        result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate':systemCpuRate}
     except Exception as e:
-        logger.error(f'get cpu failed : {str(e)}')
-        result = {'status': 1, 'cpuRate': 0}
+        if not deviceId:
+            logger.error('no device，please check the device connection status')
+        elif not d.getPid(deviceId,pkgname):
+            logger.error('no app process，please check if the app is started')
+        else:
+            logger.error(f'get cpu failed : {str(e)}')
+        # traceback.print_exc()
+        result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate':0}
     return result
 
 
@@ -116,14 +123,19 @@ def getMEM():
     platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device,platform)
+    deviceId = d.getIdbyDevice(device, platform)
     try:
-        mem = MEM(pkgName=pkgname, deviceId=deviceId,platform=platform)
-        pss = mem.getProcessMem()
-        result = {'status': 1, 'pss': pss}
+        mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform)
+        totalPass, nativePass, dalvikPass = mem.getProcessMem()
+        result = {'status': 1, 'totalPass': totalPass,'nativePass':nativePass,'dalvikPass':dalvikPass}
     except Exception as e:
-        logger.error(f'get mem failed : {str(e)}')
-        result = {'status': 1, 'pss': 0}
+        if not deviceId:
+            logger.error('no device，please check the device connection status')
+        elif not d.getPid(deviceId,pkgname):
+            logger.error('no app process，please check if the app is started')
+        else:
+            logger.error(f'get memory data failed : {str(e)}')
+        result = {'status': 1, 'totalPass': 0,'nativePass':0,'dalvikPass':0}
     return result
 
 
@@ -133,13 +145,18 @@ def getNetWorkData():
     platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device,platform)
+    deviceId = d.getIdbyDevice(device, platform)
     try:
         flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
         data = flow.getNetWorkData()
         result = {'status': 1, 'upflow': data[0],'downflow': data[1]}
     except Exception as e:
-        logger.error(f'get network data failed : {str(e)}')
+        if not deviceId:
+            logger.error('no device，please check the device connection status')
+        elif not d.getPid(deviceId,pkgname):
+            logger.error('no app process，please check if the app is started')
+        else:
+            logger.error(f'get network data failed : {str(e)}')
         result = {'status': 1, 'upflow': 0, 'downflow': 0}
     return result
 
@@ -149,13 +166,18 @@ def getFps():
     platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device,platform)
+    deviceId = d.getIdbyDevice(device, platform)
     try:
         fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId, platform=platform)
         fps, jank = fps_monitor.getFPS()
         result = {'status': 1, 'fps': fps, 'jank': jank}
     except Exception as e:
-        logger.error(f'get fps failed : {str(e)}')
+        if not deviceId:
+            logger.error('no device，please check the device connection status')
+        elif not d.getPid(deviceId,pkgname):
+            logger.error('no app process，please check if the app is started')
+        else:
+            logger.error(f'get fps failed : {str(e)}')
         result = {'status': 1, 'fps': 0, 'jank': 0}
     return result
 
@@ -168,11 +190,14 @@ def getBattery():
     deviceId = d.getIdbyDevice(device,platform)
     try:
         battery_monitor = Battery(deviceId=deviceId)
-        battery = battery_monitor.getBattery()
-        result = {'status': 1, 'battery': battery}
+        level, temperature = battery_monitor.getBattery()
+        result = {'status': 1, 'level': level,'temperature':temperature}
     except Exception as e:
-        logger.error(f'get battery failed : {str(e)}')
-        result = {'status': 1, 'battery': 0}
+        if not deviceId:
+            logger.error('no device，please check the device connection status')
+        else:
+            logger.error(f'get cpu failed : {str(e)}')
+        result = {'status': 1, 'level': 0, 'temperature':0}
     return result
 
 
@@ -216,9 +241,31 @@ def getLogData():
     """Get apm detailed data"""
     scene = request.args.get('scene')
     target = request.args.get('target')
+    platform = request.args.get('platform')
     try:
-        log_data = file().readLog(scene=scene, filename=f'{target}.log')[0]
-        result = {'status': 1, 'log_data': log_data}
+        if target == 'cpu':
+            cpuAppData = file().readLog(scene=scene, filename='cpu_app.log')[0]
+            if platform == 'Android':
+                cpuSysData = file().readLog(scene=scene, filename='cpu_sys.log')[0]
+                result = {'status': 1, 'cpuAppData': cpuAppData,'cpuSysData':cpuSysData}
+            else:
+                result = {'status': 1, 'cpuAppData': cpuAppData}
+        elif target == 'mem':
+            memTotalData = file().readLog(scene=scene, filename='mem_total.log')[0]
+            if platform == 'Android':
+                memNativeData = file().readLog(scene=scene, filename='mem_native.log')[0]
+                memDalvikData = file().readLog(scene=scene, filename='mem_dalvik.log')[0]
+                result = {'status': 1, 'memTotalData': memTotalData, 'memNativeData': memNativeData,'memDalvikData':memDalvikData}
+            else:
+                result = {'status': 1, 'memTotalData': memTotalData}
+
+        elif target == 'battery':
+            batteryLevel = file().readLog(scene=scene, filename='battery_level.log')[0]
+            batteryTem = file().readLog(scene=scene, filename='battery_tem.log')[0]
+            result = {'status': 1, 'batteryLevel': batteryLevel, 'batteryTem': batteryTem}
+        else:
+            log_data = file().readLog(scene=scene, filename=f'{target}.log')[0]
+            result = {'status': 1, 'log_data': log_data}
     except Exception as e:
         result = {'status': 0, 'msg': str(e)}
     return result

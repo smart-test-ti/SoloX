@@ -131,15 +131,17 @@
         </div>
     </div>
     <div class="apm-data mt-1" style="width: 75%;">
-        <div id="cpu" class="mb-3 cpu" style="min-width:400px;height:300px"></div>
-        <div id="mem"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
-        <div id="network" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
         {% if platform == 'Android' %}
+        <div id="cpu_android" class="mb-3 cpu" style="min-width:400px;height:300px"></div>
+        <div id="mem_android"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
         <div id="fps" class="mb-3 fps" style="min-width:400px;height:300px"></div>
         <div id="battery" class="mb-3 battery" style="min-width:400px;height:300px"></div>
         {% else %}
+        <div id="cpu_ios" class="mb-3 cpu" style="min-width:400px;height:300px"></div>
+        <div id="mem_ios"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
         <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:300px"></div>
         {% endif %}
+        <div id="network" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
     </div>
 
     <div class="logcat-data dropdown-menu dropdown-menu-demo" style="width: 75%;display:none">
@@ -198,9 +200,6 @@
                 $('#select-app').append('<option></option>');
                 SwalLoading('Package initialization!','Initializing Packages, please wait。');
                 },
-            complete: function () {
-                swal.close();
-            },
             success: function (data) {
                 if(data['status'] != 1 ) {
                     SwalFire('error', 'Connet failed !', 'Please check if the device is connected', 2000)
@@ -208,6 +207,7 @@
                     for(var i=0;i<data['pkgnames'].length;i++){
                         $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>')
                     }
+                    swal.close();
                 }
             }
         });
@@ -238,9 +238,6 @@
                 $('#select-app').append('<option></option>');
                 SwalLoading('Device initialization!','Initializing device environment, please wait。');
                 },
-            complete: function () {
-                swal.close();
-                },
             success: function (data) {
                 console.log(data);
                 if(data['status'] != 1 ) {
@@ -252,6 +249,7 @@
                     for(var i=0;i<data['pkgnames'].length;i++){
                         $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>');
                     }
+                    swal.close();
                 }
             }
         });
@@ -273,10 +271,21 @@
                 if(stop == false){
                     if(data['status'] == 1){
                         try {
-                            var series = cpu_chart.series[0];
-                            var x = (new Date()).getTime(),
-                                y = data['cpuRate'];
-                            series.addPoint([x, y], true, true);
+                            if(platform == 'Android'){
+                                var seriesApp = cpu_chart.series[0];
+                                var seriesSystem = cpu_chart.series[1];
+                                var x = (new Date()).getTime(),
+                                    y_app = data['appCpuRate'],
+                                    y_sys = data['systemCpuRate'];
+                                seriesApp.addPoint([x, y_app], true, true);
+                                seriesSystem.addPoint([x, y_sys], true, true);
+                            }else{
+                                var series = cpu_chart.series[0];
+                                var x = (new Date()).getTime(),
+                                    y = data['appCpuRate'];
+                                series.addPoint([x, y], true, true);
+                            }
+
                             setTimeout(getCpuRate(pkgname,device), 2000);
                         }catch (e) {}
                     }else{
@@ -302,10 +311,13 @@
                     console.log(data)
                     if(data['status'] == 1){
                         try {
-                            var series = battery_chart.series[0];
+                            var seriesLevel = battery_chart.series[0];
+                            var seriesTemperature = battery_chart.series[1];
                             var x = (new Date()).getTime(),
-                                y = data['battery'];
-                            series.addPoint([x, y], true, true);
+                                y_level = data['level'],
+                                y_temperature = data['temperature'];
+                            seriesLevel.addPoint([x, y_level], true, true);
+                            seriesTemperature.addPoint([x, y_temperature], true, true);
                             setTimeout(getBattery(device), 2000);
                         }catch (e) {}
                     }else{
@@ -332,11 +344,25 @@
                 if(stop == false){
                     if(data['status'] == 1){
                         try {
-                            var series = mem_chart.series[0];
-                            var x = (new Date()).getTime(),
-                                y = data['pss'];
-                            series.addPoint([x, y], true, true);
+                            if(platform == 'Android'){
+                                var seriesTotal = mem_chart.series[0];
+                                var seriesNative = mem_chart.series[1];
+                                var seriesDalvik = mem_chart.series[2];
+                                var x = (new Date()).getTime(),
+                                    y_total = data['totalPass'],
+                                    y_native = data['nativePass'],
+                                    y_dalvik = data['dalvikPass'];
+                                seriesTotal.addPoint([x, y_total], true, true);
+                                seriesNative.addPoint([x, y_native], true, true);
+                                seriesDalvik.addPoint([x, y_dalvik], true, true);
+                            }else{
+                                var series = mem_chart.series[0];
+                                var x = (new Date()).getTime(),
+                                    y = data['totalPass'];
+                                series.addPoint([x, y], true, true);
+                            }
                             setTimeout(getMemPss(pkgname,device), 2000);
+
                         }catch (e) {}
                     }else{
                         SwalFire('error','something error',data['msg'],2000);
@@ -369,7 +395,7 @@
                                 y_down = data['downflow'];
                             seriesUpFlow.addPoint([x_up, y_up], true, true);
                             seriesDownFlow.addPoint([x_down, y_down], true, true);
-                            setTimeout(getNetWork(pkgname,device), 1000);
+                            setTimeout(getNetWork(pkgname,device), 2000);
                         }catch (e) {
                             console.log(e)
                         }
@@ -407,7 +433,7 @@
                                     y_jank = data['jank'];
                                 seriesJank.addPoint([x_jsnk, y_jank], true, true);
                             }
-                            setTimeout(getFps(pkgname,device), 1000);
+                            setTimeout(getFps(pkgname,device), 2000);
                         }catch (e) {}
                     }else{
                         SwalFire('error','something error',data['msg'],2000);
@@ -465,6 +491,103 @@
         }())
     },{
         name : 'downFlow',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
+
+    var seriesCpu = [{
+        name : 'AppUsage',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'SystemUsage',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
+
+    var seriesMem = [{
+        name : 'totalPass',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'nativePass',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'dalvikPass',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
+
+    var seriesBettery = [{
+        name : 'level',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'temperature',
         pointInterval: 120 * 1000,
         data : (function () {
             var data = [], time = (new Date()).getTime(), i;
@@ -586,21 +709,25 @@
                 break;
             case 'fps_ios':
                 seriesFinal = seriesFpsbyiOS;
-                legend = true;
                 yAxis = yAxis_plot;
                 break;
             case 'network':
                 seriesFinal = seriesNet;
                 legend = true;
                 break;
-            case 'cpu':
+            case 'cpu_android':
+                seriesFinal = seriesCpu;
+                legend = true;
                 yAxis = yAxis_plot;
+                break;
+            case 'mem_android':
+                seriesFinal = seriesMem;
+                legend = true;
                 break;
             case 'battery':
+                seriesFinal = seriesBettery;
+                legend = true;
                 yAxis = yAxis_plot;
-                break;
-            default:
-                seriesFinal = series;
                 break;
         }
 
@@ -636,14 +763,15 @@
 
     function cpuInitialize(){
         //初始化cpu
-        let cpu_chart = chartsInitialize('cpu','CPU（%）');
+        let type = platform == 'Android' ? 'cpu_android' : 'cpu_ios';
+        let cpu_chart = chartsInitialize(type,'CPU（%）');
         return cpu_chart
     }
 
     function batteryInitialize(){
         //初始化battery
         if(platform === 'Android'){
-            let battery_chart = chartsInitialize('battery','Battery（%）');
+            let battery_chart = chartsInitialize('battery','Battery（Level & Temperature）');
             return battery_chart
         }else{
             return null
@@ -652,7 +780,8 @@
 
     function memInitialize(){
         //初始化mem
-        let mem_chart = chartsInitialize('mem','MEM（MB）');
+        let type = platform == 'Android' ? 'mem_android' : 'mem_ios';
+        let mem_chart = chartsInitialize(type,'MEM（MB）');
         return mem_chart
     }
 
@@ -712,11 +841,19 @@
                 seriesFinal = seriesNet;
                 legend = true;
                 break;
-            case 'cpu':
+            case 'cpu_android':
+                seriesFinal = seriesCpu;
                 yAxis = yAxis_plot;
+                legend = true;
+                break;
+            case 'mem_android':
+                seriesFinal = seriesMem;
+                legend = true;
                 break;
             case 'battery':
+                seriesFinal = seriesBettery;
                 yAxis = yAxis_plot;
+                legend = true;
                 break;
             default:
                 seriesFinal = series;
@@ -761,46 +898,20 @@
 
     function collectCpu(device,pkgname){
         cpuInitialize();
-        cpu_chart = collectPers(device,pkgname,'cpu','CPU（%）',getCpuRate(pkgname,device));
+        let type = platform == 'Android' ? 'cpu_android' : 'cpu_ios';
+        cpu_chart = collectPers(device,pkgname,type,'CPU（%）',getCpuRate(pkgname,device));
     }
 
-    function collectBattery(device){
+    function collectBattery(device,pkgname){
         batteryInitialize();
-        battery_chart = Highcharts.stockChart('battery', {
-            chart : {
-              events : {
-                  load : getBattery(device)
-              }
-            },
-            rangeSelector: rangeSelector,
-            title : {
-                text : 'Battery（%）'
-            },
-            tooltip: {
-                split: false
-            },
-            credits:{
-                enabled: false
-            },
-            scrollbar : {
-                enabled : true
-            },
-            navigator : {
-                enabled : false
-            },
-            exporting: {
-                enabled: false
-            },
-            yAxis: {
-                opposite:false
-            },
-            series : series
-        });
+        battery_chart = collectPers(device,pkgname,'battery','Battery（Level & Temperature）',getBattery(device));
+
     }
 
     function collectMem(device,pkgname){
         memInitialize();
-        mem_chart = collectPers(device,pkgname,'mem','MEM（MB）',getMemPss(pkgname,device));
+        let type = platform == 'Android' ? 'mem_android' : 'mem_ios';
+        mem_chart = collectPers(device,pkgname,type,'MEM（MB）',getMemPss(pkgname,device));
     }
 
     function collectNetwork(device,pkgname){
@@ -836,7 +947,9 @@
             }
 
         }else{
-            SwalFire('error','Execution error','No device or package name selected',2000)
+            SwalFire('error','Execution error','No device or package name selected',2000);
+            $('#run-apm').show();
+            $('#stop-apm').hide();
         }});
 
     $('#stop-apm').click(function () {
