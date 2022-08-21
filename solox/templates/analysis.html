@@ -370,36 +370,20 @@
         </div>
     </div>
     {% endif %}
-    <div class="card networkdata-send-card mt-3">
+    <div class="card networkdata-card mt-3">
         <div class="card-header">
-            <div class='card-title'>Send Network Data（KB）</div>
+            <div class='card-title'>Network Data（KB）</div>
             <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="networkdata_send_loading">
+                <a class="btn-action cursor-pointer" id="networkdata_loading">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
                 </a>
-                <a class="btn-action cursor-pointer" id="networkdata_send_png" onclick="screenshot('networkdata-send-card','networkdata_send.png')">
+                <a class="btn-action cursor-pointer" id="networkdata_png" onclick="screenshot('networkdata-card','networkdata.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
                 </a>
             </div>
         </div>
         <div class="card-body">
-            <div id="chart-networkdata-send"></div>
-        </div>
-    </div>
-    <div class="card networkdata-recv-card mt-3">
-        <div class="card-header">
-            <div class='card-title'>Recv Network Data（KB）</div>
-            <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="networkdata_recv_loading">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                </a>
-                <a class="btn-action cursor-pointer" id="networkdata_recv_png" onclick="screenshot('networkdata-recv-card','networkdata_recv.png')">
-                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
-                </a>
-            </div>
-        </div>
-        <div class="card-body">
-            <div id="chart-networkdata-recv"></div>
+            <div id="chart-networkdata"></div>
         </div>
     </div>
 
@@ -419,8 +403,7 @@
             $('#jank_loading').click();
             $('#battery_loading').click();
         }
-        $('#networkdata_send_loading').click();
-        $('#networkdata_recv_loading').click();
+        $('#networkdata_loading').click();
     });
 
     function options(type,dataLabels=false) {
@@ -455,7 +438,7 @@
                 },
             strokeDashArray: 4,
             },
-        }
+        };
         return options
     }
 
@@ -476,7 +459,7 @@
                 SwalLoading('Loading','')
             },
             complete: function () {
-                swal.close()
+                swal.close();
             },
             success: function (data) {
                 if(platform == 'Android'){
@@ -635,9 +618,9 @@
         });
     });
 
-    var network_send_chart = new ApexCharts(document.querySelector("#chart-networkdata-send"), options('line',false));
-    network_send_chart.render();
-    $('#networkdata_send_loading').click(function () {
+    var network_chart = new ApexCharts(document.querySelector("#chart-networkdata"), options('line',false));
+    network_chart.render();
+    $('#networkdata_loading').click(function () {
         $.ajax({
             url: '/apm/log',
             type: "GET",
@@ -645,7 +628,7 @@
             cache: false,
             data:{
                 scene:'{{ scene }}',
-                target:'upflow',
+                target:'flow',
                 platform:platform
             },
             beforeSend: function () {
@@ -655,38 +638,12 @@
                 swal.close();
             },
             success: function (data) {
-                network_send_chart.updateSeries([{
-                    name: 'network data',
-                    data: data['log_data']
-                }])
-            }
-        });
-    });
-
-
-    var network_recv_chart = new ApexCharts(document.querySelector("#chart-networkdata-recv"), options('line',false));
-    network_recv_chart.render();
-    $('#networkdata_recv_loading').click(function () {
-        $.ajax({
-            url: '/apm/log',
-            type: "GET",
-            async: true,
-            cache: false,
-            data:{
-                scene:'{{ scene }}',
-                target:'downflow',
-                platform:platform
-            },
-            beforeSend: function () {
-                SwalLoading('Loading','')
-            },
-            complete: function () {
-                swal.close();
-            },
-            success: function (data) {
-                network_recv_chart.updateSeries([{
-                    name: 'network data',
-                    data: data['log_data']
+                network_chart.updateSeries([{
+                    name: 'upflow',
+                    data: data['upFlow']
+                },{
+                    name: 'downflow',
+                    data: data['downFlow']
                 }])
             }
         });

@@ -1,5 +1,5 @@
 <p align="center">
-  <a>DOCUMENTION</a> | <a href="./README.md">README</a>
+  <a>DocForAndroid</a> | <a href="./README.md">README</a>
 </p>
 
 ### CPU

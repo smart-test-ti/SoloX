@@ -1,5 +1,5 @@
 <p align="center">
-  <a>README</a> | <a href="./DocForAndroid.md">DOCUMENTION</a>
+  <a>README</a> | <a href="./DocForAndroid.md">DocForAndroid</a>
 </p>
 
 <p align="center">
@@ -14,12 +14,13 @@
 <br>
 </p>
 
-## SoloX
+## Preview
 
 SoloX - Real-time collection tool for Android/iOS performance data.
 
 We are committed to solving inefficient, cumbersome test execution, and our goal is Simple Test In SoloX!
 
+<img src="./image/home.png"  width="100%">
 
 ## Installation
 ```
@@ -27,57 +28,36 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 2.pip3 install -U solox
 ```
 
-## Run locally
+## Startup SoloX
 ### default
->the startup host and port defaults to 0.0.0.0 and 50003.
-
+```shell
+python3 -m solox
 ```
-   python3 -m solox
-
- * Serving Flask app 'run' (lazy loading)
- * Environment: production
-   WARNING: This is a development server. Do not use it in a production deployment.
-   Use a production WSGI server instead.
- * Debug mode: on
- * Running on all addresses.
-   WARNING: This is a development server. Do not use it in a production deployment.
- * Running on http://0.0.0.0:50003/ (Press CTRL+C to quit)
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 906-499-328
-
-```
-
-### custom
->custom startup host and port, support command line input.
+### customize
 
 ```shell
 python3 -m solox --host=0.0.0.0 --port=50003
 ```
-## Features
-#### Home
-<img src="./image/home.png"  width="100%">
 
-#### Error Log
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1659519461659-555b7fe9-b4c1-44dc-b1f8-7ae9a9595150.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+## Collect in python 
+```python
+from solox.public.apm import APM
 
-#### Setting
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1660214339174-d04146cb-4293-4c0b-add6-bca2fcd9e72b.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android')
+# apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only support one device
+cpu = apm.collectCpu() # %
+memory = apm.collectMemory() # MB
+flow = apm.collectFlow() # KB
+fps = apm.collectFps() # HZ
+battery = apm.collectBattery() # level:% temperature:°C
 
-
-#### Report
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879616511-15f271b7-2761-43c5-a86c-50f82bc68f32.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
-
-#### Analysis
-<img src="./image/analysis.png"  width="100%">
-
-
+```
 ## Thanks
 - https://github.com/alibaba/mobileperf
 
 - https://github.com/alibaba/taobao-iphone-device
 
 ## Communicate
-- QQ: 671102537
+- QQ: 1501556640
 - Gmail: rafacheninc@gmail.com
 

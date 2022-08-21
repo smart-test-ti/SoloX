@@ -263,6 +263,10 @@ def getLogData():
             batteryLevel = file().readLog(scene=scene, filename='battery_level.log')[0]
             batteryTem = file().readLog(scene=scene, filename='battery_tem.log')[0]
             result = {'status': 1, 'batteryLevel': batteryLevel, 'batteryTem': batteryTem}
+        elif target == 'flow':
+            upFlow = file().readLog(scene=scene, filename='upflow.log')[0]
+            downFlow = file().readLog(scene=scene, filename='downflow.log')[0]
+            result = {'status': 1, 'upFlow': upFlow, 'downFlow': downFlow}
         else:
             log_data = file().readLog(scene=scene, filename=f'{target}.log')[0]
             result = {'status': 1, 'log_data': log_data}

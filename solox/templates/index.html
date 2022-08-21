@@ -771,7 +771,7 @@
     function batteryInitialize(){
         //初始化battery
         if(platform === 'Android'){
-            let battery_chart = chartsInitialize('battery','Battery（Level & Temperature）');
+            let battery_chart = chartsInitialize('battery','Battery');
             return battery_chart
         }else{
             return null
@@ -904,7 +904,7 @@
 
     function collectBattery(device,pkgname){
         batteryInitialize();
-        battery_chart = collectPers(device,pkgname,'battery','Battery（Level & Temperature）',getBattery(device));
+        battery_chart = collectPers(device,pkgname,'battery','Battery',getBattery(device));
 
     }
 

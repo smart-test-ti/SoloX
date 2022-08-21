@@ -100,7 +100,6 @@ class CPU:
             appCpuRate, systemCpuRate = self.getiOSCpuRate()
         return appCpuRate, systemCpuRate
 
-
 class MEM:
     def __init__(self, pkgName, deviceId, platform='Android'):
         self.pkgName = pkgName
@@ -145,7 +144,6 @@ class MEM:
             with open(f'{file().report_dir}/mem_dalvik.log', 'a+') as f:
                 f.write(f'{self.apm_time}={str(dalvikPass)}' + '\n')
         return totalPass, nativePass, dalvikPass
-
 
 class Battery:
     def __init__(self, deviceId, platform='Android'):
@@ -219,7 +217,7 @@ class Flow:
             f.write(f'{self.apm_time}={str(sendNum)}' + '\n')
         with open(f'{file().report_dir}/downflow.log', 'a+') as f:
             f.write(f'{self.apm_time}={str(recNum)}' + '\n')
-        return sendNum,recNum
+        return sendNum, recNum
 
 class FPS:
 
@@ -291,14 +289,50 @@ class iosAPM():
             perf_value = self.downflow, self.upflow
         return perf_value
 
+class APM():
 
+    """for python api"""
 
-if __name__ == '__main__':
-    apm = CPU("com.xxx.app","ca6bd5a5")
-    cpu = apm.getprocessCpuStat()
-    total = apm.getTotalCpuStat()
-    rate = apm.getAndroidCpuRate()
-    logger.info(rate)
+    def __init__(self, pkgName, deviceId='', platform='Android'):
+        self.pkgName = pkgName
+        self.deviceId = deviceId
+        self.platform = platform
+
+    def collectCpu(self):
+        _cpu = CPU(self.pkgName, self.deviceId, self.platform)
+        appCpuRate, systemCpuRate = _cpu.getCpuRate()
+        result = {'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
+        logger.info(f'cpu: {result}')
+        return result
+
+    def collectMemory(self):
+        _memory = MEM(self.pkgName, self.deviceId, self.platform)
+        totalPass, nativePass, dalvikPass = _memory.getProcessMem()
+        result = {'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
+        logger.info(f'memory: {result}')
+        return result
+
+    def collectBattery(self):
+        _battery = Battery(self.deviceId, self.platform)
+        level, temperature = _battery.getBattery()
+        result = {'level': level, 'temperature': temperature}
+        logger.info(f'battery: {result}')
+        return result
+
+    def collectFlow(self):
+        _flow = Flow(self.pkgName, self.deviceId, self.platform)
+        upFlow, downFlow = _flow.getNetWorkData()
+        result = {'upFlow': upFlow, 'downFlow': downFlow}
+        logger.info(f'network: {result}')
+        return result
+
+    def collectFps(self):
+        _fps = FPS(self.pkgName, self.deviceId, self.platform)
+        fps, jank = _fps.getFPS()
+        result = {'fps': fps, 'jank': jank}
+        logger.info(f'fps: {result}')
+        return result
+
 
 
 
