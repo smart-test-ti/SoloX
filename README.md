@@ -29,6 +29,8 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 ```
 1.Python:3.6+ 
 2.pip3 install -U solox
+
+notice: If Windows users need to test ios, install and start Itunes
 ```
 
 ## Startup SoloX
@@ -54,7 +56,6 @@ memory = apm.collectMemory() # MB
 flow = apm.collectFlow() # KB
 fps = apm.collectFps() # HZ
 battery = apm.collectBattery() # level:% temperature:°C
-
 ```
 ## Thanks
 - https://github.com/alibaba/mobileperf

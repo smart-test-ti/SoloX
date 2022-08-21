@@ -103,6 +103,19 @@ class Devices:
             pkgNames.append(pkgResult[i].split(' ')[0])
         return pkgNames
 
+    def _devicesCheck(self, pf, id='', pkg=''):
+        """Check the device environment"""
+        if pf == 'Android':
+            if len(self.getDeviceIds()) == 0:
+                raise ('no devices')
+            if not self.getPid(deviceId=id, pkgName=pkg):
+                raise ('no found app process')
+        elif pf == 'iOS':
+            if len(self.getDeviceInfoByiOS()) == 0:
+                raise ('no devices')
+        else:
+            raise ('platform must be Android or iOS')
+
 
 class file:
 

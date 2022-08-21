@@ -297,6 +297,7 @@ class APM():
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
+        d._devicesCheck(pf=self.platform, id=self.deviceId, pkg=self.pkgName)
 
     def collectCpu(self):
         _cpu = CPU(self.pkgName, self.deviceId, self.platform)
