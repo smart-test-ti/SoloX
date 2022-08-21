@@ -8,9 +8,12 @@
 </a>
 <br>
 <br>
+
 </p>
 <p align="center">
 <a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/pypi/v/solox" alt="solox preview"></a>
+<a href="https://smart-test-ti.github.io/apm.html" target="__blank"><img src="https://img.shields.io/badge/preview-demo-orange"></a>
+
 <br>
 </p>
 
@@ -42,9 +45,10 @@ python3 -m solox --host=0.0.0.0 --port=50003
 ## Collect in python 
 ```python
 from solox.public.apm import APM
+# solox version >= 2.1.2
 
 apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android')
-# apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only support one device
+# apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
 cpu = apm.collectCpu() # %
 memory = apm.collectMemory() # MB
 flow = apm.collectFlow() # KB
