@@ -59,7 +59,7 @@ class Devices:
 
     def getPid(self, deviceId, pkgName):
         """Get the pid corresponding to the Android package name"""
-        result = os.popen(f"{self.adb} -s {deviceId} shell ps | {self._filterType()} {pkgName}").readlines()
+        result = os.popen(f"{self.adb} -s {deviceId} shell ps -ef | {self._filterType()} {pkgName}").readlines()
         flag = len(result) > 0
         try:
             pid = (0, result[0].split()[1])[flag]
