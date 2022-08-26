@@ -290,10 +290,10 @@ def removeReport():
 @api.route('/apm/collect', methods=['post', 'get'])
 def apmCollect():
     """apm common api"""
-    platform = Method._request('platform')
-    deviceid = Method._request('deviceid')
-    pkgname = Method._request('pkgname')
-    apm_type = Method._request('apm_type')
+    platform  = request.args.get('platform')
+    deviceid = request.args.get('deviceid')
+    pkgname  = request.args.get('pkgname')
+    apm_type  = request.args.get('apm_type')
     try:
         if apm_type == 'cpu':
             cpu = CPU(pkgName=pkgname, deviceId=deviceid, platform=platform)

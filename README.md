@@ -70,11 +70,7 @@ Windows: start /min python3 -m solox &
 
 ### Request apm data from api
 ```
-url: http//localhost:50003/apm/collect
-
-methods: ['post', 'get']
-
-request parameters: platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&apm_type=cpu
+http://{ip}:50003/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&apm_type=cpu
 
 apm_type in ['cpu','memory','network','fps','battery']
 ```
