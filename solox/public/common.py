@@ -7,13 +7,14 @@ import time
 from flask import request
 from solox.public.adb import adb
 
+
 class Devices:
 
     def __init__(self, platform='Android'):
         self.platform = platform
         self.adb = adb.adb_path
 
-    def execCmd(self,cmd):
+    def execCmd(self, cmd):
         """Execute the command to get the terminal print result"""
         r = os.popen(cmd)
         text = r.read()
@@ -22,7 +23,7 @@ class Devices:
 
     def _filterType(self):
         """Select the pipe filtering method according to the system"""
-        filtertype = ('grep','findstr')[platform.system() == 'Windows']
+        filtertype = ('grep', 'findstr')[platform.system() == 'Windows']
         return filtertype
 
     def getDeviceIds(self):
@@ -50,7 +51,7 @@ class Devices:
             Devices.append(f'{id}({devices_name})')
         return Devices
 
-    def getIdbyDevice(self, deviceinfo,platform):
+    def getIdbyDevice(self, deviceinfo, platform):
         """Obtain the corresponding device id according to the Android device information"""
         if platform == 'Android':
             deviceId = re.sub(u"\\(.*?\\)|\\{.*?}|\\[.*?]", "", deviceinfo)
@@ -96,7 +97,7 @@ class Devices:
             deviceInfo.append(f'{deviceName}:{deviceUdid}')
         return deviceInfo
 
-    def getPkgnameByiOS(self,udid):
+    def getPkgnameByiOS(self, udid):
         """Get all package names of the corresponding iOS device"""
         pkgResult = self.execCmd(f'tidevice --udid {udid} applist').split('\n')
         pkgNames = []
@@ -108,14 +109,14 @@ class Devices:
         """Check the device environment"""
         if pf == 'Android':
             if len(self.getDeviceIds()) == 0:
-                raise ('no devices')
+                raise Exception('no devices')
             if not self.getPid(deviceId=id, pkgName=pkg):
-                raise ('no found app process')
+                raise Exception('no found app process')
         elif pf == 'iOS':
             if len(self.getDeviceInfoByiOS()) == 0:
-                raise ('no devices')
+                raise Exception('no devices')
         else:
-            raise ('platform must be Android or iOS')
+            raise Exception('platform must be Android or iOS')
 
 
 class file:
@@ -190,8 +191,7 @@ class file:
                 target_data_list.append(float(line.split('=')[1].strip()))
         return log_data_list, target_data_list
 
-
-    def approximateSize(self,size, a_kilobyte_is_1024_bytes=True):
+    def approximateSize(self, size, a_kilobyte_is_1024_bytes=True):
         '''
         convert a file size to human-readable form.
         Keyword arguments:
@@ -214,8 +214,7 @@ class file:
             if size < multiple:
                 return '{0:.2f} {1}'.format(size, suffix)
 
-
-    def _setAndroidPerfs(self,scene):
+    def _setAndroidPerfs(self, scene):
         """Aggregate APM data for Android"""
 
         cpuAppData = self.readLog(scene=scene, filename=f'cpu_app.log')[1]
@@ -228,7 +227,7 @@ class file:
         batteryLevel = f'{round(sum(batteryLevelData) / len(batteryLevelData), 2)}%'
 
         batteryTemlData = self.readLog(scene=scene, filename=f'battery_tem.log')[1]
-        batteryTeml = f'{round((sum(batteryTemlData) / 10) / len(batteryTemlData), 2)}°C'
+        batteryTeml = f'{round(sum(batteryTemlData) / len(batteryTemlData), 2)}°C'
 
         totalPassData = self.readLog(scene=scene, filename=f'mem_total.log')[1]
         totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
@@ -246,10 +245,10 @@ class file:
         jankAvg = f'{int(sum(jankData) / len(jankData))}'
 
         flowSendData = self.readLog(scene=scene, filename=f'upflow.log')[1]
-        flowSend = f'{round(float(sum(flowSendData) / 1024 ),2)}MB'
+        flowSend = f'{round(float(sum(flowSendData) / 1024), 2)}MB'
 
         flowRecvData = self.readLog(scene=scene, filename=f'downflow.log')[1]
-        flowRecv = f'{round(float(sum(flowRecvData) / 1024 ),2)}MB'
+        flowRecv = f'{round(float(sum(flowRecvData) / 1024), 2)}MB'
 
         apm_dict = {
             "cpuAppRate": cpuAppRate,
@@ -262,7 +261,7 @@ class file:
             "flow_send": flowSend,
             "flow_recv": flowRecv,
             "batteryLevel": batteryLevel,
-            "batteryTeml":batteryTeml
+            "batteryTeml": batteryTeml
         }
 
         return apm_dict
@@ -279,10 +278,10 @@ class file:
         fpsAvg = f'{int(sum(fpsData) / len(fpsData))}HZ/s'
 
         flowSendData = self.readLog(scene=scene, filename=f'upflow.log')[1]
-        flowSend = f'{round(float(sum(flowSendData) / 1024 ),2)}MB'
+        flowSend = f'{round(float(sum(flowSendData) / 1024), 2)}MB'
 
         flowRecvData = self.readLog(scene=scene, filename=f'downflow.log')[1]
-        flowRecv = f'{round(float(sum(flowRecvData) / 1024 ),2)}MB'
+        flowRecv = f'{round(float(sum(flowRecvData) / 1024), 2)}MB'
 
         apm_dict = {
             "cpuAppRate": cpuAppRate,
@@ -310,6 +309,4 @@ class Method:
         elif request.method == 'GET':
             return request.args[object]
         else:
-            raise ('request method error')
-
-
+            raise Exception('request method error')

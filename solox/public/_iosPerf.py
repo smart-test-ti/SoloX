@@ -5,11 +5,9 @@
 """
 
 import enum
-import io
 import threading
 import time
 import typing
-import uuid
 from collections import defaultdict, namedtuple
 from typing import Any, Iterator, Optional, Tuple, Union
 import weakref
@@ -236,6 +234,7 @@ def iter_memory(d: BaseDevice, rp: RunningProcess) -> Iterator[Any]:
             "value": minfo['phys_memory'] / 1024 / 1024,  # MB
         }
 
+
 def iter_cpu(d: BaseDevice, rp: RunningProcess) -> Iterator[Any]:
     for minfo in _iter_complex_cpu_memory(d, rp):  # d.iter_cpu_mem(bundle_id):
         yield DataType.CPU, {
@@ -288,7 +287,7 @@ def append_data(wg: WaitGroup, stop_event: threading.Event,
             callback(_type, data)
         if data:
             if _type.value == 'network':
-                return data['downFlow'],data['upFlow']
+                return data['downFlow'], data['upFlow']
             else:
                 return data['value']
         # print(_type, data)
@@ -341,7 +340,6 @@ class Performance():
             _perfValue = append_data(self._wg, self._stop_event, it, callback, self._perfs)
             break
         return _perfValue
-
 
     def stop(self):  # -> PerfReport:
         self._stop_event.set()

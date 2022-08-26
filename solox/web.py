@@ -62,12 +62,14 @@ def disconnect():
     thread = False
     disconnect()
 
+
 def _checkPyVer():
     """check python version"""
     if int(platform.python_version().split('.')[0]) < 3:
         logger.error('python version must be >2,your python version is {}'.format(platform.python_version()))
         logger.error('please install python::3 and pip3 install -U solox')
         sys.exit()
+
 
 def _hostIP():
     """
@@ -83,6 +85,7 @@ def _hostIP():
     finally:
         s.close()
     return ip
+
 
 def _listeningPort(port):
     """
@@ -153,6 +156,7 @@ def _startServer(host: str, port: int):
     except Exception:
         pass
 
+
 def main(host=_hostIP(), port=50003):
     """
     main start
@@ -172,4 +176,3 @@ def main(host=_hostIP(), port=50003):
         pass
     except KeyboardInterrupt:
         logger.info('stop solox success')
-

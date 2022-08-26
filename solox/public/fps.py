@@ -307,7 +307,8 @@ class SurfaceStatsCollector(object):
         if self.focus_window is None:
             results = adb.shell(cmd='dumpsys SurfaceFlinger --latency-clear', deviceId=self.device)
         else:
-            results = adb.shell(cmd='dumpsys SurfaceFlinger --latency-clear %s' % self.focus_window, deviceId=self.device)
+            results = adb.shell(cmd='dumpsys SurfaceFlinger --latency-clear %s' % self.focus_window,
+                                deviceId=self.device)
         return not len(results)
 
     def get_sdk_version(self):
@@ -554,10 +555,9 @@ class FPSMonitor(Monitor):
 
 
 if __name__ == '__main__':
-    monitor = FPSMonitor(device_id='ca6bd5a5', package_name="com.xxx.xxx", frequency=1, start_time=TimeUtils.getCurrentTimeUnderline())
+    monitor = FPSMonitor(device_id='ca6bd5a5', package_name="com.xxx.xxx", frequency=1,
+                         start_time=TimeUtils.getCurrentTimeUnderline())
     monitor.start()
     monitor.stop()
     print(collect_fps)
     print(collect_jank)
-
-
