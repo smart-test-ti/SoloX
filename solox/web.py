@@ -63,10 +63,8 @@ def disconnect():
     disconnect()
 
 
-def checkPyVer():
-    """
-    :func: check python version
-    """
+def _checkPyVer():
+    """check python version"""
     if int(platform.python_version().split('.')[0]) < 3:
         logger.error('python version must be >2,your python version is {}'.format(platform.python_version()))
         logger.error('please install python::3 and pip3 install -U solox')
@@ -100,8 +98,6 @@ def _listeningPort(port):
     else:
         port_cmd = 'netstat -ano | findstr {}'.format(port)
         r = os.popen(port_cmd)
-        # 获取50002端口的程序的pid，先保存在一个列表中，后面需要用，
-        # 否则后面调用读取，指针会到末尾，会造成索引越界
         r_data_list = r.readlines()
         if len(r_data_list) == 0:
             return
@@ -125,7 +121,6 @@ def _getServerStatus(host: str, port: int):
     """
     try:
         r = requests.get(f'http://{host}:{port}', timeout=2.0)
-        # True和False对应的数值是1和0
         flag = (True, False)[r.status_code == 200]
         return flag
     except requests.exceptions.ConnectionError:
@@ -151,7 +146,7 @@ def _openUrl(host: str, port: int):
 
 def _startServer(host: str, port: int):
     """
-    Start the solox service
+    start the solox service
     :param host:
     :param port:
     :return:
@@ -164,13 +159,13 @@ def _startServer(host: str, port: int):
 
 def main(host=_hostIP(), port=50003):
     """
-    启动入口
+    main start
     :param host: 0.0.0.0
     :param port: 默认5000端口
     :return:
     """
     try:
-        checkPyVer()
+        _checkPyVer()
         _listeningPort(port=port)
         pool = multiprocessing.Pool(processes=2)
         pool.apply_async(_startServer, (host, port))

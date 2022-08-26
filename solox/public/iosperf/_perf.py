@@ -5,15 +5,17 @@
 """
 
 import enum
+import io
 import threading
 import time
 import typing
+import uuid
 from collections import defaultdict, namedtuple
 from typing import Any, Iterator, Optional, Tuple, Union
 import weakref
 
-from tidevice._device import BaseDevice
-from tidevice._proto import *
+from ._device import BaseDevice
+from ._proto import *
 
 
 class DataType(str, enum.Enum):
@@ -25,9 +27,7 @@ class DataType(str, enum.Enum):
     PAGE = "page"
     GPU = "gpu"
 
-
 CallbackType = typing.Callable[[DataType, dict], None]
-
 
 class RunningProcess:
     """ acturally there is a better way to monitor process pid """
@@ -70,7 +70,6 @@ class WaitGroup(object):
 
     Without all the useful corner cases.
     """
-
     def __init__(self):
         self.count = 0
         self.cv = threading.Condition()
@@ -103,24 +102,21 @@ def gen_stimestamp(seconds: Optional[float] = None) -> str:
 
 
 def iter_fps(d: BaseDevice) -> Iterator[Any]:
-    index = 0
-    with d.instruments_context() as ts:
+    with d.connect_instruments() as ts:
         for data in ts.iter_opengl_data():
-            if index != 1:
-                index = index + 1
-                continue
-            fps = data['CoreAnimationFramesPerSecond']  # fps from GPU
+            fps = data['CoreAnimationFramesPerSecond'] # fps from GPU
+            # print("FPS:", fps)
             yield DataType.FPS, {"fps": fps, "time": time.time(), "value": fps}
 
 
 def iter_gpu(d: BaseDevice) -> Iterator[Any]:
-    with d.instruments_context() as ts:
+    with d.connect_instruments() as ts:
         for data in ts.iter_opengl_data():
             device_utilization = data['Device Utilization %']  # Device Utilization
-            tiler_utilization = data['Tiler Utilization %']  # Tiler Utilization
-            renderer_utilization = data['Renderer Utilization %']  # Renderer Utilization
+            tiler_utilization = data['Tiler Utilization %'] # Tiler Utilization
+            renderer_utilization = data['Renderer Utilization %'] # Renderer Utilization
             yield DataType.GPU, {"device": device_utilization, "renderer": renderer_utilization,
-                                 "tiler": tiler_utilization, "time": time.time(), "value": device_utilization}
+                                "tiler": tiler_utilization, "time": time.time(), "value": device_utilization}
 
 
 def iter_screenshot(d: BaseDevice) -> Iterator[Tuple[DataType, dict]]:
@@ -136,11 +132,11 @@ def iter_screenshot(d: BaseDevice) -> Iterator[Tuple[DataType, dict]]:
         yield DataType.SCREENSHOT, {"time": _time, "value": img}
 
 
+
 ProcAttrs = namedtuple("ProcAttrs", SYSMON_PROC_ATTRS)
 
-
 def _iter_complex_cpu_memory(d: BaseDevice,
-                             rp: RunningProcess) -> Iterator[dict]:
+                            rp: RunningProcess) -> Iterator[dict]:
     """
     content in iterator
 
@@ -154,7 +150,7 @@ def _iter_complex_cpu_memory(d: BaseDevice,
         'mem_rss': 130760704,
         'pid': 1344}
     """
-    with d.instruments_context() as ts:
+    with d.connect_instruments() as ts:
         for info in ts.iter_cpu_memory():
             pid = rp.get_pid()
 
@@ -212,7 +208,7 @@ def _iter_complex_cpu_memory(d: BaseDevice,
                 pid=pid,
                 phys_memory=pinfo.physFootprint,  # 物理内存
                 phys_memory_string="{:.1f} MiB".format(pinfo.physFootprint / 1024 /
-                                                       1024),
+                                                    1024),
                 vss=pinfo.memVirtualSize,
                 rss=pinfo.memResidentSize,
                 anon=pinfo.memAnon,  # 匿名内存? 这个是啥
@@ -226,16 +222,7 @@ def _iter_complex_cpu_memory(d: BaseDevice,
                 attr_systemInfo=sys_cpu_usage)
 
 
-def iter_memory(d: BaseDevice, rp: RunningProcess) -> Iterator[Any]:
-    for minfo in _iter_complex_cpu_memory(d, rp):  # d.iter_cpu_mem(bundle_id):
-        yield DataType.MEMORY, {
-            "pid": minfo['pid'],
-            "timestamp": gen_stimestamp(),
-            "value": minfo['phys_memory'] / 1024 / 1024,  # MB
-        }
-
-
-def iter_cpu(d: BaseDevice, rp: RunningProcess) -> Iterator[Any]:
+def iter_cpu_memory(d: BaseDevice, rp: RunningProcess) -> Iterator[Any]:
     for minfo in _iter_complex_cpu_memory(d, rp):  # d.iter_cpu_mem(bundle_id):
         yield DataType.CPU, {
             "timestamp": gen_stimestamp(),
@@ -243,6 +230,11 @@ def iter_cpu(d: BaseDevice, rp: RunningProcess) -> Iterator[Any]:
             "value": minfo['cpu_usage'],  # max 100.0?, maybe not
             "sys_value": minfo['sys_cpu_usage'],
             "count": minfo['cpu_count']
+        }
+        yield DataType.MEMORY, {
+            "pid": minfo['pid'],
+            "timestamp": gen_stimestamp(),
+            "value": minfo['phys_memory'] / 1024 / 1024,  # MB
         }
 
 
@@ -259,7 +251,7 @@ def iter_network_flow(d: BaseDevice, rp: RunningProcess) -> Iterator[Any]:
     n = 0
     with d.connect_instruments() as ts:
         for nstat in ts.iter_network():
-            # if n < 10:
+            # if n < 2:
             #     n += 1
             #     continue
             yield DataType.NETWORK, {
@@ -285,11 +277,6 @@ def append_data(wg: WaitGroup, stop_event: threading.Event,
         # result[_type].append(data)
         if _type in filters:
             callback(_type, data)
-        if data:
-            if _type.value == 'network':
-                return data['downFlow'], data['upFlow']
-            else:
-                return data['value']
         # print(_type, data)
 
     stop_event.set()  # 当有一个中断，其他的全部中断，让错误暴露出来
@@ -311,22 +298,16 @@ class Performance():
         self._callback = None
 
     def start(self, bundle_id: str, callback: CallbackType = None):
-        _perfValue = 0
         if not callback:
             # 默认不输出屏幕的截图（暂时没想好怎么处理）
-            callback = lambda _type, data: print(_type.value, data,
-                                                 flush=True) if _type != DataType.SCREENSHOT and _type in self._perfs else None
+            callback = lambda _type, data: print(_type.value, data, flush=True) if _type != DataType.SCREENSHOT and _type in self._perfs else None
         self._rp = RunningProcess(self._d, bundle_id)
-        _perfValue = self._thread_start(callback)
-        return _perfValue
+        self._thread_start(callback)
 
     def _thread_start(self, callback: CallbackType):
         iters = []
-        _perfValue = 0
-        if DataType.CPU in self._perfs:
-            iters.append(iter_cpu(self._d, self._rp))
-        if DataType.MEMORY in self._perfs:
-            iters.append(iter_memory(self._d, self._rp))
+        if DataType.CPU in self._perfs or DataType.MEMORY in self._perfs:
+            iters.append(iter_cpu_memory(self._d, self._rp))
         if DataType.FPS in self._perfs:
             iters.append(iter_fps(self._d))
         if DataType.GPU in self._perfs:
@@ -335,13 +316,15 @@ class Performance():
             iters.append(set_interval(iter_screenshot(self._d), 1.0))
         if DataType.NETWORK in self._perfs:
             iters.append(iter_network_flow(self._d, self._rp))
-        for it in (iters):  # yapf: disable
+        for it in (iters): # yapf: disable
             self._wg.add(1)
-            _perfValue = append_data(self._wg, self._stop_event, it, callback, self._perfs)
-            break
-        return _perfValue
+            threading.Thread(name="perf",
+                             target=append_data,
+                             args=(self._wg, self._stop_event, it,
+                                   callback,self._perfs),
+                             daemon=True).start()
 
-    def stop(self):  # -> PerfReport:
+    def stop(self): # -> PerfReport:
         self._stop_event.set()
         # memory and fps will take at least 1 second to catch _stop_event
         # to make function run faster, we not using self._wg.wait(..) here

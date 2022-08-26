@@ -9,8 +9,6 @@ import webbrowser
 import requests
 import socket
 import sys
-from solox.public.apm import d
-from solox.public.adb import adb
 from solox.view.apis import api
 from solox.view.pages import page
 from logzero import logger
@@ -100,8 +98,6 @@ def _listeningPort(port):
     else:
         port_cmd = 'netstat -ano | findstr {}'.format(port)
         r = os.popen(port_cmd)
-        # 获取50002端口的程序的pid，先保存在一个列表中，后面需要用，
-        # 否则后面调用读取，指针会到末尾，会造成索引越界
         r_data_list = r.readlines()
         if len(r_data_list) == 0:
             return
@@ -151,7 +147,7 @@ def _openUrl(host: str, port: int):
 
 def _startServer(host: str, port: int):
     """
-    Start the solox service
+    startup the solox service
     :param host:
     :param port:
     :return:
@@ -163,7 +159,7 @@ def _startServer(host: str, port: int):
 
 def main(host=_hostIP(), port=50003):
     """
-    启动入口
+    startup solox
     :param host: 0.0.0.0
     :param port: 默认5000端口
     :return:

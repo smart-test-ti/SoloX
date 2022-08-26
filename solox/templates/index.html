@@ -110,12 +110,12 @@
                 <select id="select-app" class="select2-selection--single" data-placeholder="Please select a pakage"></select>
             </div>
             <div class="dropdown-divider"></div>
-            <h6 class="dropdown-header">Base target</h6>
+            <h6 class="dropdown-header">APM Target</h6>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="cpu_checkbox" type="checkbox" checked name="cpu"> CPU</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_checkbox" type="checkbox" checked name="mem"> Memory</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> Network Data</label>
-            {% if platform == 'Android' %}
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" checked> FPS</label>
+            {% if platform == 'Android' %}
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" checked> Battery</label>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item">
@@ -131,15 +131,17 @@
         </div>
     </div>
     <div class="apm-data mt-1" style="width: 75%;">
-        <div id="cpu" class="mb-3 cpu" style="min-width:400px;height:300px"></div>
-        <div id="mem"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
-        <div id="flow_send" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
-        <div id="flow_recv" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
         {% if platform == 'Android' %}
+        <div id="cpu_android" class="mb-3 cpu" style="min-width:400px;height:300px"></div>
+        <div id="mem_android"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
         <div id="fps" class="mb-3 fps" style="min-width:400px;height:300px"></div>
-        <div id="jank" class="fps mb-3" style="min-width:400px;height:300px"></div>
         <div id="battery" class="mb-3 battery" style="min-width:400px;height:300px"></div>
+        {% else %}
+        <div id="cpu_ios" class="mb-3 cpu" style="min-width:400px;height:300px"></div>
+        <div id="mem_ios"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
+        <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:300px"></div>
         {% endif %}
+        <div id="network" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
     </div>
 
     <div class="logcat-data dropdown-menu dropdown-menu-demo" style="width: 75%;display:none">
@@ -154,11 +156,6 @@
 
     const platform = '{{ platform }}'; // 平台
     var stop = false; // 任务状态
-
-    const NETWORK_UNIT = {
-        Android:'MB',
-        iOS:'KB'
-    };
 
     function ruteCheck(){
         if(['Android','iOS'].indexOf(platform) === -1 && platform){
@@ -185,653 +182,855 @@
   });
 
     $('#debug-connect').click(function () {
-        initialize_env()
+        initializeEnv();
     });
 
-  $('#select-device').change(function() {
-      $.ajax({
-          url: "/device/packagenames",
-          type: "GET",
-          async: true,
-          cache: false,
-          data:{
-              platform:platform,
-              device:this.value
-          },
-          beforeSend: function () {
-              $('#select-app').empty()
-              $('#select-app').append('<option></option>')
-              SwalLoading('Package initialization!','Initializing Packages, please wait。')
-          },
-          complete: function () {},
-          success: function (data) {
-              if(data['status'] != 1 ) {
-                  SwalFire('error', 'Connet failed !', 'Please check if the device is connected', 2000)
-              }else{
-                  for(var i=0;i<data['pkgnames'].length;i++){
-                      $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>')
-                  }
-                  swal.close()
-              }
-          }
-      });
-
-  });
+    $('#select-device').change(function() {
+        $.ajax({
+            url: "/device/packagenames",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                device:this.value
+            },
+            beforeSend: function () {
+                $('#select-app').empty();
+                $('#select-app').append('<option></option>');
+                SwalLoading('Package initialization!','Initializing Packages, please wait。');
+                },
+            success: function (data) {
+                if(data['status'] != 1 ) {
+                    SwalFire('error', 'Connet failed !', 'Please check if the device is connected', 2000)
+                }else{
+                    for(var i=0;i<data['pkgnames'].length;i++){
+                        $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>')
+                    }
+                    swal.close();
+                }
+            }
+        });
+    });
 
 
-  function initialize_apm(){
-      $.ajax({
-          url: "/apm/initialize",
-          type: "POST",
-          async: true,
-          cache: false,
-          success: function (data) {
-              console.log(data)
-          }
-      });
+    function initializeAPM(){
+        $.ajax({
+            url: "/apm/initialize",
+            type: "POST",
+            async: true,
+            cache: false,
+            success: function (data) {
+                console.log(data)
+            }
+        });
+    }
+
+    function initializeEnv(){
+        $.ajax({
+            url: "/device/ids?platform="+platform,
+            type: "GET",
+            async: true,
+            cache: false,
+            beforeSend: function () {
+                $('#select-device').empty();
+                $('#select-app').empty();
+                $('#select-app').append('<option></option>');
+                SwalLoading('Device initialization!','Initializing device environment, please wait。');
+                },
+            success: function (data) {
+                console.log(data);
+                if(data['status'] != 1 ) {
+                    SwalFire('error', 'Connet failed !', 'Please check if the device is connected', 2000);
+                }else{
+                    for(var i=0;i<data['devices'].length;i++){
+                        $('#select-device').append('<option>'+data['devices'][i]+'</option>');
+                    }
+                    for(var i=0;i<data['pkgnames'].length;i++){
+                        $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>');
+                    }
+                    swal.close();
+                }
+            }
+        });
+    }
+
+    function getCpuRate(pkgname,device){
+        $.ajax({
+            url: "/apm/cpu",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                pkgname:pkgname,
+                device:device
+            },
+            success: function (data) {
+                console.log(data)
+                if(stop == false){
+                    if(data['status'] == 1){
+                        try {
+                            if(platform == 'Android'){
+                                var seriesApp = cpu_chart.series[0];
+                                var seriesSystem = cpu_chart.series[1];
+                                var x = (new Date()).getTime(),
+                                    y_app = data['appCpuRate'],
+                                    y_sys = data['systemCpuRate'];
+                                seriesApp.addPoint([x, y_app], true, true);
+                                seriesSystem.addPoint([x, y_sys], true, true);
+                            }else{
+                                var series = cpu_chart.series[0];
+                                var x = (new Date()).getTime(),
+                                    y = data['appCpuRate'];
+                                series.addPoint([x, y], true, true);
+                            }
+
+                            setTimeout(getCpuRate(pkgname,device), 2000);
+                        }catch (e) {}
+                    }else{
+                        SwalFire('error','something error',data['msg'],2000);
+                    }
+                }
+            }
+        });
+    }
+
+    function getBattery(device){
+        $.ajax({
+            url: "/apm/battery",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                device:device
+            },
+            success: function (data) {
+                if(stop == false){
+                    console.log(data)
+                    if(data['status'] == 1){
+                        try {
+                            var seriesLevel = battery_chart.series[0];
+                            var seriesTemperature = battery_chart.series[1];
+                            var x = (new Date()).getTime(),
+                                y_level = data['level'],
+                                y_temperature = data['temperature'];
+                            seriesLevel.addPoint([x, y_level], true, true);
+                            seriesTemperature.addPoint([x, y_temperature], true, true);
+                            setTimeout(getBattery(device), 2000);
+                        }catch (e) {}
+                    }else{
+                        SwalFire('error','something error',data['msg'],2000);
+                    }
+                }
+            }
+        });
+    }
+
+    function getMemPss(pkgname,device)  {
+        $.ajax({
+            url: "/apm/mem",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                pkgname:pkgname,
+                device:device
+            },
+            success: function (data) {
+                console.log(data)
+                if(stop == false){
+                    if(data['status'] == 1){
+                        try {
+                            if(platform == 'Android'){
+                                var seriesTotal = mem_chart.series[0];
+                                var seriesNative = mem_chart.series[1];
+                                var seriesDalvik = mem_chart.series[2];
+                                var x = (new Date()).getTime(),
+                                    y_total = data['totalPass'],
+                                    y_native = data['nativePass'],
+                                    y_dalvik = data['dalvikPass'];
+                                seriesTotal.addPoint([x, y_total], true, true);
+                                seriesNative.addPoint([x, y_native], true, true);
+                                seriesDalvik.addPoint([x, y_dalvik], true, true);
+                            }else{
+                                var series = mem_chart.series[0];
+                                var x = (new Date()).getTime(),
+                                    y = data['totalPass'];
+                                series.addPoint([x, y], true, true);
+                            }
+                            setTimeout(getMemPss(pkgname,device), 2000);
+
+                        }catch (e) {}
+                    }else{
+                        SwalFire('error','something error',data['msg'],2000);
+                    }
+                }
+            }
+        });
+    }
+
+    function getNetWork(pkgname,device)  {
+        $.ajax({
+            url: "/apm/network",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                pkgname:pkgname,
+                device:device
+            },
+            success: function (data) {
+                if(stop == false){
+                    if(data['status'] == 1){
+                        try {
+                            var seriesUpFlow = network_chart.series[0];
+                            var seriesDownFlow = network_chart.series[1];
+                            var x_up = (new Date()).getTime(),
+                                y_up = data['upflow'];
+                            var x_down = (new Date()).getTime(),
+                                y_down = data['downflow'];
+                            seriesUpFlow.addPoint([x_up, y_up], true, true);
+                            seriesDownFlow.addPoint([x_down, y_down], true, true);
+                            setTimeout(getNetWork(pkgname,device), 2000);
+                        }catch (e) {
+                            console.log(e)
+                        }
+                    }else{
+                        SwalFire('error','something error',data['msg'],2000);
+                    }
+                }
+            }
+        });
+    }
+
+    function getFps(pkgname,device)  {
+        $.ajax({
+            url: "/apm/fps",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                pkgname:pkgname,
+                device:device
+            },
+            success: function (data) {
+                console.log(data)
+                if(stop == false){
+                    if(data['status'] == 1){
+                        try {
+                            let seriesFps = fps_chart.series[0];
+                            let x_fps = (new Date()).getTime(),
+                                y_fps = data['fps'];
+                            seriesFps.addPoint([x_fps, y_fps], true, true);
+                            if(platform == 'Android'){
+                                let seriesJank = fps_chart.series[1];
+                                let x_jsnk = (new Date()).getTime(),
+                                    y_jank = data['jank'];
+                                seriesJank.addPoint([x_jsnk, y_jank], true, true);
+                            }
+                            setTimeout(getFps(pkgname,device), 2000);
+                        }catch (e) {}
+                    }else{
+                        SwalFire('error','something error',data['msg'],2000);
+                    }
+                }
+            }
+        });
+    }
+
+    var rangeSelector =  {
+        buttons: [{
+            count: 1,
+            type: 'minute',
+            text: '1min'
+        }, {
+            count: 5,
+            type: 'minute',
+            text: '5min'
+        }, {
+            type: 'all',
+            text: 'All'
+        }],
+        inputEnabled: false,
+        selected: 0
+    };
+
+
+    var series =  [{
+        name : 'value',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
+
+    var seriesNet = [{
+        name : 'upFlow',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'downFlow',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
+
+    var seriesCpu = [{
+        name : 'AppUsage',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'SystemUsage',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
+
+    var seriesMem = [{
+        name : 'totalPass',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'nativePass',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'dalvikPass',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
+
+    var seriesBettery = [{
+        name : 'level',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'temperature',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
+
+    var seriesFps =  [{
+        name : 'fps',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'jank',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
+
+
+    var seriesFpsbyiOS =  [{
+        name : 'fps',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
+
+    function setPlotLine(target) {
+        var value = 0;
+        switch (target) {
+            case 'cpu':
+                value = parseInt($('#cpu_warning_value').val());
+                break;
+            case 'mem':
+                value = parseInt($('#mem_warning_value').val());
+                break;
+            case 'fps':
+                value = parseInt($('#fps_warning_value').val());
+                break;
+            case 'battery':
+                value = parseInt($('#battery_warning_value').val());
+                break;
+            case 'upflow':
+                value = parseInt($('#upflow_warning_value').val());
+                break;
+            case 'downflow':
+                value = parseInt($('#down_warning_value').val());
+                break;
+        }
+        var plotLines = [];
+
+        if(value != 0){
+            plotLines = [{
+                value: value,
+                color: 'red',
+                dashStyle: 'shortdash',
+                width: 2,
+                label: {
+                    text: 'warning value : '+value,
+                    style: {
+                        'color': 'white',
+                    }
+                }
+            }];
+        }
+        return plotLines;
+    }
+
+    function chartsInitialize(apmType,title){
+        //charts初始化
+        let seriesFinal = series;
+        let legend = false;
+        let yAxis = {
+            opposite:false,
+            plotLines:setPlotLine(apmType)
+        };
+        let yAxis_plot = {
+            max: 100,
+            min: 0,
+            tickPixelInterval: 10,
+            opposite:false,
+            plotLines:setPlotLine(apmType)
+        };
+        switch (apmType) {
+            case 'fps':
+                seriesFinal = seriesFps;
+                legend = true;
+                yAxis = yAxis_plot;
+                break;
+            case 'fps_ios':
+                seriesFinal = seriesFpsbyiOS;
+                yAxis = yAxis_plot;
+                break;
+            case 'network':
+                seriesFinal = seriesNet;
+                legend = true;
+                break;
+            case 'cpu_android':
+                seriesFinal = seriesCpu;
+                legend = true;
+                yAxis = yAxis_plot;
+                break;
+            case 'mem_android':
+                seriesFinal = seriesMem;
+                legend = true;
+                break;
+            case 'battery':
+                seriesFinal = seriesBettery;
+                legend = true;
+                yAxis = yAxis_plot;
+                break;
+        }
+
+        let apm_chart = Highcharts.stockChart(apmType, {
+            rangeSelector: rangeSelector,
+            title : {
+                text : title
+            },
+            tooltip: {
+                split: false
+            },
+            legend: {
+                enabled:legend
+            },
+            credits:{
+                enabled: false
+            },
+            scrollbar : {
+                enabled : true
+            },
+            navigator : {
+                enabled : false
+            },
+            exporting: {
+                enabled: false
+            },
+            yAxis: yAxis,
+            series : seriesFinal
+        });
+
+        return apm_chart
+    };
+
+    function cpuInitialize(){
+        //初始化cpu
+        let type = platform == 'Android' ? 'cpu_android' : 'cpu_ios';
+        let cpu_chart = chartsInitialize(type,'CPU（%）');
+        return cpu_chart
+    }
+
+    function batteryInitialize(){
+        //初始化battery
+        if(platform === 'Android'){
+            let battery_chart = chartsInitialize('battery','Battery');
+            return battery_chart
+        }else{
+            return null
+        }
+    }
+
+    function memInitialize(){
+        //初始化mem
+        let type = platform == 'Android' ? 'mem_android' : 'mem_ios';
+        let mem_chart = chartsInitialize(type,'MEM（MB）');
+        return mem_chart
+    }
+
+    function networkInitialize(){
+        //初始化network
+        let network_chart = chartsInitialize('network','Network Data（KB)');
+        return network_chart
+    }
+
+    function fpsInitialize(){
+        //初始化fps
+        if(platform === 'Android'){
+            let title = 'FPS and Jank';
+            let fps_chart = chartsInitialize('fps',title);
+            return fps_chart
+        }else{
+            let title = 'FPS(HZ/s)';
+            let fps_chart = chartsInitialize('fps_ios',title);
+            return fps_chart
+        }
+    }
+
+    var cpu_chart = cpuInitialize();
+    var mem_chart = memInitialize();
+    var network_chart = networkInitialize();
+    var fps_chart = fpsInitialize();
+    var battery_chart = batteryInitialize();
+
+
+    function collectPers(device,pkgname=null,type,title,func){
+        // 收集性能数据初始化
+        let seriesFinal = series;
+        let legend = false;
+        let yAxis = {
+            opposite:false,
+            plotLines:setPlotLine(type)
+        };
+        let yAxis_plot = {
+            max: 100,
+            min: 0,
+            tickPixelInterval: 10,
+            opposite:false,
+            plotLines:setPlotLine(type)
+        };
+        switch (type) {
+            case 'fps':
+                seriesFinal = seriesFps;
+                legend = true;
+                yAxis = yAxis_plot;
+                break;
+            case 'fps_ios':
+                seriesFinal = seriesFpsbyiOS;
+                legend = true;
+                yAxis = yAxis_plot;
+                break;
+            case 'network':
+                seriesFinal = seriesNet;
+                legend = true;
+                break;
+            case 'cpu_android':
+                seriesFinal = seriesCpu;
+                yAxis = yAxis_plot;
+                legend = true;
+                break;
+            case 'mem_android':
+                seriesFinal = seriesMem;
+                legend = true;
+                break;
+            case 'battery':
+                seriesFinal = seriesBettery;
+                yAxis = yAxis_plot;
+                legend = true;
+                break;
+            default:
+                seriesFinal = series;
+                break;
+        }
+
+        let chartPers = Highcharts.stockChart(type, {
+            chart : {
+                events : {
+                    load : func
+                }
+            },
+            rangeSelector: rangeSelector,
+            title : {
+                text : title
+            },
+            tooltip: {
+                split: false
+            },
+            legend: {
+                enabled:legend
+            },
+            credits:{
+                enabled: false
+            },
+            scrollbar : {
+                enabled : true
+            },
+            navigator : {
+                enabled : false
+            },
+            exporting: {
+                enabled: false
+            },
+            yAxis: yAxis,
+            series : seriesFinal
+        });
+
+        return chartPers;
 
   }
 
-  function initialize_env(){
-      $.ajax({
-          url: "/device/ids?platform="+platform,
-          type: "GET",
-          async: true,
-          cache: false,
-          beforeSend: function () {
-              $('#select-device').empty();
-              $('#select-app').empty();
-              $('#select-app').append('<option></option>');
-              SwalLoading('Device initialization!','Initializing device environment, please wait。');
-          },
-          complete: function () {},
-          success: function (data) {
-              console.log(data);
-              if(data['status'] != 1 ) {
-                  SwalFire('error', 'Connet failed !', 'Please check if the device is connected', 2000);
-              }else{
-                  for(var i=0;i<data['devices'].length;i++){
-                      $('#select-device').append('<option>'+data['devices'][i]+'</option>');
-                  }
-                  for(var i=0;i<data['pkgnames'].length;i++){
-                      $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>');
-                  }
-                  swal.close();
-              }
-          }
-      });
+    function collectCpu(device,pkgname){
+        cpuInitialize();
+        let type = platform == 'Android' ? 'cpu_android' : 'cpu_ios';
+        cpu_chart = collectPers(device,pkgname,type,'CPU（%）',getCpuRate(pkgname,device));
+    }
 
-  }
+    function collectBattery(device,pkgname){
+        batteryInitialize();
+        battery_chart = collectPers(device,pkgname,'battery','Battery',getBattery(device));
 
+    }
 
-  function getCpuRate(pkgname,device){
-      $.ajax({
-          url: "/apm/cpu",
-          type: "GET",
-          async: true,
-          cache: false,
-          data:{
-              platform:platform,
-              pkgname:pkgname,
-              device:device
-          },
-          beforeSend: function () {},
-          complete: function () {},
-          success: function (data) {
-              console.log(data)
-              if(stop == false){
-                  if(data['status'] == 1){
-                      try {
-                          var series = cpu_chart.series[0];
-                          var x = (new Date()).getTime(),
-                              y = data['cpuRate'];
-                          series.addPoint([x, y], true, true);
-                          setTimeout(getCpuRate(pkgname,device), 2000);
-                      }catch (e) {}
-                  }else{
-                      SwalFire('error','something error',data['msg'],2000);
-                  }
-              }
-          }
-      });
-  }
+    function collectMem(device,pkgname){
+        memInitialize();
+        let type = platform == 'Android' ? 'mem_android' : 'mem_ios';
+        mem_chart = collectPers(device,pkgname,type,'MEM（MB）',getMemPss(pkgname,device));
+    }
 
-  function getBattery(device){
-      $.ajax({
-          url: "/apm/battery",
-          type: "GET",
-          async: true,
-          cache: false,
-          data:{
-              platform:platform,
-              device:device
-          },
-          beforeSend: function () {},
-          complete: function () {},
-          success: function (data) {
-              if(stop == false){
-                  console.log(data)
-                  if(data['status'] == 1){
-                      try {
-                          var series = battery_chart.series[0];
-                          var x = (new Date()).getTime(),
-                              y = data['battery'];
-                          series.addPoint([x, y], true, true);
-                          setTimeout(getBattery(device), 2000);
-                      }catch (e) {}
-                  }else{
-                      SwalFire('error','something error',data['msg'],2000);
-                  }
-              }
-          }
-      });
-  }
+    function collectNetwork(device,pkgname){
+        networkInitialize();
+        network_chart = collectPers(device,pkgname,'network','Network Data（KB）',getNetWork(pkgname,device));
+    }
 
-  function getMemPss(pkgname,device)  {
-      $.ajax({
-          url: "/apm/mem",
-          type: "GET",
-          async: true,
-          cache: false,
-          data:{
-              platform:platform,
-              pkgname:pkgname,
-              device:device
-          },
-          beforeSend: function () {},
-          complete: function () {},
-          success: function (data) {
-              console.log(data)
-              if(stop == false){
-                  if(data['status'] == 1){
-                      try {
-                          var series = mem_chart.series[0];
-                          var x = (new Date()).getTime(),
-                              y = data['pss'];
-                          series.addPoint([x, y], true, true);
-                          setTimeout(getMemPss(pkgname,device), 2000);
-                      }catch (e) {}
-                  }else{
-                      SwalFire('error','something error',data['msg'],2000);
-                  }
-              }
-          }
-      });
-  }
+    function collectFps(device,pkgname){
+        fpsInitialize();
+        if(platform == 'Android'){
+            let title = 'FPS and Jank';
+            fps_chart = collectPers(device,pkgname,'fps',title,getFps(pkgname,device));
+        }else{
+            let title = 'FPS（HZ）';
+            fps_chart = collectPers(device,pkgname,'fps_ios',title,getFps(pkgname,device));
+        }
+    }
 
-  function getUpFlow(pkgname,device)  {
-      $.ajax({
-          url: "/apm/upflow",
-          type: "GET",
-          async: true,
-          cache: false,
-          data:{
-              platform:platform,
-              pkgname:pkgname,
-              device:device
-          },
-          beforeSend: function () {},
-          complete: function () {},
-          success: function (data) {
-              console.log(data)
-              console.log(stop)
-              if(stop == false){
-                  if(data['status'] == 1){
-                      try {
-                          var series = up_flow_chart.series[0];
-                          var x = (new Date()).getTime(),
-                              y = data['data'];
-                          console.log(y)
-                          series.addPoint([x, y], true, true);
-                          setTimeout(getUpFlow(pkgname,device), 2000);
-                      }catch (e) {
-                          console.log(e)
-                      }
-                  }else{
-                      SwalFire('error','something error',data['msg'],2000);
-                  }
-              }
-          }
-      });
-  }
+    $('#run-apm').click(function () {
+        stop = false;
+        $('#stop-apm').show();
+        $('#run-apm').hide();
+        initializeAPM();
+        let device = $('#select-device').val();
+        let pkgname = $('#select-app').val();
+        if(device && pkgname){
+            collectCpu(device,pkgname);
+            collectMem(device,pkgname);
+            collectNetwork(device,pkgname);
+            collectFps(device,pkgname);
+            if(platform === 'Android'){
+                collectBattery(device);
+            }
 
-  function getDownFlow(pkgname,device)  {
-      $.ajax({
-          url: "/apm/downflow",
-          type: "GET",
-          async: true,
-          cache: false,
-          data:{
-              platform:platform,
-              pkgname:pkgname,
-              device:device
-          },
-          beforeSend: function () {},
-          complete: function () {},
-          success: function (data) {
-              console.log(data)
-              console.log(stop)
-              if(stop == false){
-                  if(data['status'] == 1){
-                      try {
-                          var series = down_flow_chart.series[0];
-                          var x = (new Date()).getTime(),
-                              y = data['data'];
-                          console.log(y)
-                          series.addPoint([x, y], true, true);
-                          setTimeout(getDownFlow(pkgname,device), 2000);
-                      }catch (e) {
-                          console.log(e)
-                      }
-                  }else{
-                      SwalFire('error','something error',data['msg'],2000);
-                  }
-              }
-          }
-      });
-  }
+        }else{
+            SwalFire('error','Execution error','No device or package name selected',2000);
+            $('#run-apm').show();
+            $('#stop-apm').hide();
+        }});
 
-  function getFps(pkgname,device)  {
-      $.ajax({
-          url: "/apm/fps",
-          type: "GET",
-          async: true,
-          cache: false,
-          data:{
-              platform:platform,
-              pkgname:pkgname,
-              device:device
-          },
-          beforeSend: function () {},
-          complete: function () {},
-          success: function (data) {
-              console.log(data)
-              if(stop == false){
-                  if(data['status'] == 1){
-                      try {
-                          var series = fps_chart.series[0];
-                          var x = (new Date()).getTime(),
-                              y = data['fps'];
-                          series.addPoint([x, y], true, true);
-                          setTimeout(getFps(pkgname,device), 2000);
-                      }catch (e) {}
-                  }else{
-                      SwalFire('error','something error',data['msg'],2000);
-                  }
-              }
-          }
-      });
-  }
-
-  function getJank(pkgname,device)  {
-      $.ajax({
-          url: "/apm/fps",
-          type: "GET",
-          async: true,
-          cache: false,
-          data:{
-              platform:platform,
-              pkgname:pkgname,
-              device:device
-          },
-          beforeSend: function () {},
-          complete: function () {},
-          success: function (data) {
-              console.log(data)
-              if(stop == false){
-                  if(data['status'] == 1){
-                      try {
-                          var series = jank_chart.series[0];
-                          var x = (new Date()).getTime(),
-                              y = data['jank'];
-                          series.addPoint([x, y], true, true);
-                          setTimeout(getJank(pkgname,device), 2000);
-                      }catch (e) {}
-                  }else{
-                      SwalFire('error','something error',data['msg'],2000);
-                  }
-              }
-          }
-      });
-  }
-
-  var rangeSelector =  {
-      buttons: [{
-          count: 1,
-          type: 'minute',
-          text: '1min'
-      }, {
-          count: 5,
-          type: 'minute',
-          text: '5min'
-      }, {
-          type: 'all',
-          text: 'All'
-      }],
-      inputEnabled: false,
-      selected: 0
-  };
-
-  var series =  [{
-      name : 'value',
-      pointInterval: 120 * 1000,
-      data : (function () {
-          var data = [], time = (new Date()).getTime(), i;
-          for (i = -999; i <= 0; i += 1) {
-              data.push([
-                  time + i * 1000,
-                  Math.round(0)
-              ]);
-          }
-          return data;
-      }())
-  }];
-
-  function highcharts_initialize(apmType,title){
-      //charts初始化
-      let apm_chart = Highcharts.stockChart(apmType, {
-          rangeSelector: rangeSelector,
-          title : {
-              text : title
-          },
-          tooltip: {
-              split: false
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-			enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              opposite:false
-          },
-          series : series
-      });
-      return apm_chart
-
-  };
-
-  function cpu_initialize(){
-      //初始化cpu
-      let cpu_chart = highcharts_initialize('cpu','CPU（%）');
-      return cpu_chart
-  }
-
-  function battery_initialize(){
-      //初始化battery
-      if(platform === 'Android'){
-          let battery_chart = highcharts_initialize('battery','Battery（%）');
-          return battery_chart
-      }else{
-          return null
-      }
-
-  }
-
-  function mem_initialize(){
-      //初始化mem
-      let mem_chart = highcharts_initialize('mem','MEM（MB）');
-      return mem_chart
-  }
-
-  function up_flow_initialize(){
-      //初始化send flow
-      let up_flow_chart = highcharts_initialize('flow_send','Send Network Data（'+NETWORK_UNIT[platform]+'）');
-      return up_flow_chart
-  }
-
-  function down_flow_initialize(){
-      //初始化Recv flow
-      let down_flow_chart = highcharts_initialize('flow_recv','Recv Network Data（'+NETWORK_UNIT[platform]+'）');
-      return down_flow_chart
-  }
-
-  function fps_initialize(){
-      //初始化fps
-      if(platform === 'Android'){
-          let fps_chart = highcharts_initialize('fps','FPS（HZ）');
-          return fps_chart
-      }else{
-          return null
-      }
-  }
-
-  function jank_initialize(){
-      //初始化jank
-      if(platform === 'Android'){
-          let jank_chart = highcharts_initialize('jank','Jank');
-          return jank_chart
-      }else{
-          return null
-      }
-  }
-
-  var cpu_chart = cpu_initialize();
-  var mem_chart = mem_initialize();
-  var up_flow_chart = up_flow_initialize();
-  var down_flow_chart = down_flow_initialize();
-  var fps_chart = fps_initialize();
-  var jank_chart = jank_initialize();
-  var battery_chart = battery_initialize();
-
-  function collectPers(device,pkgname=null,type,title,func){
-      // 收集性能数据初始化
-      let chartPers = Highcharts.stockChart(type, {
-          chart : {
-              events : {
-                  load : func
-              }
-          },
-          rangeSelector: rangeSelector,
-          title : {
-              text : title
-          },
-          tooltip: {
-              split: false
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-              enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              opposite:false
-          },
-          series : series
-      });
-
-      return chartPers;
-
-  }
-
-  function start_collect_cpu(device,pkgname){
-      cpu_initialize();
-      cpu_chart = collectPers(device,pkgname,'cpu','CPU（%）',getCpuRate(pkgname,device));
-
-  }
-
-  function start_collect_battery(device){
-      battery_initialize();
-      battery_chart = Highcharts.stockChart('battery', {
-          chart : {
-              events : {
-                  load : getBattery(device)
-              }
-          },
-          rangeSelector: rangeSelector,
-          title : {
-              text : 'Battery（%）'
-          },
-          tooltip: {
-              split: false
-          },
-          credits:{
-              enabled: false
-          },
-          scrollbar : {
-              enabled : true
-          },
-          navigator : {
-              enabled : false
-          },
-          exporting: {
-              enabled: false
-          },
-          yAxis: {
-              opposite:false
-          },
-          series : series
-      });
-
-  }
-
-  function start_collect_mem(device,pkgname){
-      mem_initialize();
-      mem_chart = collectPers(device,pkgname,'mem','MEM（MB）',getMemPss(pkgname,device));
-  }
-
-  function start_collect_upflow(device,pkgname){
-      up_flow_initialize();
-      up_flow_chart = collectPers(device,pkgname,'flow_send','Send Network Data（KB）',getUpFlow(pkgname,device));
-  }
-
-  function start_collect_downflow(device,pkgname){
-      down_flow_initialize();
-      down_flow_chart = collectPers(device,pkgname,'flow_recv','Recv Network Data（KB）',getDownFlow(pkgname,device));
-  }
-
-  function start_collect_fps(device,pkgname){
-      fps_initialize();
-      fps_chart = collectPers(device,pkgname,'fps','FPS（HZ）',getFps(pkgname,device));
-  }
-
-  function start_collect_jank(device,pkgname){
-      jank_initialize();
-      jank_chart = collectPers(device,pkgname,'jank','JANK',getJank(pkgname,device));
-  }
+    $('#stop-apm').click(function () {
+        stop = true;
+        $('#run-apm').show();
+        $('#stop-apm').hide();
+        $.ajax({
+            url: "/apm/create/report",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                app:$('#select-app').val(),
+                devices:$('#select-device').val()
+            },
+            beforeSend: function () {
+                SwalLoading('Save data','Saving data to generate report, please do not leave.')
+            },
+            success: function (data) {
+                if(data['status']==1){
+                    window.location.href = "/report"
+                }else{
+                    SwalFire('error','Execution error',data['msg'],2000)
+                }
+            }
+        });
+    });
 
 
-  $('#run-apm').click(function () {
-      stop = false;
-      $('#stop-apm').show();
-      $('#run-apm').hide();
-      initialize_apm();
-      let device = $('#select-device').val();
-      let pkgname = $('#select-app').val();
-      if(device && pkgname){
-          start_collect_cpu(device,pkgname);
-          start_collect_mem(device,pkgname);
-          start_collect_upflow(device,pkgname);
-          start_collect_downflow(device,pkgname);
-          if(platform === 'Android'){
-               start_collect_fps(device,pkgname);
-               start_collect_jank(device,pkgname);
-               start_collect_battery(device);
-          }
+    $('#logcat-switch').change(function() {
+        let  flag= $(this).is(':checked');
+        if(flag){
+            startLogcat();
+            $('.apm-btn-list').hide();
+            $('.apm-data').hide();
+            $('.logcat-btn-list').show();
+            $('.logcat-data').show();
+        }else{
+            $('.logcat-btn-list').hide();
+            $('.logcat-data').hide();
+            $('.apm-btn-list').show();
+            $('.apm-data').show();
+        }
+    });
 
-      }else{
-          SwalFire('error','Execution error','No device or package name selected',2000)
-      }
-  })
+    var status = false;
+    function startLogcat() {
+        let device = $('#select-device').val();
+        if(device){
+            $('#logcat_start').hide();
+            $('#logcat_stop').show();
+            var socket = io.connect('http://' + document.domain + ':' + location.port + '/logcat',{'forceNew':true });
+            socket.on('message', function (msg) {
+                if(status){
+                    $('#logcat-content').prepend(msg.data);
+                }
+            });
+        }else{
+            SwalFire('error','Execution error','No device selected',2000)
+        }
+    };
 
-  $('#stop-apm').click(function () {
-      stop = true;
-      $('#run-apm').show();
-      $('#stop-apm').hide();
-      $.ajax({
-          url: "/apm/create/report",
-          type: "GET",
-          async: true,
-          cache: false,
-          data:{
-              platform:platform,
-              app:$('#select-app').val(),
-              devices:$('#select-device').val()
-          },
-          beforeSend: function () {
-              SwalLoading('Save data','Saving data to generate report, please do not leave.')
-          },
-          complete: function () {},
-          success: function (data) {
-              if(data['status']==1){
-                  window.location.href = "/report"
-              }else{
-                  SwalFire('error','Execution error',data['msg'],2000)
-              }
-          }
-      });
-  });
+    function stopLogcat() {
+        $('#logcat_stop').hide();
+        $('#logcat_start').show();
+        status = false;
+        socket.emit('disconnect_request');
 
+    };
 
-  $('#logcat-switch').change(function() {
-      let  flag= $(this).is(':checked');
-      if(flag){
-          $('.apm-btn-list').hide();
-          $('.apm-data').hide();
-          $('.logcat-btn-list').show();
-          $('.logcat-data').show();
-      }else{
-          $('.logcat-btn-list').hide();
-          $('.logcat-data').hide();
-          $('.apm-btn-list').show();
-          $('.apm-data').show();
-
-      }
-  });
-
-  var status = false;
-  var socket = io.connect('http://' + document.domain + ':' + location.port + '/logcat',{'forceNew':true });
-  socket.on('message', function (msg) {
-      if(status){
-          $('#logcat-content').prepend(msg.data);
-      }
-  });
-  function startLogcat() {
-      let device = $('#select-device').val();
-      if(device){
-          $('#logcat_start').hide();
-          $('#logcat_stop').show();
-          status = true
-          $('#logcat_content').empty();
-          socket = io.connect('http://' + document.domain + ':' + location.port + '/logcat',{'forceNew':true });
-      }else{
-          SwalFire('error','Execution error','No device selected',2000)
-      }
-  };
-
-  function stopLogcat() {
-      $('#logcat_stop').hide();
-      $('#logcat_start').show();
-      status = false;
-      socket.emit('disconnect_request');
-
-  };
-
-  function cppyLogcat() {
-      let url_content = $("#logcat-content");
+    function cppyLogcat() {
+        let url_content = $("#logcat-content");
         url_content.select();
         document.execCommand("copy");
         SwalFire('success','Copy Success','',1000);
+    };
 
-  };
-
-  function clearLogcat() {
-     $('#logcat-content').empty();
-  };
+    function clearLogcat() {
+        $('#logcat-content').empty();
+    };
 
 </script>
 {% endblock %}
