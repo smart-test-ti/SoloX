@@ -4,6 +4,7 @@ import platform
 import re
 import shutil
 import time
+from flask import request
 from solox.public.adb import adb
 
 class Devices:
@@ -298,4 +299,17 @@ class file:
         }
 
         return apm_dict
+
+
+class Method:
+
+    def _request(self, object):
+
+        if request.method == 'POST':
+            return request.form[object]
+        elif request.method == 'GET':
+            return request.args[object]
+        else:
+            raise ('request method error')
+
 

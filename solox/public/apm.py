@@ -78,8 +78,8 @@ class CPU:
         appCpuRate = round(float((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
         systemCpuRate = round(float((devideCpuTime_2 - devideCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
 
-        f.add_log(f.report_dir, self.apm_time, appCpuRate)
-        f.add_log(f.report_dir, self.apm_time, systemCpuRate)
+        f.add_log(f'{f.report_dir}/cpu_app.log', self.apm_time, appCpuRate)
+        f.add_log(f'{f.report_dir}/cpu_sys.log', self.apm_time, systemCpuRate)
 
         return appCpuRate, systemCpuRate
 
@@ -87,7 +87,7 @@ class CPU:
         """get the iOS cpu rate of a process, unit:%"""
         apm = iosAPM(self.pkgName)
         appCpuRate = round(float(apm.getPerformance(apm.cpu)), 2)
-        f.add_log(f.report_dir, self.apm_time, appCpuRate)
+        f.add_log(f'{f.report_dir}/cpu_app.log', self.apm_time, appCpuRate)
         return appCpuRate, 0
 
     def getCpuRate(self):
@@ -134,11 +134,11 @@ class MEM:
         else:
             totalPass, nativePass, dalvikPass = self.getiOSMem()
 
-        f.add_log(f.report_dir, self.apm_time, totalPass)
+        f.add_log(f'{f.report_dir}/mem_total.log', self.apm_time, totalPass)
 
         if self.platform == 'Android':
-            f.add_log(f.report_dir, self.apm_time, nativePass)
-            f.add_log(f.report_dir, self.apm_time, dalvikPass)
+            f.add_log(f'{f.report_dir}/mem_native.log', self.apm_time, nativePass)
+            f.add_log(f'{f.report_dir}/mem_dalvik.log', self.apm_time, dalvikPass)
 
         return totalPass, nativePass, dalvikPass
 
@@ -159,8 +159,8 @@ class Battery:
         level = int(re.findall(u'level:\s?(\d+)', output)[0])
         temperature = int(re.findall(u'temperature:\s?(\d+)', output)[0]) / 10
         time.sleep(1)
-        f.add_log(f.report_dir, self.apm_time, level)
-        f.add_log(f.report_dir, self.apm_time, temperature)
+        f.add_log(f'{f.report_dir}/battery_level.log', self.apm_time, level)
+        f.add_log(f'{f.report_dir}/battery_tem.log', self.apm_time, temperature)
         return level, temperature
 
     def SetBattery(self):
@@ -208,8 +208,8 @@ class Flow:
             sendNum, recNum = self.getAndroidNet()
         else:
             sendNum, recNum = self.getiOSNet()
-        f.add_log(f.report_dir, self.apm_time, sendNum)
-        f.add_log(f.report_dir, self.apm_time, recNum)
+        f.add_log(f'{f.report_dir}/upflow.log', self.apm_time, sendNum)
+        f.add_log(f'{f.report_dir}/downflow.log', self.apm_time, recNum)
         return sendNum, recNum
 
 class FPS:
@@ -226,15 +226,15 @@ class FPS:
                               start_time=TimeUtils.getCurrentTimeUnderline())
         monitors.start()
         fps, jank = monitors.stop()
-        f.add_log(f.report_dir, self.apm_time, fps)
-        f.add_log(f.report_dir, self.apm_time, jank)
+        f.add_log(f'{f.report_dir}/fps.log', self.apm_time, fps)
+        f.add_log(f'{f.report_dir}/jank.log', self.apm_time, jank)
         return fps, jank
 
     def getiOSFps(self):
         """get iOS Fps"""
         apm = iosAPM(self.pkgName)
         fps = int(apm.getPerformance(apm.fps))
-        f.add_log(f.report_dir, self.apm_time, fps)
+        f.add_log(f'{f.report_dir}/fps.log', self.apm_time, fps)
         return fps, 0
 
     def getFPS(self):
