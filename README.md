@@ -1,83 +1,86 @@
 <p align="center">
+  <a>README</a> | <a href="./DocForAndroid.md">DocForAndroid</a>
+</p>
+
+<p align="center">
 <a href="#">
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1643364757640-b4529458-ec8d-42cc-a2d8-c0ce60fdf50f.png" alt="SoloX" width="300">
 </a>
 <br>
 <br>
+
 </p>
 <p align="center">
 <a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/pypi/v/solox" alt="solox preview"></a>
+<a href="https://smart-test-ti.github.io/apm.html" target="__blank"><img src="https://img.shields.io/badge/preview-demo-orange"></a>
+
 <br>
 </p>
 
-## SoloX
+## Preview
 
 SoloX - Real-time collection tool for Android/iOS performance data.
 
 We are committed to solving inefficient, cumbersome test execution, and our goal is Simple Test In SoloX!
 
+<img src="./image/home.png"  width="100%">
 
 ## Installation
 ```
 1.Python:3.6+ 
 2.pip3 install -U solox
+
+notice: If Windows users need to test ios, install and start Itunes
 ```
 
-## Run locally
+## Startup SoloX
 ### default
->the startup host and port defaults to 0.0.0.0 and 50003.
-
+```shell
+python3 -m solox
 ```
-   python3 -m solox
-
- * Serving Flask app 'run' (lazy loading)
- * Environment: production
-   WARNING: This is a development server. Do not use it in a production deployment.
-   Use a production WSGI server instead.
- * Debug mode: on
- * Running on all addresses.
-   WARNING: This is a development server. Do not use it in a production deployment.
- * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
- * Restarting with stat
- * Debugger is active!
- * Debugger PIN: 906-499-328
-
-```
-
-### custom
->custom startup host and port, support command line input.
+### customize
 
 ```shell
 python3 -m solox --host=0.0.0.0 --port=50003
 ```
-## Features
-#### Home
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1658069390168-89455311-c990-4acf-9d51-a7d38da7152b.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
+## Collect in python 
+```python
+from solox.public.apm import APM
+# solox version >= 2.1.2
 
-#### Error Log
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879631071-078b2185-0cbd-409c-9212-485f5841766d.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android')
+# apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
+cpu = apm.collectCpu() # %
+memory = apm.collectMemory() # MB
+flow = apm.collectFlow() # KB
+fps = apm.collectFps() # HZ
+battery = apm.collectBattery() # level:% temperature:°C
+```
 
+## Collect in API 
+### Start the service in the background
 
-#### Report
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1648879616511-15f271b7-2761-43c5-a86c-50f82bc68f32.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+```
+# solox version >= 2.1.5
 
-#### Analysis
-<img src="https://user-images.githubusercontent.com/29191106/174444708-70621044-f836-446f-852f-05925e60cada.png"  width="100%">
+macOS/Linux: nohup python3 -m solox &
+Windows: start /min python3 -m solox &
+```
 
-## Stargazers
+### Request apm data from api
+```
+http://{ip}:50003/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&apm_type=cpu
 
-[![Stargazers over time](https://starchart.cc/smart-test-ti/SoloX.svg)](https://starchart.cc/smart-test-ti/SoloX)
+apm_type in ['cpu','memory','network','fps','battery']
+```
 
+## Thanks
+- https://github.com/alibaba/mobileperf
 
-## Contributors
+- https://github.com/alibaba/taobao-iphone-device
 
-<a href="https://github.com/smart-test-ti/SoloX/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=smart-test-ti/SoloX" />
-</a>
-
-
-## References
-https://github.com/alibaba/mobileperf
->fps&jank 的收集和统计参考了 mobileperf 
+## Communicate
+- QQ: 1501556640
+- Gmail: rafacheninc@gmail.com
 

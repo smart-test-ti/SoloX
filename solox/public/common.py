@@ -4,9 +4,8 @@ import platform
 import re
 import shutil
 import time
-
+from flask import request
 from solox.public.adb import adb
-
 
 class Devices:
 
@@ -14,21 +13,20 @@ class Devices:
         self.platform = platform
         self.adb = adb.adb_path
 
-    def execCmd(self, cmd):
-        """执行命令获取终端打印结果"""
+    def execCmd(self,cmd):
+        """Execute the command to get the terminal print result"""
         r = os.popen(cmd)
         text = r.read()
         r.close()
         return text
 
     def _filterType(self):
-        """根据系统选择管道过滤方式"""
-        filtertype = ('grep', 'findstr')[platform.system() == 'Windows']
-        print(filtertype)
+        """Select the pipe filtering method according to the system"""
+        filtertype = ('grep','findstr')[platform.system() == 'Windows']
         return filtertype
 
     def getDeviceIds(self):
-        """获取所有连接成功的设备id"""
+        """Get all connected device ids"""
         Ids = list(os.popen(f"{self.adb} devices").readlines())
         deviceIds = []
         for i in range(1, len(Ids) - 1):
@@ -39,12 +37,12 @@ class Devices:
         return deviceIds
 
     def getDevicesName(self, deviceId):
-        """获取对应设备Id的设备名称"""
+        """Get the device name of the Android corresponding device ID"""
         devices_name = os.popen(f'{self.adb} -s {deviceId} shell getprop ro.product.model').readlines()
         return devices_name[0].strip()
 
     def getDevices(self):
-        """获取所有设备"""
+        """Get all Android devices"""
         Devices = []
         DeviceIds = self.getDeviceIds()
         for id in DeviceIds:
@@ -52,8 +50,8 @@ class Devices:
             Devices.append(f'{id}({devices_name})')
         return Devices
 
-    def getIdbyDevice(self, deviceinfo, platform):
-        """根据设备信息获取对应设备id"""
+    def getIdbyDevice(self, deviceinfo,platform):
+        """Obtain the corresponding device id according to the Android device information"""
         if platform == 'Android':
             deviceId = re.sub(u"\\(.*?\\)|\\{.*?}|\\[.*?]", "", deviceinfo)
         else:
@@ -61,8 +59,8 @@ class Devices:
         return deviceId
 
     def getPid(self, deviceId, pkgName):
-        """获取对应包名的pid"""
-        result = os.popen(f"{self.adb} -s {deviceId} shell ps | {self._filterType()} {pkgName}").readlines()
+        """Get the pid corresponding to the Android package name"""
+        result = os.popen(f"{self.adb} -s {deviceId} shell ps -ef | {self._filterType()} {pkgName}").readlines()
         flag = len(result) > 0
         try:
             pid = (0, result[0].split()[1])[flag]
@@ -79,7 +77,7 @@ class Devices:
         return flag
 
     def getPkgname(self, devicesId):
-        """获取手机所有包名"""
+        """Get all package names of Android devices"""
         pkginfo = os.popen(f"{self.adb} -s {devicesId} shell pm list package")
         pkglist = []
         for p in pkginfo:
@@ -89,7 +87,7 @@ class Devices:
         return pkglist
 
     def getDeviceInfoByiOS(self):
-        """获取所有连接成功的iOS设备列表"""
+        """Get a list of all successfully connected iOS devices"""
         deviceResult = json.loads(self.execCmd('tidevice list --json'))
         deviceInfo = []
         for i in range(len(deviceResult)):
@@ -98,13 +96,26 @@ class Devices:
             deviceInfo.append(f'{deviceName}:{deviceUdid}')
         return deviceInfo
 
-    def getPkgnameByiOS(self, udid):
-        """获取对应iOS设备所有包名"""
+    def getPkgnameByiOS(self,udid):
+        """Get all package names of the corresponding iOS device"""
         pkgResult = self.execCmd(f'tidevice --udid {udid} applist').split('\n')
         pkgNames = []
         for i in range(len(pkgResult)):
             pkgNames.append(pkgResult[i].split(' ')[0])
         return pkgNames
+
+    def _devicesCheck(self, pf, id='', pkg=''):
+        """Check the device environment"""
+        if pf == 'Android':
+            if len(self.getDeviceIds()) == 0:
+                raise ('no devices')
+            if not self.getPid(deviceId=id, pkgName=pkg):
+                raise ('no found app process')
+        elif pf == 'iOS':
+            if len(self.getDeviceInfoByiOS()) == 0:
+                raise ('no devices')
+        else:
+            raise ('platform must be Android or iOS')
 
 
 class file:
@@ -124,6 +135,11 @@ class file:
             os.mkdir(f'{self.report_dir}')
         with open(f'{self.report_dir}/{filename}', 'a+', encoding="utf-8") as file:
             file.write(content)
+
+    def add_log(self, path, log_time, value):
+        if value >= 0:
+            with open(path, 'a+', encoding="utf-8") as file:
+                file.write(f'{log_time}={str(value)}' + '\n')
 
     def make_report(self, app, devices, platform='Android'):
         current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -154,7 +170,7 @@ class file:
             return 'int'
 
     def readLog(self, scene, filename):
-        """读取apmlog文件数据"""
+        """Read apmlog file data"""
         log_data_list = []
         target_data_list = []
         f = open(f'{self.report_dir}/{scene}/{filename}', "r")
@@ -174,15 +190,16 @@ class file:
                 target_data_list.append(float(line.split('=')[1].strip()))
         return log_data_list, target_data_list
 
-    def approximateSize(self, size, a_kilobyte_is_1024_bytes=True):
-        """
+
+    def approximateSize(self,size, a_kilobyte_is_1024_bytes=True):
+        '''
         convert a file size to human-readable form.
         Keyword arguments:
         size -- file size in bytes
         a_kilobyte_is_1024_bytes -- if True (default),use multiples of 1024
                                     if False, use multiples of 1000
         Returns: string
-        """
+        '''
 
         suffixes = {1000: ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
                     1024: ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']}
@@ -197,65 +214,102 @@ class file:
             if size < multiple:
                 return '{0:.2f} {1}'.format(size, suffix)
 
-    def _setAndroidPerfs(self, scene):
-        """汇总Android的APM数据"""
-        cpu_data = self.readLog(scene=scene, filename=f'cpu.log')[1]
-        cpu_rate = f'{round(sum(cpu_data) / len(cpu_data), 2)}%'
 
-        battery_data = self.readLog(scene=scene, filename=f'battery.log')[1]
-        battery_rate = f'{round(sum(battery_data) / len(battery_data), 2)}%'
+    def _setAndroidPerfs(self,scene):
+        """Aggregate APM data for Android"""
 
-        mem_data = self.readLog(scene=scene, filename=f'mem.log')[1]
-        mem_avg = f'{round(sum(mem_data) / len(mem_data), 2)}MB'
+        cpuAppData = self.readLog(scene=scene, filename=f'cpu_app.log')[1]
+        cpuAppRate = f'{round(sum(cpuAppData) / len(cpuAppData), 2)}%'
 
-        fps_data = self.readLog(scene=scene, filename=f'fps.log')[1]
-        fps_avg = f'{int(sum(fps_data) / len(fps_data))}HZ/s'
+        cpuSystemData = self.readLog(scene=scene, filename=f'cpu_sys.log')[1]
+        cpuSystemRate = f'{round(sum(cpuSystemData) / len(cpuSystemData), 2)}%'
 
-        jank_data = self.readLog(scene=scene, filename=f'jank.log')[1]
-        jank_avg = f'{int(sum(jank_data) / len(jank_data))}'
+        batteryLevelData = self.readLog(scene=scene, filename=f'battery_level.log')[1]
+        batteryLevel = f'{round(sum(batteryLevelData) / len(batteryLevelData), 2)}%'
 
-        flow_send_data = self.readLog(scene=scene, filename=f'upflow.log')[1]
-        flow_send_data_all = f'{round(flow_send_data[len(flow_send_data) - 1] - flow_send_data[0], 2)}MB'
+        batteryTemlData = self.readLog(scene=scene, filename=f'battery_tem.log')[1]
+        batteryTeml = f'{round((sum(batteryTemlData) / 10) / len(batteryTemlData), 2)}°C'
 
-        flow_recv_data = self.readLog(scene=scene, filename=f'downflow.log')[1]
-        flow_recv_data_all = f'{round(flow_recv_data[len(flow_recv_data) - 1] - flow_recv_data[0], 2)}MB'
+        totalPassData = self.readLog(scene=scene, filename=f'mem_total.log')[1]
+        totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
+
+        nativePassData = self.readLog(scene=scene, filename=f'mem_native.log')[1]
+        nativePassAvg = f'{round(sum(nativePassData) / len(nativePassData), 2)}MB'
+
+        dalvikPassData = self.readLog(scene=scene, filename=f'mem_dalvik.log')[1]
+        dalvikPassAvg = f'{round(sum(dalvikPassData) / len(dalvikPassData), 2)}MB'
+
+        fpsData = self.readLog(scene=scene, filename=f'fps.log')[1]
+        fpsAvg = f'{int(sum(fpsData) / len(fpsData))}HZ/s'
+
+        jankData = self.readLog(scene=scene, filename=f'jank.log')[1]
+        jankAvg = f'{int(sum(jankData) / len(jankData))}'
+
+        flowSendData = self.readLog(scene=scene, filename=f'upflow.log')[1]
+        flowSend = f'{round(float(sum(flowSendData) / 1024 ),2)}MB'
+
+        flowRecvData = self.readLog(scene=scene, filename=f'downflow.log')[1]
+        flowRecv = f'{round(float(sum(flowRecvData) / 1024 ),2)}MB'
+
         apm_dict = {
-            "cpu": cpu_rate,
-            "mem": mem_avg,
-            "fps": fps_avg,
-            "jank": jank_avg,
-            "flow_send": flow_send_data_all,
-            "flow_recv": flow_recv_data_all,
-            "battery": battery_rate
+            "cpuAppRate": cpuAppRate,
+            "cpuSystemRate": cpuSystemRate,
+            "totalPassAvg": totalPassAvg,
+            "nativePassAvg": nativePassAvg,
+            "dalvikPassAvg": dalvikPassAvg,
+            "fps": fpsAvg,
+            "jank": jankAvg,
+            "flow_send": flowSend,
+            "flow_recv": flowRecv,
+            "batteryLevel": batteryLevel,
+            "batteryTeml":batteryTeml
         }
 
         return apm_dict
 
     def _setiOSPerfs(self, scene):
-        """汇总iOS的APM数据"""
-        cpu_data = self.readLog(scene=scene, filename=f'cpu.log')[1]
-        cpu_rate = f'{round(sum(cpu_data) / len(cpu_data), 2)}%'
+        """Aggregate APM data for iOS"""
+        cpuAppData = self.readLog(scene=scene, filename=f'cpu_app.log')[1]
+        cpuAppRate = f'{round(sum(cpuAppData) / len(cpuAppData), 2)}%'
 
-        mem_data = self.readLog(scene=scene, filename=f'mem.log')[1]
-        mem_avg = f'{round(sum(mem_data) / len(mem_data), 2)}MB'
+        totalPassData = self.readLog(scene=scene, filename=f'mem_total.log')[1]
+        totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
 
-        # fps_data = self.readLog(scene=scene, filename=f'fps.log')[1]
-        # fps_avg = f'{int(sum(fps_data) / len(fps_data))}HZ/s'
+        fpsData = self.readLog(scene=scene, filename=f'fps.log')[1]
+        fpsAvg = f'{int(sum(fpsData) / len(fpsData))}HZ/s'
 
-        flow_send_data = self.readLog(scene=scene, filename=f'upflow.log')[1]
-        flow_send_data_all = f'{round((sum(flow_send_data)), 2)}KB'
+        flowSendData = self.readLog(scene=scene, filename=f'upflow.log')[1]
+        flowSend = f'{round(float(sum(flowSendData) / 1024 ),2)}MB'
 
-        flow_recv_data = self.readLog(scene=scene, filename=f'downflow.log')[1]
-        flow_recv_data_all = f'{round((sum(flow_recv_data)), 2)}KB'
+        flowRecvData = self.readLog(scene=scene, filename=f'downflow.log')[1]
+        flowRecv = f'{round(float(sum(flowRecvData) / 1024 ),2)}MB'
 
         apm_dict = {
-            "cpu": cpu_rate,
-            "mem": mem_avg,
-            "fps": 0,
-            "flow_send": flow_send_data_all,
-            "flow_recv": flow_recv_data_all,
+            "cpuAppRate": cpuAppRate,
+            "cpuSystemRate": 0,
+            "totalPassAvg": totalPassAvg,
+            "nativePassAvg": 0,
+            "dalvikPassAvg": 0,
+            "fps": fpsAvg,
             "jank": 0,
-            "battery": 0
+            "flow_send": flowSend,
+            "flow_recv": flowRecv,
+            "batteryLevel": 0,
+            "batteryTeml": 0
         }
 
         return apm_dict
+
+
+class Method:
+
+    def _request(self, object):
+
+        if request.method == 'POST':
+            return request.form[object]
+        elif request.method == 'GET':
+            return request.args[object]
+        else:
+            raise ('request method error')
+
+
