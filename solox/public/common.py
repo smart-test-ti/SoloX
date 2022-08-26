@@ -135,6 +135,11 @@ class file:
         with open(f'{self.report_dir}/{filename}', 'a+', encoding="utf-8") as file:
             file.write(content)
 
+    def add_log(self, path, log_time, value):
+        if value >= 0:
+            with open(path, 'a+', encoding="utf-8") as file:
+                file.write(f'{log_time}={str(value)}' + '\n')
+
     def make_report(self, app, devices, platform='Android'):
         current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         result_dict = {

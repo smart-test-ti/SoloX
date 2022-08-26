@@ -11,6 +11,7 @@ from solox.public.common import Devices, file
 from solox.public.fps import FPSMonitor, TimeUtils
 
 d = Devices()
+f = file()
 
 class CPU:
 
@@ -77,10 +78,8 @@ class CPU:
         appCpuRate = round(float((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
         systemCpuRate = round(float((devideCpuTime_2 - devideCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
 
-        with open(f'{file().report_dir}/cpu_app.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(appCpuRate)}' + '\n')
-        with open(f'{file().report_dir}/cpu_sys.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(systemCpuRate)}' + '\n')
+        f.add_log(f.report_dir, self.apm_time, appCpuRate)
+        f.add_log(f.report_dir, self.apm_time, systemCpuRate)
 
         return appCpuRate, systemCpuRate
 
@@ -88,8 +87,7 @@ class CPU:
         """get the iOS cpu rate of a process, unit:%"""
         apm = iosAPM(self.pkgName)
         appCpuRate = round(float(apm.getPerformance(apm.cpu)), 2)
-        with open(f'{file().report_dir}/cpu_app.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(appCpuRate)}' + '\n')
+        f.add_log(f.report_dir, self.apm_time, appCpuRate)
         return appCpuRate, 0
 
     def getCpuRate(self):
@@ -136,13 +134,12 @@ class MEM:
         else:
             totalPass, nativePass, dalvikPass = self.getiOSMem()
 
-        with open(f'{file().report_dir}/mem_total.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(totalPass)}' + '\n')
+        f.add_log(f.report_dir, self.apm_time, totalPass)
+
         if self.platform == 'Android':
-            with open(f'{file().report_dir}/mem_native.log', 'a+') as f:
-                f.write(f'{self.apm_time}={str(nativePass)}' + '\n')
-            with open(f'{file().report_dir}/mem_dalvik.log', 'a+') as f:
-                f.write(f'{self.apm_time}={str(dalvikPass)}' + '\n')
+            f.add_log(f.report_dir, self.apm_time, nativePass)
+            f.add_log(f.report_dir, self.apm_time, dalvikPass)
+
         return totalPass, nativePass, dalvikPass
 
 class Battery:
@@ -162,10 +159,8 @@ class Battery:
         level = int(re.findall(u'level:\s?(\d+)', output)[0])
         temperature = int(re.findall(u'temperature:\s?(\d+)', output)[0]) / 10
         time.sleep(1)
-        with open(f'{file().report_dir}/battery_level.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(level)}' + '\n')
-        with open(f'{file().report_dir}/battery_tem.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(temperature)}' + '\n')
+        f.add_log(f.report_dir, self.apm_time, level)
+        f.add_log(f.report_dir, self.apm_time, temperature)
         return level, temperature
 
     def SetBattery(self):
@@ -213,10 +208,8 @@ class Flow:
             sendNum, recNum = self.getAndroidNet()
         else:
             sendNum, recNum = self.getiOSNet()
-        with open(f'{file().report_dir}/upflow.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(sendNum)}' + '\n')
-        with open(f'{file().report_dir}/downflow.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(recNum)}' + '\n')
+        f.add_log(f.report_dir, self.apm_time, sendNum)
+        f.add_log(f.report_dir, self.apm_time, recNum)
         return sendNum, recNum
 
 class FPS:
@@ -233,18 +226,15 @@ class FPS:
                               start_time=TimeUtils.getCurrentTimeUnderline())
         monitors.start()
         fps, jank = monitors.stop()
-        with open(f'{file().report_dir}/fps.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(fps)}' + '\n')
-        with open(f'{file().report_dir}/jank.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(jank)}' + '\n')
+        f.add_log(f.report_dir, self.apm_time, fps)
+        f.add_log(f.report_dir, self.apm_time, jank)
         return fps, jank
 
     def getiOSFps(self):
         """get iOS Fps"""
         apm = iosAPM(self.pkgName)
         fps = int(apm.getPerformance(apm.fps))
-        with open(f'{file().report_dir}/fps.log', 'a+') as f:
-            f.write(f'{self.apm_time}={str(fps)}' + '\n')
+        f.add_log(f.report_dir, self.apm_time, fps)
         return fps, 0
 
     def getFPS(self):
