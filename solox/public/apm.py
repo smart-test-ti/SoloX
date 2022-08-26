@@ -5,13 +5,14 @@ from functools import reduce
 from logzero import logger
 import tidevice
 import solox.public._iosPerf as iosP
-from solox.public.iosperf._perf import DataType,Performance
+from solox.public.iosperf._perf import DataType, Performance
 from solox.public.adb import adb
 from solox.public.common import Devices, file
 from solox.public.fps import FPSMonitor, TimeUtils
 
 d = Devices()
 f = file()
+
 
 class CPU:
 
@@ -98,6 +99,7 @@ class CPU:
             appCpuRate, systemCpuRate = self.getiOSCpuRate()
         return appCpuRate, systemCpuRate
 
+
 class MEM:
     def __init__(self, pkgName, deviceId, platform='Android'):
         self.pkgName = pkgName
@@ -126,7 +128,6 @@ class MEM:
         dalvikPass = 0
         return totalPass, nativePass, dalvikPass
 
-
     def getProcessMem(self):
         """Get the app memory"""
         if self.platform == 'Android':
@@ -141,6 +142,7 @@ class MEM:
             f.add_log(f'{f.report_dir}/mem_dalvik.log', self.apm_time, dalvikPass)
 
         return totalPass, nativePass, dalvikPass
+
 
 class Battery:
     def __init__(self, deviceId, platform='Android'):
@@ -167,6 +169,7 @@ class Battery:
         """Reset phone charging status"""
         cmd = 'dumpsys battery set status 2'
         adb.shell(cmd=cmd, deviceId=self.deviceId)
+
 
 class Flow:
 
@@ -201,7 +204,6 @@ class Flow:
         recNum = round(float(apm_data[0]), 2)
         return sendNum, recNum
 
-
     def getNetWorkData(self):
         """Get the upflow and downflow data, unit:KB"""
         if self.platform == 'Android':
@@ -211,6 +213,7 @@ class Flow:
         f.add_log(f'{f.report_dir}/upflow.log', self.apm_time, sendNum)
         f.add_log(f'{f.report_dir}/downflow.log', self.apm_time, recNum)
         return sendNum, recNum
+
 
 class FPS:
 
@@ -245,6 +248,7 @@ class FPS:
             fps, jank = self.getiOSFps()
         return fps, jank
 
+
 class iosAPM():
 
     def __init__(self, pkgName, deviceId=tidevice.Device()):
@@ -259,17 +263,15 @@ class iosAPM():
         self.downflow = 0
         self.upflow = 0
 
-    def callback(self,_type: DataType, value: dict):
+    def callback(self, _type: DataType, value: dict):
         if _type == 'network':
             self.downflow = value['downFlow']
             self.upflow = value['upFlow']
         else:
             self.perfs = value['value']
 
-
-
-    def getPerformance(self, perfTpe:DataType):
-        perf = iosP.Performance(self.deviceId,[perfTpe])
+    def getPerformance(self, perfTpe: DataType):
+        perf = iosP.Performance(self.deviceId, [perfTpe])
         perf_value = perf.start(self.pkgName, callback=self.callback)
         if perfTpe == DataType.NETWORK:
             perf = Performance(self.deviceId, [perfTpe])
@@ -279,8 +281,8 @@ class iosAPM():
             perf_value = self.downflow, self.upflow
         return perf_value
 
-class APM():
 
+class APM():
     """for python api"""
 
     def __init__(self, pkgName, deviceId='', platform='Android'):
@@ -323,8 +325,3 @@ class APM():
         result = {'fps': fps, 'jank': jank}
         logger.info(f'fps: {result}')
         return result
-
-
-
-
-
