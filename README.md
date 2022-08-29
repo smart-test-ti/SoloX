@@ -4,7 +4,7 @@
 
 <p align="center">
 <a href="#">
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1643364757640-b4529458-ec8d-42cc-a2d8-c0ce60fdf50f.png" alt="SoloX" width="300">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1643364757640-b4529458-ec8d-42cc-a2d8-c0ce60fdf50f.png" alt="SoloX" width="250">
 </a>
 <br>
 <br>
@@ -12,7 +12,7 @@
 </p>
 <p align="center">
 <a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/pypi/v/solox" alt="solox preview"></a>
-<a href="https://smart-test-ti.github.io/apm.html" target="__blank"><img src="https://img.shields.io/badge/preview-demo-orange"></a>
+<a href="https://pypistats.org/packages/solox" target="__blank"><img src="https://img.shields.io/badge/downloads-%3E1k%2Fmonth-green"></a>
 
 <br>
 </p>
