@@ -87,6 +87,8 @@ apm_type in ['cpu','memory','network','fps','battery']
 - https://github.com/alibaba/taobao-iphone-device
 
 ## Communicate
-- QQ: 1501556640
 - Gmail: rafacheninc@gmail.com
+
+## Sponsor
+<img src="./image/sponsor.png"  width="100%">
 
