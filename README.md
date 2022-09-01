@@ -23,7 +23,7 @@ SoloX - Real-time collection tool for Android/iOS performance data.
 
 We are committed to solving inefficient, cumbersome test execution, and our goal is Simple Test In SoloX!
 
-<img src="./image/home.png"  width="100%">
+<img src="./image/home.png"  width="100%" >
 
 ## Installation
 ```
@@ -90,5 +90,5 @@ apm_type in ['cpu','memory','network','fps','battery']
 - Gmail: rafacheninc@gmail.com
 
 ## Sponsor
-<img src="./image/sponsor.png"  width="100%">
+<img src="./image/sponsor.png"  width="50%">
 
