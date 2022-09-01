@@ -132,14 +132,14 @@
     </div>
     <div class="apm-data mt-1" style="width: 75%;">
         {% if platform == 'Android' %}
-        <div id="cpu_android" class="mb-3 cpu" style="min-width:400px;height:300px"></div>
-        <div id="mem_android"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
-        <div id="fps" class="mb-3 fps" style="min-width:400px;height:300px"></div>
-        <div id="battery" class="mb-3 battery" style="min-width:400px;height:300px"></div>
+        <div id="cpu_android" class="mb-3 cpu" style="min-width:400px;height:350px"></div>
+        <div id="mem_android"  class="mb-3 mem" style="min-width:400px;height:350px"></div>
+        <div id="fps" class="mb-3 fps" style="min-width:400px;height:350px"></div>
+        <div id="battery" class="mb-3 battery" style="min-width:400px;height:350px"></div>
         {% else %}
-        <div id="cpu_ios" class="mb-3 cpu" style="min-width:400px;height:300px"></div>
-        <div id="mem_ios"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
-        <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:300px"></div>
+        <div id="cpu_ios" class="mb-3 cpu" style="min-width:400px;height:350px"></div>
+        <div id="mem_ios"  class="mb-3 mem" style="min-width:400px;height:350px"></div>
+        <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:350px"></div>
         {% endif %}
         <div id="network" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
     </div>
@@ -963,6 +963,7 @@
             cache: false,
             data:{
                 platform:platform,
+                model:'normal',
                 app:$('#select-app').val(),
                 devices:$('#select-device').val()
             },

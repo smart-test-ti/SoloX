@@ -142,12 +142,13 @@ class file:
             with open(path, 'a+', encoding="utf-8") as file:
                 file.write(f'{log_time}={str(value)}' + '\n')
 
-    def make_report(self, app, devices, platform='Android'):
+    def make_report(self, app, devices, platform='Android', model='normal'):
         current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         result_dict = {
             "app": app,
             "icon": "",
             "platform": platform,
+            "model": model,
             "devices": devices,
             "ctime": current_time
         }
@@ -295,6 +296,41 @@ class file:
             "flow_recv": flowRecv,
             "batteryLevel": 0,
             "batteryTeml": 0
+        }
+
+        return apm_dict
+
+    def _setpkPerfs(self, scene):
+        """Aggregate APM data for pk model"""
+        cpuAppData1 = self.readLog(scene=scene, filename=f'cpu_app1.log')[1]
+        cpuAppRate1 = f'{round(sum(cpuAppData1) / len(cpuAppData1), 2)}%'
+        cpuAppData2 = self.readLog(scene=scene, filename=f'cpu_app2.log')[1]
+        cpuAppRate2 = f'{round(sum(cpuAppData2) / len(cpuAppData2), 2)}%'
+
+        totalPassData1 = self.readLog(scene=scene, filename=f'mem1.log')[1]
+        totalPassAvg1 = f'{round(sum(totalPassData1) / len(totalPassData1), 2)}MB'
+        totalPassData2 = self.readLog(scene=scene, filename=f'mem2.log')[1]
+        totalPassAvg2 = f'{round(sum(totalPassData2) / len(totalPassData2), 2)}MB'
+
+        fpsData1 = self.readLog(scene=scene, filename=f'fps1.log')[1]
+        fpsAvg1 = f'{int(sum(fpsData1) / len(fpsData1))}HZ/s'
+        fpsData2 = self.readLog(scene=scene, filename=f'fps2.log')[1]
+        fpsAvg2 = f'{int(sum(fpsData2) / len(fpsData2))}HZ/s'
+
+        networkData1 = self.readLog(scene=scene, filename=f'network1.log')[1]
+        network1 = f'{round(float(sum(networkData1) / 1024), 2)}MB'
+        networkData2 = self.readLog(scene=scene, filename=f'network2.log')[1]
+        network2 = f'{round(float(sum(networkData2) / 1024), 2)}MB'
+
+        apm_dict = {
+            "cpuAppRate1": cpuAppRate1,
+            "cpuAppRate2": cpuAppRate2,
+            "totalPassAvg1": totalPassAvg1,
+            "totalPassAvg2": totalPassAvg2,
+            "network1": network1,
+            "network2": network2,
+            "fpsAvg1": fpsAvg1,
+            "fpsAvg2": fpsAvg2
         }
 
         return apm_dict

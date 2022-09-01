@@ -46,6 +46,7 @@
 {% block page_body %}
 <div class="col-12 mb-3">
     <div class="row row-cards">
+        {% if model == '2-devices' %}
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
                 <div class="card-body">
@@ -57,17 +58,16 @@
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                APP
+                                Device1
                             </div>
                             <div class="text-muted">
-                                Avg：{{ apm_data.cpuAppRate }}
+                                Avg：{{ apm_data.cpuAppRate1 }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        {% if platform == 'Android' %}
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
                 <div class="card-body">
@@ -79,55 +79,10 @@
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                System
+                                Device2
                             </div>
                             <div class="text-muted">
-                                Avg：{{ apm_data.cpuSystemRate }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-
-        <div class="col-sm-6 col-lg-2">
-            <div class="card card-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <span class="bg-yellow text-white avatar">
-                                MEM
-                            </span>
-                        </div>
-                        <div class="col">
-                            <div class="font-weight-medium">
-                                Total
-                            </div>
-                            <div class="text-muted">
-                                Avg：{{ apm_data.totalPassAvg }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% if platform == 'Android' %}
-        <div class="col-sm-6 col-lg-2">
-            <div class="card card-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <span class="bg-yellow text-white avatar">
-                                MEM
-                            </span>
-                        </div>
-                        <div class="col">
-                            <div class="font-weight-medium">
-                                Native
-                            </div>
-                            <div class="text-muted">
-                                Avg：{{ apm_data.nativePassAvg }}
+                                Avg：{{ apm_data.cpuAppRate2 }}
                             </div>
                         </div>
                     </div>
@@ -145,17 +100,37 @@
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Dalvik
+                                Device1
                             </div>
                             <div class="text-muted">
-                                Avg：{{ apm_data.dalvikPassAvg }}
+                                Avg：{{ apm_data.totalPassAvg1 }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        {% endif %}
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-yellow text-white avatar">
+                                MEM
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                Device2
+                            </div>
+                            <div class="text-muted">
+                                Avg：{{ apm_data.totalPassAvg2 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
                 <div class="card-body">
@@ -167,96 +142,31 @@
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                FPS
+                                Device1
                             </div>
                             <div class="text-muted">
-                                Avg：{{ apm_data.fps }}
+                                Avg：{{ apm_data.fpsAvg1 }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        {% if platform == 'Android' %}
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-pink text-white avatar">
-                                Jank
+                                FPS
                             </span>
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Jank
+                                Device2
                             </div>
                             <div class="text-muted">
-                                Avg：{{ apm_data.jank }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-lg-2">
-            <div class="card card-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <span class="bg-green text-white avatar">
-                                A.C
-                            </span>
-                        </div>
-                        <div class="col">
-                            <div class="font-weight-medium">
-                                Level
-                            </div>
-                            <div class="text-muted">
-                                Avg：{{ apm_data.batteryLevel }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-lg-2">
-            <div class="card card-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <span class="bg-green text-white avatar">
-                                A.C
-                            </span>
-                        </div>
-                        <div class="col">
-                            <div class="font-weight-medium">
-                                Temperature
-                            </div>
-                            <div class="text-muted">
-                                Avg：{{ apm_data.batteryTeml }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-        <div class="col-sm-6 col-lg-2">
-            <div class="card card-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <span class="bg-blue text-white avatar">
-                                NET
-                            </span>
-                        </div>
-                        <div class="col">
-                            <div class="font-weight-medium">
-                                Send
-                            </div>
-                            <div class="text-muted">
-                                All：{{ apm_data.flow_send }}
+                                Avg：{{ apm_data.fpsAvg2 }}
                             </div>
                         </div>
                     </div>
@@ -274,16 +184,207 @@
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Recv
+                                Device1
                             </div>
                             <div class="text-muted">
-                                All：{{ apm_data.flow_recv }}
+                                All：{{ apm_data.network1 }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-blue text-white avatar">
+                                NET
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                Device2
+                            </div>
+                            <div class="text-muted">
+                                All：{{ apm_data.network2 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-dark text-white avatar">
+                                CPU
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                APP1
+                            </div>
+                            <div class="text-muted">
+                                Avg：{{ apm_data.cpuAppRate1 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-dark text-white avatar">
+                                CPU
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                APP2
+                            </div>
+                            <div class="text-muted">
+                                Avg：{{ apm_data.cpuAppRate2 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-yellow text-white avatar">
+                                MEM
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                APP1
+                            </div>
+                            <div class="text-muted">
+                                Avg：{{ apm_data.totalPassAvg1 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-yellow text-white avatar">
+                                MEM
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                APP2
+                            </div>
+                            <div class="text-muted">
+                                Avg：{{ apm_data.totalPassAvg2 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-pink text-white avatar">
+                                FPS
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                APP1
+                            </div>
+                            <div class="text-muted">
+                                Avg：{{ apm_data.fpsAvg1 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-pink text-white avatar">
+                                FPS
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                APP2
+                            </div>
+                            <div class="text-muted">
+                                Avg：{{ apm_data.fpsAvg2 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-blue text-white avatar">
+                                NET
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                APP1
+                            </div>
+                            <div class="text-muted">
+                                All：{{ apm_data.network1 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-blue text-white avatar">
+                                NET
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                APP2
+                            </div>
+                            <div class="text-muted">
+                                All：{{ apm_data.network2 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 <div class="col-12">
@@ -335,40 +436,6 @@
             <div id="chart-fps"></div>
         </div>
     </div>
-    {% if platform == 'Android' %}
-    <div class="card jank-card mt-3">
-        <div class="card-header">
-            <div class='card-title'>JANK</div>
-            <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="jank_loading">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                </a>
-                <a class="btn-action cursor-pointer" id="jank_png" onclick="screenshot('jank-card','jank.png')">
-                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
-                </a>
-            </div>
-        </div>
-        <div class="card-body">
-            <div id="chart-jank"></div>
-        </div>
-    </div>
-    <div class="card battery-card mt-3">
-        <div class="card-header">
-            <div class='card-title'>A.C（%）</div>
-            <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="battery_loading">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                </a>
-                <a class="btn-action cursor-pointer" id="battery_png" onclick="screenshot('battery-card','battery.png')">
-                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
-                </a>
-            </div>
-        </div>
-        <div class="card-body">
-            <div id="chart-battery"></div>
-        </div>
-    </div>
-    {% endif %}
     <div class="card networkdata-card mt-3">
         <div class="card-header">
             <div class='card-title'>Network Data（KB）</div>
@@ -392,16 +459,12 @@
 {% block js %}
 <script>
 
-    const platform = '{{ platform }}';
+    const model = '{{ model }}';
 
     $(document).ready(function() {
         $('#cpu_loading').click();
         $('#mem_loading').click();
         $('#fps_loading').click();
-        if(platform == 'Android'){
-            $('#jank_loading').click();
-            $('#battery_loading').click();
-        }
         $('#networkdata_loading').click();
     });
 
@@ -445,14 +508,14 @@
     cpu_chart.render();
     $('#cpu_loading').click(function () {
         $.ajax({
-            url: '/apm/log',
+            url: '/apm/log/pk',
             type: "GET",
             async: true,
             cache: false,
             data:{
                 scene:'{{ scene }}',
-                target:'cpu',
-                platform:platform
+                target1:'cpu_app1',
+                target2:'cpu_app2'
             },
             beforeSend: function () {
                 SwalLoading('Loading','')
@@ -461,18 +524,21 @@
                 swal.close();
             },
             success: function (data) {
-                if(platform == 'Android'){
+                if(model == '2-devices'){
                     cpu_chart.updateSeries([{
-                        name: 'app Usage',
-                        data: data['cpuAppData']
+                        name: 'Device1',
+                        data: data['first']
                     },{
-                        name: 'system Usage',
-                        data: data['cpuSysData']
+                        name: 'Device2',
+                        data: data['second']
                     }])
                 }else{
                     cpu_chart.updateSeries([{
-                        name: 'app Usage',
-                        data: data['cpuAppData']
+                        name: 'APP1',
+                        data: data['first']
+                    },{
+                        name: 'APP2',
+                        data: data['second']
                     }])
                 }
 
@@ -480,86 +546,18 @@
         });
     });
 
-    if(platform == 'Android'){
-        var battery_chart = new ApexCharts(document.querySelector("#chart-battery"), options('line'));
-        battery_chart.render();
-        $('#battery_loading').click(function () {
-            $.ajax({
-                url: '/apm/log',
-                type: "GET",
-                async: true,
-                cache: false,
-                data:{
-                    scene:'{{ scene }}',
-                    target:'battery',
-                    platform:platform
-                },
-                beforeSend: function () {
-                    SwalLoading('Loading','')
-                },
-                complete: function () {
-                    swal.close();
-                },
-                success: function (data) {
-                    if(platform == 'Android'){
-                        battery_chart.updateSeries([{
-                            name: 'level',
-                            data: data['batteryLevel']
-                        },{
-                            name: 'temperature',
-                            data: data['batteryTem']
-                        }])
-                    }else {
-                        battery_chart.updateSeries([{
-                            name: 'level',
-                            data: data['batteryLevel']
-                        }])
-                    }
-                }
-            });
-        });
-
-        var jank_chart = new ApexCharts(document.querySelector("#chart-jank"), options('line'));
-        jank_chart.render();
-        $('#jank_loading').click(function () {
-            $.ajax({
-                url: '/apm/log',
-                type: "GET",
-                async: true,
-                cache: false,
-                data:{
-                    scene:'{{ scene }}',
-                    target:'jank',
-                    platform:platform
-                },
-                beforeSend: function () {
-                    SwalLoading('Loading','')
-                },
-                complete: function () {
-                    swal.close();
-                },
-                success: function (data) {
-                    jank_chart.updateSeries([{
-                        name: 'jank value',
-                        data: data['log_data']
-                    }])
-                }
-            });
-        });
-    }
-
     var fps_chart = new ApexCharts(document.querySelector("#chart-fps"), options('line'));
     fps_chart.render();
     $('#fps_loading').click(function () {
         $.ajax({
-            url: '/apm/log',
+            url: '/apm/log/pk',
             type: "GET",
             async: true,
             cache: false,
             data:{
                 scene:'{{ scene }}',
-                target:'fps',
-                platform:platform
+                target1:'fps1',
+                target2:'fps2'
             },
             beforeSend: function () {
                 SwalLoading('Loading','')
@@ -568,10 +566,23 @@
                 swal.close();
             },
             success: function (data) {
-                fps_chart.updateSeries([{
-                    name: 'fps value',
-                    data: data['log_data']
-                }])
+                if(model == '2-devices'){
+                    fps_chart.updateSeries([{
+                        name: 'Device1',
+                        data: data['first']
+                    },{
+                        name: 'Device2',
+                        data: data['second']
+                    }])
+                }else{
+                    fps_chart.updateSeries([{
+                        name: 'APP1',
+                        data: data['first']
+                    },{
+                        name: 'APP2',
+                        data: data['second']
+                    }])
+                }
             }
         });
     });
@@ -580,14 +591,14 @@
     mem_chart.render();
     $('#mem_loading').click(function () {
         $.ajax({
-            url: '/apm/log',
+            url: '/apm/log/pk',
             type: "GET",
             async: true,
             cache: false,
             data:{
                 scene:'{{ scene }}',
-                target:'mem',
-                platform:platform
+                target1:'mem1',
+                target2:'mem2'
             },
             beforeSend: function () {
                 SwalLoading('Loading','')
@@ -596,21 +607,21 @@
                 swal.close();
             },
             success: function (data) {
-                if(platform == 'Android'){
+                if(model == '2-devices'){
                     mem_chart.updateSeries([{
-                        name: 'total',
-                        data: data['memTotalData']
+                        name: 'Device1',
+                        data: data['first']
                     },{
-                        name: 'native',
-                        data: data['memNativeData']
-                    },{
-                        name: 'dalvik',
-                        data: data['memDalvikData']
+                        name: 'Device2',
+                        data: data['second']
                     }])
                 }else{
                     mem_chart.updateSeries([{
-                        name: 'total',
-                        data: data['memTotalData']
+                        name: 'APP1',
+                        data: data['first']
+                    },{
+                        name: 'APP2',
+                        data: data['second']
                     }])
                 }
             }
@@ -621,14 +632,14 @@
     network_chart.render();
     $('#networkdata_loading').click(function () {
         $.ajax({
-            url: '/apm/log',
+            url: '/apm/log/pk',
             type: "GET",
             async: true,
             cache: false,
             data:{
                 scene:'{{ scene }}',
-                target:'flow',
-                platform:platform
+                target1:'network1',
+                target2:'network2'
             },
             beforeSend: function () {
                 SwalLoading('Loading','')
@@ -637,13 +648,23 @@
                 swal.close();
             },
             success: function (data) {
-                network_chart.updateSeries([{
-                    name: 'upflow',
-                    data: data['upFlow']
-                },{
-                    name: 'downflow',
-                    data: data['downFlow']
-                }])
+                if(model == '2-devices'){
+                    network_chart.updateSeries([{
+                        name: 'Device1',
+                        data: data['first']
+                    },{
+                        name: 'Device2',
+                        data: data['second']
+                    }])
+                }else{
+                    network_chart.updateSeries([{
+                        name: 'APP1',
+                        data: data['first']
+                    },{
+                        name: 'APP2',
+                        data: data['second']
+                    }])
+                }
             }
         });
     });

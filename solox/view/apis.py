@@ -6,6 +6,7 @@ from logzero import logger
 from flask import Blueprint
 # import traceback
 from solox.public.apm import CPU, MEM, Flow, FPS, Battery
+from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
 from solox.public.common import Devices, file, Method
 
 d = Devices()
@@ -99,89 +100,168 @@ def packageNames():
 @api.route('/apm/cpu', methods=['post', 'get'])
 def getCpuRate():
     """get process cpu rate"""
+    model = request.args.get('model')
     platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device, platform)
     try:
-        cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform)
-        appCpuRate, systemCpuRate = cpu.getCpuRate()
-        result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
-    except Exception as e:
-        if not deviceId:
-            logger.error('no device，please check the device connection status')
-        elif not d.getPid(deviceId, pkgname):
-            logger.error('no app process，please check if the app is started')
+        if model == '2-devices':
+            pkgNameList = []
+            pkgNameList.append(pkgname)
+            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+            cpu = CPU_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+            first, second = cpu.getAndroidCpuRate()
+            result = {'status': 1, 'first': first, 'second': second}
+        elif model == '2-app':
+            pkgNameList = pkgname.split(',')
+            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+            cpu = CPU_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+            first, second = cpu.getAndroidCpuRate()
+            result = {'status': 1, 'first': first, 'second': second}
         else:
-            logger.error(f'get cpu failed : {str(e)}')
-        # traceback.print_exc()
-        result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate': 0}
+            deviceId = d.getIdbyDevice(device, platform)
+            if not deviceId:
+                logger.error('no device，please check the device connection status')
+                result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate': 0}
+            elif not d.getPid(deviceId, pkgname):
+                logger.error('no app process，please check if the app is started')
+                result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate': 0}
+            else:
+                cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform)
+                appCpuRate, systemCpuRate = cpu.getCpuRate()
+                result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
+        logger.info(result)
+    except Exception as e:
+        logger.error(f'get cpu failed : {str(e)}')
+        result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate': 0, 'first': 0, 'second': 0}
     return result
 
 
 @api.route('/apm/mem', methods=['post', 'get'])
 def getMEM():
     """get memery data"""
+    model = request.args.get('model')
     platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device, platform)
     try:
-        mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform)
-        totalPass, nativePass, dalvikPass = mem.getProcessMem()
-        result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
-    except Exception as e:
-        if not deviceId:
-            logger.error('no device，please check the device connection status')
-        elif not d.getPid(deviceId, pkgname):
-            logger.error('no app process，please check if the app is started')
+        if model == '2-devices':
+            pkgNameList = []
+            pkgNameList.append(pkgname)
+            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+            mem = MEM_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+            first, second = mem.getProcessMem()
+            result = {'status': 1, 'first': first, 'second': second}
+        elif model == '2-app':
+            pkgNameList = pkgname.split(',')
+            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+            mem = MEM_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+            first, second = mem.getProcessMem()
+            result = {'status': 1, 'first': first, 'second': second}
         else:
-            logger.error(f'get memory data failed : {str(e)}')
-        result = {'status': 1, 'totalPass': 0, 'nativePass': 0, 'dalvikPass': 0}
+            deviceId = d.getIdbyDevice(device, platform)
+            if not deviceId:
+                logger.error('no device，please check the device connection status')
+                result = {'status': 1, 'totalPass': 0, 'nativePass': 0, 'dalvikPass': 0}
+            elif not d.getPid(deviceId, pkgname):
+                logger.error('no app process，please check if the app is started')
+                result = {'status': 1, 'totalPass': 0, 'nativePass': 0, 'dalvikPass': 0}
+            else:
+                mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform)
+                totalPass, nativePass, dalvikPass = mem.getProcessMem()
+                result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
+        logger.info(result)
+    except Exception as e:
+        logger.error(f'get memory data failed : {str(e)}')
+        result = {'status': 1, 'totalPass': 0, 'nativePass': 0, 'dalvikPass': 0, 'first': 0, 'second': 0}
     return result
 
 
 @api.route('/apm/network', methods=['post', 'get'])
 def getNetWorkData():
     """get network data"""
+    model = request.args.get('model')
     platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device, platform)
     try:
-        flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
-        data = flow.getNetWorkData()
-        result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
-    except Exception as e:
-        if not deviceId:
-            logger.error('no device，please check the device connection status')
-        elif not d.getPid(deviceId, pkgname):
-            logger.error('no app process，please check if the app is started')
+        if model == '2-devices':
+            pkgNameList = []
+            pkgNameList.append(pkgname)
+            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+            network = Flow_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+            first, second = network.getNetWorkData()
+            result = {'status': 1, 'first': first, 'second': second}
+        elif model == '2-app':
+            pkgNameList = pkgname.split(',')
+            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+            network = Flow_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+            first, second = network.getNetWorkData()
+            result = {'status': 1, 'first': first, 'second': second}
         else:
-            logger.error(f'get network data failed : {str(e)}')
-        result = {'status': 1, 'upflow': 0, 'downflow': 0}
+            deviceId = d.getIdbyDevice(device, platform)
+            if not deviceId:
+                logger.error('no device，please check the device connection status')
+                result = {'status': 1, 'upflow': 0, 'downflow': 0}
+            elif not d.getPid(deviceId, pkgname):
+                logger.error('no app process，please check if the app is started')
+                result = {'status': 1, 'upflow': 0, 'downflow': 0}
+            else:
+                flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
+                data = flow.getNetWorkData()
+                result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
+        logger.info(result)
+    except Exception as e:
+        logger.error(f'get network data failed : {str(e)}')
+        result = {'status': 1, 'upflow': 0, 'downflow': 0, 'first': 0, 'second': 0}
     return result
 
 
 @api.route('/apm/fps', methods=['post', 'get'])
 def getFps():
     """get fps data"""
+    model = request.args.get('model')
     platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
     device = request.args.get('device')
-    deviceId = d.getIdbyDevice(device, platform)
     try:
-        fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId, platform=platform)
-        fps, jank = fps_monitor.getFPS()
-        result = {'status': 1, 'fps': fps, 'jank': jank}
-    except Exception as e:
-        if not deviceId:
-            logger.error('no device，please check the device connection status')
-        elif not d.getPid(deviceId, pkgname):
-            logger.error('no app process，please check if the app is started')
+        if model == '2-devices':
+            pkgNameList = []
+            pkgNameList.append(pkgname)
+            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+            fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+            first, second = fps.getFPS()
+            result = {'status': 1, 'first': first, 'second': second}
+        elif model == '2-app':
+            pkgNameList = pkgname.split(',')
+            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+            fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+            first, second = fps.getFPS()
+            result = {'status': 1, 'first': first, 'second': second}
         else:
-            logger.error(f'get fps failed : {str(e)}')
-        result = {'status': 1, 'fps': 0, 'jank': 0}
+            deviceId = d.getIdbyDevice(device, platform)
+            if not deviceId:
+                logger.error('no device，please check the device connection status')
+                result = {'status': 1, 'fps': 0, 'jank': 0}
+            elif not d.getPid(deviceId, pkgname):
+                logger.error('no app process，please check if the app is started')
+                result = {'status': 1, 'fps': 0, 'jank': 0}
+            else:
+                fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId, platform=platform)
+                fps, jank = fps_monitor.getFPS()
+                result = {'status': 1, 'fps': fps, 'jank': jank}
+        logger.info(result)
+    except Exception as e:
+        logger.error(f'get fps failed : {str(e)}')
+        result = {'status': 1, 'fps': 0, 'jank': 0, 'first': 0, 'second': 0}
     return result
 
 
@@ -210,9 +290,10 @@ def makeReport():
     current_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
     platform = request.args.get('platform')
     app = request.args.get('app')
+    model = request.args.get('model')
     devices = request.args.get('devices')
     try:
-        file(fileroot=f'apm_{current_time}').make_report(app=app, devices=devices, platform=platform)
+        file(fileroot=f'apm_{current_time}').make_report(app=app, devices=devices, platform=platform, model=model)
         result = {'status': 1}
     except Exception as e:
         result = {'status': 0, 'msg': str(e)}
@@ -274,6 +355,20 @@ def getLogData():
         else:
             log_data = file().readLog(scene=scene, filename=f'{target}.log')[0]
             result = {'status': 1, 'log_data': log_data}
+    except Exception as e:
+        result = {'status': 0, 'msg': str(e)}
+    return result
+
+@api.route('/apm/log/pk', methods=['post', 'get'])
+def getpkLogData():
+    """Get apm detailed data"""
+    scene = request.args.get('scene')
+    target1 = request.args.get('target1')
+    target2 = request.args.get('target2')
+    try:
+        first = file().readLog(scene=scene, filename=f'{target1}.log')[0]
+        second = file().readLog(scene=scene, filename=f'{target2}.log')[0]
+        result = {'status': 1, 'first': first, 'second': second}
     except Exception as e:
         result = {'status': 0, 'msg': str(e)}
     return result

@@ -75,8 +75,14 @@ http://{ip}:50003/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bil
 apm_type in ['cpu','memory','network','fps','battery']
 ```
 
+## PK Model
+- 2-devices: test the same app on two different phones
+- 2-apps: test two different apps on two phones with the same configuration
+
+<img src="./image/pk.png"  width="100%">
+
+
 ## Thanks
-- https://github.com/alibaba/mobileperf
 
 - https://github.com/alibaba/taobao-iphone-device
 
