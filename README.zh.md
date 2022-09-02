@@ -1,5 +1,5 @@
 <p align="center">
-  <a>English</a> | <a href="./README.zh.md">中文</a> | <a href="./DocForAndroid.md">DocForAndroid</a>
+  <a>中文</a> | <a href="./README.md">English</a> | <a href="./DocForAndroid.md">DocForAndroid</a>
 </p>
 
 <p align="center">
@@ -17,34 +17,34 @@
 <br>
 </p>
 
-## Preview
+## 简介
 
-SoloX - Real-time collection tool for Android/iOS performance data.
+SoloX - Android/iOS性能数据实时采集工具。
 
-We are committed to solving inefficient, cumbersome test execution, and our goal is Simple Test In SoloX!
+我们致力于解决低效、繁琐的测试执行，我们的目标是【Simple Test in SoloX】
 
 <img src="./image/home.png"  width="100%" >
 
-## Installation
+## 安装
 ```
 1.Python:3.6+ 
 2.pip3 install -U solox
 
-notice: If Windows users need to test ios, install and start Itunes
+注意: 如果Windows用户需要测试ios，先安装并启动iTunes
 ```
 
-## Startup SoloX
-### default
+## 启动SoloX
+### 默认
 ```shell
 python3 -m solox
 ```
-### customize
+### 自定义
 
 ```shell
 python3 -m solox --host=0.0.0.0 --port=50003
 ```
 
-## Collect in python 
+## 使用python收集
 ```python
 from solox.public.apm import APM
 # solox version >= 2.1.2
@@ -58,8 +58,8 @@ fps = apm.collectFps() # HZ
 battery = apm.collectBattery() # level:% temperature:°C
 ```
 
-## Collect in API 
-### Start the service in the background
+## 使用api收集 
+### 1.后台启动服务
 
 ```
 # solox version >= 2.1.5
@@ -68,27 +68,27 @@ macOS/Linux: nohup python3 -m solox &
 Windows: start /min python3 -m solox &
 ```
 
-### Request apm data from api
+### 2.通过api请求性能数据
 ```
 http://{ip}:50003/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&apm_type=cpu
 
 apm_type in ['cpu','memory','network','fps','battery']
 ```
 
-## PK Model
-- 2-devices: test the same app on two different phones
-- 2-apps: test two different apps on two phones with the same configuration
+## 对比模式
+- 2-devices: 在两部不同的手机上测试同一个应用
+- 2-apps: 在具有相同配置的两部手机上测试两个不同的应用程序
 
 <img src="./image/pk.png"  width="100%">
 
 
-## Thanks
+## 感谢
 
 - https://github.com/alibaba/taobao-iphone-device
 
-## Communicate
+## 交流
 - Gmail: rafacheninc@gmail.com
 
-## Sponsor
+## 捐赠
 <img src="./image/sponsor.png"  width="50%">
 
