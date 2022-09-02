@@ -152,10 +152,13 @@ class Battery:
 
     def getBattery(self):
         """Get android battery info, unit:%"""
-        # Switch mobile phone battery to non-charging state
-        cmd = 'dumpsys battery set status 1'
+        # Switch mobile phone battery to non-charging state 模拟手机为非充电模式
+        # cmd = 'dumpsys battery set status 1'
+        # adb.shell(cmd=cmd, deviceId=self.deviceId)
+        # 复位，恢复实际状态
+        cmd = "dumpsys battery reset"
         adb.shell(cmd=cmd, deviceId=self.deviceId)
-        # Get phone battery info
+        # Get phone battery info  获取电池信息
         cmd = 'dumpsys battery'
         output = adb.shell(cmd=cmd, deviceId=self.deviceId)
         level = int(re.findall(u'level:\s?(\d+)', output)[0])
