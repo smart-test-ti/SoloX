@@ -122,17 +122,9 @@ def getCpuRate():
             result = {'status': 1, 'first': first, 'second': second}
         else:
             deviceId = d.getIdbyDevice(device, platform)
-            if not deviceId:
-                logger.error('no device，please check the device connection status')
-                result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate': 0}
-            elif not d.getPid(deviceId, pkgname):
-                logger.error('no app process，please check if the app is started')
-                result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate': 0}
-            else:
-                cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform)
-                appCpuRate, systemCpuRate = cpu.getCpuRate()
-                result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
-        logger.info(result)
+            cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform)
+            appCpuRate, systemCpuRate = cpu.getCpuRate()
+            result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
     except Exception as e:
         logger.error(f'get cpu failed : {str(e)}')
         result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate': 0, 'first': 0, 'second': 0}
@@ -164,17 +156,9 @@ def getMEM():
             result = {'status': 1, 'first': first, 'second': second}
         else:
             deviceId = d.getIdbyDevice(device, platform)
-            if not deviceId:
-                logger.error('no device，please check the device connection status')
-                result = {'status': 1, 'totalPass': 0, 'nativePass': 0, 'dalvikPass': 0}
-            elif not d.getPid(deviceId, pkgname):
-                logger.error('no app process，please check if the app is started')
-                result = {'status': 1, 'totalPass': 0, 'nativePass': 0, 'dalvikPass': 0}
-            else:
-                mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform)
-                totalPass, nativePass, dalvikPass = mem.getProcessMem()
-                result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
-        logger.info(result)
+            mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform)
+            totalPass, nativePass, dalvikPass = mem.getProcessMem()
+            result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
     except Exception as e:
         logger.error(f'get memory data failed : {str(e)}')
         result = {'status': 1, 'totalPass': 0, 'nativePass': 0, 'dalvikPass': 0, 'first': 0, 'second': 0}
@@ -206,17 +190,9 @@ def getNetWorkData():
             result = {'status': 1, 'first': first, 'second': second}
         else:
             deviceId = d.getIdbyDevice(device, platform)
-            if not deviceId:
-                logger.error('no device，please check the device connection status')
-                result = {'status': 1, 'upflow': 0, 'downflow': 0}
-            elif not d.getPid(deviceId, pkgname):
-                logger.error('no app process，please check if the app is started')
-                result = {'status': 1, 'upflow': 0, 'downflow': 0}
-            else:
-                flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
-                data = flow.getNetWorkData()
-                result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
-        logger.info(result)
+            flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
+            data = flow.getNetWorkData()
+            result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
     except Exception as e:
         logger.error(f'get network data failed : {str(e)}')
         result = {'status': 1, 'upflow': 0, 'downflow': 0, 'first': 0, 'second': 0}
@@ -248,17 +224,9 @@ def getFps():
             result = {'status': 1, 'first': first, 'second': second}
         else:
             deviceId = d.getIdbyDevice(device, platform)
-            if not deviceId:
-                logger.error('no device，please check the device connection status')
-                result = {'status': 1, 'fps': 0, 'jank': 0}
-            elif not d.getPid(deviceId, pkgname):
-                logger.error('no app process，please check if the app is started')
-                result = {'status': 1, 'fps': 0, 'jank': 0}
-            else:
-                fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId, platform=platform)
-                fps, jank = fps_monitor.getFPS()
-                result = {'status': 1, 'fps': fps, 'jank': jank}
-        logger.info(result)
+            fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId, platform=platform)
+            fps, jank = fps_monitor.getFPS()
+            result = {'status': 1, 'fps': fps, 'jank': jank}
     except Exception as e:
         logger.error(f'get fps failed : {str(e)}')
         result = {'status': 1, 'fps': 0, 'jank': 0, 'first': 0, 'second': 0}

@@ -78,7 +78,8 @@ class CPU:
         devideCpuTime_2 = totalCpuTime_2 - idleCpuTime_2
         appCpuRate = round(float((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
         systemCpuRate = round(float((devideCpuTime_2 - devideCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
-
+        if systemCpuRate >= 100:
+            systemCpuRate = 99
         f.add_log(f'{f.report_dir}/cpu_app.log', self.apm_time, appCpuRate)
         f.add_log(f'{f.report_dir}/cpu_sys.log', self.apm_time, systemCpuRate)
 
