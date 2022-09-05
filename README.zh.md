@@ -23,7 +23,7 @@ SoloX - Android/iOS性能数据实时采集工具。
 
 我们致力于解决低效、繁琐的测试执行，我们的目标是【Simple Test in SoloX】
 
-<img src="./image/home.png"  width="100%" >
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348054846-b0164165-e83a-443e-9a05-8c1f9ddb355f.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%" >
 
 ## 安装
 ```
@@ -79,7 +79,7 @@ apm_type in ['cpu','memory','network','fps','battery']
 - 2-devices: 在两部不同的手机上测试同一个应用
 - 2-apps: 在具有相同配置的两部手机上测试两个不同的应用程序
 
-<img src="./image/pk.png"  width="100%">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348055024-96e38b5e-d6b4-4a06-8070-0707e2fbcd99.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 
 ## 感谢
@@ -89,6 +89,4 @@ apm_type in ['cpu','memory','network','fps','battery']
 ## 交流
 - Gmail: rafacheninc@gmail.com
 
-## 捐赠
-<img src="./image/sponsor.png"  width="50%">
 

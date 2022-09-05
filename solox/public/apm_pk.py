@@ -174,8 +174,6 @@ class FPS_PK:
     def getFPS(self):
         """get fps"""
         if len(self.pkgNameList) == 1:
-            logger.info(self.deviceId1)
-            logger.info(self.deviceId2)
             fps1 = self.getAndroidFps(pkgName=self.pkgNameList[0], deviceId=self.deviceId1)
             fps2 = self.getAndroidFps(pkgName=self.pkgNameList[0], deviceId=self.deviceId2)
 

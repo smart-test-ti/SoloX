@@ -165,7 +165,7 @@ class Battery:
         f.add_log(f'{f.report_dir}/battery_tem.log', self.apm_time, temperature)
         return level, temperature
 
-    def SetBattery(self):
+    def recoverBattery(self):
         """Reset phone charging status"""
         cmd = 'dumpsys battery set status 2'
         adb.shell(cmd=cmd, deviceId=self.deviceId)

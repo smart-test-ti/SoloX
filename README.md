@@ -23,7 +23,7 @@ SoloX - Real-time collection tool for Android/iOS performance data.
 
 We are committed to solving inefficient, cumbersome test execution, and our goal is Simple Test In SoloX!
 
-<img src="./image/home.png"  width="100%" >
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348054846-b0164165-e83a-443e-9a05-8c1f9ddb355f.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%" >
 
 ## Installation
 ```
@@ -79,7 +79,7 @@ apm_type in ['cpu','memory','network','fps','battery']
 - 2-devices: test the same app on two different phones
 - 2-apps: test two different apps on two phones with the same configuration
 
-<img src="./image/pk.png"  width="100%">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348055024-96e38b5e-d6b4-4a06-8070-0707e2fbcd99.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
 
 ## Thanks
@@ -88,7 +88,4 @@ apm_type in ['cpu','memory','network','fps','battery']
 
 ## Communicate
 - Gmail: rafacheninc@gmail.com
-
-## Sponsor
-<img src="./image/sponsor.png"  width="50%">
 

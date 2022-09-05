@@ -275,6 +275,8 @@ def getBattery():
         battery_monitor = Battery(deviceId=deviceId)
         level, temperature = battery_monitor.getBattery()
         result = {'status': 1, 'level': level, 'temperature': temperature}
+        if platform == 'Android':
+            battery_monitor.recoverBattery()
     except Exception as e:
         if not deviceId:
             logger.error('no device，please check the device connection status')
