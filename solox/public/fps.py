@@ -368,7 +368,7 @@ class SurfaceStatsCollector(object):
         timestamps = []
         nanoseconds_per_second = 1e9
         pending_fence_timestamp = (1 << 63) - 1
-        if self.get_sdk_version() >= 26:
+        if self.get_sdk_version() == 26:
             results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency %s' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
