@@ -271,25 +271,14 @@
                 if(stop == false){
                     if(data['status'] == 1){
                         try {
-                            if(platform == 'Android'){
-                                var seriesApp = cpu_chart.series[0];
-                                var seriesSystem = cpu_chart.series[1];
-                                var x = (new Date()).getTime(),
-                                    y_app = data['appCpuRate'],
-                                    y_sys = data['systemCpuRate'];
-                                seriesApp.addPoint([x, y_app], true, true);
-                                seriesSystem.addPoint([x, y_sys], true, true);
-                            }else{
-                                var series = cpu_chart.series[0];
-                                var x = (new Date()).getTime(),
-                                    y = data['appCpuRate'];
-                                series.addPoint([x, y], true, true);
-                            }
-
-                            setTimeout(getCpuRate(pkgname,device), 2000);
+                            var series = cpu_chart.series[0];
+                            var x = (new Date()).getTime(),
+                                y = data['appCpuRate'];
+                            series.addPoint([x, y], true, true);
+                            setTimeout(getCpuRate(pkgname,device), 1000);
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','something error',data['msg'],1000);
                     }
                 }
             }
@@ -318,10 +307,10 @@
                                 y_temperature = data['temperature'];
                             seriesLevel.addPoint([x, y_level], true, true);
                             seriesTemperature.addPoint([x, y_temperature], true, true);
-                            setTimeout(getBattery(device), 2000);
+                            setTimeout(getBattery(device), 1000);
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','something error',data['msg'],1000);
                     }
                 }
             }
@@ -361,11 +350,11 @@
                                     y = data['totalPass'];
                                 series.addPoint([x, y], true, true);
                             }
-                            setTimeout(getMemPss(pkgname,device), 2000);
+                            setTimeout(getMemPss(pkgname,device), 1000);
 
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','something error',data['msg'],1000);
                     }
                 }
             }
@@ -395,12 +384,12 @@
                                 y_down = data['downflow'];
                             seriesUpFlow.addPoint([x_up, y_up], true, true);
                             seriesDownFlow.addPoint([x_down, y_down], true, true);
-                            setTimeout(getNetWork(pkgname,device), 2000);
+                            setTimeout(getNetWork(pkgname,device), 1000);
                         }catch (e) {
                             console.log(e)
                         }
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','something error',data['msg'],1000);
                     }
                 }
             }
@@ -433,10 +422,10 @@
                                     y_jank = data['jank'];
                                 seriesJank.addPoint([x_jsnk, y_jank], true, true);
                             }
-                            setTimeout(getFps(pkgname,device), 2000);
+                            setTimeout(getFps(pkgname,device), 1000);
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','something error',data['msg'],1000);
                     }
                 }
             }
@@ -506,19 +495,6 @@
 
     var seriesCpu = [{
         name : 'AppUsage',
-        pointInterval: 120 * 1000,
-        data : (function () {
-            var data = [], time = (new Date()).getTime(), i;
-            for (i = -999; i <= 0; i += 1) {
-                data.push([
-                    time + i * 1000,
-                    Math.round(0)
-                ]);
-            }
-            return data;
-        }())
-    },{
-        name : 'SystemUsage',
         pointInterval: 120 * 1000,
         data : (function () {
             var data = [], time = (new Date()).getTime(), i;

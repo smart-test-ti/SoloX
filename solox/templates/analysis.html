@@ -67,30 +67,6 @@
                 </div>
             </div>
         </div>
-        {% if platform == 'Android' %}
-        <div class="col-sm-6 col-lg-2">
-            <div class="card card-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <span class="bg-dark text-white avatar">
-                                CPU
-                            </span>
-                        </div>
-                        <div class="col">
-                            <div class="font-weight-medium">
-                                System
-                            </div>
-                            <div class="text-muted">
-                                Avg：{{ apm_data.cpuSystemRate }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
                 <div class="card-body">
@@ -462,21 +438,10 @@
                 swal.close();
             },
             success: function (data) {
-                if(platform == 'Android'){
-                    cpu_chart.updateSeries([{
-                        name: 'app Usage',
-                        data: data['cpuAppData']
-                    },{
-                        name: 'system Usage',
-                        data: data['cpuSysData']
-                    }])
-                }else{
-                    cpu_chart.updateSeries([{
-                        name: 'app Usage',
-                        data: data['cpuAppData']
-                    }])
-                }
-
+                cpu_chart.updateSeries([{
+                    name: 'app Usage',
+                    data: data['cpuAppData']
+                }])
             }
         });
     });
