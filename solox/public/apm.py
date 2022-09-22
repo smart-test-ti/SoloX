@@ -29,7 +29,7 @@ class CPU:
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile("\\s+")
         toks = r.split(result)
-        processCpu = float(int(toks[13]) + int(toks[14]))
+        processCpu = float(int(toks[13]) + int(toks[14]) + int(toks[15]) + int(toks[16]))
         return processCpu
 
     def getTotalCpuStat(self):
@@ -38,8 +38,10 @@ class CPU:
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
-        totalCpu = float(reduce(lambda x, y: int(x) + int(y), toks))
-        return totalCpu
+        totalCpu = 0
+        for i in range(1, 9):
+            totalCpu += int(toks[i])
+        return float(totalCpu)
 
     def getCpuCores(self):
         """get Android cpu cores"""
@@ -56,13 +58,8 @@ class CPU:
         cmd = f'cat /proc/stat |{d._filterType()} ^cpu'
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile(r'(?<!cpu)\d+')
-        rList = result.split('\n')
-        IdleCpuList = []
-        IdleCpu = 0
-        for i in range(len(rList)):
-            toks = r.findall(rList[i])
-            IdleCpuList.append(toks[3])
-        IdleCpu = IdleCpu + float(reduce(lambda x, y: int(x) + int(y), IdleCpuList))
+        toks = r.findall(result)
+        IdleCpu = float(int(toks[4]))
         return IdleCpu
 
     def getAndroidCpuRate(self):
@@ -78,8 +75,6 @@ class CPU:
         devideCpuTime_2 = totalCpuTime_2 - idleCpuTime_2
         appCpuRate = round(float((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
         systemCpuRate = round(float((devideCpuTime_2 - devideCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
-        if systemCpuRate >= 100:
-            systemCpuRate = 99
         f.add_log(f'{f.report_dir}/cpu_app.log', self.apm_time, appCpuRate)
         f.add_log(f'{f.report_dir}/cpu_sys.log', self.apm_time, systemCpuRate)
 

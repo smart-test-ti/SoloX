@@ -1,8 +1,6 @@
 import datetime
 import re
 import time
-from functools import reduce
-from logzero import logger
 from solox.public.adb import adb
 from solox.public.common import Devices, file
 from solox.public.fps import FPSMonitor, TimeUtils
@@ -19,6 +17,7 @@ class CPU_PK:
         self.deviceId2 = deviceId2
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
+
     def getprocessCpuStat(self, pkgName, deviceId):
         """get the cpu usage of a process at a certain time"""
         pid = d.getPid(pkgName=pkgName, deviceId=deviceId)
@@ -26,8 +25,9 @@ class CPU_PK:
         result = adb.shell(cmd=cmd, deviceId=deviceId)
         r = re.compile("\\s+")
         toks = r.split(result)
-        processCpu = float(int(toks[13]) + int(toks[14]))
+        processCpu = float(int(toks[13]) + int(toks[14]) + int(toks[15]) + int(toks[16]))
         return processCpu
+
 
     def getTotalCpuStat(self, deviceId):
         """get the total cpu usage at a certain time"""
@@ -35,8 +35,10 @@ class CPU_PK:
         result = adb.shell(cmd=cmd, deviceId=deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
-        totalCpu = float(reduce(lambda x, y: int(x) + int(y), toks))
-        return totalCpu
+        totalCpu = 0
+        for i in range(1, 9):
+            totalCpu += int(toks[i])
+        return float(totalCpu)
 
 
     def getIdleCpuStat(self, deviceId):
@@ -44,13 +46,8 @@ class CPU_PK:
         cmd = f'cat /proc/stat |{d._filterType()} ^cpu'
         result = adb.shell(cmd=cmd, deviceId=deviceId)
         r = re.compile(r'(?<!cpu)\d+')
-        rList = result.split('\n')
-        IdleCpuList = []
-        IdleCpu = 0
-        for i in range(len(rList)):
-            toks = r.findall(rList[i])
-            IdleCpuList.append(toks[3])
-        IdleCpu = IdleCpu + float(reduce(lambda x, y: int(x) + int(y), IdleCpuList))
+        toks = r.findall(result)
+        IdleCpu = float(int(toks[4]))
         return IdleCpu
 
     def getAndroidCpuRate(self):

@@ -11,7 +11,6 @@ import os
 import platform
 import stat
 import subprocess
-from logzero import logger
 
 STATICPATH = os.path.dirname(os.path.realpath(__file__))
 DEFAULT_ADB_PATH = {

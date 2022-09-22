@@ -243,8 +243,6 @@ def getBattery():
         battery_monitor = Battery(deviceId=deviceId)
         level, temperature = battery_monitor.getBattery()
         result = {'status': 1, 'level': level, 'temperature': temperature}
-        if platform == 'Android':
-            battery_monitor.recoverBattery()
     except Exception as e:
         if not deviceId:
             logger.error('no device，please check the device connection status')
@@ -264,6 +262,9 @@ def makeReport():
     devices = request.args.get('devices')
     try:
         file(fileroot=f'apm_{current_time}').make_report(app=app, devices=devices, platform=platform, model=model)
+        if platform == 'Android':
+            battery_monitor = Battery(deviceId=devices)
+            battery_monitor.recoverBattery()
         result = {'status': 1}
     except Exception as e:
         result = {'status': 0, 'msg': str(e)}
