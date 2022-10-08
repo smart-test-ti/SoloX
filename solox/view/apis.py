@@ -262,6 +262,8 @@ def makeReport():
     devices = request.args.get('devices')
     try:
         file(fileroot=f'apm_{current_time}').make_report(app=app, devices=devices, platform=platform, model=model)
+        battery_monitor = Battery(deviceId=devices)
+        battery_monitor.recoverBattery()
         result = {'status': 1}
     except Exception as e:
         result = {'status': 0, 'msg': str(e)}

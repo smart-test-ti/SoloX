@@ -167,7 +167,7 @@ class Battery:
 
     def recoverBattery(self):
         """Reset phone charging status"""
-        cmd = 'dumpsys battery set status 2'
+        cmd = 'dumpsys battery reset'
         adb.shell(cmd=cmd, deviceId=self.deviceId)
 
 
