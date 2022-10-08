@@ -255,6 +255,8 @@
         });
     }
 
+    var timerQ = null;
+
     function getCpuRate(pkgname,device){
         $.ajax({
             url: "/apm/cpu",
@@ -266,6 +268,9 @@
                 pkgname:pkgname,
                 device:device
             },
+            beforeSend: function () {
+               window.clearTimeout(timerQ);
+            },
             success: function (data) {
                 console.log(data)
                 if(stop == false){
@@ -275,7 +280,7 @@
                             var x = (new Date()).getTime(),
                                 y = data['appCpuRate'];
                             series.addPoint([x, y], true, true);
-                            setTimeout(getCpuRate(pkgname,device), 1000);
+                            timerQ = setTimeout(getCpuRate(pkgname,device), 1000);
                         }catch (e) {}
                     }else{
                         SwalFire('error','something error',data['msg'],1000);
@@ -295,6 +300,9 @@
                 platform:platform,
                 device:device
             },
+            beforeSend: function () {
+               window.clearTimeout(timerQ);
+            },
             success: function (data) {
                 if(stop == false){
                     console.log(data)
@@ -307,7 +315,7 @@
                                 y_temperature = data['temperature'];
                             seriesLevel.addPoint([x, y_level], true, true);
                             seriesTemperature.addPoint([x, y_temperature], true, true);
-                            setTimeout(getBattery(device), 1000);
+                            timerQ = setTimeout(getBattery(device), 1000);
                         }catch (e) {}
                     }else{
                         SwalFire('error','something error',data['msg'],1000);
@@ -327,6 +335,9 @@
                 platform:platform,
                 pkgname:pkgname,
                 device:device
+            },
+            beforeSend: function () {
+               window.clearTimeout(timerQ);
             },
             success: function (data) {
                 console.log(data)
@@ -350,7 +361,7 @@
                                     y = data['totalPass'];
                                 series.addPoint([x, y], true, true);
                             }
-                            setTimeout(getMemPss(pkgname,device), 1000);
+                            timerQ = setTimeout(getMemPss(pkgname,device), 1000);
 
                         }catch (e) {}
                     }else{
@@ -372,6 +383,9 @@
                 pkgname:pkgname,
                 device:device
             },
+            beforeSend: function () {
+               window.clearTimeout(timerQ);
+            },
             success: function (data) {
                 if(stop == false){
                     if(data['status'] == 1){
@@ -384,7 +398,7 @@
                                 y_down = data['downflow'];
                             seriesUpFlow.addPoint([x_up, y_up], true, true);
                             seriesDownFlow.addPoint([x_down, y_down], true, true);
-                            setTimeout(getNetWork(pkgname,device), 1000);
+                            timerQ = setTimeout(getNetWork(pkgname,device), 1000);
                         }catch (e) {
                             console.log(e)
                         }
@@ -407,6 +421,9 @@
                 pkgname:pkgname,
                 device:device
             },
+            beforeSend: function () {
+               window.clearTimeout(timerQ);
+            },
             success: function (data) {
                 console.log(data)
                 if(stop == false){
@@ -422,7 +439,7 @@
                                     y_jank = data['jank'];
                                 seriesJank.addPoint([x_jsnk, y_jank], true, true);
                             }
-                            setTimeout(getFps(pkgname,device), 1000);
+                            timerQ = setTimeout(getFps(pkgname,device), 1000);
                         }catch (e) {}
                     }else{
                         SwalFire('error','something error',data['msg'],1000);
@@ -873,36 +890,50 @@
   }
 
     function collectCpu(device,pkgname){
-        cpuInitialize();
-        let type = platform == 'Android' ? 'cpu_android' : 'cpu_ios';
-        cpu_chart = collectPers(device,pkgname,type,'CPU（%）',getCpuRate(pkgname,device));
+        var cpu_checkbox = $('#cpu_checkbox').is(':checked');
+        if(cpu_checkbox){
+            cpuInitialize();
+            let type = platform == 'Android' ? 'cpu_android' : 'cpu_ios';
+            cpu_chart = collectPers(device,pkgname,type,'CPU（%）',getCpuRate(pkgname,device));
+        }
     }
 
     function collectBattery(device,pkgname){
-        batteryInitialize();
-        battery_chart = collectPers(device,pkgname,'battery','Battery',getBattery(device));
-
+        var battery_checkbox = $('#battery_checkbox').is(':checked');
+        if(battery_checkbox){
+            batteryInitialize();
+            battery_chart = collectPers(device,pkgname,'battery','Battery',getBattery(device));
+        }
     }
 
     function collectMem(device,pkgname){
-        memInitialize();
-        let type = platform == 'Android' ? 'mem_android' : 'mem_ios';
-        mem_chart = collectPers(device,pkgname,type,'MEM（MB）',getMemPss(pkgname,device));
+        var mem_checkbox = $('#mem_checkbox').is(':checked');
+        if(mem_checkbox){
+            memInitialize();
+            let type = platform == 'Android' ? 'mem_android' : 'mem_ios';
+            mem_chart = collectPers(device,pkgname,type,'MEM（MB）',getMemPss(pkgname,device));
+        }
     }
 
     function collectNetwork(device,pkgname){
-        networkInitialize();
-        network_chart = collectPers(device,pkgname,'network','Network Data（KB）',getNetWork(pkgname,device));
+        var flow_checkbox = $('#flow_checkbox').is(':checked');
+        if(flow_checkbox){
+            networkInitialize();
+            network_chart = collectPers(device,pkgname,'network','Network Data（KB）',getNetWork(pkgname,device));
+        }
     }
 
     function collectFps(device,pkgname){
-        fpsInitialize();
-        if(platform == 'Android'){
-            let title = 'FPS and Jank';
-            fps_chart = collectPers(device,pkgname,'fps',title,getFps(pkgname,device));
-        }else{
-            let title = 'FPS（HZ）';
-            fps_chart = collectPers(device,pkgname,'fps_ios',title,getFps(pkgname,device));
+        var fps_checkbox = $('#fps_checkbox').is(':checked');
+        if(fps_checkbox){
+            fpsInitialize();
+            if(platform == 'Android'){
+                let title = 'FPS and Jank';
+                fps_chart = collectPers(device,pkgname,'fps',title,getFps(pkgname,device));
+            }else{
+                let title = 'FPS（HZ）';
+                fps_chart = collectPers(device,pkgname,'fps_ios',title,getFps(pkgname,device));
+            }
         }
     }
 
@@ -929,6 +960,7 @@
         }});
 
     $('#stop-apm').click(function () {
+        window.clearTimeout(timerQ);
         stop = true;
         $('#run-apm').show();
         $('#stop-apm').hide();

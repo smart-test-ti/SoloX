@@ -99,7 +99,6 @@ def analysis():
                 f.close()
                 break
             except Exception as e:
-                traceback.print_exc()
                 break
     return render_template('analysis.html', **locals())
 
