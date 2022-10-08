@@ -133,10 +133,10 @@ class MEM:
         else:
             totalPass, nativePass, dalvikPass = self.getiOSMem()
 
-        f.add_log(f'{f.report_dir}/mem_total.log', self.apm_time, totalPass)
+        apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+        f.add_log(f'{f.report_dir}/mem_total.log', apm_time, totalPass)
 
         if self.platform == 'Android':
-            apm_time = datetime.datetime.now().strftime('%H:%M:%S')
             f.add_log(f'{f.report_dir}/mem_native.log', apm_time, nativePass)
             f.add_log(f'{f.report_dir}/mem_dalvik.log', apm_time, dalvikPass)
 
