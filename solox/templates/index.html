@@ -132,16 +132,16 @@
     </div>
     <div class="apm-data mt-1" style="width: 75%;">
         {% if platform == 'Android' %}
-        <div id="cpu_android" class="mb-3 cpu" style="min-width:400px;height:350px"></div>
-        <div id="mem_android"  class="mb-3 mem" style="min-width:400px;height:350px"></div>
-        <div id="fps" class="mb-3 fps" style="min-width:400px;height:350px"></div>
-        <div id="battery" class="mb-3 battery" style="min-width:400px;height:350px"></div>
+        <div id="cpu_android" class="mb-3 cpu" style="min-width:400px;height:310px"></div>
+        <div id="mem_android"  class="mb-3 mem" style="min-width:400px;height:310px"></div>
+        <div id="fps" class="mb-3 fps" style="min-width:400px;height:300px"></div>
+        <div id="battery" class="mb-3 battery" style="min-width:400px;height:310px"></div>
         {% else %}
-        <div id="cpu_ios" class="mb-3 cpu" style="min-width:400px;height:350px"></div>
-        <div id="mem_ios"  class="mb-3 mem" style="min-width:400px;height:350px"></div>
-        <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:350px"></div>
+        <div id="cpu_ios" class="mb-3 cpu" style="min-width:400px;height:310px"></div>
+        <div id="mem_ios"  class="mb-3 mem" style="min-width:400px;height:310px"></div>
+        <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:310px"></div>
         {% endif %}
-        <div id="network" class="Network-Data mb-3" style="min-width:400px;height:300px"></div>
+        <div id="network" class="Network-Data mb-3" style="min-width:400px;height:310px"></div>
     </div>
 
     <div class="logcat-data dropdown-menu dropdown-menu-demo" style="width: 75%;display:none">
@@ -280,7 +280,7 @@
                             var x = (new Date()).getTime(),
                                 y = data['appCpuRate'];
                             series.addPoint([x, y], true, true);
-                            timerQ = setTimeout(getCpuRate(pkgname,device), 1000);
+                            timerQ = setTimeout(getCpuRate(pkgname,device), 2000);
                         }catch (e) {}
                     }else{
                         SwalFire('error','something error',data['msg'],1000);
@@ -315,7 +315,7 @@
                                 y_temperature = data['temperature'];
                             seriesLevel.addPoint([x, y_level], true, true);
                             seriesTemperature.addPoint([x, y_temperature], true, true);
-                            timerQ = setTimeout(getBattery(device), 1000);
+                            timerQ = setTimeout(getBattery(device), 2000);
                         }catch (e) {}
                     }else{
                         SwalFire('error','something error',data['msg'],1000);
@@ -361,7 +361,7 @@
                                     y = data['totalPass'];
                                 series.addPoint([x, y], true, true);
                             }
-                            timerQ = setTimeout(getMemPss(pkgname,device), 1000);
+                            timerQ = setTimeout(getMemPss(pkgname,device), 2000);
 
                         }catch (e) {}
                     }else{
@@ -398,7 +398,7 @@
                                 y_down = data['downflow'];
                             seriesUpFlow.addPoint([x_up, y_up], true, true);
                             seriesDownFlow.addPoint([x_down, y_down], true, true);
-                            timerQ = setTimeout(getNetWork(pkgname,device), 1000);
+                            timerQ = setTimeout(getNetWork(pkgname,device), 2000);
                         }catch (e) {
                             console.log(e)
                         }
@@ -439,7 +439,7 @@
                                     y_jank = data['jank'];
                                 seriesJank.addPoint([x_jsnk, y_jank], true, true);
                             }
-                            timerQ = setTimeout(getFps(pkgname,device), 1000);
+                            timerQ = setTimeout(getFps(pkgname,device), 2000);
                         }catch (e) {}
                     }else{
                         SwalFire('error','something error',data['msg'],1000);
@@ -688,9 +688,6 @@
             plotLines:setPlotLine(apmType)
         };
         let yAxis_plot = {
-            max: 100,
-            min: 0,
-            tickPixelInterval: 10,
             opposite:false,
             plotLines:setPlotLine(apmType)
         };
@@ -813,9 +810,6 @@
             plotLines:setPlotLine(type)
         };
         let yAxis_plot = {
-            max: 100,
-            min: 0,
-            tickPixelInterval: 10,
             opposite:false,
             plotLines:setPlotLine(type)
         };
