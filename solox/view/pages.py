@@ -102,6 +102,54 @@ def analysis():
                 break
     return render_template('analysis.html', **locals())
 
+
+@page.route('/analysis_diff', methods=['post', 'get'])
+def analysis_diff():
+    datas = request.args.get('datas')
+    if isinstance(datas, str):
+        datas = json.loads(datas)
+    report_dir = os.path.join(os.getcwd(), 'report')
+    dirs = os.listdir(report_dir)
+    diff_datas = []
+    for i in datas:
+        apm_data = {}
+        scene = i["scene"]
+        platform = i["platform"]
+        try:
+            if not os.path.exists(f'{report_dir}/{scene}/apm.json'):
+                f = file()
+                apm_dict = f._setAndroidPerfs(scene) if platform == 'Android' else f._setiOSPerfs(scene)
+                content = json.dumps(apm_dict)
+                with open(f'{report_dir}/{scene}/apm.json', 'a+', encoding="utf-8") as apmfile:
+                    apmfile.write(content)
+        except Exception as e:
+            traceback.print_exc()
+            break
+        for dir in dirs:
+            if dir == scene:
+                try:
+                    f = open(f'{report_dir}/{scene}/apm.json')
+                    json_data = json.loads(f.read())
+                    apm_data['cpuAppRate'] = json_data['cpuAppRate']
+                    apm_data['cpuSystemRate'] = json_data['cpuSystemRate']
+                    apm_data['totalPassAvg'] = json_data['totalPassAvg']
+                    apm_data['nativePassAvg'] = json_data['nativePassAvg']
+                    apm_data['dalvikPassAvg'] = json_data['dalvikPassAvg']
+                    apm_data['fps'] = json_data['fps']
+                    apm_data['jank'] = json_data['jank']
+                    apm_data['batteryLevel'] = json_data['batteryLevel']
+                    apm_data['batteryTeml'] = json_data['batteryTeml']
+                    apm_data['flow_send'] = json_data['flow_send']
+                    apm_data['flow_recv'] = json_data['flow_recv']
+                    f.close()
+                    diff_datas.append(apm_data)
+                    break
+                except Exception as e:
+                    traceback.print_exc()
+                    break
+    return render_template('analysis_diff.html', **locals())
+
+
 @page.route('/pk_analysis', methods=['post', 'get'])
 def analysis_pk():
     scene = request.args.get('scene')
