@@ -218,16 +218,17 @@ class Flow:
 
 class FPS:
 
-    def __init__(self, pkgName, deviceId, platform='Android'):
+    def __init__(self, pkgName, deviceId, platform='Android', surfaceview='true'):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
+        self.surfaceview = surfaceview
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getAndroidFps(self):
         """get Android Fps, unit:HZ"""
         monitors = FPSMonitor(device_id=self.deviceId, package_name=self.pkgName, frequency=1,
-                              start_time=TimeUtils.getCurrentTimeUnderline())
+                              surfaceview=self.surfaceview, start_time=TimeUtils.getCurrentTimeUnderline())
         monitors.start()
         fps, jank = monitors.stop()
         apm_time = datetime.datetime.now().strftime('%H:%M:%S')
@@ -288,10 +289,11 @@ class iosAPM():
 class APM():
     """for python api"""
 
-    def __init__(self, pkgName, deviceId='', platform='Android'):
+    def __init__(self, pkgName, deviceId='', platform='Android', surfaceview='true'):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
+        self.surfaceview = surfaceview
         d._devicesCheck(pf=self.platform, id=self.deviceId, pkg=self.pkgName)
 
     def collectCpu(self):
@@ -323,7 +325,7 @@ class APM():
         return result
 
     def collectFps(self):
-        _fps = FPS(self.pkgName, self.deviceId, self.platform)
+        _fps = FPS(self.pkgName, self.deviceId, self.platform, self.surfaceview)
         fps, jank = _fps.getFPS()
         result = {'fps': fps, 'jank': jank}
         logger.info(f'fps: {result}')

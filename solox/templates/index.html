@@ -114,7 +114,13 @@
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="cpu_checkbox" type="checkbox" checked name="cpu"> CPU</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_checkbox" type="checkbox" checked name="mem"> Memory</label>
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> Network Data</label>
-            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" checked> FPS</label>
+            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" checked> FPS
+                <span class="ms-auto">
+                    <label class="form-check form-check-single form-switch">
+                        <input id="fps-switch" class="form-check-input cursor-pointer" type="checkbox" checked name="fps-switch"> SurfaceView
+                    </label>
+                </span>
+            </label>
             {% if platform == 'Android' %}
             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" checked> Battery</label>
             <div class="dropdown-divider"></div>
@@ -410,7 +416,7 @@
         });
     }
 
-    function getFps(pkgname,device)  {
+    function getFps(pkgname,device,fps_switch)  {
         $.ajax({
             url: "/apm/fps",
             type: "GET",
@@ -419,7 +425,8 @@
             data:{
                 platform:platform,
                 pkgname:pkgname,
-                device:device
+                device:device,
+                surfaceview:fps_switch
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -919,11 +926,14 @@
 
     function collectFps(device,pkgname){
         var fps_checkbox = $('#fps_checkbox').is(':checked');
+        var fps_switch = $('#fps-switch').is(':checked');
+        console.log(fps_switch)
+
         if(fps_checkbox){
             fpsInitialize();
             if(platform == 'Android'){
                 let title = 'FPS and Jank';
-                fps_chart = collectPers(device,pkgname,'fps',title,getFps(pkgname,device));
+                fps_chart = collectPers(device,pkgname,'fps',title,getFps(pkgname,device,fps_switch));
             }else{
                 let title = 'FPS（HZ）';
                 fps_chart = collectPers(device,pkgname,'fps_ios',title,getFps(pkgname,device));

@@ -153,16 +153,17 @@ class Flow_PK:
 
 class FPS_PK:
 
-    def __init__(self, pkgNameList: list, deviceId1, deviceId2):
+    def __init__(self, pkgNameList: list, deviceId1, deviceId2, surfaceview='true'):
         self.pkgNameList = pkgNameList
         self.deviceId1 = deviceId1
         self.deviceId2 = deviceId2
+        self.surfaceview = surfaceview
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getAndroidFps(self, deviceId, pkgName):
         """get Android Fps, unit:HZ"""
         monitors = FPSMonitor(device_id=deviceId, package_name=pkgName, frequency=1,
-                              start_time=TimeUtils.getCurrentTimeUnderline())
+                              start_time=TimeUtils.getCurrentTimeUnderline(), surfaceview=self.surfaceview)
         monitors.start()
         fps, jank = monitors.stop()
         return fps

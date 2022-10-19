@@ -16,7 +16,7 @@ class SurfaceStatsCollector(object):
     """Collects surface stats for a SurfaceView from the output of SurfaceFlinger
     """
 
-    def __init__(self, device, frequency, package_name, fps_queue, jank_threshold, use_legacy=False):
+    def __init__(self, device, frequency, package_name, fps_queue, jank_threshold, use_legacy=False, surfaceview='true'):
         self.device = device
         self.frequency = frequency
         self.package_name = package_name
@@ -27,13 +27,14 @@ class SurfaceStatsCollector(object):
         self.data_queue = queue.Queue()
         self.stop_event = threading.Event()
         self.focus_window = None
+        self.surfaceview = surfaceview
         #       queue 上报线程用
         self.fps_queue = fps_queue
 
     def start(self, start_time):
         """打开SurfaceStatsCollector
         """
-        if not self.use_legacy_method and self._clear_surfaceflinger_latency_data():
+        if not self.use_legacy_method:
             try:
                 self.focus_window = self.get_focus_activity()
                 # 如果self.focus_window里包含字符'$'，必须将其转义
@@ -82,6 +83,8 @@ class SurfaceStatsCollector(object):
                 activity_name = activity_line_split[2].rstrip('}')
             else:
                 activity_name = activity_line_split[1]
+        if not activity_name.endswith('#0'):
+            activity_name = activity_name + '#0'
         return activity_name
 
     def get_foreground_process(self):
@@ -368,7 +371,7 @@ class SurfaceStatsCollector(object):
         timestamps = []
         nanoseconds_per_second = 1e9
         pending_fence_timestamp = (1 << 63) - 1
-        if self.get_sdk_version() >= 26:
+        if self.surfaceview != 'true':
             results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency %s' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
@@ -406,6 +409,7 @@ class SurfaceStatsCollector(object):
                 cmd='dumpsys SurfaceFlinger --latency %s' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
             logger.debug("dumpsys SurfaceFlinger --latency result:")
+            logger.debug(self.focus_window)
             logger.debug(results)
             if not len(results):
                 return (None, None)
