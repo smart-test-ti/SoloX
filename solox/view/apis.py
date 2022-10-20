@@ -205,6 +205,7 @@ def getFps():
     model = request.args.get('model')
     platform = request.args.get('platform')
     pkgname = request.args.get('pkgname')
+    surfaceview = request.args.get('surfaceview')
     device = request.args.get('device')
     try:
         if model == '2-devices':
@@ -212,14 +213,14 @@ def getFps():
             pkgNameList.append(pkgname)
             deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
             deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
-            fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+            fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2, surfaceview=surfaceview)
             first, second = fps.getFPS()
             result = {'status': 1, 'first': first, 'second': second}
         elif model == '2-app':
             pkgNameList = pkgname.split(',')
             deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
             deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
-            fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+            fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2, surfaceview=surfaceview)
             first, second = fps.getFPS()
             result = {'status': 1, 'first': first, 'second': second}
         else:
