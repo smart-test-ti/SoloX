@@ -17,7 +17,7 @@ class Devices:
     def execCmd(self, cmd):
         """Execute the command to get the terminal print result"""
         r = os.popen(cmd)
-        text = r.read()
+        text = r.read().strip()
         r.close()
         return text
 
@@ -55,6 +55,8 @@ class Devices:
         """Obtain the corresponding device id according to the Android device information"""
         if platform == 'Android':
             deviceId = re.sub(u"\\(.*?\\)|\\{.*?}|\\[.*?]", "", deviceinfo)
+            if deviceId not in self.getDeviceIds():
+                raise ('no found device: %s'.format(deviceId))
         else:
             deviceId = deviceinfo.split(':')[1]
         return deviceId
@@ -117,6 +119,25 @@ class Devices:
                 raise Exception('no devices')
         else:
             raise Exception('platform must be Android or iOS')
+
+    def getDdeviceDetail(self, deviceId, platform):
+        result = {}
+        if platform == 'Android':
+            result['brand'] = adb.shell(cmd='getprop ro.product.brand', deviceId=deviceId)
+            result['name'] = adb.shell(cmd='getprop ro.product.model', deviceId=deviceId)
+            result['version'] = adb.shell(cmd='getprop ro.build.version.release', deviceId=deviceId)
+            result['serialno'] = adb.shell(cmd='getprop ro.serialno', deviceId=deviceId)
+            cmd = f'ip addr show wlan0 | {self._filterType()} link/ether'
+            result['wifiadr'] = adb.shell(cmd=cmd, deviceId=deviceId).split(' ')[1]
+        elif platform == 'iOS':
+            iosInfo = json.loads(self.execCmd('tidevice info --json'))
+            result['brand'] = iosInfo['DeviceClass']
+            result['name'] = iosInfo['DeviceName']
+            result['version'] = iosInfo['ProductVersion']
+            result['serialno'] = iosInfo['SerialNumber']
+            result['wifiadr'] = iosInfo['WiFiAddress']
+        return result
+
 
 
 class file:

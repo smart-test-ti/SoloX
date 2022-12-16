@@ -4,7 +4,7 @@ import time
 from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
-# import traceback
+import traceback
 from solox.public.apm import CPU, MEM, Flow, FPS, Battery
 from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
 from solox.public.common import Devices, file, Method
@@ -59,19 +59,24 @@ def deviceids():
             devices = d.getDevices()
             if len(deviceids) > 0:
                 pkgnames = d.getPkgname(deviceids[0])
-                result = {'status': 1, 'deviceids': deviceids, 'devices': devices, 'pkgnames': pkgnames}
+                device_detail = d.getDdeviceDetail(deviceId=deviceids[0], platform=platform)
+                result = {'status': 1, 'deviceids': deviceids, 'devices': devices,
+                          'pkgnames': pkgnames, 'device_detail': device_detail}
             else:
                 result = {'status': 0, 'msg': 'no devices'}
         elif platform == 'iOS':
             deviceinfos = d.getDeviceInfoByiOS()
             if len(deviceinfos) > 0:
                 pkgnames = d.getPkgnameByiOS(deviceinfos[0].split(':')[1])
-                result = {'status': 1, 'deviceids': deviceinfos, 'devices': deviceinfos, 'pkgnames': pkgnames}
+                device_detail = d.getDdeviceDetail(deviceId=deviceinfos[0].split(':')[1], platform=platform)
+                result = {'status': 1, 'deviceids': deviceinfos, 'devices': deviceinfos,
+                          'pkgnames': pkgnames, 'device_detail': device_detail}
             else:
                 result = {'status': 0, 'msg': 'no devices'}
         else:
             result = {'status': 0, 'msg': f'no this platform = {platform}'}
     except:
+        traceback.print_exc()
         result = {'status': 0, 'msg': 'devices connect error!'}
     return result
 

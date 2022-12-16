@@ -84,10 +84,11 @@ class CPU:
     def getiOSCpuRate(self):
         """get the iOS cpu rate of a process, unit:%"""
         apm = iosAPM(self.pkgName)
-        appCpuRate = round(float(apm.getPerformance(apm.cpu)), 2)
+        appCpuRate = round(float(apm.getPerformance(apm.cpu)[0]), 2)
+        sysCpuRate = round(float(apm.getPerformance(apm.cpu)[1]), 2)
         apm_time = datetime.datetime.now().strftime('%H:%M:%S')
         f.add_log(f'{f.report_dir}/cpu_app.log', apm_time, appCpuRate)
-        return appCpuRate, 0
+        return appCpuRate, sysCpuRate
 
     def getCpuRate(self):
         """Get the cpu rate of a process, unit:%"""
@@ -264,6 +265,8 @@ class iosAPM():
         self.network = DataType.NETWORK
         self.fps = DataType.FPS
         self.perfs = 0
+        self.app_cpu = 0
+        self.sys_cpu = 0
         self.downflow = 0
         self.upflow = 0
 
@@ -275,14 +278,15 @@ class iosAPM():
             self.perfs = value['value']
 
     def getPerformance(self, perfTpe: DataType):
-        perf = iosP.Performance(self.deviceId, [perfTpe])
-        perf_value = perf.start(self.pkgName, callback=self.callback)
         if perfTpe == DataType.NETWORK:
             perf = Performance(self.deviceId, [perfTpe])
             perf.start(self.pkgName, callback=self.callback)
             time.sleep(3)
             perf.stop()
             perf_value = self.downflow, self.upflow
+        else:
+            perf = iosP.Performance(self.deviceId, [perfTpe])
+            perf_value = perf.start(self.pkgName, callback=self.callback)
         return perf_value
 
 

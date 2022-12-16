@@ -66,20 +66,6 @@
         </a>
     </div>
     <div class="btn-list logcat-btn-list" style="display:none">
-        <!--<select id="logtype" class="select2-selection&#45;&#45;single" data-placeholder="Please select a level" style="width: 130px">-->
-            <!--<option>All</option>-->
-            <!--<option>Info</option>-->
-            <!--<option>Warning</option>-->
-            <!--<option>Error</option>-->
-        <!--</select>-->
-        <!--<a id="logcat_start" class="btn" onclick="startLogcat()">-->
-            <!--<svg t="1647757457022" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="21859" width="200" height="200"><path d="M511.4 512.1m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" fill="#006DFC" p-id="21860"></path><path d="M658.4 555.6L475.5 661.1c-33.4 19.3-75-4.8-75-43.3V406.6c0-38.5 41.7-62.6 75-43.3l182.9 105.6c33.3 19.3 33.3 67.4 0 86.7z" fill="#FFFFFF" p-id="21861"></path></svg>-->
-            <!--Start-->
-        <!--</a>-->
-        <!--<a id="logcat_stop" class="btn" onclick="stopLogcat()"  style="display: none">-->
-            <!--<svg t="1638096947956" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="235254" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#EE827F" p-id="235255"></path><path d="M512 512m-443.191534 0a443.191534 443.191534 0 1 0 886.383068 0 443.191534 443.191534 0 1 0-886.383068 0Z" fill="#E64537" p-id="235256"></path><path d="M0 512C0 794.638448 229.180952 1023.8194 512 1023.8194V0C229.180952 0 0 229.180952 0 512z" fill="#FEFFFF" opacity=".1" p-id="235257"></path><path d="M477.866667 683.208466H375.647266c-1.083598 0-1.986596-0.902998-1.986596-1.986597V342.597531c0-1.083598 0.902998-1.986596 1.986596-1.986596h102.4c1.083598 0 1.986596 0.902998 1.986596 1.986596v338.443739c-0.1806 1.264198-1.083598 2.167196-2.167195 2.167196zM648.352734 683.208466h-102.4c-1.083598 0-1.986596-0.902998-1.986596-1.986597V342.597531c0-1.083598 0.902998-1.986596 1.986596-1.986596H648.352734c1.083598 0 1.986596 0.902998 1.986596 1.986596v338.443739c0 1.264198-0.902998 2.167196-1.986596 2.167196z" fill="#FFFFFF" p-id="235258"></path></svg>-->
-            <!--Stop-->
-        <!--</a>-->
         <a id="logcat-copy" class="btn" onclick="cppyLogcat()">
             <svg t="1647757557543" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="26288" width="200" height="200"><path d="M943.4112 480.3072v101.3248c0 95.5904-61.3376 176.7936-146.7904 206.4896 7.936-22.6304 12.288-46.8992 12.288-72.192V437.248c0-120.7808-97.8944-218.6752-218.6752-218.6752H311.6032c-25.1904 0-49.3568 4.3008-71.8848 12.1344 29.8496-85.248 110.9504-146.432 206.3872-146.432h278.6816c120.7808 0 218.6752 97.8944 218.6752 218.6752v177.3568z" fill="#FFD833" p-id="26289"></path><path d="M943.4112 454.7072c-14.1312 0-25.6 11.4688-25.6 25.6v101.3248c0 64.9728-32.6144 124.416-84.6336 159.744 0.8704-8.448 1.3312-16.896 1.3312-25.4464V437.2992c0-134.7072-109.568-244.2752-244.2752-244.2752H311.6032c-8.3456 0-16.6912 0.4096-24.9856 1.28a193.05984 193.05984 0 0 1 159.5392-84.3776h278.6816c106.4448 0 193.0752 86.5792 193.0752 193.0752 0 14.1312 11.4688 25.6 25.6 25.6s25.6-11.4688 25.6-25.6c0-134.656-109.568-244.2752-244.2752-244.2752H446.1056c-89.5488 0-171.776 48.9472-214.6304 127.6928a41.69216 41.69216 0 0 0-5.0688 21.4528c-94.8736 28.5184-164.1984 116.6336-164.1984 220.672v306.3808c0 127.0272 103.3728 230.4 230.4 230.4h306.3808c101.6832 0 188.1088-66.2016 218.624-157.7984 91.0848-37.4272 151.4496-126.5152 151.4496-225.8944V480.3072c-0.0512-14.1312-11.52-25.6-25.6512-25.6z m-344.4224 459.4176H292.608c-98.816 0-179.2-80.384-179.2-179.2V428.544c0-98.816 80.384-179.2 179.2-179.2h306.3808c98.816 0 179.2 80.384 179.2 179.2v306.3808c0 15.3088-1.9456 30.1056-5.5296 44.288l-0.1536 0.4608c-0.4096 1.1264-0.7168 2.2528-0.9216 3.3792-21.1456 75.52-90.4704 131.072-172.5952 131.072z" fill="#44454A" p-id="26290"></path><path d="M943.4112 428.8512c-14.1312 0-25.6-11.4688-25.6-25.6v-17.92c0-14.1312 11.4688-25.6 25.6-25.6s25.6 11.4688 25.6 25.6v17.92c0 14.1312-11.4688 25.6-25.6 25.6z" fill="#44454A" p-id="26291"></path></svg>
             Copy
@@ -109,22 +95,57 @@
                 </div>
                 <select id="select-app" class="select2-selection--single" data-placeholder="Please select a pakage"></select>
             </div>
-            <div class="dropdown-divider"></div>
-            <h6 class="dropdown-header">APM Target</h6>
-            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="cpu_checkbox" type="checkbox" checked name="cpu"> CPU</label>
-            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_checkbox" type="checkbox" checked name="mem"> Memory</label>
-            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> Network Data</label>
-            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" checked> FPS
-                <span class="ms-auto">
-                    <label class="form-check form-check-single form-switch">
-                        <input id="fps-switch" class="form-check-input cursor-pointer" type="checkbox" checked name="fps-switch" style="margin-right: 5px"> SurfaceView
-                    </label>
-                </span>
-            </label>
-            {% if platform == 'Android' %}
-            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" checked> Battery</label>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item">
+            <div class="card" style="margin-top: 13px;">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
+                        <li class="nav-item">
+                            <a href="#tabs-apm-target" class="nav-link active" data-bs-toggle="tab">APM TARGET</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#tabs-device-info" class="nav-link" data-bs-toggle="tab">DEVICE INFO</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane active show" id="tabs-apm-target">
+                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="cpu_checkbox" type="checkbox" checked name="cpu"> CPU</label>
+                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_checkbox" type="checkbox" checked name="mem"> Memory</label>
+                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> Network Data</label>
+                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" checked> FPS
+                                {% if platform == 'Android' %}
+                                <span class="ms-auto">
+                                    <label class="form-check form-check-single form-switch">
+                                        <input id="fps-switch" class="form-check-input cursor-pointer" type="checkbox" checked name="fps-switch" style="margin-right: 5px"> SurfaceView
+                                    </label>
+                                </span>
+                                {% endif %}
+                            </label>
+                            {% if platform == 'Android' %}
+                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" checked> Battery</label>
+                            {% endif %}
+                        </div>
+                        <div class="tab-pane" id="tabs-device-info">
+                            <div class="mb-2">
+                                <strong>Brand:</strong> <lable id="brand"></lable>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Device Name:</strong> <lable id="device_name"></lable>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Os Version:</strong> <lable id="os_version"></lable>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Serial Number:</strong> <lable id="serialno"></lable>
+                            </div>
+                            <div class="mb-2">
+                                <strong>WiFi Address:</strong> <lable id="wifiadr"></lable>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="dropdown-item" style="margin-top: 10px;">
                 <svg t="1657093102367" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="27860" width="2000" height="2000"><path d="M938.362 256.2V149.626c0-23.576-19.11-42.654-42.652-42.654H43.046C19.502 106.972 0.392 126.05 0.392 149.626V256.2h937.97z" fill="#E6E9ED" p-id="27861"></path><path d="M792.164 831.75H0.392V192.25h937.97v446.306z" fill="#656D78" p-id="27862"></path><path d="M85.67 149.626c0 11.772-9.526 21.296-21.328 21.296-11.74 0-21.294-9.524-21.294-21.296S52.602 128.3 64.342 128.3c11.802 0 21.328 9.556 21.328 21.326z" fill="#ED5564" p-id="27863"></path><path d="M149.62 149.626c0 11.772-9.524 21.296-21.326 21.296-11.742 0-21.296-9.524-21.296-21.296S116.55 128.3 128.292 128.3c11.804 0 21.328 9.556 21.328 21.326z" fill="#FFCE54" p-id="27864"></path><path d="M213.568 149.626c0 11.772-9.524 21.296-21.326 21.296-11.74 0-21.294-9.524-21.294-21.296S180.502 128.3 192.242 128.3c11.802 0 21.326 9.556 21.326 21.326z" fill="#A0D468" p-id="27865"></path><path d="M746.512 277.496H106.996c-11.772 0-21.326 9.554-21.326 21.326s9.554 21.328 21.326 21.328h639.516c11.74 0 21.294-9.556 21.294-21.328s-9.554-21.326-21.294-21.326z" fill="#FC6E51" p-id="27866"></path><path d="M106.996 405.426h341.046c11.802 0 21.326-9.554 21.326-21.328 0-11.772-9.524-21.326-21.326-21.326H106.996c-11.772 0-21.326 9.554-21.326 21.326 0 11.774 9.554 21.328 21.326 21.328z" fill="#AC92EB" p-id="27867"></path><path d="M575.958 448.05H106.996c-11.772 0-21.326 9.556-21.326 21.328s9.554 21.296 21.326 21.296h468.962c11.8 0 21.294-9.524 21.294-21.296s-9.492-21.328-21.294-21.328z" fill="#48CFAD" p-id="27868"></path><path d="M106.996 575.952H405.42c11.772 0 21.326-9.556 21.326-21.328s-9.554-21.296-21.326-21.296H106.996c-11.772 0-21.326 9.526-21.326 21.296s9.554 21.328 21.326 21.328z" fill="#5D9CEC" p-id="27869"></path><path d="M615.678 669.22c8.618 0 16.734-5.278 19.984-13.832 4.122-11.024-1.5-23.326-12.492-27.45-41.03-15.392-47.336-54.708-47.336-55.112a21.332 21.332 0 0 0-24.232-17.956c-11.662 1.716-19.688 12.552-17.97 24.2 0.376 2.624 10.242 64.668 74.55 88.776 2.5 0.938 4.996 1.374 7.496 1.374zM959.534 917.028c1 0 2.06-0.094 3.122-0.25 11.68-1.716 19.674-12.552 17.988-24.2-0.376-2.624-10.242-64.668-74.566-88.776-11.054-4.152-23.296 1.438-27.48 12.458-4.122 11.024 1.5 23.326 12.492 27.448 41.03 15.394 47.336 54.708 47.398 55.114a21.28 21.28 0 0 0 21.046 18.206zM448.042 618.572H106.996c-11.772 0-21.326 9.554-21.326 21.328 0 11.772 9.554 21.326 21.326 21.326h341.046c11.802 0 21.326-9.554 21.326-21.326a21.312 21.312 0 0 0-21.326-21.328z" fill="#FFCE54" p-id="27870"></path><path d="M277.52 703.85H106.996c-11.772 0-21.326 9.554-21.326 21.328 0 11.772 9.554 21.294 21.326 21.294h170.524c11.772 0 21.326-9.524 21.326-21.294 0-11.774-9.554-21.328-21.326-21.328z" fill="#ED5564" p-id="27871"></path><path d="M1002.312 746.472H533.318a21.28 21.28 0 0 1-21.294-21.294c0-11.774 9.524-21.328 21.294-21.328h468.994c11.74 0 21.294 9.554 21.294 21.328 0.002 11.772-9.554 21.294-21.294 21.294zM725.592 555.53a21.332 21.332 0 0 1-18.298-10.368l-64.388-107.478c-5.994-10.086-2.746-23.202 7.372-29.228a21.276 21.276 0 0 1 29.226 7.338l64.324 107.478c6.058 10.086 2.81 23.17-7.306 29.228a21.286 21.286 0 0 1-10.93 3.03zM810.212 555.53c-3.686 0-7.496-0.968-10.93-3.03-10.054-6.058-13.364-19.142-7.306-29.26l64.324-107.446a21.278 21.278 0 0 1 29.228-7.338c10.118 6.026 13.364 19.11 7.368 29.228l-64.324 107.478c-3.996 6.65-11.116 10.368-18.36 10.368zM920.002 669.22c-8.62 0-16.738-5.278-19.922-13.832-4.184-11.024 1.436-23.326 12.426-27.45 41.094-15.392 47.34-54.708 47.402-55.112 1.686-11.648 12.55-19.674 24.168-17.956 11.68 1.716 19.734 12.552 17.986 24.2-0.376 2.624-10.242 64.668-74.568 88.776a20.884 20.884 0 0 1-7.492 1.374zM575.958 917.028c-1 0-2.062-0.094-3.124-0.25-11.616-1.716-19.672-12.552-17.984-24.2 0.438-2.624 10.242-64.668 74.566-88.776 11.054-4.152 23.356 1.438 27.478 12.458 4.124 11.024-1.436 23.326-12.49 27.448-41.032 15.394-47.276 54.708-47.338 55.114-1.56 10.586-10.68 18.206-21.108 18.206z" fill="#FFCE54" p-id="27872"></path><path d="M938.236 682.524c0 129.524-48.71 234.504-170.43 234.504-121.716 0-170.43-104.98-170.43-234.504 0-129.494 63.39-191.85 170.43-191.85 107.044-0.002 170.43 62.356 170.43 191.85z" fill="#ED5564" p-id="27873"></path><path d="M746.512 915.872c6.806 0.75 13.928 1.156 21.294 1.156 7.372 0 14.49-0.406 21.296-1.156v-297.3h-42.592v297.3z" fill="#DA4453" p-id="27874"></path><path d="M603.56 618.572h328.494c-18.298-86.12-76.626-127.9-164.248-127.9-87.616 0-145.946 41.782-164.246 127.9z" fill="#DA4453" p-id="27875"></path></svg>
                 Error Log
                 <span class="ms-auto">
@@ -133,7 +154,6 @@
                     </label>
                 </span>
             </a>
-            {% endif %}
         </div>
     </div>
     <div class="apm-data mt-1" style="width: 75%;">
@@ -255,6 +275,11 @@
                     for(var i=0;i<data['pkgnames'].length;i++){
                         $('#select-app').append('<option>'+data['pkgnames'][i]+'</option>');
                     }
+                    $('#brand').text(data['device_detail']['brand']);
+                    $('#device_name').text(data['device_detail']['name']);
+                    $('#os_version').text(data['device_detail']['version']);
+                    $('#serialno').text(data['device_detail']['serialno']);
+                    $('#wifiadr').text(data['device_detail']['wifiadr']);
                     swal.close();
                 }
             }
