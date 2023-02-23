@@ -40,7 +40,7 @@ class CPU:
         toks = r.findall(result)
         totalCpu = 0
         for i in range(1, 9):
-            totalCpu += int(toks[i])
+            totalCpu += float(toks[i])
         return float(totalCpu)
 
     def getCpuCores(self):
@@ -53,33 +53,36 @@ class CPU:
             nums = 1
         return nums
 
-    def getIdleCpuStat(self):
-        """get the idle cpu usage at a certain time"""
+    def getSysCpuStat(self):
+        """get the total cpu usage at a certain time"""
         cmd = f'cat /proc/stat |{d._filterType()} ^cpu'
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
+        logger.info(result)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
-        IdleCpu = float(int(toks[4]))
-        return IdleCpu
+        totalCpu = 0
+        for i in range(1, 3):
+            totalCpu += float(toks[i])
+        return float(totalCpu)
 
     def getAndroidCpuRate(self):
         """get the Android cpu rate of a process"""
         processCpuTime_1 = self.getprocessCpuStat()
         totalCpuTime_1 = self.getTotalCpuStat()
-        # idleCpuTime_1 = self.getIdleCpuStat()
-        # devideCpuTime_1 = totalCpuTime_1 - idleCpuTime_1
+        sysCpuTime_1 = self.getSysCpuStat()
         time.sleep(1)
         processCpuTime_2 = self.getprocessCpuStat()
         totalCpuTime_2 = self.getTotalCpuStat()
-        # idleCpuTime_2 = self.getIdleCpuStat()
-        # devideCpuTime_2 = totalCpuTime_2 - idleCpuTime_2
+        sysCpuTime_2 = self.getSysCpuStat()
+        # syscpu usage=[(user_end +sys_end+nice_end) - (user_begin + sys_begin+nice_begin)]/(total_end - total_begin)*100
+        # appcpu usage=((utime + stime) - (utime_pre + stime_pre)) / (cpu_total - cpu_total_pre)
         appCpuRate = round(float((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
-        # systemCpuRate = round(float((devideCpuTime_2 - devideCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
+        sysCpuRate = round(float((sysCpuTime_2 - sysCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
         apm_time = datetime.datetime.now().strftime('%H:%M:%S')
         f.add_log(f'{f.report_dir}/cpu_app.log', apm_time, appCpuRate)
-        f.add_log(f'{f.report_dir}/cpu_sys.log', apm_time, 0)
+        f.add_log(f'{f.report_dir}/cpu_sys.log', apm_time, sysCpuRate)
 
-        return appCpuRate, 0
+        return appCpuRate, sysCpuRate
 
     def getiOSCpuRate(self):
         """get the iOS cpu rate of a process, unit:%"""
@@ -88,6 +91,7 @@ class CPU:
         sysCpuRate = round(float(apm.getPerformance(apm.cpu)[1]), 2)
         apm_time = datetime.datetime.now().strftime('%H:%M:%S')
         f.add_log(f'{f.report_dir}/cpu_app.log', apm_time, appCpuRate)
+        f.add_log(f'{f.report_dir}/cpu_sys.log', apm_time, sysCpuRate)
         return appCpuRate, sysCpuRate
 
     def getCpuRate(self):

@@ -307,10 +307,13 @@
                 if(stop == false){
                     if(data['status'] == 1){
                         try {
-                            var series = cpu_chart.series[0];
+                            var app_series = cpu_chart.series[0];
+                            var sys_series = cpu_chart.series[1];
                             var x = (new Date()).getTime(),
-                                y = data['appCpuRate'];
-                            series.addPoint([x, y], true, true);
+                                y_app = data['appCpuRate'];
+                                y_sys = data['systemCpuRate'];
+                            app_series.addPoint([x, y_app], true, true);
+                            sys_series.addPoint([x, y_sys], true, true);
                             timerQ = setTimeout(getCpuRate(pkgname,device), 2000);
                         }catch (e) {}
                     }else{
@@ -544,6 +547,19 @@
 
     var seriesCpu = [{
         name : 'AppUsage',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'SysUsage',
         pointInterval: 120 * 1000,
         data : (function () {
             var data = [], time = (new Date()).getTime(), i;

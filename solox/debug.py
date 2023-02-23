@@ -9,8 +9,8 @@ import webbrowser
 import requests
 import socket
 import sys
-from solox.view.apis import api
-from solox.view.pages import page
+from view.apis import api
+from view.pages import page
 from logzero import logger
 from threading import Lock
 from flask_socketio import SocketIO, disconnect
@@ -177,10 +177,9 @@ def main(host=_hostIP(), port=50003):
         pool.close()
         pool.join()
     except Exception:
-        pass
+        sys.exit()
     except KeyboardInterrupt:
         logger.info('stop solox success')
-
 
 if __name__ == '__main__':
     fire.Fire(main)

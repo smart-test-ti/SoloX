@@ -28,7 +28,7 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 ## Installation
 ```
 1.Python:3.6+ 
-2.pip3 install -U solox
+2.pip install -U solox
 
 notice: If Windows users need to test ios, install and start Itunes
 ```
@@ -36,12 +36,12 @@ notice: If Windows users need to test ios, install and start Itunes
 ## Startup SoloX
 ### default
 ```shell
-python3 -m solox
+python -m solox
 ```
 ### customize
 
 ```shell
-python3 -m solox --host=0.0.0.0 --port=50003
+python -m solox --host={ip} --port=50003
 ```
 
 ## Collect in python 

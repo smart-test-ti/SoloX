@@ -37,6 +37,7 @@ class SurfaceStatsCollector(object):
         if not self.use_legacy_method:
             try:
                 self.focus_window = self.get_focus_activity()
+                logger.info(self.focus_window)
                 # 如果self.focus_window里包含字符'$'，必须将其转义
                 if self.focus_window.find('$') != -1:
                     self.focus_window = self.focus_window.replace('$', '\$')
@@ -71,13 +72,11 @@ class SurfaceStatsCollector(object):
         activity_line = ''
         dumpsys_result = adb.shell(cmd='dumpsys window windows', deviceId=self.device)
         dumpsys_result_list = dumpsys_result.split('\n')
+        
         for line in dumpsys_result_list:
-            if line.find('mCurrentFocus') != -1:
+            if line.find('mCurrentFocus') != -1 or line.find('mHoldScreenWindow') != -1:
                 activity_line = line.strip()
-        if activity_line:
-            activity_line_split = activity_line.split(' ')
-        else:
-            return activity_name
+        activity_line_split = activity_line.split(' ') 
         if len(activity_line_split) > 1:
             if activity_line_split[1] == 'u0':
                 activity_name = activity_line_split[2].rstrip('}')
@@ -85,6 +84,8 @@ class SurfaceStatsCollector(object):
                 activity_name = activity_line_split[1]
         if not activity_name.endswith('#0'):
             activity_name = activity_name + '#0'
+        logger.info(activity_name)
+    
         return activity_name
 
     def get_foreground_process(self):
@@ -408,9 +409,7 @@ class SurfaceStatsCollector(object):
             results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency %s' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
-            logger.debug("dumpsys SurfaceFlinger --latency result:")
-            logger.debug(self.focus_window)
-            logger.debug(results)
+            logger.info(results)
             if not len(results):
                 return (None, None)
             if not results[0].isdigit():

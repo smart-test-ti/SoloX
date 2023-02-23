@@ -293,6 +293,9 @@ class file:
         cpuAppData = self.readLog(scene=scene, filename=f'cpu_app.log')[1]
         cpuAppRate = f'{round(sum(cpuAppData) / len(cpuAppData), 2)}%'
 
+        cpuSystemData = self.readLog(scene=scene, filename=f'cpu_sys.log')[1]
+        cpuSystemRate = f'{round(sum(cpuSystemData) / len(cpuSystemData), 2)}%'
+
         totalPassData = self.readLog(scene=scene, filename=f'mem_total.log')[1]
         totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
 
@@ -307,7 +310,7 @@ class file:
 
         apm_dict = {
             "cpuAppRate": cpuAppRate,
-            "cpuSystemRate": 0,
+            "cpuSystemRate": cpuSystemRate,
             "totalPassAvg": totalPassAvg,
             "nativePassAvg": 0,
             "dalvikPassAvg": 0,

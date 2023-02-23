@@ -267,9 +267,11 @@ def makeReport():
     model = request.args.get('model')
     devices = request.args.get('devices')
     try:
+        if platform == 'Android':
+            deviceId = d.getIdbyDevice(devices, platform)
+            battery_monitor = Battery(deviceId=deviceId)
+            battery_monitor.recoverBattery()
         file(fileroot=f'apm_{current_time}').make_report(app=app, devices=devices, platform=platform, model=model)
-        battery_monitor = Battery(deviceId=devices)
-        battery_monitor.recoverBattery()
         result = {'status': 1}
     except Exception as e:
         result = {'status': 0, 'msg': str(e)}
@@ -305,11 +307,8 @@ def getLogData():
     try:
         if target == 'cpu':
             cpuAppData = file().readLog(scene=scene, filename='cpu_app.log')[0]
-            if platform == 'Android':
-                cpuSysData = file().readLog(scene=scene, filename='cpu_sys.log')[0]
-                result = {'status': 1, 'cpuAppData': cpuAppData, 'cpuSysData': cpuSysData}
-            else:
-                result = {'status': 1, 'cpuAppData': cpuAppData}
+            cpuSysData = file().readLog(scene=scene, filename='cpu_sys.log')[0]
+            result = {'status': 1, 'cpuAppData': cpuAppData, 'cpuSysData': cpuSysData}
         elif target == 'mem':
             memTotalData = file().readLog(scene=scene, filename='mem_total.log')[0]
             if platform == 'Android':

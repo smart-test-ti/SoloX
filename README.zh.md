@@ -28,7 +28,7 @@ SoloX - Android/iOS性能数据实时采集工具。
 ## 安装
 ```
 1.Python:3.6+ 
-2.pip3 install -U solox
+2.pip install -U solox
 
 注意: 如果Windows用户需要测试ios，先安装并启动iTunes
 ```
@@ -36,12 +36,12 @@ SoloX - Android/iOS性能数据实时采集工具。
 ## 启动SoloX
 ### 默认
 ```shell
-python3 -m solox
+python -m solox
 ```
 ### 自定义
 
 ```shell
-python3 -m solox --host=0.0.0.0 --port=50003
+python -m solox --host={ip} --port=50003
 ```
 
 ## 使用python收集

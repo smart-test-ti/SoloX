@@ -63,7 +63,7 @@ def disconnect():
     disconnect()
 
 
-def _checkPyVer():
+def checkPyVer():
     """check python version"""
     if int(platform.python_version().split('.')[0]) < 3:
         logger.error('python version must be >2,your python version is {}'.format(platform.python_version()))
@@ -71,7 +71,7 @@ def _checkPyVer():
         sys.exit()
 
 
-def _hostIP():
+def hostIP():
     """
     :func: get local ip
     :return: ip
@@ -87,7 +87,7 @@ def _hostIP():
     return ip
 
 
-def _listeningPort(port):
+def listeningPort(port):
     """
     Detect whether the port is occupied and clean up
     :param port: System port
@@ -112,7 +112,7 @@ def _listeningPort(port):
             os.system(pid_cmd)
 
 
-def _getServerStatus(host: str, port: int):
+def getServerStatus(host: str, port: int):
     """
     get solox server status
     :param host:
@@ -120,7 +120,7 @@ def _getServerStatus(host: str, port: int):
     :return:
     """
     try:
-        r = requests.get(f'http://{host}:{port}', timeout=2.0)
+        r = requests.get('http://{}:{}'.format(host, port), timeout=2.0)
         flag = (True, False)[r.status_code == 200]
         return flag
     except requests.exceptions.ConnectionError:
@@ -129,7 +129,7 @@ def _getServerStatus(host: str, port: int):
         pass
 
 
-def _openUrl(host: str, port: int):
+def openUrl(host: str, port: int):
     """
     Listen and open the url after solox is started
     :param host:
@@ -139,12 +139,12 @@ def _openUrl(host: str, port: int):
     flag = True
     while flag:
         logger.info('start solox server...')
-        flag = _getServerStatus(host, port)
-    webbrowser.open(f'http://{host}:{port}/?platform=Android', new=2)
-    logger.info(f'Running on http://{host}:{port}/?platform=Android (Press CTRL+C to quit)')
+        flag = getServerStatus(host, port)
+    webbrowser.open('http://{}:{}/?platform=Android'.format(host, port), new=2)
+    logger.info('Running on http://{}:{}/?platform=Android (Press CTRL+C to quit)'.format(host, port))
 
 
-def _startServer(host: str, port: int):
+def startServer(host: str, port: int):
     """
     start the solox service
     :param host:
@@ -157,22 +157,23 @@ def _startServer(host: str, port: int):
         pass
 
 
-def main(host=_hostIP(), port=50003):
+def main(host=hostIP(), port=50003):
     """
     main start
     :param host: 0.0.0.0
-    :param port: 默认5000端口
+    :param port: default 5000
     :return:
     """
     try:
-        _checkPyVer()
-        _listeningPort(port=port)
+        checkPyVer()
+        listeningPort(port=port)
         pool = multiprocessing.Pool(processes=2)
-        pool.apply_async(_startServer, (host, port))
-        pool.apply_async(_openUrl, (host, port))
+        pool.apply_async(startServer, (host, port))
+        pool.apply_async(openUrl, (host, port))
         pool.close()
         pool.join()
     except Exception:
-        pass
+        sys.exit()
     except KeyboardInterrupt:
         logger.info('stop solox success')
+        sys.exit()
