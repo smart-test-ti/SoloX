@@ -7,7 +7,7 @@ from flask import Blueprint
 import traceback
 from solox.public.apm import CPU, MEM, Flow, FPS, Battery
 from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
-from solox.public.common import Devices, file, Method
+from solox.public.common import Devices, file, Method, Install
 
 d = Devices()
 api = Blueprint("api", __name__)
@@ -402,4 +402,50 @@ def apmCollect():
             logger.error(f'get {apm_type} failed : {str(e)}')
         result = {'status': 0, 'msg': str(e)}
 
+    return result
+
+@api.route('/apm/install', methods=['post', 'get'])
+def installFile():
+    """install apk/ipa file/link"""
+    platform = request.form['platform']
+    type = request.form['type']
+    file = request.files['file']
+    link = request.form['link']
+    currentPath = os.path.dirname(os.path.realpath(__file__))
+    install = Install()
+    unixtime = int(time.time())
+    if type == 'file':
+        if platform == 'Android':
+            file_path = os.path.join(currentPath, '{}.apk'.format(unixtime))
+            if install.uploadFile(file_path,file):
+                install_status = install.installAPK(file_path)
+            else:
+                result = {'status': 0, 'msg': 'install file failed'} 
+                return result   
+        else:
+            file_path = os.path.join(currentPath, '{}.ipa'.format(unixtime))
+            if install.uploadFile(file_path,file):
+                install_status = install.installIPA(file_path)
+            else:
+                result = {'status': 0, 'msg': 'install file failed'}   
+                return result               
+    else:
+        if platform == 'Android':
+            d_status = install.downloadLink(filelink=link, path=currentPath, name='{}.apk'.format(unixtime))
+            if d_status:
+                install_status = install.installAPK(os.path.join(currentPath, '{}.apk'.format(unixtime)))
+            else:
+                result = {'status': 0, 'msg': 'download link failed'}    
+                return result   
+        else:
+            d_status = install.downloadLink(filelink=link, path=currentPath, name='{}.ipa'.format(unixtime))
+            if d_status:
+                install_status = install.installIPA(os.path.join(currentPath, '{}.ipa'.format(unixtime)))
+            else:
+                result = {'status': 0, 'msg': 'download link failed'}
+                return result   
+    if install_status[0]:
+        result = {'status': 1, 'msg': 'install sucess'}
+    else:
+        result = {'status': 0, 'msg': install_status[1]}                 
     return result

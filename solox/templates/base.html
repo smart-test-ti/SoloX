@@ -110,7 +110,7 @@
                 <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                     <ul class="list-inline list-inline-dots mb-0">
                         <li class="list-inline-item">
-                            Copyright &copy; 2022
+                            Copyright &copy; <label id="curYear"></label>
                             <a href="https://github.com/smart-test-ti" class="link-secondary">SoloX</a>. All rights reserved.
                         </li>
                         <li class="list-inline-item">
@@ -217,7 +217,16 @@
         $('.js-example-basic-multiple').select2({
             theme: "bootstrap-5"
         });
+
+        $('#curYear').text(getCurDate())
     });
+
+    function getCurDate(){
+        var date = new Date();
+        var year = date.getFullYear();
+        return year
+    };
+
 
 
     function SwalLoading(title,html){

@@ -30,10 +30,20 @@
 {% block page_body %}
 {% if apm_data_len > 0 %}
 <div class="card">
+    <div class="card-header">
+        <h3 class="card-title"></h3>
+        <div class="card-actions btn-actions">
+            
+            <a class="btn-action cursor-pointer"   data-bs-toggle="modal" data-bs-target="#modal-danger-selected">
+                <svg t="1677204105355" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11790" width="50" height="50"><path d="M930.133333 247.466667H725.333333V98.133333A21.333333 21.333333 0 0 0 704 76.8h-375.466667a21.333333 21.333333 0 0 0-21.333333 21.333333V247.466667H93.866667a21.333333 21.333333 0 1 0 0 42.666666h93.866666v635.733334a21.333333 21.333333 0 0 0 21.333334 21.333333h622.933333a21.333333 21.333333 0 0 0 21.333333-21.333333V290.133333h76.8a21.333333 21.333333 0 1 0 0-42.666666zM349.866667 119.466667h332.8v128H349.866667V119.466667z m460.8 785.066666H230.4V290.133333h580.266667v614.4z" fill="#FF0000" p-id="11791"></path><path d="M328.533333 379.733333A21.333333 21.333333 0 0 0 307.2 401.066667v341.333333a21.333333 21.333333 0 1 0 42.666667 0V401.066667a21.333333 21.333333 0 0 0-21.333334-21.333334zM516.266667 379.733333A21.333333 21.333333 0 0 0 494.933333 401.066667v341.333333a21.333333 21.333333 0 1 0 42.666667 0V401.066667a21.333333 21.333333 0 0 0-21.333333-21.333334zM682.666667 401.066667v341.333333a21.333333 21.333333 0 1 0 42.666666 0V401.066667a21.333333 21.333333 0 1 0-42.666666 0z" fill="#FF0000" p-id="11792"></path></svg>
+            </a>
+        </div>
+    </div>
     <div class="table-responsive" style="font-size: 15px;">
         <table id="file_table" class="table card-table table-vcenter text-nowrap datatable">
             <thead>
             <tr>
+                <th class="w-1"><input class="form-check-input m-0 align-middle" id='cekall' type="checkbox" aria-label="Select all invoices"></th>
                 <th style="font-size: 13px;">APP</th>
                 <th style="font-size: 13px;">Platform</th>
                 <th style="font-size: 13px;">Device</th>
@@ -46,6 +56,7 @@
             <tbody>
             {% for apm in apm_data %}
             <tr>
+                <td><input class="form-check-input m-0 align-middle" type="checkbox" name="checksId" aria-label="Select invoice"></td>
                 <td>{{ apm.app }}</td>
                 <td>{{ apm.platform }}</td>
                 <td>{{ apm.devices }}</td>
@@ -65,11 +76,11 @@
                             Analyse
                         </a>
                         {% endif %}
-                        <a onclick="edit_report_data('{{ apm.scene }}')" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                        <a onclick="editOneData('{{ apm.scene }}')" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#modal-edit">
                             <svg t="1638686685621" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7671" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#5866C7" p-id="7672"></path><path d="M466.304 192l-0.064 64H320a64 64 0 0 0-63.552 56.512L256 320v384a64 64 0 0 0 56.512 63.552L320 768h384a64 64 0 0 0 63.552-56.512L768 704V557.696h64v-239.36V704a128 128 0 0 1-128 128H320a128 128 0 0 1-128-128V320a128 128 0 0 1 128-128h146.304z" fill="#FFFFFF" p-id="7673"></path><path d="M788.992 267.008a32 32 0 0 1 0 45.248l-316.8 316.8a32 32 0 0 1-45.184-45.312l316.8-316.8a32 32 0 0 1 45.184 0z" fill="#FFFFFF" p-id="7674"></path></svg>
                             Edit
                         </a>
-                        <a onclick="remove_report_data('{{ apm.scene }}')" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#modal-danger">
+                        <a onclick="removeOneData('{{ apm.scene }}')" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#modal-danger">
                             <svg t="1635400029781" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17941" width="200" height="200"><path d="M877.79 217.23H624.22c0-36.02-29.2-65.23-65.23-65.23H465c-36.02 0-65.23 29.2-65.23 65.23H146.21c-18.01 0-32.61 14.6-32.61 32.61 0 18.01 14.6 32.61 32.61 32.61h49.75l14.43 528.79c1.06 33.91 25.21 60.76 54.64 60.76h493.93c29.43 0 53.58-26.86 54.64-60.76l14.48-528.79h49.7c18.01 0 32.61-14.6 32.61-32.61 0.01-18.01-14.59-32.61-32.6-32.61zM364.24 748.41c-17.98 0.82-33.4-10.01-34.44-24.19L308 427.56c-1.04-14.18 12.69-26.34 30.67-27.16 17.98-0.82 33.4 10.01 34.45 24.19l21.8 296.67c1.04 14.17-12.7 26.33-30.68 27.15z m180.37-25.42c0 14.2-14.6 25.72-32.61 25.72-18.01 0-32.61-11.51-32.61-25.72V425.83c0-14.2 14.6-25.72 32.61-25.72 18.01 0 32.61 11.51 32.61 25.72v297.16zM716 427.56l-21.8 296.67c-1.04 14.18-16.46 25.01-34.44 24.19-17.98-0.82-31.71-12.98-30.67-27.16l21.8-296.67c1.04-14.18 16.46-25.01 34.44-24.19 17.98 0.82 31.72 12.98 30.67 27.16z" fill="#FF5D5D" p-id="17942"></path></svg>
                             Delete
                         </a>
@@ -153,12 +164,105 @@
         </div>
     </div>
 </div>
+
+<div class="modal modal-blur fade" id="modal-danger-selected" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v2m0 4v.01" /><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" /></svg>
+                <h3>Delete Confirm ?</h3>
+                <div class="text-muted scenetext">Selected data</div>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <a id="cancel_remove_selected_confirm" class="btn btn-white w-100" data-bs-dismiss="modal">
+                            Cancel
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a onclick="removeCheckedData()"  class="btn btn-danger w-100">
+                            Confirm
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block js %}
 <script>
 
-    function remove_report_data(scenename){
+    $(document).ready(function() {
+        checkboxHandle()
+    });
+    
+    function checkboxHandle(){
+        try{
+            var cekall = document.getElementById('cekall');
+            var inp = document.querySelector('tbody').getElementsByTagName('input');
+            cekall.onclick = function(){
+                for(var i=0; i< inp.length; i++){
+                    inp[i].checked = this.checked;
+                }
+            }
+            for(var i = 0; i<inp.length; i++){
+                inp[i].onclick = function(){
+                    var flag = true;
+                    for(var i =0; i<inp.length; i++){
+                        if(!inp[i].checked){
+                            flag = false;
+                        }
+                    }
+                    cekall.checked = flag;
+                }
+            }
+
+        }catch{}
+
+    }
+    
+    function removeCheckedData(){
+        $('#cancel_remove_selected_confirm').click();
+        var checkLength = $("input:checkbox[name='checksId']:checked").length;
+        $("input[type='checkbox']").each(function(){ 
+            if($(this).prop("checked")){ 
+                var scenename = $(this).closest('tr').find('td').eq(4).text();
+                if(scenename){
+                    removeReport(scenename);
+                }
+            }
+            location.reload();
+        });
+    }
+
+    function removeReport(scenename){
+        $.ajax({
+            url: "/apm/remove/report",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                scene: scenename
+            },
+            beforeSend: function () {
+                SwalLoading('Deleting',scenename)
+            },
+            success: function (data) {
+                if(data['status'] != 1 ){
+                    SwalFire('error','Delete failed',data['msg'])
+                }
+            }
+        })
+    }
+
+    function removeOneData(scenename){
         window.event.preventDefault();
         $('.scenetext').text(scenename)
         $('#remove_confirm').on('click', function () {
@@ -188,7 +292,7 @@
         });
     }
 
-    function edit_report_data(old_scene){
+    function editOneData(old_scene){
         window.event.preventDefault();
         $('#scenename').val(old_scene);
         var new_scene = $('#scenename').val().trim();

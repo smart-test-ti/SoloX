@@ -57,13 +57,12 @@ class CPU:
         """get the total cpu usage at a certain time"""
         cmd = f'cat /proc/stat |{d._filterType()} ^cpu'
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
-        logger.info(result)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
-        totalCpu = 0
+        sysCpu = 0
         for i in range(1, 3):
-            totalCpu += float(toks[i])
-        return float(totalCpu)
+            sysCpu += int(toks[i])
+        return sysCpu
 
     def getAndroidCpuRate(self):
         """get the Android cpu rate of a process"""
@@ -108,7 +107,7 @@ class MEM:
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
-        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S')
 
     def getAndroidMem(self):
         """Get the Android memory ,unit:MB"""
@@ -138,7 +137,7 @@ class MEM:
         else:
             totalPass, nativePass, dalvikPass = self.getiOSMem()
 
-        apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+        apm_time = datetime.datetime.now().strftime('%H:%M:%S')
         f.add_log(f'{f.report_dir}/mem_total.log', apm_time, totalPass)
 
         if self.platform == 'Android':
@@ -152,7 +151,7 @@ class Battery:
     def __init__(self, deviceId, platform='Android'):
         self.deviceId = deviceId
         self.platform = platform
-        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S')
 
     def getBattery(self):
         """Get android battery info, unit:%"""
@@ -182,7 +181,7 @@ class Flow:
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
-        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S')
 
     def getAndroidNet(self):
         """Get Android upflow and downflow data, unit:KB"""

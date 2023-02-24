@@ -7,6 +7,9 @@ import time
 import traceback
 from logzero import logger
 from solox.public.adb import adb
+from solox.public.common import Devices
+
+d = Devices()
 
 collect_fps = 0
 collect_jank = 0
@@ -65,27 +68,20 @@ class SurfaceStatsCollector(object):
                 self.fps_queue.task_done()
 
     def get_focus_activity(self):
-        """
-        通过dumpsys window windows获取activity名称  window名?
-        """
+        """获取activity"""
         activity_name = ''
         activity_line = ''
-        dumpsys_result = adb.shell(cmd='dumpsys window windows', deviceId=self.device)
+        dumpsys_result = adb.shell(cmd='dumpsys SurfaceFlinger | {} {}'.format(d._filterType(), self.package_name), deviceId=self.device)
         dumpsys_result_list = dumpsys_result.split('\n')
         
         for line in dumpsys_result_list:
-            if line.find('mCurrentFocus') != -1 or line.find('mHoldScreenWindow') != -1:
+            if line.find('[SurfaceView') != -1:
                 activity_line = line.strip()
+                
         activity_line_split = activity_line.split(' ') 
-        if len(activity_line_split) > 1:
-            if activity_line_split[1] == 'u0':
-                activity_name = activity_line_split[2].rstrip('}')
-            else:
-                activity_name = activity_line_split[1]
-        if not activity_name.endswith('#0'):
-            activity_name = activity_name + '#0'
+        activity_name = activity_line_split[2].rstrip(']')
+        
         logger.info(activity_name)
-    
         return activity_name
 
     def get_foreground_process(self):

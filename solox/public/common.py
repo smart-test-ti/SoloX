@@ -4,8 +4,14 @@ import platform
 import re
 import shutil
 import time
+import requests
+from logzero import logger
 from flask import request
 from solox.public.adb import adb
+from tqdm import tqdm
+import traceback
+from urllib.request import urlopen
+import ssl
 
 
 class Devices:
@@ -370,3 +376,49 @@ class Method:
             return request.args[object]
         else:
             raise Exception('request method error')
+
+
+class Install:
+
+    def uploadFile(self, file_path, file_obj):
+        """save upload file"""
+        try:
+            file_obj.save(file_path)
+            return True
+        except:
+            traceback.print_exc()
+            return False            
+
+    def downloadLink(self,filelink=None, path=None, name=None):
+        try:
+            logger.info('Install link : {}'.format(filelink))
+            ssl._create_default_https_context = ssl._create_unverified_context
+            file_size = int(urlopen(filelink).info().get('Content-Length', -1))
+            header = {"Range": "bytes=%s-%s" % (0, file_size)}
+            pbar = tqdm(
+                total=file_size, initial=0,
+                unit='B', unit_scale=True, desc=filelink.split('/')[-1])
+            req = requests.get(filelink, headers=header, stream=True)
+            with(open(path+name, 'ab')) as f:
+                for chunk in req.iter_content(chunk_size=1024):
+                    if chunk:
+                         f.write(chunk)
+                         pbar.update(1024)
+            pbar.close()
+            return True
+        except:
+            return False
+
+    def installAPK(self, path):
+        result = adb.shell_noDevice(cmd = 'install -r {}'.format(path))
+        if result == 0:
+            return True, result
+        else:
+            return False, result
+
+    def installIPA(self, path):
+        result = Devices.execCmd('tidevice install {}'.format(path))
+        if result == 0:
+            return True, result
+        else:
+            return False, result        

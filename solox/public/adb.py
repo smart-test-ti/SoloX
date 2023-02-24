@@ -81,5 +81,11 @@ class ADB(object):
             0].decode("utf-8").strip()
         return result
 
+    def shell_noDevice(self, cmd):
+        run_cmd = f'{self.adb_path} {cmd}'
+        result = os.system(run_cmd)
+        return result    
+
+
 
 adb = ADB()

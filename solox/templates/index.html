@@ -145,6 +145,7 @@
                     </div>
                 </div>
             </div>
+            {% if platform == 'Android' %}
             <a class="dropdown-item" style="margin-top: 10px;">
                 <svg t="1657093102367" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="27860" width="2000" height="2000"><path d="M938.362 256.2V149.626c0-23.576-19.11-42.654-42.652-42.654H43.046C19.502 106.972 0.392 126.05 0.392 149.626V256.2h937.97z" fill="#E6E9ED" p-id="27861"></path><path d="M792.164 831.75H0.392V192.25h937.97v446.306z" fill="#656D78" p-id="27862"></path><path d="M85.67 149.626c0 11.772-9.526 21.296-21.328 21.296-11.74 0-21.294-9.524-21.294-21.296S52.602 128.3 64.342 128.3c11.802 0 21.328 9.556 21.328 21.326z" fill="#ED5564" p-id="27863"></path><path d="M149.62 149.626c0 11.772-9.524 21.296-21.326 21.296-11.742 0-21.296-9.524-21.296-21.296S116.55 128.3 128.292 128.3c11.804 0 21.328 9.556 21.328 21.326z" fill="#FFCE54" p-id="27864"></path><path d="M213.568 149.626c0 11.772-9.524 21.296-21.326 21.296-11.74 0-21.294-9.524-21.294-21.296S180.502 128.3 192.242 128.3c11.802 0 21.326 9.556 21.326 21.326z" fill="#A0D468" p-id="27865"></path><path d="M746.512 277.496H106.996c-11.772 0-21.326 9.554-21.326 21.326s9.554 21.328 21.326 21.328h639.516c11.74 0 21.294-9.556 21.294-21.328s-9.554-21.326-21.294-21.326z" fill="#FC6E51" p-id="27866"></path><path d="M106.996 405.426h341.046c11.802 0 21.326-9.554 21.326-21.328 0-11.772-9.524-21.326-21.326-21.326H106.996c-11.772 0-21.326 9.554-21.326 21.326 0 11.774 9.554 21.328 21.326 21.328z" fill="#AC92EB" p-id="27867"></path><path d="M575.958 448.05H106.996c-11.772 0-21.326 9.556-21.326 21.328s9.554 21.296 21.326 21.296h468.962c11.8 0 21.294-9.524 21.294-21.296s-9.492-21.328-21.294-21.328z" fill="#48CFAD" p-id="27868"></path><path d="M106.996 575.952H405.42c11.772 0 21.326-9.556 21.326-21.328s-9.554-21.296-21.326-21.296H106.996c-11.772 0-21.326 9.526-21.326 21.296s9.554 21.328 21.326 21.328z" fill="#5D9CEC" p-id="27869"></path><path d="M615.678 669.22c8.618 0 16.734-5.278 19.984-13.832 4.122-11.024-1.5-23.326-12.492-27.45-41.03-15.392-47.336-54.708-47.336-55.112a21.332 21.332 0 0 0-24.232-17.956c-11.662 1.716-19.688 12.552-17.97 24.2 0.376 2.624 10.242 64.668 74.55 88.776 2.5 0.938 4.996 1.374 7.496 1.374zM959.534 917.028c1 0 2.06-0.094 3.122-0.25 11.68-1.716 19.674-12.552 17.988-24.2-0.376-2.624-10.242-64.668-74.566-88.776-11.054-4.152-23.296 1.438-27.48 12.458-4.122 11.024 1.5 23.326 12.492 27.448 41.03 15.394 47.336 54.708 47.398 55.114a21.28 21.28 0 0 0 21.046 18.206zM448.042 618.572H106.996c-11.772 0-21.326 9.554-21.326 21.328 0 11.772 9.554 21.326 21.326 21.326h341.046c11.802 0 21.326-9.554 21.326-21.326a21.312 21.312 0 0 0-21.326-21.328z" fill="#FFCE54" p-id="27870"></path><path d="M277.52 703.85H106.996c-11.772 0-21.326 9.554-21.326 21.328 0 11.772 9.554 21.294 21.326 21.294h170.524c11.772 0 21.326-9.524 21.326-21.294 0-11.774-9.554-21.328-21.326-21.328z" fill="#ED5564" p-id="27871"></path><path d="M1002.312 746.472H533.318a21.28 21.28 0 0 1-21.294-21.294c0-11.774 9.524-21.328 21.294-21.328h468.994c11.74 0 21.294 9.554 21.294 21.328 0.002 11.772-9.554 21.294-21.294 21.294zM725.592 555.53a21.332 21.332 0 0 1-18.298-10.368l-64.388-107.478c-5.994-10.086-2.746-23.202 7.372-29.228a21.276 21.276 0 0 1 29.226 7.338l64.324 107.478c6.058 10.086 2.81 23.17-7.306 29.228a21.286 21.286 0 0 1-10.93 3.03zM810.212 555.53c-3.686 0-7.496-0.968-10.93-3.03-10.054-6.058-13.364-19.142-7.306-29.26l64.324-107.446a21.278 21.278 0 0 1 29.228-7.338c10.118 6.026 13.364 19.11 7.368 29.228l-64.324 107.478c-3.996 6.65-11.116 10.368-18.36 10.368zM920.002 669.22c-8.62 0-16.738-5.278-19.922-13.832-4.184-11.024 1.436-23.326 12.426-27.45 41.094-15.392 47.34-54.708 47.402-55.112 1.686-11.648 12.55-19.674 24.168-17.956 11.68 1.716 19.734 12.552 17.986 24.2-0.376 2.624-10.242 64.668-74.568 88.776a20.884 20.884 0 0 1-7.492 1.374zM575.958 917.028c-1 0-2.062-0.094-3.124-0.25-11.616-1.716-19.672-12.552-17.984-24.2 0.438-2.624 10.242-64.668 74.566-88.776 11.054-4.152 23.356 1.438 27.478 12.458 4.124 11.024-1.436 23.326-12.49 27.448-41.032 15.394-47.276 54.708-47.338 55.114-1.56 10.586-10.68 18.206-21.108 18.206z" fill="#FFCE54" p-id="27872"></path><path d="M938.236 682.524c0 129.524-48.71 234.504-170.43 234.504-121.716 0-170.43-104.98-170.43-234.504 0-129.494 63.39-191.85 170.43-191.85 107.044-0.002 170.43 62.356 170.43 191.85z" fill="#ED5564" p-id="27873"></path><path d="M746.512 915.872c6.806 0.75 13.928 1.156 21.294 1.156 7.372 0 14.49-0.406 21.296-1.156v-297.3h-42.592v297.3z" fill="#DA4453" p-id="27874"></path><path d="M603.56 618.572h328.494c-18.298-86.12-76.626-127.9-164.248-127.9-87.616 0-145.946 41.782-164.246 127.9z" fill="#DA4453" p-id="27875"></path></svg>
                 Error Log
@@ -154,16 +155,28 @@
                     </label>
                 </span>
             </a>
+            <div class="dropdown-divider"></div>
+            {% endif %}
+            <a class="dropdown-item" style="margin-top: 10px;">
+                <input type="file" class="form-control" id="app-file" accept=".apk,.ipa"/>
+            </a>
+            <strong style="margin-top: 5px;margin-left: 140px;">OR</strong>
+            <a class="dropdown-item" >
+                <input type="text" class="form-control" name="example-text-input" id="app-link" placeholder="Input file link">
+            </a>
+            <a class="dropdown-item" >
+                <button type="button" onclick="install()" class="btn btn-default ms-auto">Install</button>
+            </a>
+            
         </div>
     </div>
     <div class="apm-data mt-1" style="width: 75%;">
+        <div id="cpu" class="mb-3 cpu" style="min-width:400px;height:310px"></div>
         {% if platform == 'Android' %}
-        <div id="cpu_android" class="mb-3 cpu" style="min-width:400px;height:310px"></div>
         <div id="mem_android"  class="mb-3 mem" style="min-width:400px;height:310px"></div>
         <div id="fps" class="mb-3 fps" style="min-width:400px;height:300px"></div>
         <div id="battery" class="mb-3 battery" style="min-width:400px;height:310px"></div>
         {% else %}
-        <div id="cpu_ios" class="mb-3 cpu" style="min-width:400px;height:310px"></div>
         <div id="mem_ios"  class="mb-3 mem" style="min-width:400px;height:310px"></div>
         <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:310px"></div>
         {% endif %}
@@ -670,7 +683,6 @@
         }())
     }];
 
-
     var seriesFpsbyiOS =  [{
         name : 'fps',
         pointInterval: 120 * 1000,
@@ -753,7 +765,7 @@
                 seriesFinal = seriesNet;
                 legend = true;
                 break;
-            case 'cpu_android':
+            case 'cpu':
                 seriesFinal = seriesCpu;
                 legend = true;
                 yAxis = yAxis_plot;
@@ -801,7 +813,7 @@
 
     function cpuInitialize(){
         //初始化cpu
-        let type = platform == 'Android' ? 'cpu_android' : 'cpu_ios';
+        let type = 'cpu';
         let cpu_chart = chartsInitialize(type,'CPU（%）');
         return cpu_chart
     }
@@ -876,7 +888,7 @@
                 seriesFinal = seriesNet;
                 legend = true;
                 break;
-            case 'cpu_android':
+            case 'cpu':
                 seriesFinal = seriesCpu;
                 yAxis = yAxis_plot;
                 legend = true;
@@ -935,7 +947,7 @@
         var cpu_checkbox = $('#cpu_checkbox').is(':checked');
         if(cpu_checkbox){
             cpuInitialize();
-            let type = platform == 'Android' ? 'cpu_android' : 'cpu_ios';
+            let type = 'cpu';
             cpu_chart = collectPers(device,pkgname,type,'CPU（%）',getCpuRate(pkgname,device));
         }
     }
@@ -1085,6 +1097,41 @@
     function clearLogcat() {
         $('#logcat-content').empty();
     };
+    
 
+    function install(){
+        var formData = new FormData();
+        var fileObj = document.getElementById("app-file").files[0];
+        var type = (fileObj) ? 'file' : 'link'
+        var link = $('#app-link').val().trim()
+        formData.append('platform','{{ platform }}');
+        formData.append('file',fileObj);
+        formData.append('type',type);
+        formData.append('link',link);
+        console.log(formData)
+        $.ajax({
+            url: "/apm/install",
+            type: "POST",
+            async: true,
+            cache: false,
+            processData: false,
+            contentType: false,
+            data:formData,
+            beforeSend: function () {
+                SwalLoading('Install App!','Installing file to device, please wait。');
+                },
+            success: function (data) {
+                console.log(data);
+                if(data['status'] != 1 ) {
+                    SwalFire('error', 'Install failed !', data['msg'], 2000);
+                }else{
+                    SwalFire('success', 'Install success !', '', 2000);
+                }
+            },
+            error:function (data) {
+                SwalFire('error', 'Install failed !', '', 2000);
+            }
+        });
+    }
 </script>
 {% endblock %}
