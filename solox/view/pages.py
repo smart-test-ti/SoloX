@@ -22,6 +22,7 @@ def page_500(e):
 @page.route('/')
 def index():
     platform = request.args.get('platform')
+    lan = request.args.get('lan')
     cpuWarning = (0, request.cookies.get('cpuWarning'))[request.cookies.get('cpuWarning') not in [None, 'NaN']]
     memWarning = (0, request.cookies.get('memWarning'))[request.cookies.get('memWarning') not in [None, 'NaN']]
     fpsWarning = (0, request.cookies.get('fpsWarning'))[request.cookies.get('fpsWarning') not in [None, 'NaN']]
@@ -32,12 +33,14 @@ def index():
 
 @page.route('/pk')
 def pk():
+    lan = request.args.get('lan')
     model = request.args.get('model')
     return render_template('pk.html', **locals())
 
 
 @page.route('/report')
 def report():
+    lan = request.args.get('lan')
     report_dir = os.path.join(os.getcwd(), 'report')
     if not os.path.exists(report_dir):
         os.mkdir(report_dir)
@@ -67,6 +70,7 @@ def report():
 
 @page.route('/analysis', methods=['post', 'get'])
 def analysis():
+    lan = request.args.get('lan')
     scene = request.args.get('scene')
     app = request.args.get('app')
     platform = request.args.get('platform')
@@ -104,6 +108,7 @@ def analysis():
 
 @page.route('/pk_analysis', methods=['post', 'get'])
 def analysis_pk():
+    lan = request.args.get('lan')
     scene = request.args.get('scene')
     app = request.args.get('app')
     model = request.args.get('model')

@@ -368,8 +368,7 @@ class file:
 
 class Method:
 
-    def _request(self, object):
-
+    def _request(self, request, object):
         if request.method == 'POST':
             return request.form[object]
         elif request.method == 'GET':
@@ -399,7 +398,7 @@ class Install:
                 total=file_size, initial=0,
                 unit='B', unit_scale=True, desc=filelink.split('/')[-1])
             req = requests.get(filelink, headers=header, stream=True)
-            with(open(path+name, 'ab')) as f:
+            with(open(os.path.join(path, name), 'ab')) as f:
                 for chunk in req.iter_content(chunk_size=1024):
                     if chunk:
                          f.write(chunk)
@@ -407,11 +406,13 @@ class Install:
             pbar.close()
             return True
         except:
+            traceback.print_exc()
             return False
 
     def installAPK(self, path):
         result = adb.shell_noDevice(cmd = 'install -r {}'.format(path))
         if result == 0:
+            os.remove(path)
             return True, result
         else:
             return False, result
@@ -419,6 +420,7 @@ class Install:
     def installIPA(self, path):
         result = Devices.execCmd('tidevice install {}'.format(path))
         if result == 0:
+            os.remove(path)
             return True, result
         else:
             return False, result        

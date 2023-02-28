@@ -11,7 +11,7 @@ from solox.public.common import Devices, file, Method, Install
 
 d = Devices()
 api = Blueprint("api", __name__)
-
+method = Method()
 
 @api.route('/apm/cookie', methods=['post', 'get'])
 def setCookie():
@@ -52,7 +52,7 @@ def initialize():
 @api.route('/device/ids', methods=['post', 'get'])
 def deviceids():
     """get devices info"""
-    platform = request.args.get('platform')
+    platform = method._request(request, 'platform')
     try:
         if platform == 'Android':
             deviceids = d.getDeviceIds()
@@ -84,8 +84,8 @@ def deviceids():
 @api.route('/device/packagenames', methods=['post', 'get'])
 def packageNames():
     """get devices packageNames"""
-    platform = request.args.get('platform')
-    device = request.args.get('device')
+    platform = method._request(request, 'platform')
+    device = method._request(request, 'device')
     if platform == 'Android':
         deviceId = d.getIdbyDevice(device, platform)
         pkgnames = d.getPkgname(deviceId)
@@ -105,10 +105,10 @@ def packageNames():
 @api.route('/apm/cpu', methods=['post', 'get'])
 def getCpuRate():
     """get process cpu rate"""
-    model = request.args.get('model')
-    platform = request.args.get('platform')
-    pkgname = request.args.get('pkgname')
-    device = request.args.get('device')
+    model = method._request(request, 'model')
+    platform = method._request(request, 'platform')
+    pkgname = method._request(request, 'pkgname')
+    device = method._request(request, 'device')
     try:
         if model == '2-devices':
             pkgNameList = []
@@ -139,10 +139,10 @@ def getCpuRate():
 @api.route('/apm/mem', methods=['post', 'get'])
 def getMEM():
     """get memery data"""
-    model = request.args.get('model')
-    platform = request.args.get('platform')
-    pkgname = request.args.get('pkgname')
-    device = request.args.get('device')
+    model = method._request(request, 'model')
+    platform = method._request(request, 'platform')
+    pkgname = method._request(request, 'pkgname')
+    device = method._request(request, 'device')
     try:
         if model == '2-devices':
             pkgNameList = []
@@ -173,10 +173,10 @@ def getMEM():
 @api.route('/apm/network', methods=['post', 'get'])
 def getNetWorkData():
     """get network data"""
-    model = request.args.get('model')
-    platform = request.args.get('platform')
-    pkgname = request.args.get('pkgname')
-    device = request.args.get('device')
+    model = method._request(request, 'model')
+    platform = method._request(request, 'platform')
+    pkgname = method._request(request, 'pkgname')
+    device = method._request(request, 'device')
     try:
         if model == '2-devices':
             pkgNameList = []
@@ -207,11 +207,11 @@ def getNetWorkData():
 @api.route('/apm/fps', methods=['post', 'get'])
 def getFps():
     """get fps data"""
-    model = request.args.get('model')
-    platform = request.args.get('platform')
-    pkgname = request.args.get('pkgname')
-    surfaceview = request.args.get('surfaceview')
-    device = request.args.get('device')
+    model = method._request(request, 'model')
+    platform = method._request(request, 'platform')
+    pkgname = method._request(request, 'pkgname')
+    surfaceview = method._request(request, 'surfaceview')
+    device = method._request(request, 'device')
     try:
         if model == '2-devices':
             pkgNameList = []
@@ -242,8 +242,8 @@ def getFps():
 @api.route('/apm/battery', methods=['post', 'get'])
 def getBattery():
     """get Battery data"""
-    platform = request.args.get('platform')
-    device = request.args.get('device')
+    platform = method._request(request, 'platform')
+    device = method._request(request, 'device')
     deviceId = d.getIdbyDevice(device, platform)
     try:
         battery_monitor = Battery(deviceId=deviceId)
@@ -262,10 +262,10 @@ def getBattery():
 def makeReport():
     """Create test report records"""
     current_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
-    platform = request.args.get('platform')
-    app = request.args.get('app')
-    model = request.args.get('model')
-    devices = request.args.get('devices')
+    platform = method._request(request, 'platform')
+    app = method._request(request, 'app')
+    model = method._request(request, 'model')
+    devices = method._request(request, 'devices')
     try:
         if platform == 'Android':
             deviceId = d.getIdbyDevice(devices, platform)
@@ -281,8 +281,8 @@ def makeReport():
 @api.route('/apm/edit/report', methods=['post', 'get'])
 def editReport():
     """Edit test report records"""
-    old_scene = request.args.get('old_scene')
-    new_scene = request.args.get('new_scene')
+    old_scene = method._request(request, 'old_scene')
+    new_scene = method._request(request, 'new_scene')
     report_dir = os.path.join(os.getcwd(), 'report')
     if old_scene == new_scene:
         result = {'status': 0, 'msg': 'scene not changed'}
@@ -301,9 +301,9 @@ def editReport():
 @api.route('/apm/log', methods=['post', 'get'])
 def getLogData():
     """Get apm detailed data"""
-    scene = request.args.get('scene')
-    target = request.args.get('target')
-    platform = request.args.get('platform')
+    scene = method._request(request, 'scene')
+    target = method._request(request, 'target')
+    platform = method._request(request, 'platform')
     try:
         if target == 'cpu':
             cpuAppData = file().readLog(scene=scene, filename='cpu_app.log')[0]
@@ -337,9 +337,9 @@ def getLogData():
 @api.route('/apm/log/pk', methods=['post', 'get'])
 def getpkLogData():
     """Get apm detailed data"""
-    scene = request.args.get('scene')
-    target1 = request.args.get('target1')
-    target2 = request.args.get('target2')
+    scene = method._request(request, 'scene')
+    target1 = method._request(request, 'target1')
+    target2 = method._request(request, 'target2')
     try:
         first = file().readLog(scene=scene, filename=f'{target1}.log')[0]
         second = file().readLog(scene=scene, filename=f'{target2}.log')[0]
@@ -352,7 +352,7 @@ def getpkLogData():
 @api.route('/apm/remove/report', methods=['post', 'get'])
 def removeReport():
     """Remove test report record"""
-    scene = request.args.get('scene')
+    scene = method._request(request, 'scene')
     report_dir = os.path.join(os.getcwd(), 'report')
     try:
         shutil.rmtree(f'{report_dir}/{scene}', True)
@@ -365,10 +365,10 @@ def removeReport():
 @api.route('/apm/collect', methods=['post', 'get'])
 def apmCollect():
     """apm common api"""
-    platform = request.args.get('platform')
-    deviceid = request.args.get('deviceid')
-    pkgname = request.args.get('pkgname')
-    apm_type = request.args.get('apm_type')
+    platform = method._request(request, 'platform')
+    deviceid = method._request(request, 'deviceid')
+    pkgname = method._request(request, 'pkgname')
+    apm_type = method._request(request, 'apm_type')
     try:
         if apm_type == 'cpu':
             cpu = CPU(pkgName=pkgname, deviceId=deviceid, platform=platform)
@@ -404,46 +404,56 @@ def apmCollect():
 
     return result
 
-@api.route('/apm/install', methods=['post', 'get'])
+@api.route('/apm/install/file', methods=['post', 'get'])
 def installFile():
-    """install apk/ipa file/link"""
-    platform = request.form['platform']
-    type = request.form['type']
+    """install apk/ipa from file"""
+    platform = method._request(request, 'platform')
     file = request.files['file']
-    link = request.form['link']
     currentPath = os.path.dirname(os.path.realpath(__file__))
     install = Install()
     unixtime = int(time.time())
-    if type == 'file':
-        if platform == 'Android':
-            file_path = os.path.join(currentPath, '{}.apk'.format(unixtime))
-            if install.uploadFile(file_path,file):
-                install_status = install.installAPK(file_path)
-            else:
-                result = {'status': 0, 'msg': 'install file failed'} 
-                return result   
+    if platform == 'Android':
+        file_path = os.path.join(currentPath, '{}.apk'.format(unixtime))
+        if install.uploadFile(file_path, file):
+            install_status = install.installAPK(file_path)
         else:
-            file_path = os.path.join(currentPath, '{}.ipa'.format(unixtime))
-            if install.uploadFile(file_path,file):
-                install_status = install.installIPA(file_path)
-            else:
-                result = {'status': 0, 'msg': 'install file failed'}   
-                return result               
+            result = {'status': 0, 'msg': 'install file failed'} 
+            return result   
     else:
-        if platform == 'Android':
-            d_status = install.downloadLink(filelink=link, path=currentPath, name='{}.apk'.format(unixtime))
-            if d_status:
-                install_status = install.installAPK(os.path.join(currentPath, '{}.apk'.format(unixtime)))
-            else:
-                result = {'status': 0, 'msg': 'download link failed'}    
-                return result   
+        file_path = os.path.join(currentPath, '{}.ipa'.format(unixtime))
+        if install.uploadFile(file_path, file):
+            install_status = install.installIPA(file_path)
         else:
-            d_status = install.downloadLink(filelink=link, path=currentPath, name='{}.ipa'.format(unixtime))
-            if d_status:
-                install_status = install.installIPA(os.path.join(currentPath, '{}.ipa'.format(unixtime)))
-            else:
-                result = {'status': 0, 'msg': 'download link failed'}
-                return result   
+            result = {'status': 0, 'msg': 'install file failed'}   
+            return result 
+    if install_status[0]:
+        result = {'status': 1, 'msg': 'install sucess'}
+    else:
+        result = {'status': 0, 'msg': install_status[1]}                 
+    return result
+
+@api.route('/apm/install/link', methods=['post', 'get'])
+def installLink():
+    """install apk/ipa from link"""
+    platform = method._request(request, 'platform')
+    link = method._request(request, 'link')
+    currentPath = os.path.dirname(os.path.realpath(__file__))
+    install = Install()
+    unixtime = int(time.time())
+    if platform == 'Android':
+        d_status = install.downloadLink(filelink=link, path=currentPath, name='{}.apk'.format(unixtime))
+        if d_status:
+            install_status = install.installAPK(os.path.join(currentPath, '{}.apk'.format(unixtime)))
+        else:
+            result = {'status': 0, 'msg': 'download link failed'}    
+            return result   
+    else:
+        d_status = install.downloadLink(filelink=link, path=currentPath, name='{}.ipa'.format(unixtime))
+        if d_status:
+            install_status = install.installIPA(os.path.join(currentPath, '{}.ipa'.format(unixtime)))
+        else:
+            result = {'status': 0, 'msg': 'download link failed'}
+            return result
     if install_status[0]:
         result = {'status': 1, 'msg': 'install sucess'}
     else:

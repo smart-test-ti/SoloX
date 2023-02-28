@@ -90,7 +90,7 @@ def _hostIP():
     return ip
 
 
-def _listeningPort(port):
+def listeningPort(port):
     """
     Detect whether the port is occupied and clean up
     :param port: System port
@@ -115,7 +115,7 @@ def _listeningPort(port):
             os.system(pid_cmd)
 
 
-def _getServerStatus(host: str, port: int):
+def getServerStatus(host: str, port: int):
     """
     get solox server status
     :param host:
@@ -133,7 +133,7 @@ def _getServerStatus(host: str, port: int):
         pass
 
 
-def _openUrl(host: str, port: int):
+def openUrl(host: str, port: int):
     """
     Listen and open the url after solox is started
     :param host:
@@ -143,12 +143,12 @@ def _openUrl(host: str, port: int):
     flag = True
     while flag:
         logger.info('start solox server...')
-        flag = _getServerStatus(host, port)
-    webbrowser.open(f'http://{host}:{port}/?platform=Android', new=2)
-    logger.info(f'Running on http://{host}:{port}/?platform=Android (Press CTRL+C to quit)')
+        flag = getServerStatus(host, port)
+    webbrowser.open(f'http://{host}:{port}/?platform=Android&lan=en', new=2)
+    logger.info(f'Running on http://{host}:{port}/?platform=Android&lan=en (Press CTRL+C to quit)')
 
 
-def _startServer(host: str, port: int):
+def startServer(host: str, port: int):
     """
     startup the solox service
     :param host:
@@ -170,10 +170,10 @@ def main(host=_hostIP(), port=50003):
     """
     try:
         checkPyVer()
-        _listeningPort(port=port)
+        listeningPort(port=port)
         pool = multiprocessing.Pool(processes=2)
-        pool.apply_async(_startServer, (host, port))
-        pool.apply_async(_openUrl, (host, port))
+        pool.apply_async(startServer, (host, port))
+        pool.apply_async(openUrl, (host, port))
         pool.close()
         pool.join()
     except Exception:

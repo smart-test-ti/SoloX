@@ -140,8 +140,8 @@ def openUrl(host: str, port: int):
     while flag:
         logger.info('start solox server...')
         flag = getServerStatus(host, port)
-    webbrowser.open('http://{}:{}/?platform=Android'.format(host, port), new=2)
-    logger.info('Running on http://{}:{}/?platform=Android (Press CTRL+C to quit)'.format(host, port))
+    webbrowser.open('http://{}:{}/?platform=Android&lan=en'.format(host, port), new=2)
+    logger.info('Running on http://{}:{}/?platform=Android&lan=en (Press CTRL+C to quit)'.format(host, port))
 
 
 def startServer(host: str, port: int):
