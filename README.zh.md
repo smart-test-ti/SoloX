@@ -29,6 +29,7 @@ SoloX - Android/iOS性能数据实时采集工具。
 ```
 1.Python:3.6+ 
 2.pip install -U solox
+3.pip install -i  https://mirrors.ustc.edu.cn/pypi/web/simple -U solox (在国内推荐使用镜像下载)
 
 注意: 如果Windows用户需要测试ios，先安装并启动iTunes
 ```
@@ -80,6 +81,12 @@ apm_type in ['cpu','memory','network','fps','battery']
 - 2-apps: 在具有相同配置的两部手机上测试两个不同的应用程序
 
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348055024-96e38b5e-d6b4-4a06-8070-0707e2fbcd99.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+
+## 推荐浏览器
+
+<img src="https://cdn.nlark.com/yuque/0/2023/png/153412/1677553244189-eae85324-fc00-4504-82a0-d669cd0b4c5c.png" alt="Edge" width="24px" height="24px" />
+<img src="https://cdn.nlark.com/yuque/0/2023/png/153412/1677553244198-96ce5709-f33f-4038-888f-f330d1f74450.png" alt="Chrome" width="24px" height="24px" />
+<img src="https://cdn.nlark.com/yuque/0/2023/png/153412/1677553244204-6fbda427-e143-48eb-9785-cd9bded6e7c0.png" alt="Safari" width="24px" height="24px" />
 
 
 ## 感谢
