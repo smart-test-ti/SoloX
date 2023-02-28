@@ -134,7 +134,7 @@ SoloX - APM
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="cpu_checkbox" type="checkbox" checked name="cpu"> CPU</label>
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_checkbox" type="checkbox" checked name="mem"> {% if lan == 'cn' %} 内存 {% else %} Memory {% endif %}</label>
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> {% if lan == 'cn' %} 流量 {% else %} Network Data {% endif %}</label>
-                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" checked> {% if lan == 'cn' %} 流畅度 {% else %} Network FPS {% endif %}
+                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" checked> {% if lan == 'cn' %} 流畅度 {% else %} FPS {% endif %}
                                 {% if platform == 'Android' %}
                                 <span class="ms-auto">
                                     <label class="form-check form-check-single form-switch">
@@ -144,7 +144,7 @@ SoloX - APM
                                 {% endif %}
                             </label>
                             {% if platform == 'Android' %}
-                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" checked> {% if lan == 'cn' %} 电池 {% else %} Network Battery {% endif %}</label>
+                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" checked> {% if lan == 'cn' %} 电池 {% else %} Battery {% endif %}</label>
                             {% endif %}
                         </div>
                         <div class="tab-pane" id="tabs-device-info">
