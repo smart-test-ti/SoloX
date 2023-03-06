@@ -96,10 +96,16 @@ def analysis():
                 apm_data['dalvikPassAvg'] = json_data['dalvikPassAvg']
                 apm_data['fps'] = json_data['fps']
                 apm_data['jank'] = json_data['jank']
-                apm_data['batteryLevel'] = json_data['batteryLevel']
-                apm_data['batteryTeml'] = json_data['batteryTeml']
                 apm_data['flow_send'] = json_data['flow_send']
                 apm_data['flow_recv'] = json_data['flow_recv']
+                if platform == 'Android':
+                    apm_data['batteryLevel'] = json_data['batteryLevel']
+                    apm_data['batteryTeml'] = json_data['batteryTeml']
+                else:
+                    apm_data['batteryTeml'] = json_data['batteryTeml']
+                    apm_data['batteryCurrent'] = json_data['batteryCurrent']
+                    apm_data['batteryVoltage'] = json_data['batteryVoltage']
+                    apm_data['batteryPower'] = json_data['batteryPower']   
                 f.close()
                 break
             except Exception as e:

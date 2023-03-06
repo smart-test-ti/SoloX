@@ -210,30 +210,32 @@ def getFps():
     model = method._request(request, 'model')
     platform = method._request(request, 'platform')
     pkgname = method._request(request, 'pkgname')
-    surfaceview = method._request(request, 'surfaceview')
     device = method._request(request, 'device')
+    surv = method._request(request, 'surv')
+    logger.info(surv)
     try:
         if model == '2-devices':
             pkgNameList = []
             pkgNameList.append(pkgname)
             deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
             deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
-            fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2, surfaceview=surfaceview)
+            fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2, surfaceview=surv)
             first, second = fps.getFPS()
             result = {'status': 1, 'first': first, 'second': second}
         elif model == '2-app':
             pkgNameList = pkgname.split(',')
             deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
             deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
-            fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2, surfaceview=surfaceview)
+            fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2, surfaceview=surv)
             first, second = fps.getFPS()
             result = {'status': 1, 'first': first, 'second': second}
         else:
             deviceId = d.getIdbyDevice(device, platform)
-            fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId, platform=platform)
+            fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId, surfaceview=surv, platform=platform)
             fps, jank = fps_monitor.getFPS()
             result = {'status': 1, 'fps': fps, 'jank': jank}
     except Exception as e:
+        traceback.print_exc()
         logger.error(f'get fps failed : {str(e)}')
         result = {'status': 1, 'fps': 0, 'jank': 0, 'first': 0, 'second': 0}
     return result
@@ -246,14 +248,13 @@ def getBattery():
     device = method._request(request, 'device')
     deviceId = d.getIdbyDevice(device, platform)
     try:
-        battery_monitor = Battery(deviceId=deviceId)
-        level, temperature = battery_monitor.getBattery()
-        result = {'status': 1, 'level': level, 'temperature': temperature}
-    except Exception as e:
-        if not deviceId:
-            logger.error('no device，please check the device connection status')
+        battery_monitor = Battery(deviceId=deviceId, platform=platform)
+        final = battery_monitor.getBattery()
+        if platform == 'Android':
+            result = {'status': 1, 'level': final[0], 'temperature': final[1]}
         else:
-            logger.error(f'get cpu failed : {str(e)}')
+            result = {'status': 1, 'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}    
+    except Exception as e:
         result = {'status': 1, 'level': 0, 'temperature': 0}
     return result
 

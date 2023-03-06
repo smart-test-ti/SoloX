@@ -314,6 +314,19 @@ class file:
         flowRecvData = self.readLog(scene=scene, filename=f'downflow.log')[1]
         flowRecv = f'{round(float(sum(flowRecvData) / 1024), 2)}MB'
 
+        batteryTemlData = self.readLog(scene=scene, filename=f'battery_tem.log')[1]
+        batteryTeml = round(sum(batteryTemlData) / len(batteryTemlData), 2)
+
+        batteryCurrentData = self.readLog(scene=scene, filename=f'battery_current.log')[1]
+        batteryCurrent = round(sum(batteryCurrentData) / len(batteryCurrentData), 2)
+
+        batteryVoltageData = self.readLog(scene=scene, filename=f'battery_voltage.log')[1]
+        batteryVoltage = round(sum(batteryVoltageData) / len(batteryVoltageData), 2)
+
+        batteryPowerData = self.readLog(scene=scene, filename=f'battery_power.log')[1]
+        batteryPower = round(sum(batteryPowerData) / len(batteryPowerData), 2)
+
+
         apm_dict = {
             "cpuAppRate": cpuAppRate,
             "cpuSystemRate": cpuSystemRate,
@@ -324,8 +337,10 @@ class file:
             "jank": 0,
             "flow_send": flowSend,
             "flow_recv": flowRecv,
-            "batteryLevel": 0,
-            "batteryTeml": 0
+            "batteryTeml": batteryTeml,
+            "batteryCurrent": batteryCurrent,
+            "batteryVoltage": batteryVoltage,
+            "batteryPower": batteryPower
         }
 
         return apm_dict

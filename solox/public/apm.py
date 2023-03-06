@@ -1,6 +1,7 @@
 import datetime
 import re
 import time
+import json
 from functools import reduce
 from logzero import logger
 import tidevice
@@ -152,8 +153,16 @@ class Battery:
         self.deviceId = deviceId
         self.platform = platform
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S')
-
+    
     def getBattery(self):
+        if self.platform == 'Android':
+            level, temperature = self.getAndroidBattery()
+            return level, temperature
+        else:
+            temperature, current, voltage, power = self.getiOSBattery()
+            return temperature, current, voltage, power
+        
+    def getAndroidBattery(self):
         """Get android battery info, unit:%"""
         # Switch mobile phone battery to non-charging state
         cmd = 'dumpsys battery set status 1'
@@ -168,6 +177,21 @@ class Battery:
         f.add_log(f'{f.report_dir}/battery_level.log', apm_time, level)
         f.add_log(f'{f.report_dir}/battery_tem.log', apm_time, temperature)
         return level, temperature
+    
+    def getiOSBattery(self):
+        """Get ios battery info, unit:%"""
+        d  = tidevice.Device()
+        ioDict =  d.get_io_power()
+        tem = ioDict['Diagnostics']['IORegistry']['Temperature']
+        current = abs(ioDict['Diagnostics']['IORegistry']['InstantAmperage'])
+        voltage = ioDict['Diagnostics']['IORegistry']['voltage']
+        power = current * voltage / 1000
+        apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+        f.add_log(f'{f.report_dir}/battery_tem.log', apm_time, tem) # unknown
+        f.add_log(f'{f.report_dir}/battery_current', apm_time, current) #mA
+        f.add_log(f'{f.report_dir}/battery_voltage', apm_time, voltage) #mV
+        f.add_log(f'{f.report_dir}/battery_power', apm_time, power)
+        return tem, current, voltage, power
 
     def recoverBattery(self):
         """Reset phone charging status"""
@@ -199,6 +223,7 @@ class Flow:
         sendNum = round(float(sendNum_final - sendNum_pre), 2)
         recNum = round(float(recNum_final - recNum_pre), 2)
         return sendNum, recNum
+    
 
     def getiOSNet(self):
         """Get iOS upflow and downflow data"""
@@ -222,7 +247,7 @@ class Flow:
 
 class FPS:
 
-    def __init__(self, pkgName, deviceId, platform='Android', surfaceview='true'):
+    def __init__(self, pkgName, deviceId, surfaceview, platform='Android'):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform

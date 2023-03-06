@@ -19,7 +19,7 @@ class SurfaceStatsCollector(object):
     """Collects surface stats for a SurfaceView from the output of SurfaceFlinger
     """
 
-    def __init__(self, device, frequency, package_name, fps_queue, jank_threshold, use_legacy=False, surfaceview='true'):
+    def __init__(self, device, frequency, package_name, fps_queue, jank_threshold, surfaceview, use_legacy=False):
         self.device = device
         self.frequency = frequency
         self.package_name = package_name
@@ -40,7 +40,6 @@ class SurfaceStatsCollector(object):
         if not self.use_legacy_method:
             try:
                 self.focus_window = self.get_focus_activity()
-                logger.info(self.focus_window)
                 # 如果self.focus_window里包含字符'$'，必须将其转义
                 if self.focus_window.find('$') != -1:
                     self.focus_window = self.focus_window.replace('$', '\$')
@@ -81,7 +80,6 @@ class SurfaceStatsCollector(object):
         activity_line_split = activity_line.split(' ') 
         activity_name = activity_line_split[2].rstrip(']')
         
-        logger.info(activity_name)
         return activity_name
 
     def get_foreground_process(self):
@@ -405,7 +403,6 @@ class SurfaceStatsCollector(object):
             results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency %s' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
-            logger.info(results)
             if not len(results):
                 return (None, None)
             if not results[0].isdigit():
@@ -499,7 +496,7 @@ class FPSMonitor(Monitor):
     """FPS监控器"""
 
     def __init__(self, device_id, package_name=None, frequency=1.0, timeout=24 * 60 * 60, fps_queue=None,
-                 jank_threshold=166, use_legacy=False, start_time=None, **kwargs):
+                 jank_threshold=166, use_legacy=False, surfaceview='true', start_time=None, **kwargs):
         """
         构造器
         :param str device_id: 设备id
@@ -515,12 +512,13 @@ class FPSMonitor(Monitor):
         self.jank_threshold = jank_threshold
         self.device = device_id
         self.timeout = timeout
+        self.surfaceview = surfaceview
         # todo 判断是否为当前启动的进程
         if not package_name:
             package_name = self.device.adb.get_foreground_process()
         self.package = package_name
         self.fpscollector = SurfaceStatsCollector(self.device, self.frequency, package_name, fps_queue,
-                                                  self.jank_threshold, self.use_legacy)
+                                                  self.jank_threshold, self.surfaceview, self.use_legacy)
 
     def start(self):
         """启动FPSMonitor日志监控器

@@ -156,7 +156,7 @@ def startServer(host: str, port: int):
     :return:
     """
     try:
-        socketio.run(app, host=host, debug=False, port=port)
+        socketio.run(app, host=host, debug=True, port=port)
     except Exception:
         pass
 

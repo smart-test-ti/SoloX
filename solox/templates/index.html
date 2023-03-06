@@ -143,9 +143,7 @@ SoloX - APM
                                 </span>
                                 {% endif %}
                             </label>
-                            {% if platform == 'Android' %}
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" checked> {% if lan == 'cn' %} 电池 {% else %} Battery {% endif %}</label>
-                            {% endif %}
                         </div>
                         <div class="tab-pane" id="tabs-device-info">
                             <div class="mb-2">
@@ -203,10 +201,11 @@ SoloX - APM
         {% if platform == 'Android' %}
         <div id="mem_android"  class="mb-3 mem" style="min-width:400px;height:310px"></div>
         <div id="fps" class="mb-3 fps" style="min-width:400px;height:300px"></div>
-        <div id="battery" class="mb-3 battery" style="min-width:400px;height:310px"></div>
+        <div id="battery_android" class="mb-3 battery" style="min-width:400px;height:310px"></div>
         {% else %}
         <div id="mem_ios"  class="mb-3 mem" style="min-width:400px;height:310px"></div>
-        <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:310px"></div>
+        <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:310px"></div>\
+        <div id="battery_ios" class="mb-3 battery" style="min-width:400px;height:310px"></div>
         {% endif %}
         <div id="network" class="Network-Data mb-3" style="min-width:400px;height:310px"></div>
     </div>
@@ -400,13 +399,30 @@ SoloX - APM
                     console.log(data)
                     if(data['status'] == 1){
                         try {
-                            var seriesLevel = battery_chart.series[0];
-                            var seriesTemperature = battery_chart.series[1];
-                            var x = (new Date()).getTime(),
+                            if(platform == 'Android'){
+                                var seriesLevel = battery_chart.series[0];
+                                var seriesTemperature = battery_chart.series[1];
+                                var x = (new Date()).getTime(),
                                 y_level = data['level'],
                                 y_temperature = data['temperature'];
-                            seriesLevel.addPoint([x, y_level], true, true);
-                            seriesTemperature.addPoint([x, y_temperature], true, true);
+                                seriesLevel.addPoint([x, y_level], true, true);
+                                seriesTemperature.addPoint([x, y_temperature], true, true);
+                                
+                            }else{
+                                var seriesTemperature = battery_chart.series[0];
+                                var seriesCurrent = battery_chart.series[1];
+                                var seriesVoltage = battery_chart.series[2];
+                                var seriesPower = battery_chart.series[3];
+                                var x = (new Date()).getTime(),
+                                y_temperature = data['temperature'];
+                                y_current = data['current'];
+                                y_voltage = data['voltage'];
+                                y_power = data['power'];
+                                seriesTemperature.addPoint([x, y_temperature], true, true);
+                                seriesCurrent.addPoint([x, y_current], true, true);
+                                seriesVoltage.addPoint([x, y_voltage], true, true);
+                                seriesPower.addPoint([x, y_power], true, true);
+                            } 
                             timerQ = setTimeout(getBattery(device), 2000);
                         }catch (e) {}
                     }else{
@@ -515,7 +531,7 @@ SoloX - APM
                 platform:platform,
                 pkgname:pkgname,
                 device:device,
-                surfaceview:fps_switch
+                surv:fps_switch
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -535,7 +551,7 @@ SoloX - APM
                                     y_jank = data['jank'];
                                 seriesJank.addPoint([x_jsnk, y_jank], true, true);
                             }
-                            timerQ = setTimeout(getFps(pkgname,device), 2000);
+                            timerQ = setTimeout(getFps(pkgname,device,fps_switch), 2000);
                         }catch (e) {}
                     }else{
                         SwalFire('error','something error',data['msg'],1000);
@@ -703,6 +719,60 @@ SoloX - APM
         }())
     }];
 
+    var seriesiOSBettery = [{
+        name : 'temperature',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'current',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'voltage',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'power',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
+
     var seriesFps =  [{
         name : 'fps',
         pointInterval: 120 * 1000,
@@ -822,11 +892,16 @@ SoloX - APM
                 seriesFinal = seriesMem;
                 legend = true;
                 break;
-            case 'battery':
+            case 'battery_android':
                 seriesFinal = seriesBettery;
                 legend = true;
                 yAxis = yAxis_plot;
                 break;
+            case 'battery_ios':
+                seriesFinal = seriesiOSBettery;
+                legend = true;
+                yAxis = yAxis_plot;
+                break;    
         }
 
         let apm_chart = Highcharts.stockChart(apmType, {
@@ -868,12 +943,9 @@ SoloX - APM
 
     function batteryInitialize(){
         //初始化battery
-        if(platform === 'Android'){
-            let battery_chart = chartsInitialize('battery','Battery');
-            return battery_chart
-        }else{
-            return null
-        }
+        let type = platform == 'Android' ? 'battery_android' : 'battery_ios';
+        let battery_chart = chartsInitialize(type,'Battery');
+        return battery_chart
     }
 
     function memInitialize(){
@@ -945,10 +1017,15 @@ SoloX - APM
                 seriesFinal = seriesMem;
                 legend = true;
                 break;
-            case 'battery':
+            case 'battery_android':
                 seriesFinal = seriesBettery;
-                yAxis = yAxis_plot;
                 legend = true;
+                yAxis = yAxis_plot;
+                break;
+            case 'battery_ios':
+                seriesFinal = seriesiOSBettery;
+                legend = true;
+                yAxis = yAxis_plot;
                 break;
             default:
                 seriesFinal = series;
@@ -1004,7 +1081,8 @@ SoloX - APM
         var battery_checkbox = $('#battery_checkbox').is(':checked');
         if(battery_checkbox){
             batteryInitialize();
-            battery_chart = collectPers(device,pkgname,'battery','Battery',getBattery(device));
+            let type = platform == 'Android' ? 'battery_android' : 'battery_ios';
+            battery_chart = collectPers(device,pkgname,type,'Battery',getBattery(device));
         }
     }
 
