@@ -246,7 +246,7 @@ class Flow:
 
 class FPS:
 
-    def __init__(self, pkgName, deviceId, surfaceview, platform='Android'):
+    def __init__(self, pkgName, deviceId, platform='Android', surfaceview='true'):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform

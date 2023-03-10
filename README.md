@@ -50,7 +50,7 @@ python -m solox --host={ip} --port=50003
 from solox.public.apm import APM
 # solox version >= 2.1.2
 
-apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android')
+apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview='true') # surfaceview： false = gpxinfo
 # apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
 cpu = apm.collectCpu() # %
 memory = apm.collectMemory() # MB
