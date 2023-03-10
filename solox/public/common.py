@@ -12,6 +12,7 @@ from tqdm import tqdm
 import traceback
 from urllib.request import urlopen
 import ssl
+import xlwt
 
 
 class Devices:
@@ -145,12 +146,38 @@ class Devices:
         return result
 
 
-
 class file:
 
     def __init__(self, fileroot='.'):
         self.fileroot = fileroot
         self.report_dir = self.get_repordir()
+    
+    def export_excel(self, platform, scene):
+        
+        android_log_file_list = ['cpu_app','cpu_sys','mem_total','mem_native','mem_dalvik',
+                                 'battery_level', 'battery_tem','upflow','downflow','fps']
+        ios_log_file_list = ['cpu_app','cpu_sys', 'mem_total', 'battery_tem', 'battery_current', 
+                             'battery_voltage', 'battery_power','upflow','downflow','fps']
+        log_file_list = android_log_file_list if platform == 'Android' else ios_log_file_list
+        wb = xlwt.Workbook(encoding = 'utf-8')
+       
+        k = 1
+        for name in log_file_list:
+            ws1 = wb.add_sheet(name)
+            ws1.write(0,0,'Time') 
+            ws1.write(0,1,'Value')
+            row = 1 #start row
+            col = 0 #start col
+            f = open(f'{self.report_dir}/{scene}/{name}.log','r',encoding='utf-8')
+            for lines in f: 
+                target = lines.split('=')
+                k += 1
+                for i in range(len(target)):
+                    ws1.write(row, col ,target[i])
+                    col += 1
+                row += 1
+                col = 0
+        wb.save(f'{scene}.xls') # xxx.xls   
 
     def get_repordir(self):
         report_dir = os.path.join(os.getcwd(), 'report')

@@ -62,7 +62,8 @@ def report():
                 }
                 f.close()
                 apm_data.append(dict_data)
-            except Exception as e:
+            except Exception:
+                traceback.print_exc()
                 continue
     apm_data_len = len(apm_data)
     return render_template('report.html', **locals())
@@ -108,7 +109,8 @@ def analysis():
                     apm_data['batteryPower'] = json_data['batteryPower']   
                 f.close()
                 break
-            except Exception as e:
+            except Exception:
+                traceback.print_exc()
                 break
     return render_template('analysis.html', **locals())
 
@@ -143,7 +145,7 @@ def analysis_pk():
                 apm_data['fpsAvg2'] = json_data['fpsAvg2']
                 f.close()
                 break
-            except Exception as e:
+            except Exception:
                 traceback.print_exc()
                 break
     return render_template('analysis_pk.html', **locals())

@@ -212,7 +212,6 @@ def getFps():
     pkgname = method._request(request, 'pkgname')
     device = method._request(request, 'device')
     surv = method._request(request, 'surv')
-    logger.info(surv)
     try:
         if model == '2-devices':
             pkgNameList = []
@@ -298,6 +297,17 @@ def editReport():
             result = {'status': 0, 'msg': str(e)}
     return result
 
+@api.route('/apm/export/report', methods=['post', 'get'])
+def exportReport():
+    platform = method._request(request, 'platform')
+    scene = method._request(request, 'scene')
+    try:
+        file().export_excel(platform=platform, scene=scene)
+        result = {'status': 1, 'msg':'success'}
+    except Exception as e:
+        traceback.print_exc()
+        result = {'status': 0, 'msg':str(e)}    
+    return result    
 
 @api.route('/apm/log', methods=['post', 'get'])
 def getLogData():

@@ -156,10 +156,9 @@ def startServer(host: str, port: int):
     :return:
     """
     try:
-        socketio.run(app, host=host, debug=True, port=port)
+        socketio.run(app, host=host, debug=False, port=port)
     except Exception:
-        pass
-
+        sys.exit(0)
 
 def main(host=_hostIP(), port=50003):
     """
@@ -177,9 +176,9 @@ def main(host=_hostIP(), port=50003):
         pool.close()
         pool.join()
     except Exception:
-        sys.exit()
+        pass
     except KeyboardInterrupt:
-        logger.info('stop solox success')
+        logger.info('stop solox success')                   
 
 if __name__ == '__main__':
     fire.Fire(main)

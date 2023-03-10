@@ -82,9 +82,14 @@ apm_type in ['cpu','memory','network','fps','battery']
 
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348055024-96e38b5e-d6b4-4a06-8070-0707e2fbcd99.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
-## Browser Recommend
+## Browser
 
 <img src="https://cdn.nlark.com/yuque/0/2023/png/153412/1677553244198-96ce5709-f33f-4038-888f-f330d1f74450.png" alt="Chrome" width="50px" height="50px" />
+
+## Terminal
+
+- windows: PowerShell
+- macOS：iTerm
 
 ## Thanks
 

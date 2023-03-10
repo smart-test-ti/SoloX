@@ -60,9 +60,8 @@ class CPU:
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
-        sysCpu = 0
-        for i in range(1, 3):
-            sysCpu += int(toks[i])
+        ileCpu = int(toks[4])
+        sysCpu = self.getTotalCpuStat() - ileCpu
         return sysCpu
 
     def getAndroidCpuRate(self):
@@ -74,7 +73,7 @@ class CPU:
         processCpuTime_2 = self.getprocessCpuStat()
         totalCpuTime_2 = self.getTotalCpuStat()
         sysCpuTime_2 = self.getSysCpuStat()
-        # syscpu usage=[(user_end +sys_end+nice_end) - (user_begin + sys_begin+nice_begin)]/(total_end - total_begin)*100
+        # syscpu usage=[( +sys_end+nice_end) - (user_begin + sys_begin+nice_begin)]/(total_end - total_begin)*100
         # appcpu usage=((utime + stime) - (utime_pre + stime_pre)) / (cpu_total - cpu_total_pre)
         appCpuRate = round(float((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
         sysCpuRate = round(float((sysCpuTime_2 - sysCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
@@ -137,8 +136,8 @@ class MEM:
             totalPass, nativePass, dalvikPass = self.getAndroidMem()
         else:
             totalPass, nativePass, dalvikPass = self.getiOSMem()
-
         apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+        time.sleep(1)
         f.add_log(f'{f.report_dir}/mem_total.log', apm_time, totalPass)
 
         if self.platform == 'Android':
@@ -344,8 +343,11 @@ class APM():
 
     def collectBattery(self):
         _battery = Battery(self.deviceId, self.platform)
-        level, temperature = _battery.getBattery()
-        result = {'level': level, 'temperature': temperature}
+        final = _battery.getBattery()
+        if self.platform == 'Android':
+            result = {'level': final[0], 'temperature': final[1]}
+        else:
+            result = {'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}
         logger.info(f'battery: {result}')
         return result
 

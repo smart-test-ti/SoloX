@@ -86,6 +86,10 @@
                             {% if lan == 'cn' %} 分析 {% else %} Analyse {% endif %} 
                         </a>
                         {% endif %}
+                        <a onclick="exportData('{{ apm.platform }}','{{ apm.scene }}')" class="btn btn-default">
+                            <svg t="1678356494310" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2849" width="50" height="50"><path d="M781.9 224.6H959v730.9c0 37.8-28.7 66.5-66.5 66.5H184c-37.8 0-66.5-28.7-66.5-66.5V69.8c0-37.8 28.7-66.5 66.5-66.5h553.7v177.1h44.4v44.1l-0.2 0.1z m-66.5-22.1V25.4H184c-24.5 0-44.4 19.9-44.4 44.4v885.6c0 24.5 19.9 44.4 44.4 44.4h708.5c24.5 0 44.4-19.9 44.4-44.4V246.6H759.8v-44.4h-44.4v0.3z" fill="#9FA0A6" p-id="2850"></path><path d="M95.5 113.9h354.2c24.5 0 44.4 19.9 44.4 44.4v354.2c0 24.5-19.9 44.4-44.4 44.4H95.5C71 557 51 537.1 51 512.6V158.1c0-24.2 20-44.2 44.5-44.2z" fill="#09CC6E" p-id="2851"></path><path d="M381.4 476.6H317c-4.5 0-8.5-2.4-10.6-6.3L259 382.9c-1.8-3.3-3.6-9.7-5.7-18.4h-0.6c-0.9 4.2-3 10.3-6.3 18.4-0.3 0.3-0.3 0.9-0.6 1.2l-47.2 86.4c-2.1 3.9-6 6.3-10.6 6.3h-43c-9.4 0-15.1-10.6-10-18.4l75-116.7c2.4-3.9 2.4-8.8 0.3-12.4l-68.6-116.7c-4.5-7.9 1.2-18.1 10.3-18.1h44.7c4.5 0 8.8 2.7 10.9 6.6l39 79.8c3.3 7 6.3 14.8 8.8 23.3h0.6c2.4-7.6 5.4-15.4 9.1-23.6 0.3-0.3 0.3-0.6 0.6-1.2l42.9-78.9c2.1-3.9 6-6.3 10.6-6.3h38.7c9.4 0 15.1 10.3 10.3 18.1l-70.4 115.5c-2.4 3.9-2.4 8.8 0 12.4l83.6 136.4z" fill="#FFFFFF" p-id="2852"></path><path d="M203.1 888.9h664.4v44.4H203.1v-44.4z m0-110.6h664.4v44.4H203.1v-44.4z m0-110.9h664.4v44.4H203.1v-44.4z" fill="#9FA0A6" p-id="2853"></path></svg>
+                            {% if lan == 'cn' %} 导出 {% else %} Export {% endif %} 
+                        </a>
                         <a onclick="editOneData('{{ apm.scene }}')" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#modal-edit">
                             <svg t="1638686685621" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7671" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#5866C7" p-id="7672"></path><path d="M466.304 192l-0.064 64H320a64 64 0 0 0-63.552 56.512L256 320v384a64 64 0 0 0 56.512 63.552L320 768h384a64 64 0 0 0 63.552-56.512L768 704V557.696h64v-239.36V704a128 128 0 0 1-128 128H320a128 128 0 0 1-128-128V320a128 128 0 0 1 128-128h146.304z" fill="#FFFFFF" p-id="7673"></path><path d="M788.992 267.008a32 32 0 0 1 0 45.248l-316.8 316.8a32 32 0 0 1-45.184-45.312l316.8-316.8a32 32 0 0 1 45.184 0z" fill="#FFFFFF" p-id="7674"></path></svg>
                             {% if lan == 'cn' %} 编辑 {% else %} Edit {% endif %} 
@@ -94,7 +98,6 @@
                             <svg t="1635400029781" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17941" width="200" height="200"><path d="M877.79 217.23H624.22c0-36.02-29.2-65.23-65.23-65.23H465c-36.02 0-65.23 29.2-65.23 65.23H146.21c-18.01 0-32.61 14.6-32.61 32.61 0 18.01 14.6 32.61 32.61 32.61h49.75l14.43 528.79c1.06 33.91 25.21 60.76 54.64 60.76h493.93c29.43 0 53.58-26.86 54.64-60.76l14.48-528.79h49.7c18.01 0 32.61-14.6 32.61-32.61 0.01-18.01-14.59-32.61-32.6-32.61zM364.24 748.41c-17.98 0.82-33.4-10.01-34.44-24.19L308 427.56c-1.04-14.18 12.69-26.34 30.67-27.16 17.98-0.82 33.4 10.01 34.45 24.19l21.8 296.67c1.04 14.17-12.7 26.33-30.68 27.15z m180.37-25.42c0 14.2-14.6 25.72-32.61 25.72-18.01 0-32.61-11.51-32.61-25.72V425.83c0-14.2 14.6-25.72 32.61-25.72 18.01 0 32.61 11.51 32.61 25.72v297.16zM716 427.56l-21.8 296.67c-1.04 14.18-16.46 25.01-34.44 24.19-17.98-0.82-31.71-12.98-30.67-27.16l21.8-296.67c1.04-14.18 16.46-25.01 34.44-24.19 17.98 0.82 31.72 12.98 30.67 27.16z" fill="#FF5D5D" p-id="17942"></path></svg>
                             {% if lan == 'cn' %} 删除 {% else %} Delete {% endif %} 
                         </a>
-                    </div>
                 </td>
             </tr>
             {% endfor %}
@@ -259,6 +262,28 @@
         });
         return num;
     }
+    
+    function exportData(platform, scene){
+        window.event.preventDefault();
+        $.ajax({
+            url: "/apm/export/report",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{scene: scene, platform: platform},
+            beforeSend: function () {
+                SwalLoading('Exporting',scene)
+            },
+            success: function (data) {
+                if(data['status'] != 1 ){
+                    SwalFire('error', 'Export failed !', data['msg'], 2000);
+                }else{
+                    SwalFire('success', scene+'.xls in current directory', '', 4000);
+                }
+            }
+        });
+    }
+
     function removeCheckedData(){
         $('#cancel_remove_selected_confirm').click();
         var checkLength = $("input:checkbox[name='checksId']:checked").length;
@@ -351,7 +376,7 @@
                     },
                     success: function (data) {
                         if(data['status'] != 1 ){
-                            SwalFire('error','update failed',data['msg'])
+                            SwalFire('error', 'update failed !', data['msg'], 2000);
                         }else{
                             location.reload();
                         }

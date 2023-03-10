@@ -86,6 +86,11 @@ apm_type in ['cpu','memory','network','fps','battery']
 
 <img src="https://cdn.nlark.com/yuque/0/2023/png/153412/1677553244198-96ce5709-f33f-4038-888f-f330d1f74450.png" alt="Chrome" width="50px" height="50px" />
 
+## 推荐终端
+
+- windows: PowerShell
+- macOS：iTerm
+
 ## 感谢
 
 - https://github.com/alibaba/taobao-iphone-device

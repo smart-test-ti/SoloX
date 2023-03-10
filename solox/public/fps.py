@@ -379,9 +379,8 @@ class SurfaceStatsCollector(object):
             PROFILEDATA_line = 0
             for line in results:
                 if not isHaveFoundWindow:
-                    if "Window" in line and self.focus_window in line:
+                    if "Window" in line and self.focus_window.split('#')[0] in line:
                         isHaveFoundWindow = True
-                #                         logger.debug("Window line:"+line)
                 if not isHaveFoundWindow:
                     continue
                 if "PROFILEDATA" in line:
@@ -389,7 +388,6 @@ class SurfaceStatsCollector(object):
                 fields = []
                 fields = line.split(",")
                 if fields and '0' == fields[0]:
-                    #                     logger.debug(line)
                     # 获取INTENDED_VSYNC VSYNC FRAME_COMPLETED时间 利用VSYNC计算fps jank
                     timestamp = [int(fields[1]), int(fields[2]), int(fields[13])]
                     if timestamp[1] == pending_fence_timestamp:
