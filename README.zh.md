@@ -89,13 +89,13 @@ apm_type in ['cpu','memory','network','fps','battery']
 ## 推荐终端
 
 - windows: PowerShell
-- macOS：iTerm
+- macOS：iTerm2 (https://iterm2.com/) 
 
 ## 感谢
 
 - https://github.com/alibaba/taobao-iphone-device
 
 ## 交流
-- Gmail: rafacheninc@gmail.com
+- Email: laoqi1988_f1@126.com
 
 
