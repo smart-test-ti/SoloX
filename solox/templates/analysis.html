@@ -482,8 +482,8 @@
         $('#fps_loading').click();
         if(platform == 'Android'){
             $('#jank_loading').click();
-            $('#battery_loading').click();
         }
+        $('#battery_loading').click();
         $('#networkdata_loading').click();
     });
 
@@ -554,9 +554,8 @@
             }
         });
     });
-
-    if(platform == 'Android'){
-        var battery_chart = new ApexCharts(document.querySelector("#chart-battery"), options('line'));
+    
+    var battery_chart = new ApexCharts(document.querySelector("#chart-battery"), options('line'));
         battery_chart.render();
         $('#battery_loading').click(function () {
             $.ajax({
@@ -586,14 +585,24 @@
                         }])
                     }else {
                         battery_chart.updateSeries([{
-                            name: 'level',
-                            data: data['batteryLevel']
+                            name: 'temperature',
+                            data: data['batteryTem']
+                        },{
+                            name: 'Current',
+                            data: data['batteryCurrent']
+                        },{
+                            name: 'Voltage',
+                            data: data['batteryVoltage']
+                        },{
+                            name: 'Power',
+                            data: data['batteryPower']
                         }])
                     }
                 }
             });
         });
 
+    if(platform == 'Android'){
         var jank_chart = new ApexCharts(document.querySelector("#chart-jank"), options('line'));
         jank_chart.render();
         $('#jank_loading').click(function () {
@@ -604,7 +613,7 @@
                 cache: false,
                 data:{
                     scene:'{{ scene }}',
-                    target:'jank',
+                    target:'fps',
                     platform:platform
                 },
                 beforeSend: function () {
@@ -615,8 +624,8 @@
                 },
                 success: function (data) {
                     jank_chart.updateSeries([{
-                        name: 'jank value',
-                        data: data['log_data']
+                        name: 'jank',
+                        data: data['jank']
                     }])
                 }
             });
@@ -644,8 +653,8 @@
             },
             success: function (data) {
                 fps_chart.updateSeries([{
-                    name: 'fps value',
-                    data: data['log_data']
+                    name: 'fps',
+                    data: data['fps']
                 }])
             }
         });

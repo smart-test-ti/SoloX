@@ -10,6 +10,7 @@ from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
 from solox.public.common import Devices, file, Method, Install
 
 d = Devices()
+f = file()
 api = Blueprint("api", __name__)
 method = Method()
 
@@ -316,31 +317,14 @@ def getLogData():
     target = method._request(request, 'target')
     platform = method._request(request, 'platform')
     try:
-        if target == 'cpu':
-            cpuAppData = file().readLog(scene=scene, filename='cpu_app.log')[0]
-            cpuSysData = file().readLog(scene=scene, filename='cpu_sys.log')[0]
-            result = {'status': 1, 'cpuAppData': cpuAppData, 'cpuSysData': cpuSysData}
-        elif target == 'mem':
-            memTotalData = file().readLog(scene=scene, filename='mem_total.log')[0]
-            if platform == 'Android':
-                memNativeData = file().readLog(scene=scene, filename='mem_native.log')[0]
-                memDalvikData = file().readLog(scene=scene, filename='mem_dalvik.log')[0]
-                result = {'status': 1, 'memTotalData': memTotalData, 'memNativeData': memNativeData,
-                          'memDalvikData': memDalvikData}
-            else:
-                result = {'status': 1, 'memTotalData': memTotalData}
-
-        elif target == 'battery':
-            batteryLevel = file().readLog(scene=scene, filename='battery_level.log')[0]
-            batteryTem = file().readLog(scene=scene, filename='battery_tem.log')[0]
-            result = {'status': 1, 'batteryLevel': batteryLevel, 'batteryTem': batteryTem}
-        elif target == 'flow':
-            upFlow = file().readLog(scene=scene, filename='upflow.log')[0]
-            downFlow = file().readLog(scene=scene, filename='downflow.log')[0]
-            result = {'status': 1, 'upFlow': upFlow, 'downFlow': downFlow}
-        else:
-            log_data = file().readLog(scene=scene, filename=f'{target}.log')[0]
-            result = {'status': 1, 'log_data': log_data}
+        fucDic = {
+            'cpu': f.getCpuLog(platform, scene),
+            'mem': f.getMemLog(platform, scene),
+            'battery': f.getBatteryLog(platform, scene),
+            'flow': f.getFlowLog(platform, scene),
+            'fps': f.getFpsLog(platform, scene)
+        }
+        result = fucDic[target]
     except Exception as e:
         result = {'status': 0, 'msg': str(e)}
     return result

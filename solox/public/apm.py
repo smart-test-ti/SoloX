@@ -183,7 +183,7 @@ class Battery:
         ioDict =  d.get_io_power()
         tem = ioDict['Diagnostics']['IORegistry']['Temperature']
         current = abs(ioDict['Diagnostics']['IORegistry']['InstantAmperage'])
-        voltage = ioDict['Diagnostics']['IORegistry']['voltage']
+        voltage = ioDict['Diagnostics']['IORegistry']['Voltage']
         power = current * voltage / 1000
         apm_time = datetime.datetime.now().strftime('%H:%M:%S')
         f.add_log(f'{f.report_dir}/battery_tem.log', apm_time, tem) # unknown

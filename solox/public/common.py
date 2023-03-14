@@ -245,7 +245,59 @@ class file:
                 })
                 target_data_list.append(float(line.split('=')[1].strip()))
         return log_data_list, target_data_list
-
+    
+    def getCpuLog(self, platform, scene):
+        targetDic = {}
+        targetDic['cpuAppData'] = self.readLog(scene=scene, filename='cpu_app.log')[0]
+        targetDic['cpuSysData'] = self.readLog(scene=scene, filename='cpu_sys.log')[0]
+        result = {'status': 1, 'cpuAppData': targetDic['cpuAppData'], 'cpuSysData': targetDic['cpuSysData']}
+        return result
+    
+    def getMemLog(self, platform, scene):
+        targetDic = {}
+        targetDic['memTotalData'] = self.readLog(scene=scene, filename='mem_total.log')[0]
+        if platform == 'Android':
+            targetDic['memNativeData']  = self.readLog(scene=scene, filename='mem_native.log')[0]
+            targetDic['memDalvikData']  = self.readLog(scene=scene, filename='mem_dalvik.log')[0]
+            result = {'status': 1, 'memTotalData': targetDic['memTotalData'], 
+                      'memNativeData': targetDic['memNativeData'],
+                      'memDalvikData': targetDic['memDalvikData']}
+        else:
+            result = {'status': 1, 'memTotalData': targetDic['memTotalData']}
+        return result
+    
+    def getBatteryLog(self, platform, scene):
+        targetDic = {}
+        if platform == 'Android':
+            targetDic['batteryLevel'] = self.readLog(scene=scene, filename='battery_level.log')[0]
+            targetDic['batteryTem'] = self.readLog(scene=scene, filename='battery_tem.log')[0]
+            result = {'status': 1, 'batteryLevel': targetDic['batteryLevel'], 'batteryTem': targetDic['batteryTem']}
+        else:
+            targetDic['batteryTem'] = self.readLog(scene=scene, filename='battery_tem.log')[0]
+            targetDic['batteryCurrent'] = self.readLog(scene=scene, filename='battery_current.log')[0]
+            targetDic['batteryVoltage'] = self.readLog(scene=scene, filename='battery_voltage.log')[0]
+            targetDic['batteryPower'] = self.readLog(scene=scene, filename='battery_power.log')[0]
+            result = {'status': 1, 'batteryTem': targetDic['batteryTem'], 'batteryCurrent': targetDic['batteryCurrent'],
+                      'batteryVoltage': targetDic['batteryVoltage'], 'batteryPower': targetDic['batteryPower']}    
+        return result
+    
+    def getFlowLog(self, platform, scene):
+        targetDic = {}
+        targetDic['upFlow'] = self.readLog(scene=scene, filename='upflow.log')[0]
+        targetDic['downFlow'] = self.readLog(scene=scene, filename='downflow.log')[0]
+        result = {'status': 1, 'upFlow': targetDic['upFlow'], 'downFlow': targetDic['downFlow']}
+        return result
+    
+    def getFpsLog(self, platform, scene):
+        targetDic = {}
+        targetDic['fps'] = self.readLog(scene=scene, filename='fps.log')[0]
+        if platform == 'Android':
+            targetDic['jank'] = self.readLog(scene=scene, filename='jank.log')[0]
+            result = {'status': 1, 'fps': targetDic['fps'], 'jank': targetDic['jank']}
+        else:
+            result = {'status': 1, 'fps': targetDic['fps']}     
+        return result
+        
     def approximateSize(self, size, a_kilobyte_is_1024_bytes=True):
         '''
         convert a file size to human-readable form.

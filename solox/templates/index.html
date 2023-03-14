@@ -1115,7 +1115,7 @@ SoloX - APM
                 fps_chart = collectPers(device,pkgname,'fps',title,getFps(pkgname,device,fps_switch));
             }else{
                 let title = 'FPS（HZ）';
-                fps_chart = collectPers(device,pkgname,'fps_ios',title,getFps(pkgname,device));
+                fps_chart = collectPers(device,pkgname,'fps_ios',title,getFps(pkgname,device,fps_switch));
             }
         }
     }
@@ -1135,7 +1135,6 @@ SoloX - APM
             if(platform === 'Android'){
                 collectBattery(device);
             }
-
         }else{
             if(lan == 'cn'){
                 SwalFire('error','执行错误','没有选择APP或者设备',2000);
