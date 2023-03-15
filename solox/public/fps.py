@@ -399,9 +399,12 @@ class SurfaceStatsCollector(object):
                 return (None, None)
             isHaveFoundWindow = False
             PROFILEDATA_line = 0
+            activity = self.focus_window()
+            if activity.__contains__('#'):
+                activity = activity.split('#')[0]
             for line in results:
                 if not isHaveFoundWindow:
-                    if "Window" in line or self.focus_window.split('#')[0] in line:
+                    if "Window" in line and activity in line:
                         isHaveFoundWindow = True
                 if not isHaveFoundWindow:
                     continue
