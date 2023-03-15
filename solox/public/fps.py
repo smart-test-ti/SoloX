@@ -65,9 +65,9 @@ class SurfaceStatsCollector(object):
             self.collector_thread = None
             if self.fps_queue:
                 self.fps_queue.task_done()
-
-    def get_focus_activity(self):
-        """获取activity"""
+     
+    def get_huawei_activity(self):
+        """获取华为activity"""
         activity_name = ''
         activity_line = ''
         dumpsys_result = adb.shell(cmd='dumpsys SurfaceFlinger | {} {}'.format(d._filterType(), self.package_name), deviceId=self.device)
@@ -80,6 +80,28 @@ class SurfaceStatsCollector(object):
         activity_line_split = activity_line.split(' ') 
         activity_name = activity_line_split[2].rstrip(']')
         
+        return activity_name
+     
+    def get_focus_activity(self):
+        """通过dumpsys window windows获取activity名称  window名"""
+        activity_name = ''
+        activity_line = ''
+        dumpsys_result = adb.shell(cmd='dumpsys window windows', deviceId=self.device)
+        dumpsys_result_list = dumpsys_result.split('\n')
+        for line in dumpsys_result_list:
+            if line.find('mCurrentFocus') != -1:
+                activity_line = line.strip()
+        if activity_line:
+            activity_line_split = activity_line.split(' ')
+        else:
+            return activity_name
+        if len(activity_line_split) > 1:
+            if activity_line_split[1] == 'u0':
+                activity_name = activity_line_split[2].rstrip('}')
+            else:
+                activity_name = activity_line_split[1]
+        if not activity_name:
+            activity_name = self.get_huawei_activity()        
         return activity_name
 
     def get_foreground_process(self):
@@ -379,7 +401,7 @@ class SurfaceStatsCollector(object):
             PROFILEDATA_line = 0
             for line in results:
                 if not isHaveFoundWindow:
-                    if "Window" in line and self.focus_window.split('#')[0] in line:
+                    if "Window" in line or self.focus_window.split('#')[0] in line:
                         isHaveFoundWindow = True
                 if not isHaveFoundWindow:
                     continue
