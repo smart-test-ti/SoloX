@@ -70,16 +70,14 @@ class SurfaceStatsCollector(object):
         """获取华为activity"""
         activity_name = ''
         activity_line = ''
-        dumpsys_result = adb.shell(cmd='dumpsys SurfaceFlinger | {} {}'.format(d._filterType(), self.package_name), deviceId=self.device)
-        dumpsys_result_list = dumpsys_result.split('\n')
-        
+        dumpsys_result = adb.shell(cmd='dumpsys SurfaceFlinger --list | {} {}'.format(d._filterType(), self.package_name), deviceId=self.device)
+        dumpsys_result_list = dumpsys_result.split('\n')        
         for line in dumpsys_result_list:
-            if line.find('[SurfaceView') != -1:
+            if line.startswith('SurfaceView') and line.find(self.package_name) != -1:
                 activity_line = line.strip()
-                
+                break    
         activity_line_split = activity_line.split(' ') 
-        activity_name = activity_line_split[2].rstrip(']')
-        
+        activity_name = activity_line_split[2]
         return activity_name
      
     def get_focus_activity(self):
@@ -399,8 +397,8 @@ class SurfaceStatsCollector(object):
                 return (None, None)
             isHaveFoundWindow = False
             PROFILEDATA_line = 0
-            activity = self.focus_window()
-            if activity.__contains__('#'):
+            activity = self.focus_window
+            if self.focus_window.__contains__('#'):
                 activity = activity.split('#')[0]
             for line in results:
                 if not isHaveFoundWindow:
@@ -423,6 +421,8 @@ class SurfaceStatsCollector(object):
                 if 2 == PROFILEDATA_line:
                     break
         else:
+            if not self.focus_window:
+                self.focus_window = self.get_huawei_activity()
             results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency %s' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
