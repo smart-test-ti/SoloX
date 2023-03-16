@@ -66,18 +66,24 @@ class SurfaceStatsCollector(object):
             if self.fps_queue:
                 self.fps_queue.task_done()
      
-    def get_huawei_activity(self):
-        """获取华为activity"""
+    def get_surfaceview_activity(self):
+        """兼容不同设备的surfaceview"""
         activity_name = ''
         activity_line = ''
         dumpsys_result = adb.shell(cmd='dumpsys SurfaceFlinger --list | {} {}'.format(d._filterType(), self.package_name), deviceId=self.device)
-        dumpsys_result_list = dumpsys_result.split('\n')        
+        dumpsys_result_list = dumpsys_result.split('\n')    
         for line in dumpsys_result_list:
             if line.startswith('SurfaceView') and line.find(self.package_name) != -1:
                 activity_line = line.strip()
-                break    
-        activity_line_split = activity_line.split(' ') 
-        activity_name = activity_line_split[2]
+                break
+        if activity_line:       
+            activity_name = activity_line.split(' ')[2]
+        else:
+            # 兼容魅族的机器
+            activity_name = dumpsys_result_list[len(dumpsys_result_list) - 1]
+            if not activity_name.__contains__(self.package_name):
+                logger.error('get activity name failed, Please provide SurfaceFlinger --list information to the author')
+                logger.info('dumpsys SurfaceFlinger --list info: {}'.format(dumpsys_result))
         return activity_name
      
     def get_focus_activity(self):
@@ -99,7 +105,7 @@ class SurfaceStatsCollector(object):
             else:
                 activity_name = activity_line_split[1]
         if not activity_name:
-            activity_name = self.get_huawei_activity()        
+            activity_name = self.get_surfaceview_activity()        
         return activity_name
 
     def get_foreground_process(self):
@@ -421,8 +427,7 @@ class SurfaceStatsCollector(object):
                 if 2 == PROFILEDATA_line:
                     break
         else:
-            if not self.focus_window:
-                self.focus_window = self.get_huawei_activity()
+            self.focus_window = self.get_surfaceview_activity()
             results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency %s' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
