@@ -4,10 +4,10 @@ import traceback
 from flask import Blueprint
 from flask import render_template
 from flask import request
-from solox.public.common import file
+from solox.public.common import file,Method
 
 page = Blueprint("page", __name__)
-
+m = Method()
 
 @page.app_errorhandler(404)
 def page_404(e):
@@ -87,30 +87,29 @@ def analysis():
                     content = json.dumps(apm_dict)
                     with open(f'{report_dir}/{scene}/apm.json', 'a+', encoding="utf-8") as apmfile:
                         apmfile.write(content)
-
                 f = open(f'{report_dir}/{scene}/apm.json')
                 json_data = json.loads(f.read())
-                apm_data['cpuAppRate'] = json_data['cpuAppRate']
-                apm_data['cpuSystemRate'] = json_data['cpuSystemRate']
-                apm_data['totalPassAvg'] = json_data['totalPassAvg']
-                apm_data['nativePassAvg'] = json_data['nativePassAvg']
-                apm_data['dalvikPassAvg'] = json_data['dalvikPassAvg']
-                apm_data['fps'] = json_data['fps']
-                apm_data['jank'] = json_data['jank']
-                apm_data['flow_send'] = json_data['flow_send']
-                apm_data['flow_recv'] = json_data['flow_recv']
+                apm_data['cpuAppRate'] = m._setValue(json_data['cpuAppRate'])
+                apm_data['cpuSystemRate'] = m._setValue(json_data['cpuSystemRate'])
+                apm_data['totalPassAvg'] = m._setValue(json_data['totalPassAvg'])
+                apm_data['nativePassAvg'] = m._setValue(json_data['nativePassAvg'])
+                apm_data['dalvikPassAvg'] = m._setValue(json_data['dalvikPassAvg'])
+                apm_data['fps'] = m._setValue(json_data['fps'])
+                apm_data['jank'] = m._setValue(json_data['jank'])
+                apm_data['flow_send'] = m._setValue(json_data['flow_send'])
+                apm_data['flow_recv'] = m._setValue(json_data['flow_recv'])
                 if platform == 'Android':
-                    apm_data['batteryLevel'] = json_data['batteryLevel']
-                    apm_data['batteryTeml'] = json_data['batteryTeml']
+                    apm_data['batteryLevel'] = m._setValue(json_data['batteryLevel'])
+                    apm_data['batteryTeml'] = m._setValue(json_data['batteryTeml'])
                 else:
-                    apm_data['batteryTeml'] = json_data['batteryTeml']
-                    apm_data['batteryCurrent'] = json_data['batteryCurrent']
-                    apm_data['batteryVoltage'] = json_data['batteryVoltage']
-                    apm_data['batteryPower'] = json_data['batteryPower']   
+                    apm_data['batteryTeml'] = m._setValue(json_data['batteryTeml'])
+                    apm_data['batteryCurrent'] = m._setValue(json_data['batteryCurrent'])
+                    apm_data['batteryVoltage'] = m._setValue(json_data['batteryVoltage'])
+                    apm_data['batteryPower'] = m._setValue(json_data['batteryPower'])
                 f.close()
-                break
             except Exception:
                 traceback.print_exc()
+            finally:
                 break
     return render_template('analysis.html', **locals())
 
@@ -144,8 +143,8 @@ def analysis_pk():
                 apm_data['fpsAvg1'] = json_data['fpsAvg1']
                 apm_data['fpsAvg2'] = json_data['fpsAvg2']
                 f.close()
-                break
             except Exception:
                 traceback.print_exc()
+            finally:
                 break
     return render_template('analysis_pk.html', **locals())

@@ -246,13 +246,15 @@ def getBattery():
     """get Battery data"""
     platform = method._request(request, 'platform')
     device = method._request(request, 'device')
-    deviceId = d.getIdbyDevice(device, platform)
     try:
-        battery_monitor = Battery(deviceId=deviceId, platform=platform)
-        final = battery_monitor.getBattery()
         if platform == 'Android':
+            deviceId = d.getIdbyDevice(device, platform)
+            battery_monitor = Battery(deviceId=deviceId, platform=platform)
+            final = battery_monitor.getBattery()
             result = {'status': 1, 'level': final[0], 'temperature': final[1]}
         else:
+            battery_monitor = Battery(deviceId='', platform=platform)
+            final = battery_monitor.getBattery()
             result = {'status': 1, 'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}    
     except Exception as e:
         result = {'status': 1, 'level': 0, 'temperature': 0}
@@ -367,23 +369,23 @@ def apmCollect():
     try:
         if apm_type == 'cpu':
             cpu = CPU(pkgName=pkgname, deviceId=deviceid, platform=platform)
-            appCpuRate, systemCpuRate = cpu.getCpuRate()
+            appCpuRate, systemCpuRate = cpu.getCpuRate(useApi=True)
             result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
         elif apm_type == 'memory':
             mem = MEM(pkgName=pkgname, deviceId=deviceid, platform=platform)
-            totalPass, nativePass, dalvikPass = mem.getProcessMem()
+            totalPass, nativePass, dalvikPass = mem.getProcessMem(useApi=True)
             result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
         elif apm_type == 'network':
             flow = Flow(pkgName=pkgname, deviceId=deviceid, platform=platform)
-            data = flow.getNetWorkData()
+            data = flow.getNetWorkData(useApi=True)
             result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
         elif apm_type == 'fps':
             fps_monitor = FPS(pkgName=pkgname, deviceId=deviceid, platform=platform)
-            fps, jank = fps_monitor.getFPS()
+            fps, jank = fps_monitor.getFPS(useApi=True)
             result = {'status': 1, 'fps': fps, 'jank': jank}
         elif apm_type == 'battery':
             battery_monitor = Battery(deviceId=deviceid)
-            level, temperature = battery_monitor.getBattery()
+            level, temperature = battery_monitor.getBattery(useApi=True)
             result = {'status': 1, 'level': level, 'temperature': temperature}
         else:
             result = {'status': 0, 'msg': 'no this apm_type'}

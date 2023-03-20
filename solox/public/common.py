@@ -469,7 +469,13 @@ class Method:
             return request.args[object]
         else:
             raise Exception('request method error')
-
+        
+    def _setValue(self, value):
+        try:
+            result = value
+        except:
+            result = 0        
+        return result
 
 class Install:
 
