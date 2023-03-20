@@ -187,9 +187,9 @@ class Battery:
         power = current * voltage / 1000
         apm_time = datetime.datetime.now().strftime('%H:%M:%S')
         f.add_log(f'{f.report_dir}/battery_tem.log', apm_time, tem) # unknown
-        f.add_log(f'{f.report_dir}/battery_current', apm_time, current) #mA
-        f.add_log(f'{f.report_dir}/battery_voltage', apm_time, voltage) #mV
-        f.add_log(f'{f.report_dir}/battery_power', apm_time, power)
+        f.add_log(f'{f.report_dir}/battery_current.log', apm_time, current) #mA
+        f.add_log(f'{f.report_dir}/battery_voltage.log', apm_time, voltage) #mV
+        f.add_log(f'{f.report_dir}/battery_power.log', apm_time, power)
         return tem, current, voltage, power
 
     def recoverBattery(self):
