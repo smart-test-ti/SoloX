@@ -45,6 +45,7 @@ def initialize():
                     os.remove(filename)
         result = {'status': 1, 'msg': 'initialize env success'}
     except Exception as e:
+        traceback.print_exc()
         result = {'status': 0, 'msg': str(e)}
 
     return result
@@ -133,6 +134,7 @@ def getCpuRate():
             result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
     except Exception as e:
         logger.error(f'get cpu failed : {str(e)}')
+        traceback.print_exc()
         result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate': 0, 'first': 0, 'second': 0}
     return result
 
@@ -167,6 +169,7 @@ def getMEM():
             result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
     except Exception as e:
         logger.error(f'get memory data failed : {str(e)}')
+        traceback.print_exc()
         result = {'status': 1, 'totalPass': 0, 'nativePass': 0, 'dalvikPass': 0, 'first': 0, 'second': 0}
     return result
 
@@ -201,6 +204,7 @@ def getNetWorkData():
             result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
     except Exception as e:
         logger.error(f'get network data failed : {str(e)}')
+        traceback.print_exc()
         result = {'status': 1, 'upflow': 0, 'downflow': 0, 'first': 0, 'second': 0}
     return result
 
@@ -247,17 +251,16 @@ def getBattery():
     platform = method._request(request, 'platform')
     device = method._request(request, 'device')
     try:
+        deviceId = d.getIdbyDevice(device, platform)
+        battery_monitor = Battery(deviceId=deviceId, platform=platform)
+        final = battery_monitor.getBattery()
         if platform == 'Android':
-            deviceId = d.getIdbyDevice(device, platform)
-            battery_monitor = Battery(deviceId=deviceId, platform=platform)
-            final = battery_monitor.getBattery()
             result = {'status': 1, 'level': final[0], 'temperature': final[1]}
         else:
-            battery_monitor = Battery(deviceId='', platform=platform)
-            final = battery_monitor.getBattery()
             result = {'status': 1, 'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}    
-    except Exception as e:
-        result = {'status': 1, 'level': 0, 'temperature': 0}
+    except Exception:
+        traceback.print_exc()
+        result = {'status': 1, 'level': 0, 'temperature': 0, 'current':0, 'voltage':0 , 'power':0}
     return result
 
 

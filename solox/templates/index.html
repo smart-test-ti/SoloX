@@ -1132,9 +1132,7 @@ SoloX - APM
             collectMem(device,pkgname);
             collectNetwork(device,pkgname);
             collectFps(device,pkgname);
-            if(platform === 'Android'){
-                collectBattery(device);
-            }
+            collectBattery(device);
         }else{
             if(lan == 'cn'){
                 SwalFire('error','执行错误','没有选择APP或者设备',2000);
