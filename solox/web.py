@@ -65,11 +65,13 @@ def disconnect():
 
 def checkPyVer():
     """check python version"""
-    if int(platform.python_version().split('.')[0]) < 3:
-        logger.error('python version must be >2,your python version is {}'.format(platform.python_version()))
-        logger.error('please install python::3 and pip3 install -U solox')
+    versions = platform.python_version().split('.')[0]
+    if int(versions[0]) < 3:
+        logger.error('python version must be 3.10+ ,your python version is {}'.format(platform.python_version()))
         sys.exit()
-
+    elif int(versions[1]) < 10:
+        logger.error('python version must be 3.10+ ,your python version is {}'.format(platform.python_version()))
+        sys.exit()
 
 def hostIP():
     """

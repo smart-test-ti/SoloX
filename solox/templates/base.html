@@ -137,7 +137,7 @@
                         </li>
                         <li class="list-inline-item">
                             <a href="https://github.com/smart-test-ti/SoloX/releases" target="_blank" class="link-secondary" rel="noopener">
-                                {% if lan == 'cn' %} 版本 {% else %} Releases {% endif %} . V2.5.3
+                                {% if lan == 'cn' %} 版本 {% else %} Releases {% endif %} . V2.5.4
                             </a>
                         </li>
                     </ul>
@@ -155,36 +155,62 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <div class="row mb-3">
-            <div class="col-md-6 col-xl-12">
-                <div class="mb-3">
-                    <label class="form-label">{% if lan == 'cn' %} CPU告警值 {% else %} CPU warning value {% endif %}</label>
-                    <input id="cpu_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ cpuWarning }}">
+        <div class="card-tabs">
+            <ul class="nav nav-tabs">
+              <li class="nav-item"><a href="#tab-top-1" class="nav-link active" data-bs-toggle="tab">Warning Value</a></li>
+              <li class="nav-item"><a href="#tab-top-2" class="nav-link" data-bs-toggle="tab">Timer</a></li>
+            </ul>
+            <div class="tab-content">
+              <!-- Content of card #1 -->
+              <div id="tab-top-1" class="card tab-pane active show">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6 col-xl-12">
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} CPU告警值 {% else %} CPU warning value {% endif %}</label>
+                                <input id="cpu_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ cpuWarning }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} 内存告警值 {% else %} Memory warning value {% endif %}</label>
+                                <input id="mem_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ memWarning }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} FPS告警值 {% else %} FPS warning value {% endif %}</label>
+                                <input id="fps_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ fpsWarning }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} 电量告警值 {% else %} Battery warning value {% endif %}</label>
+                                <input id="battery_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ betteryWarning }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} 上行流量告警值 {% else %} Send network data warning value {% endif %}</label>
+                                <input id="upflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ netdataSendWarning }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} 下行流量告警值 {% else %} Recv network data warning value {% endif %}</label>
+                                <input id="downflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ netdataRecvWarning }}">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">{% if lan == 'cn' %} 内存告警值 {% else %} Memory warning value {% endif %}</label>
-                    <input id="mem_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ memWarning }}">
+              </div>
+              <!-- Content of card #2 -->
+              <div id="tab-top-2" class="card tab-pane">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6 col-xl-12">
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} 持续执行时间（分钟） {% else %} runningTime（minute） {% endif %}</label>
+                                <input id="running_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ runningTime }}">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">{% if lan == 'cn' %} FPS告警值 {% else %} FPS warning value {% endif %}</label>
-                    <input id="fps_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ fpsWarning }}">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">{% if lan == 'cn' %} 电量告警值 {% else %} Battery warning value {% endif %}</label>
-                    <input id="battery_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ betteryWarning }}">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">{% if lan == 'cn' %} 上行流量告警值 {% else %} Send network data warning value {% endif %}</label>
-                    <input id="upflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ netdataSendWarning }}">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">{% if lan == 'cn' %} 下行流量告警值 {% else %} Recv network data warning value {% endif %}</label>
-                    <input id="downflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ netdataRecvWarning }}">
-                </div>
+              </div>
             </div>
-        </div>
-
-        <a class="btn btn-primary mb-3" onclick="saveWorningValue()">
+          </div>
+        
+        <a class="btn btn-primary mt-3" onclick="saveWorningValue()">
             {% if lan == 'cn' %} 保存 {% else %} Save {% endif %}
         </a>
     </div>
@@ -313,7 +339,8 @@
                 fpsWarning:parseInt($('#fps_warning_value').val()),
                 netdataRecvWarning:parseInt($('#down_warning_value').val()),
                 netdataSendWarning:parseInt($('#upflow_warning_value').val()),
-                betteryWarning:parseInt($('#battery_warning_value').val())
+                betteryWarning:parseInt($('#battery_warning_value').val()),
+                runningTime:parseInt($('#running_value').val())
             },
             beforeSend: function () {
                 SwalLoading('Save data','Saving warning data.')

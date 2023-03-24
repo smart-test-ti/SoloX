@@ -27,7 +27,7 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 
 ## Installation
 ```
-1.Python:3.6+ 
+1.Python:3.10+ (python3.6+  lower v2.5.3)
 2.pip install -U solox
 3.pip install -i  https://mirrors.ustc.edu.cn/pypi/web/simple -U solox (Recommend)
 
@@ -42,7 +42,7 @@ python -m solox
 ### customize
 
 ```shell
-python -m solox --host={ip} --port=50003
+python -m solox --host={ip} --port={port}
 ```
 
 ## Collect in python 
@@ -50,13 +50,16 @@ python -m solox --host={ip} --port=50003
 from solox.public.apm import APM
 # solox version >= 2.1.2
 
-apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview='true') # surfaceview： false = gpxinfo
+apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview=True)
 # apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
+# surfaceview： false = gfxinfo (Developer - GPU rendering mode - adb shell dumpsys gfxinfo)
+
 cpu = apm.collectCpu() # %
 memory = apm.collectMemory() # MB
 flow = apm.collectFlow() # KB
 fps = apm.collectFps() # HZ
-battery = apm.collectBattery() # level:% temperature:°C
+battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV power:w
+gpu = apm.collectGpu() # % only supports ios
 ```
 
 ## Collect in API 
@@ -71,9 +74,10 @@ Windows: start /min python3 -m solox &
 
 ### Request apm data from api
 ```
-http://{ip}:50003/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&apm_type=cpu
+- Android: http://{ip}:{port}/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&target=cpu
+- iOS: http://{ip}:{port}/apm/collect?platform=iOS&pkgname=com.bilibili.app.in&target=cpu
 
-apm_type in ['cpu','memory','network','fps','battery']
+target in ['cpu','memory','network','fps','battery']
 ```
 
 ## PK Model
@@ -94,7 +98,4 @@ apm_type in ['cpu','memory','network','fps','battery']
 ## Thanks
 
 - https://github.com/alibaba/taobao-iphone-device
-
-## Communicate
-- Email: laoqi1988_f1@126.com
 

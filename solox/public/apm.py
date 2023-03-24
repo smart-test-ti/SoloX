@@ -1,27 +1,32 @@
 import datetime
 import re
 import time
-import json
-from functools import reduce
+import os
 from logzero import logger
 import tidevice
 import solox.public._iosPerf as iosP
 from solox.public.iosperf._perf import DataType, Performance
 from solox.public.adb import adb
-from solox.public.common import Devices, file, Method
+from solox.public.common import Devices, file, Method, Platform
 from solox.public.fps import FPSMonitor, TimeUtils
 
 d = Devices()
 f = file()
 m = Method()
 
-class CPU:
+class Target:
+    CPU = 'cpu'
+    Memory = 'memory'
+    Battery = 'battery'
+    Network = 'network'
+    FPS = 'fps'
+
+class CPU(object):
 
     def __init__(self, pkgName, deviceId, platform='Android'):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
-        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
     def getprocessCpuStat(self):
         """get the cpu usage of a process at a certain time"""
@@ -35,7 +40,7 @@ class CPU:
 
     def getTotalCpuStat(self):
         """get the total cpu usage at a certain time"""
-        cmd = f'cat /proc/stat |{d._filterType()} ^cpu'
+        cmd = f'cat /proc/stat |{d.filterType()} ^cpu'
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
@@ -56,7 +61,7 @@ class CPU:
 
     def getSysCpuStat(self):
         """get the total cpu usage at a certain time"""
-        cmd = f'cat /proc/stat |{d._filterType()} ^cpu'
+        cmd = f'cat /proc/stat |{d.filterType()} ^cpu'
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
@@ -77,8 +82,8 @@ class CPU:
         sysCpuRate = round(float((sysCpuTime_2 - sysCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
         if sueApi is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
-            f.add_log(f'{f.report_dir}/cpu_app.log', apm_time, appCpuRate)
-            f.add_log(f'{f.report_dir}/cpu_sys.log', apm_time, sysCpuRate)
+            f.add_log(os.path.join(f.report_dir,'cpu_app.log'), apm_time, appCpuRate)
+            f.add_log(os.path.join(f.report_dir,'cpu_sys.log'), apm_time, sysCpuRate)
 
         return appCpuRate, sysCpuRate
 
@@ -89,25 +94,21 @@ class CPU:
         sysCpuRate = round(float(apm.getPerformance(apm.cpu)[1]), 2)
         if sueApi is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
-            f.add_log(f'{f.report_dir}/cpu_app.log', apm_time, appCpuRate)
-            f.add_log(f'{f.report_dir}/cpu_sys.log', apm_time, sysCpuRate)
+            f.add_log(os.path.join(f.report_dir,'cpu_app.log'), apm_time, appCpuRate)
+            f.add_log(os.path.join(f.report_dir,'cpu_sys.log'), apm_time, sysCpuRate)
         return appCpuRate, sysCpuRate
 
     def getCpuRate(self, useApi=False):
         """Get the cpu rate of a process, unit:%"""
-        if self.platform == 'Android':
-            appCpuRate, systemCpuRate = self.getAndroidCpuRate(useApi)
-        else:
-            appCpuRate, systemCpuRate = self.getiOSCpuRate(useApi)
+        appCpuRate, systemCpuRate = self.getAndroidCpuRate(useApi) if self.platform == Platform.Android else self.getiOSCpuRate(useApi)
         return appCpuRate, systemCpuRate
 
 
-class MEM:
-    def __init__(self, pkgName, deviceId, platform='Android'):
+class MEM(object):
+    def __init__(self, pkgName, deviceId, platform=Platform.Android):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
-        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S')
 
     def getAndroidMem(self):
         """Get the Android memory ,unit:MB"""
@@ -132,28 +133,24 @@ class MEM:
 
     def getProcessMem(self, useApi=False):
         """Get the app memory"""
-        if self.platform == 'Android':
-            totalPass, nativePass, dalvikPass = self.getAndroidMem()
-        else:
-            totalPass, nativePass, dalvikPass = self.getiOSMem()
+        totalPass, nativePass, dalvikPass = self.getAndroidMem() if self.platform == Platform.Android else self.getiOSMem()
         if useApi is False:    
             time.sleep(1)    
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
-            f.add_log(f'{f.report_dir}/mem_total.log', apm_time, totalPass)
-            if self.platform == 'Android':
-                f.add_log(f'{f.report_dir}/mem_native.log', apm_time, nativePass)
-                f.add_log(f'{f.report_dir}/mem_dalvik.log', apm_time, dalvikPass)
+            f.add_log(os.path.join(f.report_dir,'mem_total.log'), apm_time, totalPass)
+            if self.platform == Platform.Android:
+                f.add_log(os.path.join(f.report_dir,'mem_native.log'), apm_time, nativePass)
+                f.add_log(os.path.join(f.report_dir,'mem_dalvik.log'), apm_time, dalvikPass)
         return totalPass, nativePass, dalvikPass
 
 
-class Battery:
-    def __init__(self, deviceId, platform='Android'):
+class Battery(object):
+    def __init__(self, deviceId, platform=Platform.Android):
         self.deviceId = deviceId
         self.platform = platform
-        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S')
     
     def getBattery(self, useApi=False):
-        if self.platform == 'Android':
+        if self.platform == Platform.Android:
             level, temperature = self.getAndroidBattery(useApi)
             return level, temperature
         else:
@@ -173,8 +170,8 @@ class Battery:
         if useApi is False:
              time.sleep(1)
              apm_time = datetime.datetime.now().strftime('%H:%M:%S')
-             f.add_log(f'{f.report_dir}/battery_level.log', apm_time, level)
-             f.add_log(f'{f.report_dir}/battery_tem.log', apm_time, temperature)
+             f.add_log(os.path.join(f.report_dir,'battery_level.log'), apm_time, level)
+             f.add_log(os.path.join(f.report_dir,'battery_tem.log'), apm_time, temperature)
         return level, temperature
     
     def getiOSBattery(self, useApi=False):
@@ -188,10 +185,10 @@ class Battery:
         if useApi is False:
             time.sleep(1)
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
-            f.add_log(f'{f.report_dir}/battery_tem.log', apm_time, tem) # unknown
-            f.add_log(f'{f.report_dir}/battery_current.log', apm_time, current) #mA
-            f.add_log(f'{f.report_dir}/battery_voltage.log', apm_time, voltage) #mV
-            f.add_log(f'{f.report_dir}/battery_power.log', apm_time, power)
+            f.add_log(os.path.join(f.report_dir,'battery_tem.log'), apm_time, tem) # unknown
+            f.add_log(os.path.join(f.report_dir,'battery_current.log'), apm_time, current) #mA
+            f.add_log(os.path.join(f.report_dir,'battery_voltage.log'), apm_time, voltage) #mV
+            f.add_log(os.path.join(f.report_dir,'battery_power.log'), apm_time, power)
         return tem, current, voltage, power
 
     def recoverBattery(self):
@@ -200,25 +197,25 @@ class Battery:
         adb.shell(cmd=cmd, deviceId=self.deviceId)
 
 
-class Flow:
+class Flow(object):
 
-    def __init__(self, pkgName, deviceId, platform='Android'):
+    def __init__(self, pkgName, deviceId, platform=Platform.Android):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
-        self.apm_time = datetime.datetime.now().strftime('%H:%M:%S')
 
-    def getAndroidNet(self):
-        """Get Android upflow and downflow data, unit:KB"""
+    def getAndroidNet(self, wifi=True):
+        """Get Android send/recv data, unit:KB wlan0/rmnet0"""
+        net = 'wlan0' if wifi else 'rmnet0'
         pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
-        cmd = f'cat /proc/{pid}/net/dev |{d._filterType()} wlan0'
+        cmd = f'cat /proc/{pid}/net/dev |{d.filterType()} {net}'
         output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
-        m_pre = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output_pre)
+        m_pre = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)
         sendNum_pre = round(float(float(m_pre.group(2)) / 1024), 2)
         recNum_pre = round(float(float(m_pre.group(1)) / 1024), 2)
         time.sleep(1)
         output_final = adb.shell(cmd=cmd, deviceId=self.deviceId)
-        m_final = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output_final)
+        m_final = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_final)
         sendNum_final = round(float(float(m_final.group(2)) / 1024), 2)
         recNum_final = round(float(float(m_final.group(1)) / 1024), 2)
         sendNum = round(float(sendNum_final - sendNum_pre), 2)
@@ -234,22 +231,19 @@ class Flow:
         recNum = round(float(apm_data[0]), 2)
         return sendNum, recNum
 
-    def getNetWorkData(self, useApi=False):
+    def getNetWorkData(self, wifi=True, useApi=False):
         """Get the upflow and downflow data, unit:KB"""
-        if self.platform == 'Android':
-            sendNum, recNum = self.getAndroidNet()
-        else:
-            sendNum, recNum = self.getiOSNet()
+        sendNum, recNum = self.getAndroidNet(wifi) if self.platform == Platform.Android else self.getiOSNet()
         if useApi is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
-            f.add_log(f'{f.report_dir}/upflow.log', apm_time, sendNum)
-            f.add_log(f'{f.report_dir}/downflow.log', apm_time, recNum)
+            f.add_log(os.path.join(f.report_dir,'upflow.log'), apm_time, sendNum)
+            f.add_log(os.path.join(f.report_dir,'downflow.log'), apm_time, recNum)
         return sendNum, recNum
 
 
-class FPS:
+class FPS(object):
 
-    def __init__(self, pkgName, deviceId, platform='Android', surfaceview='true'):
+    def __init__(self, pkgName, deviceId, platform=Platform.Android, surfaceview=True):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
@@ -264,8 +258,8 @@ class FPS:
         fps, jank = monitors.stop()
         if useApi is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
-            f.add_log(f'{f.report_dir}/fps.log', apm_time, fps)
-            f.add_log(f'{f.report_dir}/jank.log', apm_time, jank)
+            f.add_log(os.path.join(f.report_dir,'fps.log'), apm_time, fps)
+            f.add_log(os.path.join(f.report_dir,'jank.log'), apm_time, jank)
         return fps, jank
 
     def getiOSFps(self, useApi=False):
@@ -274,19 +268,27 @@ class FPS:
         fps = int(apm.getPerformance(apm.fps))
         if useApi is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
-            f.add_log(f'{f.report_dir}/fps.log', apm_time, fps)
+            f.add_log(os.path.join(f.report_dir,'fps.log'), apm_time, fps)
         return fps, 0
 
     def getFPS(self, useApi=False):
         """get fps、jank"""
-        if self.platform == 'Android':
-            fps, jank = self.getAndroidFps(useApi)
-        else:
-            fps, jank = self.getiOSFps(useApi)
+        fps, jank = self.getAndroidFps(useApi) if self.platform == Platform.Android else self.getiOSFps(useApi)
         return fps, jank
 
+class GPU(object):
+    def __init__(self, pkgName):
+        self.pkgName = pkgName
 
-class iosAPM():
+    def getGPU(self, useApi=False):
+        apm = iosAPM(self.pkgName)
+        gpu = apm.getPerformance(apm.gpu)
+        if useApi is False:
+            apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+            f.add_log(os.path.join(f.report_dir,'gpu.log'), apm_time, gpu)
+        return gpu   
+
+class iosAPM(object):
 
     def __init__(self, pkgName, deviceId=tidevice.Device()):
         self.pkgName = pkgName
@@ -296,6 +298,7 @@ class iosAPM():
         self.memory = DataType.MEMORY
         self.network = DataType.NETWORK
         self.fps = DataType.FPS
+        self.gpu = DataType.GPU
         self.perfs = 0
         self.app_cpu = 0
         self.sys_cpu = 0
@@ -322,15 +325,15 @@ class iosAPM():
         return perf_value
 
 
-class APM():
+class APM(object):
     """for python api"""
 
-    def __init__(self, pkgName, deviceId='', platform='Android', surfaceview='true'):
+    def __init__(self, pkgName, deviceId='', platform=Platform.Android, surfaceview=True):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
         self.surfaceview = surfaceview
-        d._devicesCheck(pf=self.platform, id=self.deviceId, pkg=self.pkgName)
+        d.devicesCheck(pf=self.platform, id=self.deviceId, pkg=self.pkgName)
 
     def collectCpu(self):
         _cpu = CPU(self.pkgName, self.deviceId, self.platform)
@@ -349,16 +352,16 @@ class APM():
     def collectBattery(self):
         _battery = Battery(self.deviceId, self.platform)
         final = _battery.getBattery(useApi=True)
-        if self.platform == 'Android':
+        if self.platform == Platform.Android:
             result = {'level': final[0], 'temperature': final[1]}
         else:
             result = {'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}
         logger.info(f'battery: {result}')
         return result
 
-    def collectFlow(self):
+    def collectFlow(self, wifi=True):
         _flow = Flow(self.pkgName, self.deviceId, self.platform)
-        upFlow, downFlow = _flow.getNetWorkData(useApi=True)
+        upFlow, downFlow = _flow.getNetWorkData(wifi=wifi,useApi=True)
         result = {'upFlow': upFlow, 'downFlow': downFlow}
         logger.info(f'network: {result}')
         return result
@@ -368,4 +371,13 @@ class APM():
         fps, jank = _fps.getFPS(useApi=True)
         result = {'fps': fps, 'jank': jank}
         logger.info(f'fps: {result}')
+        return result
+    
+    def collectGpu(self):
+        _gpu = GPU(self.pkgName)
+        if self.platform == Platform.Android:
+            raise Exception('not support android')
+        gpu = _gpu.getGPU(useApi=True)
+        result = {'gpu': gpu}
+        logger.info(f'gpu: {result}')
         return result

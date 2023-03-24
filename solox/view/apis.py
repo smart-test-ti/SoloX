@@ -5,9 +5,9 @@ from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
 import traceback
-from solox.public.apm import CPU, MEM, Flow, FPS, Battery
+from solox.public.apm import CPU, MEM, Flow, FPS, Battery,Target
 from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
-from solox.public.common import Devices, file, Method, Install
+from solox.public.common import Devices, file, Method, Install, Platform
 
 d = Devices()
 f = file()
@@ -23,6 +23,8 @@ def setCookie():
     netdataRecvWarning = request.args.get('netdataRecvWarning')
     netdataSendWarning = request.args.get('netdataSendWarning')
     betteryWarning = request.args.get('betteryWarning')
+    runningTime = request.args.get('runningTime')
+
     resp = make_response('set cookie ok')
     resp.set_cookie('cpuWarning', cpuWarning)
     resp.set_cookie('memWarning', memWarning)
@@ -30,6 +32,7 @@ def setCookie():
     resp.set_cookie('netdataRecvWarning', netdataRecvWarning)
     resp.set_cookie('netdataSendWarning', netdataSendWarning)
     resp.set_cookie('betteryWarning', betteryWarning)
+    resp.set_cookie('runningTime', runningTime)
     return resp
 
 
@@ -56,28 +59,35 @@ def deviceids():
     """get devices info"""
     platform = method._request(request, 'platform')
     try:
-        if platform == 'Android':
-            deviceids = d.getDeviceIds()
-            devices = d.getDevices()
-            if len(deviceids) > 0:
-                pkgnames = d.getPkgname(deviceids[0])
-                device_detail = d.getDdeviceDetail(deviceId=deviceids[0], platform=platform)
-                result = {'status': 1, 'deviceids': deviceids, 'devices': devices,
-                          'pkgnames': pkgnames, 'device_detail': device_detail}
-            else:
-                result = {'status': 0, 'msg': 'no devices'}
-        elif platform == 'iOS':
-            deviceinfos = d.getDeviceInfoByiOS()
-            if len(deviceinfos) > 0:
-                pkgnames = d.getPkgnameByiOS(deviceinfos[0].split(':')[1])
-                device_detail = d.getDdeviceDetail(deviceId=deviceinfos[0].split(':')[1], platform=platform)
-                result = {'status': 1, 'deviceids': deviceinfos, 'devices': deviceinfos,
-                          'pkgnames': pkgnames, 'device_detail': device_detail}
-            else:
-                result = {'status': 0, 'msg': 'no devices'}
-        else:
-            result = {'status': 0, 'msg': f'no this platform = {platform}'}
-    except:
+        match(platform):
+            case Platform.Android:
+                deviceids = d.getDeviceIds()
+                devices = d.getDevices()
+                if len(deviceids) > 0:
+                    pkgnames = d.getPkgname(deviceids[0])
+                    device_detail = d.getDdeviceDetail(deviceId=deviceids[0], platform=platform)
+                    result = {'status': 1, 
+                              'deviceids': deviceids, 
+                              'devices': devices,
+                              'pkgnames': pkgnames, 
+                              'device_detail': device_detail}
+                else:
+                    result = {'status': 0, 'msg': 'no devices'}
+            case Platform.iOS:
+                deviceinfos = d.getDeviceInfoByiOS()
+                if len(deviceinfos) > 0:
+                    pkgnames = d.getPkgnameByiOS(deviceinfos[0].split(':')[1])
+                    device_detail = d.getDdeviceDetail(deviceId=deviceinfos[0].split(':')[1], platform=platform)
+                    result = {'status': 1, 
+                              'deviceids': deviceinfos, 
+                              'devices': deviceinfos,
+                              'pkgnames': pkgnames, 
+                              'device_detail': device_detail}
+                else:
+                    result = {'status': 0, 'msg': 'no devices'}
+            case _:
+                result = {'status': 0, 'msg': f'no this platform = {platform}'}        
+    except Exception:
         traceback.print_exc()
         result = {'status': 0, 'msg': 'devices connect error!'}
     return result
@@ -88,19 +98,17 @@ def packageNames():
     """get devices packageNames"""
     platform = method._request(request, 'platform')
     device = method._request(request, 'device')
-    if platform == 'Android':
-        deviceId = d.getIdbyDevice(device, platform)
-        pkgnames = d.getPkgname(deviceId)
-    elif platform == 'iOS':
-        udid = device.split(':')[1]
-        pkgnames = d.getPkgnameByiOS(udid)
-    else:
-        result = {'status': 0, 'msg': f'no platform = {platform}'}
-        return result
-    if len(pkgnames) > 0:
-        result = {'status': 1, 'pkgnames': pkgnames}
-    else:
-        result = {'status': 0, 'msg': 'no pkgnames'}
+    match(platform):
+        case Platform.Android:
+            deviceId = d.getIdbyDevice(device, platform)
+            pkgnames = d.getPkgname(deviceId)
+        case Platform.iOS:
+            udid = device.split(':')[1]
+            pkgnames = d.getPkgnameByiOS(udid)
+        case _:
+            result = {'status': 0, 'msg': 'platform is undefined'}
+            return result
+    result = {'status': 1, 'pkgnames': pkgnames} if len(pkgnames) > 0 else  {'status': 0, 'msg': 'no pkgnames'} 
     return result
 
 
@@ -112,28 +120,29 @@ def getCpuRate():
     pkgname = method._request(request, 'pkgname')
     device = method._request(request, 'device')
     try:
-        if model == '2-devices':
-            pkgNameList = []
-            pkgNameList.append(pkgname)
-            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
-            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
-            cpu = CPU_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
-            first, second = cpu.getAndroidCpuRate()
-            result = {'status': 1, 'first': first, 'second': second}
-        elif model == '2-app':
-            pkgNameList = pkgname.split(',')
-            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
-            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
-            cpu = CPU_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
-            first, second = cpu.getAndroidCpuRate()
-            result = {'status': 1, 'first': first, 'second': second}
-        else:
-            deviceId = d.getIdbyDevice(device, platform)
-            cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform)
-            appCpuRate, systemCpuRate = cpu.getCpuRate()
-            result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
-    except Exception as e:
-        logger.error(f'get cpu failed : {str(e)}')
+        match(model):
+            case '2-devices':
+                pkgNameList = []
+                pkgNameList.append(pkgname)
+                deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+                deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+                cpu = CPU_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+                first, second = cpu.getAndroidCpuRate()
+                result = {'status': 1, 'first': first, 'second': second}
+            case '2-devices':
+                pkgNameList = pkgname.split(',')
+                deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+                deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+                cpu = CPU_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+                first, second = cpu.getAndroidCpuRate()
+                result = {'status': 1, 'first': first, 'second': second}
+            case _:
+                deviceId = d.getIdbyDevice(device, platform)
+                cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform)
+                appCpuRate, systemCpuRate = cpu.getCpuRate()
+                result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}        
+    except Exception:
+        logger.error('get cpu failed')
         traceback.print_exc()
         result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate': 0, 'first': 0, 'second': 0}
     return result
@@ -147,28 +156,29 @@ def getMEM():
     pkgname = method._request(request, 'pkgname')
     device = method._request(request, 'device')
     try:
-        if model == '2-devices':
-            pkgNameList = []
-            pkgNameList.append(pkgname)
-            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
-            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
-            mem = MEM_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
-            first, second = mem.getProcessMem()
-            result = {'status': 1, 'first': first, 'second': second}
-        elif model == '2-app':
-            pkgNameList = pkgname.split(',')
-            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
-            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
-            mem = MEM_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
-            first, second = mem.getProcessMem()
-            result = {'status': 1, 'first': first, 'second': second}
-        else:
-            deviceId = d.getIdbyDevice(device, platform)
-            mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform)
-            totalPass, nativePass, dalvikPass = mem.getProcessMem()
-            result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
-    except Exception as e:
-        logger.error(f'get memory data failed : {str(e)}')
+        match(model):
+            case '2-devices':
+                pkgNameList = []
+                pkgNameList.append(pkgname)
+                deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+                deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+                mem = MEM_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+                first, second = mem.getProcessMem()
+                result = {'status': 1, 'first': first, 'second': second}
+            case '2-app':
+                pkgNameList = pkgname.split(',')
+                deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+                deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+                mem = MEM_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+                first, second = mem.getProcessMem()
+                result = {'status': 1, 'first': first, 'second': second}
+            case _:
+                deviceId = d.getIdbyDevice(device, platform)
+                mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform)
+                totalPass, nativePass, dalvikPass = mem.getProcessMem()
+                result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}        
+    except Exception:
+        logger.error('get memory data failed')
         traceback.print_exc()
         result = {'status': 1, 'totalPass': 0, 'nativePass': 0, 'dalvikPass': 0, 'first': 0, 'second': 0}
     return result
@@ -181,31 +191,34 @@ def getNetWorkData():
     platform = method._request(request, 'platform')
     pkgname = method._request(request, 'pkgname')
     device = method._request(request, 'device')
+    wifi_switch = method._request(request, 'wifi_switch')
     try:
-        if model == '2-devices':
-            pkgNameList = []
-            pkgNameList.append(pkgname)
-            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
-            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
-            network = Flow_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
-            first, second = network.getNetWorkData()
-            result = {'status': 1, 'first': first, 'second': second}
-        elif model == '2-app':
-            pkgNameList = pkgname.split(',')
-            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
-            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
-            network = Flow_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
-            first, second = network.getNetWorkData()
-            result = {'status': 1, 'first': first, 'second': second}
-        else:
-            deviceId = d.getIdbyDevice(device, platform)
-            flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
-            data = flow.getNetWorkData()
-            result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
-    except Exception as e:
-        logger.error(f'get network data failed : {str(e)}')
+        wifi = False if wifi_switch == 'false' else True
+        match(model):
+            case '2-devices':
+                pkgNameList = []
+                pkgNameList.append(pkgname)
+                deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+                deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+                network = Flow_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+                first, second = network.getNetWorkData()
+                result = {'status': 1, 'first': first, 'second': second}
+            case '2-devices':
+                pkgNameList = pkgname.split(',')
+                deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+                deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+                network = Flow_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
+                first, second = network.getNetWorkData()
+                result = {'status': 1, 'first': first, 'second': second}
+            case _:
+                deviceId = d.getIdbyDevice(device, platform)
+                flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
+                data = flow.getNetWorkData(wifi=wifi,useApi=False)
+                result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}    
+    except Exception:
+        logger.error('get network data failed')
         traceback.print_exc()
-        result = {'status': 1, 'upflow': 0, 'downflow': 0, 'first': 0, 'second': 0}
+        result = {'status': 1, 'upflow': 0, 'downflow': 0, 'first': 0, 'second': 0}    
     return result
 
 
@@ -218,29 +231,31 @@ def getFps():
     device = method._request(request, 'device')
     surv = method._request(request, 'surv')
     try:
-        if model == '2-devices':
-            pkgNameList = []
-            pkgNameList.append(pkgname)
-            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
-            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
-            fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2, surfaceview=surv)
-            first, second = fps.getFPS()
-            result = {'status': 1, 'first': first, 'second': second}
-        elif model == '2-app':
-            pkgNameList = pkgname.split(',')
-            deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
-            deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
-            fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2, surfaceview=surv)
-            first, second = fps.getFPS()
-            result = {'status': 1, 'first': first, 'second': second}
-        else:
-            deviceId = d.getIdbyDevice(device, platform)
-            fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId, surfaceview=surv, platform=platform)
-            fps, jank = fps_monitor.getFPS()
-            result = {'status': 1, 'fps': fps, 'jank': jank}
-    except Exception as e:
+        surfaceview = False if surv == 'false' else True
+        match(model):
+            case '2-devices':
+                pkgNameList = []
+                pkgNameList.append(pkgname)
+                deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+                deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+                fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2, surfaceview=surfaceview)
+                first, second = fps.getFPS()
+                result = {'status': 1, 'first': first, 'second': second}
+            case '2-app':
+                pkgNameList = pkgname.split(',')
+                deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
+                deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
+                fps = FPS_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2, surfaceview=surfaceview)
+                first, second = fps.getFPS()
+                result = {'status': 1, 'first': first, 'second': second}
+            case _:
+                deviceId = d.getIdbyDevice(device, platform)
+                fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId, surfaceview=surfaceview, platform=platform)
+                fps, jank = fps_monitor.getFPS()
+                result = {'status': 1, 'fps': fps, 'jank': jank}       
+    except Exception:
+        logger.error('get fps failed')
         traceback.print_exc()
-        logger.error(f'get fps failed : {str(e)}')
         result = {'status': 1, 'fps': 0, 'jank': 0, 'first': 0, 'second': 0}
     return result
 
@@ -254,10 +269,15 @@ def getBattery():
         deviceId = d.getIdbyDevice(device, platform)
         battery_monitor = Battery(deviceId=deviceId, platform=platform)
         final = battery_monitor.getBattery()
-        if platform == 'Android':
+        if platform == Platform.Android:
             result = {'status': 1, 'level': final[0], 'temperature': final[1]}
         else:
-            result = {'status': 1, 'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}    
+            result = {
+                'status': 1, 
+                'temperature': final[0], 
+                'current': final[1], 
+                'voltage': final[2], 
+                'power': final[3]}    
     except Exception:
         traceback.print_exc()
         result = {'status': 1, 'level': 0, 'temperature': 0, 'current':0, 'voltage':0 , 'power':0}
@@ -273,7 +293,7 @@ def makeReport():
     model = method._request(request, 'model')
     devices = method._request(request, 'devices')
     try:
-        if platform == 'Android':
+        if platform == Platform.Android:
             deviceId = d.getIdbyDevice(devices, platform)
             battery_monitor = Battery(deviceId=deviceId)
             battery_monitor.recoverBattery()
@@ -368,40 +388,37 @@ def apmCollect():
     platform = method._request(request, 'platform')
     deviceid = method._request(request, 'deviceid')
     pkgname = method._request(request, 'pkgname')
-    apm_type = method._request(request, 'apm_type')
+    target = method._request(request, 'target')
     try:
-        if apm_type == 'cpu':
-            cpu = CPU(pkgName=pkgname, deviceId=deviceid, platform=platform)
-            appCpuRate, systemCpuRate = cpu.getCpuRate(useApi=True)
-            result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
-        elif apm_type == 'memory':
-            mem = MEM(pkgName=pkgname, deviceId=deviceid, platform=platform)
-            totalPass, nativePass, dalvikPass = mem.getProcessMem(useApi=True)
-            result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
-        elif apm_type == 'network':
-            flow = Flow(pkgName=pkgname, deviceId=deviceid, platform=platform)
-            data = flow.getNetWorkData(useApi=True)
-            result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
-        elif apm_type == 'fps':
-            fps_monitor = FPS(pkgName=pkgname, deviceId=deviceid, platform=platform)
-            fps, jank = fps_monitor.getFPS(useApi=True)
-            result = {'status': 1, 'fps': fps, 'jank': jank}
-        elif apm_type == 'battery':
-            battery_monitor = Battery(deviceId=deviceid)
-            level, temperature = battery_monitor.getBattery(useApi=True)
-            result = {'status': 1, 'level': level, 'temperature': temperature}
-        else:
-            result = {'status': 0, 'msg': 'no this apm_type'}
-
+        match(target):
+            case Target.CPU:
+                cpu = CPU(pkgName=pkgname, deviceId=deviceid, platform=platform)
+                appCpuRate, systemCpuRate = cpu.getCpuRate(useApi=True)
+                result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
+            case Target.Memory:
+                mem = MEM(pkgName=pkgname, deviceId=deviceid, platform=platform)
+                totalPass, nativePass, dalvikPass = mem.getProcessMem(useApi=True)
+                result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
+            case Target.Network:
+                flow = Flow(pkgName=pkgname, deviceId=deviceid, platform=platform)
+                data = flow.getNetWorkData(wifi=True, useApi=True)
+                result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
+            case Target.FPS:
+                fps_monitor = FPS(pkgName=pkgname, deviceId=deviceid, platform=platform)
+                fps, jank = fps_monitor.getFPS(useApi=True)
+                result = {'status': 1, 'fps': fps, 'jank': jank}
+            case Target.Battery:
+                battery_monitor = Battery(deviceId=deviceid)
+                final = battery_monitor.getBattery(useApi=True)
+                if platform == 'Android':
+                    result = {'status': 1, 'level': final[0], 'temperature': final[1]}
+                else:
+                    result = {'status': 1, 'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]} 
+            case _:
+                result = {'status': 0, 'msg': 'no this target'}
     except Exception as e:
-        if not deviceid:
-            logger.error('no device，please check the device connection status')
-        elif not d.getPid(deviceid, pkgname):
-            logger.error('no app process，please check if the app is started')
-        else:
-            logger.error(f'get {apm_type} failed : {str(e)}')
+        traceback.print_exc()
         result = {'status': 0, 'msg': str(e)}
-
     return result
 
 @api.route('/apm/install/file', methods=['post', 'get'])
@@ -412,7 +429,7 @@ def installFile():
     currentPath = os.path.dirname(os.path.realpath(__file__))
     install = Install()
     unixtime = int(time.time())
-    if platform == 'Android':
+    if platform == Platform.Android:
         file_path = os.path.join(currentPath, '{}.apk'.format(unixtime))
         if install.uploadFile(file_path, file):
             install_status = install.installAPK(file_path)
@@ -440,7 +457,7 @@ def installLink():
     currentPath = os.path.dirname(os.path.realpath(__file__))
     install = Install()
     unixtime = int(time.time())
-    if platform == 'Android':
+    if platform == Platform.Android:
         d_status = install.downloadLink(filelink=link, path=currentPath, name='{}.apk'.format(unixtime))
         if d_status:
             install_status = install.installAPK(os.path.join(currentPath, '{}.apk'.format(unixtime)))

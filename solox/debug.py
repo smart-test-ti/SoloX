@@ -124,7 +124,6 @@ def getServerStatus(host: str, port: int):
     """
     try:
         r = requests.get(f'http://{host}:{port}', timeout=2.0)
-        # True和False对应的数值是1和0
         flag = (True, False)[r.status_code == 200]
         return flag
     except requests.exceptions.ConnectionError:

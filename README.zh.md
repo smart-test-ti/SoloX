@@ -27,7 +27,7 @@ SoloX - Android/iOS性能数据实时采集工具。
 
 ## 安装
 ```
-1.Python:3.6+ 
+1.Python:3.6+ (python3.6+  小于v2.5.3)
 2.pip install -U solox
 3.pip install -i  https://mirrors.ustc.edu.cn/pypi/web/simple -U solox (在国内推荐使用镜像下载)
 
@@ -42,7 +42,7 @@ python -m solox
 ### 自定义
 
 ```shell
-python -m solox --host={ip} --port=50003
+python -m solox --host={ip} --port={port}
 ```
 
 ## 使用python收集
@@ -50,13 +50,15 @@ python -m solox --host={ip} --port=50003
 from solox.public.apm import APM
 # solox version >= 2.1.2
 
-apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview='true') # surfaceview： false = gpxinfo
+apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview=True) 
 # apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
+# surfaceview： false = gfxinfo (手机开发者-GPU呈现模式- adb shell dumpsys gfxinfo)
 cpu = apm.collectCpu() # %
 memory = apm.collectMemory() # MB
 flow = apm.collectFlow() # KB
 fps = apm.collectFps() # HZ
-battery = apm.collectBattery() # level:% temperature:°C
+battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV power:w
+gpu = apm.collectGpu() # % only supports ios
 ```
 
 ## 使用api收集 
@@ -71,9 +73,10 @@ Windows: start /min python3 -m solox &
 
 ### 2.通过api请求性能数据
 ```
-http://{ip}:50003/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&apm_type=cpu
+- Android: http://{ip}:{port}/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&target=cpu
+- iOS: http://{ip}:{port}/apm/collect?platform=iOS&pkgname=com.bilibili.app.in&target=cpu
 
-apm_type in ['cpu','memory','network','fps','battery']
+target in ['cpu','memory','network','fps','battery']
 ```
 
 ## 对比模式
@@ -94,8 +97,5 @@ apm_type in ['cpu','memory','network','fps','battery']
 ## 感谢
 
 - https://github.com/alibaba/taobao-iphone-device
-
-## 交流
-- Email: laoqi1988_f1@126.com
 
 

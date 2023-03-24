@@ -16,9 +16,6 @@ collect_jank = 0
 
 
 class SurfaceStatsCollector(object):
-    """Collects surface stats for a SurfaceView from the output of SurfaceFlinger
-    """
-
     def __init__(self, device, frequency, package_name, fps_queue, jank_threshold, surfaceview, use_legacy=False):
         self.device = device
         self.frequency = frequency
@@ -57,8 +54,6 @@ class SurfaceStatsCollector(object):
         self.calculator_thread.start()
 
     def stop(self):
-        """结束SurfaceStatsCollector
-        """
         if self.collector_thread:
             self.stop_event.set()
             self.collector_thread.join()
@@ -67,10 +62,9 @@ class SurfaceStatsCollector(object):
                 self.fps_queue.task_done()
      
     def get_surfaceview_activity(self):
-        """兼容不同设备的surfaceview"""
         activity_name = ''
         activity_line = ''
-        dumpsys_result = adb.shell(cmd='dumpsys SurfaceFlinger --list | {} {}'.format(d._filterType(), self.package_name), deviceId=self.device)
+        dumpsys_result = adb.shell(cmd='dumpsys SurfaceFlinger --list | {} {}'.format(d.filterType(), self.package_name), deviceId=self.device)
         dumpsys_result_list = dumpsys_result.split('\n')    
         for line in dumpsys_result_list:
             if line.startswith('SurfaceView') and line.find(self.package_name) != -1:
@@ -87,7 +81,6 @@ class SurfaceStatsCollector(object):
         return activity_name
      
     def get_focus_activity(self):
-        """通过dumpsys window windows获取activity名称  window名"""
         activity_name = ''
         activity_line = ''
         dumpsys_result = adb.shell(cmd='dumpsys window windows', deviceId=self.device)
@@ -109,9 +102,6 @@ class SurfaceStatsCollector(object):
         return activity_name
 
     def get_foreground_process(self):
-        """
-        :return: 当前前台进程名,对get_focus_activity的返回结果加以处理
-        """
         focus_activity = self.get_focus_activity()
         if focus_activity:
             return focus_activity.split("/")[0]
@@ -119,10 +109,6 @@ class SurfaceStatsCollector(object):
             return ""
 
     def _calculate_results(self, refresh_period, timestamps):
-        """Returns a list of SurfaceStatsCollector.Result.
-        不少手机第一列  第三列 数字完全相同
-        """
-
         frame_count = len(timestamps)
         if frame_count == 0:
             fps = 0
@@ -141,10 +127,6 @@ class SurfaceStatsCollector(object):
         return fps, jank
 
     def _calculate_results_new(self, refresh_period, timestamps):
-        """Returns a list of SurfaceStatsCollector.Result.
-        不少手机第一列  第三列 数字完全相同
-        """
-
         frame_count = len(timestamps)
         if frame_count == 0:
             fps = 0
@@ -392,7 +374,7 @@ class SurfaceStatsCollector(object):
         timestamps = []
         nanoseconds_per_second = 1e9
         pending_fence_timestamp = (1 << 63) - 1
-        if self.surfaceview != 'true':
+        if self.surfaceview is not True:
             results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency %s' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
@@ -480,32 +462,20 @@ class SurfaceStatsCollector(object):
 
 
 class Monitor(object):
-    """性能测试数据采集能力基类
-    """
-
     def __init__(self, **kwargs):
-        """构造器
-
-        :param dict kwargs: 配置项
-        """
         self.config = kwargs  # 配置项
         self.matched_data = {}  # 采集到匹配的性能数据
 
     def start(self):
-        """子类中实现该接口，开始采集性能数据"""
         logger.warn("请在%s类中实现start方法" % type(self))
 
     def clear(self):
-        """清空monitor保存的数据"""
         self.matched_data = {}
 
     def stop(self):
-        """子类中实现该接口，结束采集性能数据，如果后期需要解析性能数据，需要保存数据文件"""
         logger.warning("请在%s类中实现stop方法" % type(self))
 
     def save(self):
-        """保存数据
-        """
         logger.warning("请在%s类中实现save方法" % type(self))
 
 
@@ -521,10 +491,8 @@ class TimeUtils(object):
 
 
 class FPSMonitor(Monitor):
-    """FPS监控器"""
-
     def __init__(self, device_id, package_name=None, frequency=1.0, timeout=24 * 60 * 60, fps_queue=None,
-                 jank_threshold=166, use_legacy=False, surfaceview='true', start_time=None, **kwargs):
+                 jank_threshold=166, use_legacy=False, surfaceview=True, start_time=None, **kwargs):
         """
         构造器
         :param str device_id: 设备id
@@ -541,7 +509,6 @@ class FPSMonitor(Monitor):
         self.device = device_id
         self.timeout = timeout
         self.surfaceview = surfaceview
-        # todo 判断是否为当前启动的进程
         if not package_name:
             package_name = self.device.adb.get_foreground_process()
         self.package = package_name
@@ -549,13 +516,9 @@ class FPSMonitor(Monitor):
                                                   self.jank_threshold, self.surfaceview, self.use_legacy)
 
     def start(self):
-        """启动FPSMonitor日志监控器
-        """
         self.fpscollector.start(self.start_time)
 
     def stop(self):
-        """结束FPSMonitor日志监控器
-        """
         global collect_fps
         global collect_jank
         self.fpscollector.stop()
@@ -565,15 +528,7 @@ class FPSMonitor(Monitor):
         pass
 
     def parse(self, file_path):
-        """解析
-        :param str file_path: 要解析数据文件的路径
-        """
         pass
 
     def get_fps_collector(self):
-        """获得fps收集器，收集器里保存着time fps jank的列表
-
-        :return: fps收集器
-        :rtype: SurfaceStatsCollector
-        """
         return self.fpscollector

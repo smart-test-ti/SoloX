@@ -70,7 +70,7 @@ SoloX - APM
             <svg t="1647757457022" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="21859" width="200" height="200"><path d="M511.4 512.1m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" fill="#006DFC" p-id="21860"></path><path d="M658.4 555.6L475.5 661.1c-33.4 19.3-75-4.8-75-43.3V406.6c0-38.5 41.7-62.6 75-43.3l182.9 105.6c33.3 19.3 33.3 67.4 0 86.7z" fill="#FFFFFF" p-id="21861"></path></svg>
             {% if lan == 'cn' %} 开始 {% else %} Start {% endif %}
         </a>
-        <a id="stop-apm" class="btn btn-default" style="display: none">
+        <a id="stop-apm" onclick="stopTask()" class="btn btn-default" style="display: none">
             <svg t="1638096947956" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="235254" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#EE827F" p-id="235255"></path><path d="M512 512m-443.191534 0a443.191534 443.191534 0 1 0 886.383068 0 443.191534 443.191534 0 1 0-886.383068 0Z" fill="#E64537" p-id="235256"></path><path d="M0 512C0 794.638448 229.180952 1023.8194 512 1023.8194V0C229.180952 0 0 229.180952 0 512z" fill="#FEFFFF" opacity=".1" p-id="235257"></path><path d="M477.866667 683.208466H375.647266c-1.083598 0-1.986596-0.902998-1.986596-1.986597V342.597531c0-1.083598 0.902998-1.986596 1.986596-1.986596h102.4c1.083598 0 1.986596 0.902998 1.986596 1.986596v338.443739c-0.1806 1.264198-1.083598 2.167196-2.167195 2.167196zM648.352734 683.208466h-102.4c-1.083598 0-1.986596-0.902998-1.986596-1.986597V342.597531c0-1.083598 0.902998-1.986596 1.986596-1.986596H648.352734c1.083598 0 1.986596 0.902998 1.986596 1.986596v338.443739c0 1.264198-0.902998 2.167196-1.986596 2.167196z" fill="#FFFFFF" p-id="235258"></path></svg>
             {% if lan == 'cn' %} 停止 {% else %} Stop {% endif %}
         </a>
@@ -133,7 +133,15 @@ SoloX - APM
                         <div class="tab-pane active show" id="tabs-apm-target">
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="cpu_checkbox" type="checkbox" checked name="cpu"> CPU</label>
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_checkbox" type="checkbox" checked name="mem"> {% if lan == 'cn' %} 内存 {% else %} Memory {% endif %}</label>
-                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> {% if lan == 'cn' %} 流量 {% else %} Network Data {% endif %}</label>
+                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> {% if lan == 'cn' %} 流量 {% else %} Network Data {% endif %}
+                                {% if platform == 'Android' %}
+                                <span class="ms-auto">
+                                    <label class="form-check form-check-single form-switch">
+                                        <input id="net-switch" class="form-check-input cursor-pointer" type="checkbox" checked name="net-switch" style="margin-right: 5px"> Wifi
+                                    </label>
+                                </span>
+                                {% endif %}
+                            </label>
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="fps_checkbox" type="checkbox" name="fps" checked> {% if lan == 'cn' %} 流畅度 {% else %} FPS {% endif %}
                                 {% if platform == 'Android' %}
                                 <span class="ms-auto">
@@ -481,7 +489,7 @@ SoloX - APM
         });
     }
 
-    function getNetWork(pkgname,device)  {
+    function getNetWork(pkgname,device,net_switch)  {
         $.ajax({
             url: "/apm/network",
             type: "GET",
@@ -491,7 +499,8 @@ SoloX - APM
                 model:'normal',
                 platform:platform,
                 pkgname:pkgname,
-                device:device
+                device:device,
+                wifi_switch: net_switch
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -508,7 +517,7 @@ SoloX - APM
                                 y_down = data['downflow'];
                             seriesUpFlow.addPoint([x_up, y_up], true, true);
                             seriesDownFlow.addPoint([x_down, y_down], true, true);
-                            timerQ = setTimeout(getNetWork(pkgname,device), 1500);
+                            timerQ = setTimeout(getNetWork(pkgname,device,net_switch), 1500);
                         }catch (e) {
                             console.log(e)
                         }
@@ -595,7 +604,7 @@ SoloX - APM
     }];
 
     var seriesNet = [{
-        name : 'upFlow',
+        name : 'send',
         pointInterval: 120 * 1000,
         data : (function () {
             var data = [], time = (new Date()).getTime(), i;
@@ -608,7 +617,7 @@ SoloX - APM
             return data;
         }())
     },{
-        name : 'downFlow',
+        name : 'recv',
         pointInterval: 120 * 1000,
         data : (function () {
             var data = [], time = (new Date()).getTime(), i;
@@ -623,7 +632,7 @@ SoloX - APM
     }];
 
     var seriesCpu = [{
-        name : 'AppUsage',
+        name : 'app',
         pointInterval: 120 * 1000,
         data : (function () {
             var data = [], time = (new Date()).getTime(), i;
@@ -636,7 +645,7 @@ SoloX - APM
             return data;
         }())
     },{
-        name : 'SysUsage',
+        name : 'system',
         pointInterval: 120 * 1000,
         data : (function () {
             var data = [], time = (new Date()).getTime(), i;
@@ -968,7 +977,7 @@ SoloX - APM
             let fps_chart = chartsInitialize('fps',title);
             return fps_chart
         }else{
-            let title = 'FPS(HZ/s)';
+            let title = 'FPS (HZ/s)';
             let fps_chart = chartsInitialize('fps_ios',title);
             return fps_chart
         }
@@ -1077,12 +1086,12 @@ SoloX - APM
         }
     }
 
-    function collectBattery(device,pkgname){
+    function collectBattery(device){
         var battery_checkbox = $('#battery_checkbox').is(':checked');
         if(battery_checkbox){
             batteryInitialize();
             let type = platform == 'Android' ? 'battery_android' : 'battery_ios';
-            battery_chart = collectPers(device,pkgname,type,'Battery',getBattery(device));
+            battery_chart = collectPers(device,null,type,'Battery',getBattery(device));
         }
     }
 
@@ -1097,9 +1106,10 @@ SoloX - APM
 
     function collectNetwork(device,pkgname){
         var flow_checkbox = $('#flow_checkbox').is(':checked');
+        var net_switch = $('#net-switch').is(':checked');
         if(flow_checkbox){
             networkInitialize();
-            network_chart = collectPers(device,pkgname,'network','Network Data（KB）',getNetWork(pkgname,device));
+            network_chart = collectPers(device,pkgname,'network','Network Data（KB）',getNetWork(pkgname,device,net_switch));
         }
     }
 
@@ -1120,30 +1130,7 @@ SoloX - APM
         }
     }
 
-    $('#run-apm').click(function () {
-        stop = false;
-        $('#stop-apm').show();
-        $('#run-apm').hide();
-        initializeAPM();
-        let device = $('.select-device').val();
-        let pkgname = $('.select-app').val();
-        if(device && pkgname){
-            collectCpu(device,pkgname);
-            collectMem(device,pkgname);
-            collectNetwork(device,pkgname);
-            collectFps(device,pkgname);
-            collectBattery(device);
-        }else{
-            if(lan == 'cn'){
-                SwalFire('error','执行错误','没有选择APP或者设备',2000);
-            }else{
-                SwalFire('error','Execution error','No device or package name selected',2000);
-            }
-            $('#run-apm').show();
-            $('#stop-apm').hide();
-        }});
-
-    $('#stop-apm').click(function () {
+    function stopTask(){
         window.clearTimeout(timerQ);
         stop = true;
         $('#run-apm').show();
@@ -1176,8 +1163,33 @@ SoloX - APM
                 }
             }
         });
-    });
-
+    }
+    $('#run-apm').click(function () {
+        stop = false;
+        $('#stop-apm').show();
+        $('#run-apm').hide();
+        initializeAPM();
+        let device = $('.select-device').val();
+        let pkgname = $('.select-app').val();
+        if(device && pkgname){
+            collectCpu(device,pkgname);
+            collectMem(device,pkgname);
+            collectNetwork(device,pkgname);
+            collectFps(device,pkgname);
+            collectBattery(device);
+            if(parseInt($('#running_value').val()) > 0){
+                var times = parseInt($('#running_value').val()) * 60 * 1000
+                setTimeout("stopTask()", times)
+            }
+        }else{
+            if(lan == 'cn'){
+                SwalFire('error','执行错误','没有选择APP或者设备',2000);
+            }else{
+                SwalFire('error','Execution error','No device or package name selected',2000);
+            }
+            $('#run-apm').show();
+            $('#stop-apm').hide();
+        }});
 
     $('#logcat-switch').change(function() {
         let  flag= $(this).is(':checked');

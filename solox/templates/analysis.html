@@ -722,10 +722,10 @@
             },
             success: function (data) {
                 network_chart.updateSeries([{
-                    name: 'upflow',
+                    name: 'send',
                     data: data['upFlow']
                 },{
-                    name: 'downflow',
+                    name: 'recv',
                     data: data['downFlow']
                 }])
             }

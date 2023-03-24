@@ -14,10 +14,15 @@ from urllib.request import urlopen
 import ssl
 import xlwt
 
+class Platform:
+    Android = 'Android'
+    iOS = 'iOS'
+    Mac = 'MacOS'
+    Windows = 'Windows'
 
 class Devices:
 
-    def __init__(self, platform='Android'):
+    def __init__(self, platform=Platform.Android):
         self.platform = platform
         self.adb = adb.adb_path
 
@@ -28,9 +33,9 @@ class Devices:
         r.close()
         return text
 
-    def _filterType(self):
+    def filterType(self):
         """Select the pipe filtering method according to the system"""
-        filtertype = ('grep', 'findstr')[platform.system() == 'Windows']
+        filtertype = ('grep', 'findstr')[platform.system() == Platform.Windows]
         return filtertype
 
     def getDeviceIds(self):
@@ -60,17 +65,17 @@ class Devices:
 
     def getIdbyDevice(self, deviceinfo, platform):
         """Obtain the corresponding device id according to the Android device information"""
-        if platform == 'Android':
+        if platform == Platform.Android:
             deviceId = re.sub(u"\\(.*?\\)|\\{.*?}|\\[.*?]", "", deviceinfo)
             if deviceId not in self.getDeviceIds():
-                raise ('no found device: %s'.format(deviceId))
+                raise Exception('no found device: %s'.format(deviceId))
         else:
             deviceId = deviceinfo.split(':')[1]
         return deviceId
 
     def getPid(self, deviceId, pkgName):
         """Get the pid corresponding to the Android package name"""
-        result = os.popen(f"{self.adb} -s {deviceId} shell ps -ef | {self._filterType()} {pkgName}").readlines()
+        result = os.popen(f"{self.adb} -s {deviceId} shell ps -ef | {self.filterType()} {pkgName}").readlines()
         flag = len(result) > 0
         try:
             pid = (0, result[0].split()[1])[flag]
@@ -114,37 +119,40 @@ class Devices:
             pkgNames.append(pkgResult[i].split(' ')[0])
         return pkgNames
 
-    def _devicesCheck(self, pf, id='', pkg=''):
+    def devicesCheck(self, platform, deviceid=None, pkgname=None):
         """Check the device environment"""
-        if pf == 'Android':
-            if len(self.getDeviceIds()) == 0:
-                raise Exception('no devices')
-            if not self.getPid(deviceId=id, pkgName=pkg):
-                raise Exception('no found app process')
-        elif pf == 'iOS':
-            if len(self.getDeviceInfoByiOS()) == 0:
-                raise Exception('no devices')
-        else:
-            raise Exception('platform must be Android or iOS')
-
+        match(platform):
+            case Platform.Android:
+                if len(self.getDeviceIds()) == 0:
+                    raise Exception('no devices')
+                if not self.getPid(deviceId=deviceid, pkgName=pkgname):
+                    raise Exception('no found app process')
+            case Platform.iOS:
+                if len(self.getDeviceInfoByiOS()) == 0:
+                    raise Exception('no devices')
+            case _:
+                raise Exception('platform must be Android or iOS')        
+            
     def getDdeviceDetail(self, deviceId, platform):
         result = {}
-        if platform == 'Android':
-            result['brand'] = adb.shell(cmd='getprop ro.product.brand', deviceId=deviceId)
-            result['name'] = adb.shell(cmd='getprop ro.product.model', deviceId=deviceId)
-            result['version'] = adb.shell(cmd='getprop ro.build.version.release', deviceId=deviceId)
-            result['serialno'] = adb.shell(cmd='getprop ro.serialno', deviceId=deviceId)
-            cmd = f'ip addr show wlan0 | {self._filterType()} link/ether'
-            result['wifiadr'] = adb.shell(cmd=cmd, deviceId=deviceId).split(' ')[1]
-        elif platform == 'iOS':
-            iosInfo = json.loads(self.execCmd('tidevice info --json'))
-            result['brand'] = iosInfo['DeviceClass']
-            result['name'] = iosInfo['DeviceName']
-            result['version'] = iosInfo['ProductVersion']
-            result['serialno'] = iosInfo['SerialNumber']
-            result['wifiadr'] = iosInfo['WiFiAddress']
-        return result
-
+        match(platform):
+            case Platform.Android:
+                result['brand'] = adb.shell(cmd='getprop ro.product.brand', deviceId=deviceId)
+                result['name'] = adb.shell(cmd='getprop ro.product.model', deviceId=deviceId)
+                result['version'] = adb.shell(cmd='getprop ro.build.version.release', deviceId=deviceId)
+                result['serialno'] = adb.shell(cmd='getprop ro.serialno', deviceId=deviceId)
+                cmd = f'ip addr show wlan0 | {self.filterType()} link/ether'
+                result['wifiadr'] = adb.shell(cmd=cmd, deviceId=deviceId).split(' ')[1]
+            case Platform.iOS:
+                iosInfo = json.loads(self.execCmd('tidevice info --json'))
+                result['brand'] = iosInfo['DeviceClass']
+                result['name'] = iosInfo['DeviceName']
+                result['version'] = iosInfo['ProductVersion']
+                result['serialno'] = iosInfo['SerialNumber']
+                result['wifiadr'] = iosInfo['WiFiAddress']
+            case _:
+                raise Exception('{} is undefined'.format(platform)) 
+        return result       
 
 class file:
 
@@ -256,10 +264,11 @@ class file:
     def getMemLog(self, platform, scene):
         targetDic = {}
         targetDic['memTotalData'] = self.readLog(scene=scene, filename='mem_total.log')[0]
-        if platform == 'Android':
+        if platform == Platform.Android:
             targetDic['memNativeData']  = self.readLog(scene=scene, filename='mem_native.log')[0]
             targetDic['memDalvikData']  = self.readLog(scene=scene, filename='mem_dalvik.log')[0]
-            result = {'status': 1, 'memTotalData': targetDic['memTotalData'], 
+            result = {'status': 1, 
+                      'memTotalData': targetDic['memTotalData'], 
                       'memNativeData': targetDic['memNativeData'],
                       'memDalvikData': targetDic['memDalvikData']}
         else:
@@ -268,17 +277,22 @@ class file:
     
     def getBatteryLog(self, platform, scene):
         targetDic = {}
-        if platform == 'Android':
+        if platform == Platform.Android:
             targetDic['batteryLevel'] = self.readLog(scene=scene, filename='battery_level.log')[0]
             targetDic['batteryTem'] = self.readLog(scene=scene, filename='battery_tem.log')[0]
-            result = {'status': 1, 'batteryLevel': targetDic['batteryLevel'], 'batteryTem': targetDic['batteryTem']}
+            result = {'status': 1, 
+                      'batteryLevel': targetDic['batteryLevel'], 
+                      'batteryTem': targetDic['batteryTem']}
         else:
             targetDic['batteryTem'] = self.readLog(scene=scene, filename='battery_tem.log')[0]
             targetDic['batteryCurrent'] = self.readLog(scene=scene, filename='battery_current.log')[0]
             targetDic['batteryVoltage'] = self.readLog(scene=scene, filename='battery_voltage.log')[0]
             targetDic['batteryPower'] = self.readLog(scene=scene, filename='battery_power.log')[0]
-            result = {'status': 1, 'batteryTem': targetDic['batteryTem'], 'batteryCurrent': targetDic['batteryCurrent'],
-                      'batteryVoltage': targetDic['batteryVoltage'], 'batteryPower': targetDic['batteryPower']}    
+            result = {'status': 1, 
+                      'batteryTem': targetDic['batteryTem'], 
+                      'batteryCurrent': targetDic['batteryCurrent'],
+                      'batteryVoltage': targetDic['batteryVoltage'], 
+                      'batteryPower': targetDic['batteryPower']}    
         return result
     
     def getFlowLog(self, platform, scene):
@@ -291,7 +305,7 @@ class file:
     def getFpsLog(self, platform, scene):
         targetDic = {}
         targetDic['fps'] = self.readLog(scene=scene, filename='fps.log')[0]
-        if platform == 'Android':
+        if platform == Platform.Android:
             targetDic['jank'] = self.readLog(scene=scene, filename='jank.log')[0]
             result = {'status': 1, 'fps': targetDic['fps'], 'jank': targetDic['jank']}
         else:
@@ -356,21 +370,20 @@ class file:
 
         flowRecvData = self.readLog(scene=scene, filename=f'downflow.log')[1]
         flowRecv = f'{round(float(sum(flowRecvData) / 1024), 2)}MB'
-
-        apm_dict = {
-            "cpuAppRate": cpuAppRate,
-            "cpuSystemRate": cpuSystemRate,
-            "totalPassAvg": totalPassAvg,
-            "nativePassAvg": nativePassAvg,
-            "dalvikPassAvg": dalvikPassAvg,
-            "fps": fpsAvg,
-            "jank": jankAvg,
-            "flow_send": flowSend,
-            "flow_recv": flowRecv,
-            "batteryLevel": batteryLevel,
-            "batteryTeml": batteryTeml
-        }
-
+       
+        apm_dict = {}
+        apm_dict['cpuAppRate'] = cpuAppRate
+        apm_dict['cpuSystemRate'] = cpuSystemRate
+        apm_dict['totalPassAvg'] = totalPassAvg
+        apm_dict['nativePassAvg'] = nativePassAvg
+        apm_dict['dalvikPassAvg'] = dalvikPassAvg
+        apm_dict['fps'] = fpsAvg
+        apm_dict['jank'] = jankAvg
+        apm_dict['flow_send'] = flowSend
+        apm_dict['flow_recv'] = flowRecv
+        apm_dict['batteryLevel'] = batteryLevel
+        apm_dict['batteryTeml'] = batteryTeml
+        
         return apm_dict
 
     def _setiOSPerfs(self, scene):
@@ -405,23 +418,21 @@ class file:
         batteryPowerData = self.readLog(scene=scene, filename=f'battery_power.log')[1]
         batteryPower = round(sum(batteryPowerData) / len(batteryPowerData), 2)
 
-
-        apm_dict = {
-            "cpuAppRate": cpuAppRate,
-            "cpuSystemRate": cpuSystemRate,
-            "totalPassAvg": totalPassAvg,
-            "nativePassAvg": 0,
-            "dalvikPassAvg": 0,
-            "fps": fpsAvg,
-            "jank": 0,
-            "flow_send": flowSend,
-            "flow_recv": flowRecv,
-            "batteryTeml": batteryTeml,
-            "batteryCurrent": batteryCurrent,
-            "batteryVoltage": batteryVoltage,
-            "batteryPower": batteryPower
-        }
-
+        apm_dict = {}
+        apm_dict['cpuAppRate'] = cpuAppRate
+        apm_dict['cpuSystemRate'] = cpuSystemRate
+        apm_dict['totalPassAvg'] = totalPassAvg
+        apm_dict['nativePassAvg'] = 0
+        apm_dict['dalvikPassAvg'] = 0
+        apm_dict['fps'] = fpsAvg
+        apm_dict['jank'] = 0
+        apm_dict['flow_send'] = flowSend
+        apm_dict['flow_recv'] = flowRecv
+        apm_dict['batteryTeml'] = batteryTeml
+        apm_dict['batteryCurrent'] = batteryCurrent
+        apm_dict['batteryVoltage'] = batteryVoltage
+        apm_dict['batteryPower'] = batteryPower
+        
         return apm_dict
 
     def _setpkPerfs(self, scene):
@@ -445,30 +456,29 @@ class file:
         network1 = f'{round(float(sum(networkData1) / 1024), 2)}MB'
         networkData2 = self.readLog(scene=scene, filename=f'network2.log')[1]
         network2 = f'{round(float(sum(networkData2) / 1024), 2)}MB'
-
-        apm_dict = {
-            "cpuAppRate1": cpuAppRate1,
-            "cpuAppRate2": cpuAppRate2,
-            "totalPassAvg1": totalPassAvg1,
-            "totalPassAvg2": totalPassAvg2,
-            "network1": network1,
-            "network2": network2,
-            "fpsAvg1": fpsAvg1,
-            "fpsAvg2": fpsAvg2
-        }
-
+        
+        apm_dict = {}
+        apm_dict['cpuAppRate1'] = cpuAppRate1
+        apm_dict['cpuAppRate2'] = cpuAppRate2
+        apm_dict['totalPassAvg1'] = totalPassAvg1
+        apm_dict['totalPassAvg2'] = totalPassAvg2
+        apm_dict['network1'] = network1
+        apm_dict['network2'] = network2
+        apm_dict['fpsAvg1'] = fpsAvg1
+        apm_dict['fpsAvg2'] = fpsAvg2
         return apm_dict
 
 
 class Method:
 
     def _request(self, request, object):
-        if request.method == 'POST':
-            return request.form[object]
-        elif request.method == 'GET':
-            return request.args[object]
-        else:
-            raise Exception('request method error')
+        match(request.method):
+            case 'POST':
+                return request.form[object]
+            case 'GET':
+                return request.args[object]
+            case _:
+                raise Exception('request method error')
         
     def _setValue(self, value):
         try:
