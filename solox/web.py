@@ -65,7 +65,7 @@ def disconnect():
 
 def checkPyVer():
     """check python version"""
-    versions = platform.python_version().split('.')[0]
+    versions = platform.python_version().split('.')
     if int(versions[0]) < 3:
         logger.error('python version must be 3.10+ ,your python version is {}'.format(platform.python_version()))
         sys.exit()
