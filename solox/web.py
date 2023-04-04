@@ -9,6 +9,7 @@ import webbrowser
 import requests
 import socket
 import sys
+import traceback
 from solox.view.apis import api
 from solox.view.pages import page
 from logzero import logger
@@ -64,7 +65,6 @@ def disconnect():
 
 
 def checkPyVer():
-    """check python version"""
     versions = platform.python_version().split('.')
     if int(versions[0]) < 3:
         logger.error('python version must be 3.10+ ,your python version is {}'.format(platform.python_version()))
@@ -74,10 +74,6 @@ def checkPyVer():
         sys.exit()
 
 def hostIP():
-    """
-    :func: get local ip
-    :return: ip
-    """
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(('8.8.8.8', 80))
@@ -90,11 +86,6 @@ def hostIP():
 
 
 def listeningPort(port):
-    """
-    Detect whether the port is occupied and clean up
-    :param port: System port
-    :return: None
-    """
     if platform.system() != 'Windows':
         os.system("lsof -i:%s| grep LISTEN| awk '{print $2}'|xargs kill -9" % port)
     else:
@@ -115,59 +106,26 @@ def listeningPort(port):
 
 
 def getServerStatus(host: str, port: int):
-    """
-    get solox server status
-    :param host:
-    :param port:
-    :return:
-    """
-    try:
-        r = requests.get('http://{}:{}'.format(host, port), timeout=2.0)
-        flag = (True, False)[r.status_code == 200]
-        return flag
-    except requests.exceptions.ConnectionError:
-        pass
-    except Exception:
-        pass
+    r = requests.get('http://{}:{}'.format(host, port), timeout=2.0)
+    flag = (True, False)[r.status_code == 200]
+    return flag
 
 
 def openUrl(host: str, port: int):
-    """
-    Listen and open the url after solox is started
-    :param host:
-    :param port:
-    :return:
-    """
     flag = True
     while flag:
-        logger.info('start solox server...')
+        logger.info('start solox server')
         flag = getServerStatus(host, port)
     webbrowser.open('http://{}:{}/?platform=Android&lan=en'.format(host, port), new=2)
     logger.info('Running on http://{}:{}/?platform=Android&lan=en (Press CTRL+C to quit)'.format(host, port))
 
 
 def startServer(host: str, port: int):
-    """
-    start the solox service
-    :param host:
-    :param port:
-    :return:
-    """
-    try:
-        socketio.run(app, host=host, debug=False, port=port)
-    except Exception:
-        pass
+    socketio.run(app, host=host, debug=False, port=port)
 
 
 def main(host=hostIP(), port=50003):
-    """
-    main start
-    :param host: 0.0.0.0
-    :param port: default 5000
-    :return:
-    """
     try:
-        checkPyVer()
         listeningPort(port=port)
         pool = multiprocessing.Pool(processes=2)
         pool.apply_async(startServer, (host, port))
@@ -175,7 +133,7 @@ def main(host=hostIP(), port=50003):
         pool.close()
         pool.join()
     except Exception:
-        sys.exit()
+        traceback.print_exc()
     except KeyboardInterrupt:
         logger.info('stop solox success')
         sys.exit()

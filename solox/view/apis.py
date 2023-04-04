@@ -24,6 +24,8 @@ def setCookie():
     netdataSendWarning = request.args.get('netdataSendWarning')
     betteryWarning = request.args.get('betteryWarning')
     runningTime = request.args.get('runningTime')
+    solox_host = request.args.get('solox_host')
+    host_switch = request.args.get('host_switch')
 
     resp = make_response('set cookie ok')
     resp.set_cookie('cpuWarning', cpuWarning)
@@ -33,6 +35,8 @@ def setCookie():
     resp.set_cookie('netdataSendWarning', netdataSendWarning)
     resp.set_cookie('betteryWarning', betteryWarning)
     resp.set_cookie('runningTime', runningTime)
+    resp.set_cookie('solox_host', solox_host)
+    resp.set_cookie('host_switch', host_switch)
     return resp
 
 
@@ -183,6 +187,25 @@ def getMEM():
         result = {'status': 1, 'totalPass': 0, 'nativePass': 0, 'dalvikPass': 0, 'first': 0, 'second': 0}
     return result
 
+@api.route('/apm/set/network', methods=['post', 'get'])
+def setNetWorkData():
+    """set network data"""
+    platform = method._request(request, 'platform')
+    pkgname = method._request(request, 'pkgname')
+    device = method._request(request, 'device')
+    wifi_switch = method._request(request, 'wifi_switch')
+    type = method._request(request, 'type')
+    try:
+        wifi = False if wifi_switch == 'false' else True
+        deviceId = d.getIdbyDevice(device, platform)
+        flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
+        data = flow.setAndroidNet(wifi=wifi)
+        f.record_net(type, data[0], data[1])
+        result = {'status': 1, 'msg':'set network data success'}
+    except Exception as e:
+        traceback.print_exc()
+        result = {'status': 0, 'msg':'set network data failed'}
+    return result        
 
 @api.route('/apm/network', methods=['post', 'get'])
 def getNetWorkData():
@@ -292,11 +315,17 @@ def makeReport():
     app = method._request(request, 'app')
     model = method._request(request, 'model')
     devices = method._request(request, 'devices')
+    wifi_switch = method._request(request, 'wifi_switch')
     try:
         if platform == Platform.Android:
             deviceId = d.getIdbyDevice(devices, platform)
             battery_monitor = Battery(deviceId=deviceId)
             battery_monitor.recoverBattery()
+            wifi = False if wifi_switch == 'false' else True
+            deviceId = d.getIdbyDevice(devices, platform)
+            flow = Flow(pkgName=app, deviceId=deviceId, platform=platform)
+            data = flow.setAndroidNet(wifi=wifi)
+            f.record_net('end', data[0], data[1])
         file(fileroot=f'apm_{current_time}').make_report(app=app, devices=devices, platform=platform, model=model)
         result = {'status': 1}
     except Exception as e:

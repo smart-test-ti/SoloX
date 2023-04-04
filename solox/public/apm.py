@@ -222,6 +222,16 @@ class Flow(object):
         recNum = round(float(recNum_final - recNum_pre), 2)
         return sendNum, recNum
     
+    def setAndroidNet(self, wifi=True):
+        net = 'wlan0' if wifi else 'rmnet0'
+        pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
+        cmd = f'cat /proc/{pid}/net/dev |{d.filterType()} {net}'
+        output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
+        m = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)
+        sendNum = round(float(float(m.group(2)) / 1024), 2)
+        recNum = round(float(float(m.group(1)) / 1024), 2)
+        return sendNum, recNum
+
 
     def getiOSNet(self):
         """Get iOS upflow and downflow data"""
@@ -333,7 +343,7 @@ class APM(object):
         self.deviceId = deviceId
         self.platform = platform
         self.surfaceview = surfaceview
-        d.devicesCheck(pf=self.platform, id=self.deviceId, pkg=self.pkgName)
+        d.devicesCheck(platform=self.platform, deviceid=self.deviceId, pkgname=self.pkgName)
 
     def collectCpu(self):
         _cpu = CPU(self.pkgName, self.deviceId, self.platform)

@@ -152,6 +152,9 @@ SoloX - APM
                                 {% endif %}
                             </label>
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" checked> {% if lan == 'cn' %} 电池 {% else %} Battery {% endif %}</label>
+                            <!-- {% if platform == 'iOS' %}
+                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="gpu_checkbox" type="checkbox" checked name="cpu"> GPU</label>
+                            {% endif %} -->
                         </div>
                         <div class="tab-pane" id="tabs-device-info">
                             <div class="mb-2">
@@ -212,8 +215,9 @@ SoloX - APM
         <div id="battery_android" class="mb-3 battery" style="min-width:400px;height:310px"></div>
         {% else %}
         <div id="mem_ios"  class="mb-3 mem" style="min-width:400px;height:310px"></div>
-        <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:310px"></div>\
+        <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:310px"></div>
         <div id="battery_ios" class="mb-3 battery" style="min-width:400px;height:310px"></div>
+        <!-- <div id="gpu" class="mb-3 gpu" style="min-width:400px;height:310px"></div> -->
         {% endif %}
         <div id="network" class="Network-Data mb-3" style="min-width:400px;height:310px"></div>
     </div>
@@ -231,7 +235,7 @@ SoloX - APM
     var stop = false; // 任务状态
 
     function ruteCheck(){
-        if(['Android','iOS'].indexOf(platform) === -1 && platform && ['cn','en'].indexOf(lan) === -1 && lan){
+        if(['Android','iOS'].indexOf(platform) === -1 || platform && ['cn','en'].indexOf(lan) === -1 && lan){
             this.location.href = '/?platform=Android&lan=en';
         }
     }
@@ -260,7 +264,7 @@ SoloX - APM
 
     $('.select-device').change(function() {
         $.ajax({
-            url: "/device/packagenames",
+            url: Host + "/device/packagenames",
             type: "GET",
             async: true,
             cache: false,
@@ -298,7 +302,7 @@ SoloX - APM
 
     function initializeAPM(){
         $.ajax({
-            url: "/apm/initialize",
+            url: Host + "/apm/initialize",
             type: "POST",
             async: true,
             cache: false,
@@ -310,7 +314,7 @@ SoloX - APM
 
     function initializeEnv(){
         $.ajax({
-            url: "/device/ids?platform="+platform,
+            url: Host + "/device/ids?platform="+platform,
             type: "GET",
             async: true,
             cache: false,
@@ -346,6 +350,9 @@ SoloX - APM
                     $('#wifiadr').text(data['device_detail']['wifiadr']);
                     swal.close();
                 }
+            },
+            error: function(){
+                SwalFire('error','Host Error','Host is invalid',5000);
             }
         });
     }
@@ -354,7 +361,7 @@ SoloX - APM
 
     function getCpuRate(pkgname,device){
         $.ajax({
-            url: "/apm/cpu",
+            url: Host + "/apm/cpu",
             type: "GET",
             async: true,
             cache: false,
@@ -385,13 +392,16 @@ SoloX - APM
                         SwalFire('error','something error',data['msg'],2000);
                     }
                 }
+            },
+            error: function(){
+                SwalFire('error','Host Error','Host is invalid',5000);
             }
         });
     }
 
     function getBattery(device){
         $.ajax({
-            url: "/apm/battery",
+            url: Host + "/apm/battery",
             type: "GET",
             async: true,
             cache: false,
@@ -437,13 +447,16 @@ SoloX - APM
                         SwalFire('error','something error',data['msg'],2000);
                     }
                 }
+            },
+            error: function(){
+                SwalFire('error','Host Error','Host is invalid',5000);
             }
         });
     }
 
     function getMemPss(pkgname,device)  {
         $.ajax({
-            url: "/apm/mem",
+            url: Host + "/apm/mem",
             type: "GET",
             async: true,
             cache: false,
@@ -485,13 +498,40 @@ SoloX - APM
                         SwalFire('error','something error',data['msg'],2000);
                     }
                 }
+            },
+            error: function(){
+                SwalFire('error','Host Error','Host is invalid',5000);
+            }
+        });
+    }
+
+    function setNetWork(type,device,pkgname,net_switch){
+        $.ajax({
+            url: Host + "/apm/set/network",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                pkgname:pkgname,
+                device:device,
+                wifi_switch: net_switch,
+                type: type
+            },
+            success: function (data) {
+                if(data['status'] != 1){
+                    SwalFire('error','something error',data['msg'],2000);
+                }
+            },
+            error: function(){
+                SwalFire('error','Host Error','Host is invalid',5000);
             }
         });
     }
 
     function getNetWork(pkgname,device,net_switch)  {
         $.ajax({
-            url: "/apm/network",
+            url: Host + "/apm/network",
             type: "GET",
             async: true,
             cache: false,
@@ -525,13 +565,16 @@ SoloX - APM
                         SwalFire('error','something error',data['msg'],2000);
                     }
                 }
+            },
+            error: function(){
+                SwalFire('error','Host Error','Host is invalid',5000);
             }
         });
     }
 
     function getFps(pkgname,device,fps_switch)  {
         $.ajax({
-            url: "/apm/fps",
+            url: Host + "/apm/fps",
             type: "GET",
             async: true,
             cache: false,
@@ -566,6 +609,9 @@ SoloX - APM
                         SwalFire('error','something error',data['msg'],2000);
                     }
                 }
+            },
+            error: function(){
+                SwalFire('error','Host Error','Host is invalid',5000);
             }
         });
     }
@@ -970,6 +1016,13 @@ SoloX - APM
         return network_chart
     }
 
+    // function gpuInitialize(){
+    //     if(platform == 'iOS'){
+    //         let gpu_chart = chartsInitialize('gpu','GPU（%）');
+    //         return gpu_chart
+    //     }
+    // }
+
     function fpsInitialize(){
         //初始化fps
         if(platform === 'Android'){
@@ -988,6 +1041,7 @@ SoloX - APM
     var network_chart = networkInitialize();
     var fps_chart = fpsInitialize();
     var battery_chart = batteryInitialize();
+    // var gpu_chart = gpuInitialize()
 
 
     function collectPers(device,pkgname=null,type,title,func){
@@ -1130,11 +1184,16 @@ SoloX - APM
         }
     }
 
+    function stopRun(){
+        
+    }
+
     function stopTask(){
-        window.clearTimeout(timerQ);
         stop = true;
+        var wifi_switch = $('#net-switch').is(':checked');
         $('#run-apm').show();
         $('#stop-apm').hide();
+        window.clearTimeout(timerQ);
         $.ajax({
             url: "/apm/create/report",
             type: "GET",
@@ -1144,7 +1203,8 @@ SoloX - APM
                 platform:platform,
                 model:'normal',
                 app:$('.select-app').val(),
-                devices:$('.select-device').val()
+                devices:$('.select-device').val(),
+                wifi_switch:wifi_switch
             },
             beforeSend: function () {
                 
@@ -1153,7 +1213,10 @@ SoloX - APM
                 }else{
                     SwalLoading('Save data','Saving data to generate report, please do not leave.')
                 }
-                
+                // let device = $('.select-device').val();
+                // let pkgname = $('.select-app').val();
+                // var net_switch = $('#net-switch').is(':checked');
+                // setNetWork('end',device,pkgname,net_switch)
             },
             success: function (data) {
                 if(data['status']==1){
@@ -1172,6 +1235,8 @@ SoloX - APM
         let device = $('.select-device').val();
         let pkgname = $('.select-app').val();
         if(device && pkgname){
+            var net_switch = $('#net-switch').is(':checked');
+            setNetWork('pre',device,pkgname,net_switch)
             collectCpu(device,pkgname);
             collectMem(device,pkgname);
             collectNetwork(device,pkgname);

@@ -16,6 +16,8 @@ from threading import Lock
 from flask_socketio import SocketIO, disconnect
 from flask import Flask
 import fire as fire
+import signal
+
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.register_blueprint(api)
@@ -141,7 +143,7 @@ def openUrl(host: str, port: int):
     """
     flag = True
     while flag:
-        logger.info('start solox server...')
+        logger.info('start solox server')
         flag = getServerStatus(host, port)
     webbrowser.open(f'http://{host}:{port}/?platform=Android&lan=en', new=2)
     logger.info(f'Running on http://{host}:{port}/?platform=Android&lan=en (Press CTRL+C to quit)')
@@ -155,6 +157,7 @@ def startServer(host: str, port: int):
     :return:
     """
     try:
+        logger.info(f'Running on http://{host}:{port}/?platform=Android&lan=en (Press CTRL+C to quit)')
         socketio.run(app, host=host, debug=False, port=port)
     except Exception:
         sys.exit(0)
@@ -169,13 +172,14 @@ def main(host=_hostIP(), port=50003):
     try:
         checkPyVer()
         listeningPort(port=port)
-        pool = multiprocessing.Pool(processes=2)
-        pool.apply_async(startServer, (host, port))
-        pool.apply_async(openUrl, (host, port))
-        pool.close()
-        pool.join()
+        startServer(host, port)
+        # pool = multiprocessing.Pool(processes=2)
+        # pool.apply_async(startServer, (host, port))
+        # pool.apply_async(openUrl, (host, port))
+        # pool.close()
+        # pool.join()
     except Exception:
-        pass
+        sys.exit(0)
     except KeyboardInterrupt:
         logger.info('stop solox success')                   
 

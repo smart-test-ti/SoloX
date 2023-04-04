@@ -6,7 +6,6 @@ import shutil
 import time
 import requests
 from logzero import logger
-from flask import request
 from solox.public.adb import adb
 from tqdm import tqdm
 import traceback
@@ -176,16 +175,17 @@ class file:
             ws1.write(0,1,'Value')
             row = 1 #start row
             col = 0 #start col
-            f = open(f'{self.report_dir}/{scene}/{name}.log','r',encoding='utf-8')
-            for lines in f: 
-                target = lines.split('=')
-                k += 1
-                for i in range(len(target)):
-                    ws1.write(row, col ,target[i])
-                    col += 1
-                row += 1
-                col = 0
-        wb.save(f'{scene}.xls') # xxx.xls   
+            if os.path.exists(f'{self.report_dir}/{scene}/{name}.log'):
+                f = open(f'{self.report_dir}/{scene}/{name}.log','r',encoding='utf-8')
+                for lines in f: 
+                    target = lines.split('=')
+                    k += 1
+                    for i in range(len(target)):
+                        ws1.write(row, col ,target[i])
+                        col += 1
+                    row += 1
+                    col = 0
+        wb.save(f'{scene}.xls')   
 
     def get_repordir(self):
         report_dir = os.path.join(os.getcwd(), 'report')
@@ -194,16 +194,32 @@ class file:
         return report_dir
 
     def create_file(self, filename, content=''):
-        if not os.path.exists(f'{self.report_dir}'):
-            os.mkdir(f'{self.report_dir}')
-        with open(f'{self.report_dir}/{filename}', 'a+', encoding="utf-8") as file:
+        if not os.path.exists(self.report_dir):
+            os.mkdir(self.report_dir)
+        with open(os.path.join(self.report_dir, filename), 'a+', encoding="utf-8") as file:
             file.write(content)
 
     def add_log(self, path, log_time, value):
         if value >= 0:
             with open(path, 'a+', encoding="utf-8") as file:
                 file.write(f'{log_time}={str(value)}' + '\n')
-
+    
+    def record_net(self, type, send , recv):
+        net_dict = {}
+        match(type):
+            case 'pre':
+                net_dict['send'] = send
+                net_dict['recv'] = recv
+                content = json.dumps(net_dict)
+                self.create_file(filename='pre_net.json', content=content)
+            case 'end':
+                net_dict['send'] = send
+                net_dict['recv'] = recv
+                content = json.dumps(net_dict)
+                self.create_file(filename='end_net.json', content=content)
+            case _:
+                logger.error('record network data failed')
+    
     def make_report(self, app, devices, platform='Android', model='normal'):
         current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         result_dict = {
@@ -216,7 +232,7 @@ class file:
         }
         content = json.dumps(result_dict)
         self.create_file(filename='result.json', content=content)
-        report_new_dir = f'{self.report_dir}/{self.fileroot}'
+        report_new_dir = os.path.join(self.report_dir, self.fileroot)
         if not os.path.exists(report_new_dir):
             os.mkdir(report_new_dir)
 
@@ -237,22 +253,24 @@ class file:
         """Read apmlog file data"""
         log_data_list = []
         target_data_list = []
-        f = open(f'{self.report_dir}/{scene}/{filename}', "r")
-        lines = f.readlines()
-        for line in lines:
-            if isinstance(line.split('=')[1].strip(), int):
-                log_data_list.append({
-                    "x": line.split('=')[0].strip(),
-                    "y": int(line.split('=')[1].strip())
-                })
-                target_data_list.append(int(line.split('=')[1].strip()))
-            else:
-                log_data_list.append({
-                    "x": line.split('=')[0].strip(),
-                    "y": float(line.split('=')[1].strip())
-                })
-                target_data_list.append(float(line.split('=')[1].strip()))
+        if os.path.exists(os.path.join(self.report_dir,scene,filename)):
+            f = open(os.path.join(self.report_dir,scene,filename), "r")
+            lines = f.readlines()
+            for line in lines:
+                if isinstance(line.split('=')[1].strip(), int):
+                    log_data_list.append({
+                        "x": line.split('=')[0].strip(),
+                        "y": int(line.split('=')[1].strip())
+                    })
+                    target_data_list.append(int(line.split('=')[1].strip()))
+                else:
+                    log_data_list.append({
+                        "x": line.split('=')[0].strip(),
+                        "y": float(line.split('=')[1].strip())
+                    })
+                    target_data_list.append(float(line.split('=')[1].strip()))
         return log_data_list, target_data_list
+        
     
     def getCpuLog(self, platform, scene):
         targetDic = {}
@@ -363,14 +381,16 @@ class file:
         fpsAvg = f'{int(sum(fpsData) / len(fpsData))}HZ/s'
 
         jankData = self.readLog(scene=scene, filename=f'jank.log')[1]
-        jankAvg = f'{int(sum(jankData) / len(jankData))}'
-
-        flowSendData = self.readLog(scene=scene, filename=f'upflow.log')[1]
-        flowSend = f'{round(float(sum(flowSendData) / 1024), 2)}MB'
-
-        flowRecvData = self.readLog(scene=scene, filename=f'downflow.log')[1]
-        flowRecv = f'{round(float(sum(flowRecvData) / 1024), 2)}MB'
+        jankAvg = f'{int(sum(jankData))}'
        
+        f_pre = open(os.path.join(self.report_dir,scene,'pre_net.json'))
+        f_end = open(os.path.join(self.report_dir,scene,'end_net.json'))
+        json_pre = json.loads(f_pre.read())
+        json_end = json.loads(f_end.read())
+        send = json_end['send'] - json_pre['send']
+        recv = json_end['recv'] - json_pre['recv']
+        flowSend = f'{round(float(send / 1024), 2)}MB'
+        flowRecv = f'{round(float(recv / 1024), 2)}MB'
         apm_dict = {}
         apm_dict['cpuAppRate'] = cpuAppRate
         apm_dict['cpuSystemRate'] = cpuSystemRate
@@ -470,8 +490,9 @@ class file:
 
 
 class Method:
-
-    def _request(self, request, object):
+    
+    @classmethod
+    def _request(cls, request, object):
         match(request.method):
             case 'POST':
                 return request.form[object]
@@ -479,12 +500,15 @@ class Method:
                 return request.args[object]
             case _:
                 raise Exception('request method error')
-        
-    def _setValue(self, value):
+    
+    @classmethod   
+    def _setValue(cls, value, default = 0):
         try:
             result = value
-        except:
-            result = 0        
+        except ZeroDivisionError :
+            result = default    
+        except Exception:
+            result = default            
         return result
 
 class Install:
@@ -533,4 +557,4 @@ class Install:
             os.remove(path)
             return True, result
         else:
-            return False, result        
+            return False, result

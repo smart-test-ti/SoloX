@@ -5,6 +5,7 @@ from flask import Blueprint
 from flask import render_template
 from flask import request
 from solox.public.common import file,Method
+from logzero import logger
 
 page = Blueprint("page", __name__)
 m = Method()
@@ -30,6 +31,8 @@ def index():
     netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
     betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
     runningTime = (0, request.cookies.get('runningTime'))[request.cookies.get('runningTime') not in [None, 'NaN']]
+    solox_host = request.cookies.get('solox_host')
+    host_switch = request.cookies.get('host_switch')
     return render_template('index.html', **locals())
 
 @page.route('/pk')
@@ -83,12 +86,12 @@ def analysis():
     for dir in dirs:
         if dir == scene:
             try:
-                if not os.path.exists(f'{report_dir}/{scene}/apm.json'):
+                if not os.path.exists(os.path.join(report_dir,scene,'apm.json')):
                     apm_dict = f._setAndroidPerfs(scene) if platform == 'Android' else f._setiOSPerfs(scene)
                     content = json.dumps(apm_dict)
-                    with open(f'{report_dir}/{scene}/apm.json', 'a+', encoding="utf-8") as apmfile:
+                    with open(os.path.join(report_dir,scene,'apm.json'), 'a+', encoding="utf-8") as apmfile:
                         apmfile.write(content)
-                f = open(f'{report_dir}/{scene}/apm.json')
+                f = open(os.path.join(report_dir,scene,'apm.json'))
                 json_data = json.loads(f.read())
                 apm_data['cpuAppRate'] = m._setValue(json_data['cpuAppRate'])
                 apm_data['cpuSystemRate'] = m._setValue(json_data['cpuSystemRate'])
@@ -108,6 +111,8 @@ def analysis():
                     apm_data['batteryVoltage'] = m._setValue(json_data['batteryVoltage'])
                     apm_data['batteryPower'] = m._setValue(json_data['batteryPower'])
                 f.close()
+            except ZeroDivisionError:
+                pass    
             except Exception:
                 traceback.print_exc()
             finally:
@@ -127,13 +132,12 @@ def analysis_pk():
     for dir in dirs:
         if dir == scene:
             try:
-                if not os.path.exists(f'{report_dir}/{scene}/apm.json'):
+                if not os.path.exists(os.path.join(report_dir,scene,'apm.json')):
                     apm_dict = f._setpkPerfs(scene)
                     content = json.dumps(apm_dict)
-                    with open(f'{report_dir}/{scene}/apm.json', 'a+', encoding="utf-8") as apmfile:
+                    with open(os.path.join(report_dir,scene,'apm.json'), 'a+', encoding="utf-8") as apmfile:
                         apmfile.write(content)
-
-                f = open(f'{report_dir}/{scene}/apm.json')
+                f = open(os.path.join(report_dir,scene,'apm.json'))
                 json_data = json.loads(f.read())
                 apm_data['cpuAppRate1'] = json_data['cpuAppRate1']
                 apm_data['cpuAppRate2'] = json_data['cpuAppRate2']

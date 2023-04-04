@@ -1,5 +1,5 @@
 <p align="center">
-  <a>中文</a> | <a href="./README.md">English</a> | <a href="./DocForAndroid.md">DocForAndroid</a>
+  <a>中文</a> | <a href="./README.md">English</a>
 </p>
 
 <p align="center">
@@ -26,8 +26,8 @@ SoloX - Android/iOS性能数据实时采集工具。
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348054846-b0164165-e83a-443e-9a05-8c1f9ddb355f.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%" >
 
 ## 安装
-```
-1.Python:3.6+ (python3.6+  小于v2.5.3)
+```shell
+1.Python:3.10+ (Python 3.6 3.7 3.8 3.9 请下载低于2.5.4的版本)
 2.pip install -U solox
 3.pip install -i  https://mirrors.ustc.edu.cn/pypi/web/simple -U solox (在国内推荐使用镜像下载)
 
@@ -52,10 +52,10 @@ from solox.public.apm import APM
 
 apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview=True) 
 # apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
-# surfaceview： false = gfxinfo (手机开发者-GPU呈现模式- adb shell dumpsys gfxinfo)
+# surfaceview： False = gfxinfo (手机开发者-GPU呈现模式- adb shell dumpsys gfxinfo)
 cpu = apm.collectCpu() # %
 memory = apm.collectMemory() # MB
-flow = apm.collectFlow() # KB
+flow = apm.collectFlow(wifi=True) # KB
 fps = apm.collectFps() # HZ
 battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV power:w
 gpu = apm.collectGpu() # % only supports ios
@@ -72,9 +72,9 @@ Windows: start /min python3 -m solox &
 ```
 
 ### 2.通过api请求性能数据
-```
-- Android: http://{ip}:{port}/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&target=cpu
-- iOS: http://{ip}:{port}/apm/collect?platform=iOS&pkgname=com.bilibili.app.in&target=cpu
+```shell
+Android: http://{ip}:{port}/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&target=cpu
+iOS: http://{ip}:{port}/apm/collect?platform=iOS&pkgname=com.bilibili.app.in&target=cpu
 
 target in ['cpu','memory','network','fps','battery']
 ```
@@ -82,6 +82,8 @@ target in ['cpu','memory','network','fps','battery']
 ## 对比模式
 - 2-devices: 在两部不同的手机上测试同一个应用
 - 2-apps: 在具有相同配置的两部手机上测试两个不同的应用程序
+
+注意: 目前只支持安卓
 
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348055024-96e38b5e-d6b4-4a06-8070-0707e2fbcd99.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 

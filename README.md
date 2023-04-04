@@ -1,5 +1,5 @@
 <p align="center">
-  <a>English</a> | <a href="./README.zh.md">中文</a> | <a href="./DocForAndroid.md">DocForAndroid</a>
+  <a>English</a> | <a href="./README.zh.md">中文</a>
 </p>
 
 <p align="center">
@@ -13,6 +13,7 @@
 <p align="center">
 <a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/pypi/v/solox" alt="solox preview"></a>
 <a href="https://pypistats.org/packages/solox" target="__blank"><img src="https://img.shields.io/pypi/dm/solox"></a>
+<a href="https://pypistats.org/packages/solox" target="__blank"><img src="https://img.shields.io/badge/FAQ-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98-orange"></a>
 
 <br>
 </p>
@@ -26,10 +27,10 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348054846-b0164165-e83a-443e-9a05-8c1f9ddb355f.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%" >
 
 ## Installation
-```
-1.Python:3.10+ (python3.6+  lower v2.5.3)
-2.pip install -U solox
-3.pip install -i  https://mirrors.ustc.edu.cn/pypi/web/simple -U solox (Recommend)
+```shell
+1.Python:3.10+ (Python 3.6 3.7 3.8 3.9 Please download a version of solox lower than 2.5.4)
+2.pip install -U solox 
+3.pip install -i  https://mirrors.ustc.edu.cn/pypi/web/simple -U solox (China)
 
 notice: If Windows users need to test ios, install and start Itunes
 ```
@@ -52,11 +53,11 @@ from solox.public.apm import APM
 
 apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview=True)
 # apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
-# surfaceview： false = gfxinfo (Developer - GPU rendering mode - adb shell dumpsys gfxinfo)
+# surfaceview： False = gfxinfo (Developer - GPU rendering mode - adb shell dumpsys gfxinfo)
 
 cpu = apm.collectCpu() # %
 memory = apm.collectMemory() # MB
-flow = apm.collectFlow() # KB
+flow = apm.collectFlow(wifi=True) # KB
 fps = apm.collectFps() # HZ
 battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV power:w
 gpu = apm.collectGpu() # % only supports ios
@@ -73,9 +74,9 @@ Windows: start /min python3 -m solox &
 ```
 
 ### Request apm data from api
-```
-- Android: http://{ip}:{port}/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&target=cpu
-- iOS: http://{ip}:{port}/apm/collect?platform=iOS&pkgname=com.bilibili.app.in&target=cpu
+```shell
+Android: http://{ip}:{port}/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&target=cpu
+iOS: http://{ip}:{port}/apm/collect?platform=iOS&pkgname=com.bilibili.app.in&target=cpu
 
 target in ['cpu','memory','network','fps','battery']
 ```
@@ -83,6 +84,8 @@ target in ['cpu','memory','network','fps','battery']
 ## PK Model
 - 2-devices: test the same app on two different phones
 - 2-apps: test two different apps on two phones with the same configuration
+
+notice: only supports android
 
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348055024-96e38b5e-d6b4-4a06-8070-0707e2fbcd99.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
 
