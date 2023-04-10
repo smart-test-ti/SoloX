@@ -164,7 +164,7 @@ class file:
         android_log_file_list = ['cpu_app','cpu_sys','mem_total','mem_native','mem_dalvik',
                                  'battery_level', 'battery_tem','upflow','downflow','fps']
         ios_log_file_list = ['cpu_app','cpu_sys', 'mem_total', 'battery_tem', 'battery_current', 
-                             'battery_voltage', 'battery_power','upflow','downflow','fps']
+                             'battery_voltage', 'battery_power','upflow','downflow','fps','gpu']
         log_file_list = android_log_file_list if platform == 'Android' else ios_log_file_list
         wb = xlwt.Workbook(encoding = 'utf-8')
        
@@ -277,6 +277,12 @@ class file:
         targetDic['cpuAppData'] = self.readLog(scene=scene, filename='cpu_app.log')[0]
         targetDic['cpuSysData'] = self.readLog(scene=scene, filename='cpu_sys.log')[0]
         result = {'status': 1, 'cpuAppData': targetDic['cpuAppData'], 'cpuSysData': targetDic['cpuSysData']}
+        return result
+    
+    def getGpuLog(self, platform, scene):
+        targetDic = {}
+        targetDic['gpu'] = self.readLog(scene=scene, filename='gpu.log')[0]
+        result = {'status': 1, 'gpu': targetDic['gpu']}
         return result
     
     def getMemLog(self, platform, scene):
@@ -408,35 +414,38 @@ class file:
 
     def _setiOSPerfs(self, scene):
         """Aggregate APM data for iOS"""
-        cpuAppData = self.readLog(scene=scene, filename=f'cpu_app.log')[1]
+        cpuAppData = self.readLog(scene=scene, filename='cpu_app.log')[1]
         cpuAppRate = f'{round(sum(cpuAppData) / len(cpuAppData), 2)}%'
 
-        cpuSystemData = self.readLog(scene=scene, filename=f'cpu_sys.log')[1]
+        cpuSystemData = self.readLog(scene=scene, filename='cpu_sys.log')[1]
         cpuSystemRate = f'{round(sum(cpuSystemData) / len(cpuSystemData), 2)}%'
 
-        totalPassData = self.readLog(scene=scene, filename=f'mem_total.log')[1]
+        totalPassData = self.readLog(scene=scene, filename='mem_total.log')[1]
         totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
 
-        fpsData = self.readLog(scene=scene, filename=f'fps.log')[1]
+        fpsData = self.readLog(scene=scene, filename='fps.log')[1]
         fpsAvg = f'{int(sum(fpsData) / len(fpsData))}HZ/s'
 
-        flowSendData = self.readLog(scene=scene, filename=f'upflow.log')[1]
+        flowSendData = self.readLog(scene=scene, filename='upflow.log')[1]
         flowSend = f'{round(float(sum(flowSendData) / 1024), 2)}MB'
 
-        flowRecvData = self.readLog(scene=scene, filename=f'downflow.log')[1]
+        flowRecvData = self.readLog(scene=scene, filename='downflow.log')[1]
         flowRecv = f'{round(float(sum(flowRecvData) / 1024), 2)}MB'
 
-        batteryTemlData = self.readLog(scene=scene, filename=f'battery_tem.log')[1]
+        batteryTemlData = self.readLog(scene=scene, filename='battery_tem.log')[1]
         batteryTeml = round(sum(batteryTemlData) / len(batteryTemlData), 2)
 
-        batteryCurrentData = self.readLog(scene=scene, filename=f'battery_current.log')[1]
+        batteryCurrentData = self.readLog(scene=scene, filename='battery_current.log')[1]
         batteryCurrent = round(sum(batteryCurrentData) / len(batteryCurrentData), 2)
 
-        batteryVoltageData = self.readLog(scene=scene, filename=f'battery_voltage.log')[1]
+        batteryVoltageData = self.readLog(scene=scene, filename='battery_voltage.log')[1]
         batteryVoltage = round(sum(batteryVoltageData) / len(batteryVoltageData), 2)
 
-        batteryPowerData = self.readLog(scene=scene, filename=f'battery_power.log')[1]
+        batteryPowerData = self.readLog(scene=scene, filename='battery_power.log')[1]
         batteryPower = round(sum(batteryPowerData) / len(batteryPowerData), 2)
+
+        gpuData = self.readLog(scene=scene, filename='gpu.log')[1]
+        gpu = round(sum(gpuData) / len(gpuData), 2)
 
         apm_dict = {}
         apm_dict['cpuAppRate'] = cpuAppRate
@@ -452,29 +461,30 @@ class file:
         apm_dict['batteryCurrent'] = batteryCurrent
         apm_dict['batteryVoltage'] = batteryVoltage
         apm_dict['batteryPower'] = batteryPower
+        apm_dict['gpu'] = gpu
         
         return apm_dict
 
     def _setpkPerfs(self, scene):
         """Aggregate APM data for pk model"""
-        cpuAppData1 = self.readLog(scene=scene, filename=f'cpu_app1.log')[1]
+        cpuAppData1 = self.readLog(scene=scene, filename='cpu_app1.log')[1]
         cpuAppRate1 = f'{round(sum(cpuAppData1) / len(cpuAppData1), 2)}%'
-        cpuAppData2 = self.readLog(scene=scene, filename=f'cpu_app2.log')[1]
+        cpuAppData2 = self.readLog(scene=scene, filename='cpu_app2.log')[1]
         cpuAppRate2 = f'{round(sum(cpuAppData2) / len(cpuAppData2), 2)}%'
 
-        totalPassData1 = self.readLog(scene=scene, filename=f'mem1.log')[1]
+        totalPassData1 = self.readLog(scene=scene, filename='mem1.log')[1]
         totalPassAvg1 = f'{round(sum(totalPassData1) / len(totalPassData1), 2)}MB'
-        totalPassData2 = self.readLog(scene=scene, filename=f'mem2.log')[1]
+        totalPassData2 = self.readLog(scene=scene, filename='mem2.log')[1]
         totalPassAvg2 = f'{round(sum(totalPassData2) / len(totalPassData2), 2)}MB'
 
-        fpsData1 = self.readLog(scene=scene, filename=f'fps1.log')[1]
+        fpsData1 = self.readLog(scene=scene, filename='fps1.log')[1]
         fpsAvg1 = f'{int(sum(fpsData1) / len(fpsData1))}HZ/s'
-        fpsData2 = self.readLog(scene=scene, filename=f'fps2.log')[1]
+        fpsData2 = self.readLog(scene=scene, filename='fps2.log')[1]
         fpsAvg2 = f'{int(sum(fpsData2) / len(fpsData2))}HZ/s'
 
-        networkData1 = self.readLog(scene=scene, filename=f'network1.log')[1]
+        networkData1 = self.readLog(scene=scene, filename='network1.log')[1]
         network1 = f'{round(float(sum(networkData1) / 1024), 2)}MB'
-        networkData2 = self.readLog(scene=scene, filename=f'network2.log')[1]
+        networkData2 = self.readLog(scene=scene, filename='network2.log')[1]
         network2 = f'{round(float(sum(networkData2) / 1024), 2)}MB'
         
         apm_dict = {}

@@ -20,6 +20,7 @@ class Target:
     Battery = 'battery'
     Network = 'network'
     FPS = 'fps'
+    GPU = 'gpu'
 
 class CPU(object):
 

@@ -368,6 +368,29 @@
                 </div>
             </div>
         </div>
+        {% if platform == 'iOS' %}
+        <div class="col-sm-6 col-lg-2">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="bg-purple text-white avatar">
+                                GPU
+                            </span>
+                        </div>
+                        <div class="col">
+                            <div class="font-weight-medium">
+                                GPU
+                            </div>
+                            <div class="text-muted">
+                                Avg: {{ apm_data.gpu }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 <div class="col-12">
@@ -469,6 +492,24 @@
             <div id="chart-networkdata"></div>
         </div>
     </div>
+    {% if platform == 'iOS' %}
+    <div class="card gpu-card mt-3">
+        <div class="card-header">
+            <div class='card-title'>GPU（%）</div>
+            <div class="card-actions btn-actions">
+                <a class="btn-action cursor-pointer" id="gpu_loading">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                </a>
+                <a class="btn-action cursor-pointer" id="gpu_png" onclick="screenshot('gpu-card','gpu.png')">
+                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="chart-gpu"></div>
+        </div>
+    </div>
+    {% endif %}
 
 </div>
 {% endblock %}
@@ -482,6 +523,9 @@
         $('#fps_loading').click();
         if(platform == 'Android'){
             $('#jank_loading').click();
+        }
+        if(platform == 'iOS'){
+            $('#gpu_loading').click();
         }
         $('#battery_loading').click();
         $('#networkdata_loading').click();
@@ -626,6 +670,36 @@
                     jank_chart.updateSeries([{
                         name: 'jank',
                         data: data['jank']
+                    }])
+                }
+            });
+        });
+    }
+
+    if(platform == 'iOS'){
+        var gpu_chart = new ApexCharts(document.querySelector("#chart-gpu"), options('line'));
+        gpu_chart.render();
+        $('#gpu_loading').click(function () {
+            $.ajax({
+                url: '/apm/log',
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    scene:'{{ scene }}',
+                    target:'gpu',
+                    platform:platform
+                },
+                beforeSend: function () {
+                    SwalLoading('Loading','')
+                },
+                complete: function () {
+                    swal.close();
+                },
+                success: function (data) {
+                    gpu_chart.updateSeries([{
+                        name: 'gpu',
+                        data: data['gpu']
                     }])
                 }
             });

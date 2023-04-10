@@ -5,7 +5,7 @@ from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
 import traceback
-from solox.public.apm import CPU, MEM, Flow, FPS, Battery,Target
+from solox.public.apm import CPU, MEM, Flow, FPS, Battery, GPU, Target
 from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
 from solox.public.common import Devices, file, Method, Install, Platform
 
@@ -133,7 +133,7 @@ def getCpuRate():
                 cpu = CPU_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
                 first, second = cpu.getAndroidCpuRate()
                 result = {'status': 1, 'first': first, 'second': second}
-            case '2-devices':
+            case '2-app':
                 pkgNameList = pkgname.split(',')
                 deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
                 deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
@@ -226,7 +226,7 @@ def getNetWorkData():
                 network = Flow_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
                 first, second = network.getNetWorkData()
                 result = {'status': 1, 'first': first, 'second': second}
-            case '2-devices':
+            case '2-app':
                 pkgNameList = pkgname.split(',')
                 deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
                 deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
@@ -306,6 +306,19 @@ def getBattery():
         result = {'status': 1, 'level': 0, 'temperature': 0, 'current':0, 'voltage':0 , 'power':0}
     return result
 
+@api.route('/apm/gpu', methods=['post', 'get'])
+def getGpu():
+    """get gpu data"""
+    pkgname = method._request(request, 'pkgname')
+    try:
+        gpu = GPU(pkgname=pkgname)
+        final = gpu.getGPU()
+        result = {'status': 1, 'gpu': final}
+    except Exception:
+        traceback.print_exc()
+        result = {'status': 1, 'gpu': 0}
+    return result
+
 
 @api.route('/apm/create/report', methods=['post', 'get'])
 def makeReport():
@@ -376,7 +389,8 @@ def getLogData():
             'mem': f.getMemLog(platform, scene),
             'battery': f.getBatteryLog(platform, scene),
             'flow': f.getFlowLog(platform, scene),
-            'fps': f.getFpsLog(platform, scene)
+            'fps': f.getFpsLog(platform, scene),
+            'gpu': f.getGpuLog(platform, scene)
         }
         result = fucDic[target]
     except Exception as e:
@@ -442,7 +456,14 @@ def apmCollect():
                 if platform == 'Android':
                     result = {'status': 1, 'level': final[0], 'temperature': final[1]}
                 else:
-                    result = {'status': 1, 'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]} 
+                    result = {'status': 1, 'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}
+            case Target.GPU:
+                if platform == Platform.iOS:
+                    gpu = GPU(pkgname=pkgname)
+                    final = gpu.getGPU()
+                    result = {'status': 1, 'gpu': final}
+                else:
+                    result = {'status': 0, 'msg': 'not support android'}    
             case _:
                 result = {'status': 0, 'msg': 'no this target'}
     except Exception as e:

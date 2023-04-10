@@ -31,7 +31,7 @@ def index():
     netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
     betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
     runningTime = (0, request.cookies.get('runningTime'))[request.cookies.get('runningTime') not in [None, 'NaN']]
-    solox_host = request.cookies.get('solox_host')
+    solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
     host_switch = request.cookies.get('host_switch')
     return render_template('index.html', **locals())
 
@@ -110,6 +110,7 @@ def analysis():
                     apm_data['batteryCurrent'] = m._setValue(json_data['batteryCurrent'])
                     apm_data['batteryVoltage'] = m._setValue(json_data['batteryVoltage'])
                     apm_data['batteryPower'] = m._setValue(json_data['batteryPower'])
+                    apm_data['gpu'] = m._setValue(json_data['gpu'])
                 f.close()
             except ZeroDivisionError:
                 pass    

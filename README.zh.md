@@ -27,7 +27,7 @@ SoloX - Android/iOS性能数据实时采集工具。
 
 ## 安装
 ```shell
-1.Python:3.10+ (Python 3.6 3.7 3.8 3.9 请下载低于2.5.4的版本)
+1.Python:3.10+ (Python 3.6 ~ 3.9 请下载低于2.5.4的版本)
 2.pip install -U solox
 3.pip install -i  https://mirrors.ustc.edu.cn/pypi/web/simple -U solox (在国内推荐使用镜像下载)
 
@@ -76,7 +76,7 @@ Windows: start /min python3 -m solox &
 Android: http://{ip}:{port}/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&target=cpu
 iOS: http://{ip}:{port}/apm/collect?platform=iOS&pkgname=com.bilibili.app.in&target=cpu
 
-target in ['cpu','memory','network','fps','battery']
+target in ['cpu','memory','network','fps','battery','gpu']
 ```
 
 ## 对比模式
