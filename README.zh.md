@@ -50,9 +50,10 @@ python -m solox --host={ip} --port={port}
 from solox.public.apm import APM
 # solox version >= 2.1.2
 
-apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview=True) 
+apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview=True, noLog=True) 
 # apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
 # surfaceview： False = gfxinfo (手机开发者-GPU呈现模式- adb shell dumpsys gfxinfo)
+# noLog : False (会把测试数据写到log文件)
 cpu = apm.collectCpu() # %
 memory = apm.collectMemory() # MB
 flow = apm.collectFlow(wifi=True) # KB

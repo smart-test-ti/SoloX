@@ -99,9 +99,9 @@ class CPU(object):
             f.add_log(os.path.join(f.report_dir,'cpu_sys.log'), apm_time, sysCpuRate)
         return appCpuRate, sysCpuRate
 
-    def getCpuRate(self, useApi=False):
+    def getCpuRate(self, noLog=False):
         """Get the cpu rate of a process, unit:%"""
-        appCpuRate, systemCpuRate = self.getAndroidCpuRate(useApi) if self.platform == Platform.Android else self.getiOSCpuRate(useApi)
+        appCpuRate, systemCpuRate = self.getAndroidCpuRate(noLog) if self.platform == Platform.Android else self.getiOSCpuRate(noLog)
         return appCpuRate, systemCpuRate
 
 
@@ -132,10 +132,10 @@ class MEM(object):
         dalvikPass = 0
         return totalPass, nativePass, dalvikPass
 
-    def getProcessMem(self, useApi=False):
+    def getProcessMem(self, noLog=False):
         """Get the app memory"""
         totalPass, nativePass, dalvikPass = self.getAndroidMem() if self.platform == Platform.Android else self.getiOSMem()
-        if useApi is False:    
+        if noLog is False:    
             time.sleep(1)    
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
             f.add_log(os.path.join(f.report_dir,'mem_total.log'), apm_time, totalPass)
@@ -150,15 +150,15 @@ class Battery(object):
         self.deviceId = deviceId
         self.platform = platform
     
-    def getBattery(self, useApi=False):
+    def getBattery(self, noLog=False):
         if self.platform == Platform.Android:
-            level, temperature = self.getAndroidBattery(useApi)
+            level, temperature = self.getAndroidBattery(noLog)
             return level, temperature
         else:
-            temperature, current, voltage, power = self.getiOSBattery(useApi)
+            temperature, current, voltage, power = self.getiOSBattery(noLog)
             return temperature, current, voltage, power
         
-    def getAndroidBattery(self, useApi=False):
+    def getAndroidBattery(self, noLog=False):
         """Get android battery info, unit:%"""
         # Switch mobile phone battery to non-charging state
         cmd = 'dumpsys battery set status 1'
@@ -168,14 +168,14 @@ class Battery(object):
         output = adb.shell(cmd=cmd, deviceId=self.deviceId)
         level = int(re.findall(u'level:\s?(\d+)', output)[0])
         temperature = int(re.findall(u'temperature:\s?(\d+)', output)[0]) / 10
-        if useApi is False:
+        if noLog is False:
              time.sleep(1)
              apm_time = datetime.datetime.now().strftime('%H:%M:%S')
              f.add_log(os.path.join(f.report_dir,'battery_level.log'), apm_time, level)
              f.add_log(os.path.join(f.report_dir,'battery_tem.log'), apm_time, temperature)
         return level, temperature
     
-    def getiOSBattery(self, useApi=False):
+    def getiOSBattery(self, noLog=False):
         """Get ios battery info, unit:%"""
         d  = tidevice.Device()
         ioDict =  d.get_io_power()
@@ -183,7 +183,7 @@ class Battery(object):
         current = m._setValue(abs(ioDict['Diagnostics']['IORegistry']['InstantAmperage']))
         voltage = m._setValue(ioDict['Diagnostics']['IORegistry']['Voltage'])
         power = current * voltage / 1000
-        if useApi is False:
+        if noLog is False:
             time.sleep(1)
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
             f.add_log(os.path.join(f.report_dir,'battery_tem.log'), apm_time, tem) # unknown
@@ -242,10 +242,10 @@ class Flow(object):
         recNum = round(float(apm_data[0]), 2)
         return sendNum, recNum
 
-    def getNetWorkData(self, wifi=True, useApi=False):
+    def getNetWorkData(self, wifi=True, noLog=False):
         """Get the upflow and downflow data, unit:KB"""
         sendNum, recNum = self.getAndroidNet(wifi) if self.platform == Platform.Android else self.getiOSNet()
-        if useApi is False:
+        if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
             f.add_log(os.path.join(f.report_dir,'upflow.log'), apm_time, sendNum)
             f.add_log(os.path.join(f.report_dir,'downflow.log'), apm_time, recNum)
@@ -261,40 +261,40 @@ class FPS(object):
         self.surfaceview = surfaceview
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
 
-    def getAndroidFps(self, useApi=False):
+    def getAndroidFps(self, noLog=False):
         """get Android Fps, unit:HZ"""
         monitors = FPSMonitor(device_id=self.deviceId, package_name=self.pkgName, frequency=1,
                               surfaceview=self.surfaceview, start_time=TimeUtils.getCurrentTimeUnderline())
         monitors.start()
         fps, jank = monitors.stop()
-        if useApi is False:
+        if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
             f.add_log(os.path.join(f.report_dir,'fps.log'), apm_time, fps)
             f.add_log(os.path.join(f.report_dir,'jank.log'), apm_time, jank)
         return fps, jank
 
-    def getiOSFps(self, useApi=False):
+    def getiOSFps(self, noLog=False):
         """get iOS Fps"""
         apm = iosAPM(self.pkgName)
         fps = int(apm.getPerformance(apm.fps))
-        if useApi is False:
+        if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
             f.add_log(os.path.join(f.report_dir,'fps.log'), apm_time, fps)
         return fps, 0
 
-    def getFPS(self, useApi=False):
+    def getFPS(self, noLog=False):
         """get fps、jank"""
-        fps, jank = self.getAndroidFps(useApi) if self.platform == Platform.Android else self.getiOSFps(useApi)
+        fps, jank = self.getAndroidFps(noLog) if self.platform == Platform.Android else self.getiOSFps(noLog)
         return fps, jank
 
 class GPU(object):
     def __init__(self, pkgName):
         self.pkgName = pkgName
 
-    def getGPU(self, useApi=False):
+    def getGPU(self, noLog=False):
         apm = iosAPM(self.pkgName)
         gpu = apm.getPerformance(apm.gpu)
-        if useApi is False:
+        if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
             f.add_log(os.path.join(f.report_dir,'gpu.log'), apm_time, gpu)
         return gpu   
@@ -339,30 +339,31 @@ class iosAPM(object):
 class APM(object):
     """for python api"""
 
-    def __init__(self, pkgName, deviceId='', platform=Platform.Android, surfaceview=True):
+    def __init__(self, pkgName, deviceId='', platform=Platform.Android, surfaceview=True, noLog=True):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
         self.surfaceview = surfaceview
+        self.noLog = noLog
         d.devicesCheck(platform=self.platform, deviceid=self.deviceId, pkgname=self.pkgName)
 
     def collectCpu(self):
         _cpu = CPU(self.pkgName, self.deviceId, self.platform)
-        appCpuRate, systemCpuRate = _cpu.getCpuRate(useApi=True)
+        appCpuRate, systemCpuRate = _cpu.getCpuRate(noLog=self.noLog)
         result = {'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
         logger.info(f'cpu: {result}')
         return result
 
     def collectMemory(self):
         _memory = MEM(self.pkgName, self.deviceId, self.platform)
-        totalPass, nativePass, dalvikPass = _memory.getProcessMem(useApi=True)
+        totalPass, nativePass, dalvikPass = _memory.getProcessMem(noLog=self.noLog)
         result = {'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
         logger.info(f'memory: {result}')
         return result
 
     def collectBattery(self):
         _battery = Battery(self.deviceId, self.platform)
-        final = _battery.getBattery(useApi=True)
+        final = _battery.getBattery(noLog=self.noLog)
         if self.platform == Platform.Android:
             result = {'level': final[0], 'temperature': final[1]}
         else:
@@ -372,14 +373,14 @@ class APM(object):
 
     def collectFlow(self, wifi=True):
         _flow = Flow(self.pkgName, self.deviceId, self.platform)
-        upFlow, downFlow = _flow.getNetWorkData(wifi=wifi,useApi=True)
+        upFlow, downFlow = _flow.getNetWorkData(wifi=wifi,noLog=self.noLog)
         result = {'upFlow': upFlow, 'downFlow': downFlow}
         logger.info(f'network: {result}')
         return result
 
     def collectFps(self):
         _fps = FPS(self.pkgName, self.deviceId, self.platform, self.surfaceview)
-        fps, jank = _fps.getFPS(useApi=True)
+        fps, jank = _fps.getFPS(noLog=self.noLog)
         result = {'fps': fps, 'jank': jank}
         logger.info(f'fps: {result}')
         return result
@@ -388,7 +389,7 @@ class APM(object):
         _gpu = GPU(self.pkgName)
         if self.platform == Platform.Android:
             raise Exception('not support android')
-        gpu = _gpu.getGPU(useApi=True)
+        gpu = _gpu.getGPU(noLog=self.noLog)
         result = {'gpu': gpu}
         logger.info(f'gpu: {result}')
         return result

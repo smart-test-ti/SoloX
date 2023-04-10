@@ -236,7 +236,7 @@ def getNetWorkData():
             case _:
                 deviceId = d.getIdbyDevice(device, platform)
                 flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
-                data = flow.getNetWorkData(wifi=wifi,useApi=False)
+                data = flow.getNetWorkData(wifi=wifi,noLog=False)
                 result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}    
     except Exception:
         logger.error('get network data failed')
@@ -436,23 +436,23 @@ def apmCollect():
         match(target):
             case Target.CPU:
                 cpu = CPU(pkgName=pkgname, deviceId=deviceid, platform=platform)
-                appCpuRate, systemCpuRate = cpu.getCpuRate(useApi=True)
+                appCpuRate, systemCpuRate = cpu.getCpuRate(noLog=True)
                 result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
             case Target.Memory:
                 mem = MEM(pkgName=pkgname, deviceId=deviceid, platform=platform)
-                totalPass, nativePass, dalvikPass = mem.getProcessMem(useApi=True)
+                totalPass, nativePass, dalvikPass = mem.getProcessMem(noLog=True)
                 result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
             case Target.Network:
                 flow = Flow(pkgName=pkgname, deviceId=deviceid, platform=platform)
-                data = flow.getNetWorkData(wifi=True, useApi=True)
+                data = flow.getNetWorkData(wifi=True, noLog=True)
                 result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
             case Target.FPS:
                 fps_monitor = FPS(pkgName=pkgname, deviceId=deviceid, platform=platform)
-                fps, jank = fps_monitor.getFPS(useApi=True)
+                fps, jank = fps_monitor.getFPS(noLog=True)
                 result = {'status': 1, 'fps': fps, 'jank': jank}
             case Target.Battery:
                 battery_monitor = Battery(deviceId=deviceid)
-                final = battery_monitor.getBattery(useApi=True)
+                final = battery_monitor.getBattery(noLog=True)
                 if platform == 'Android':
                     result = {'status': 1, 'level': final[0], 'temperature': final[1]}
                 else:
