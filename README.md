@@ -16,7 +16,7 @@
 <br>
 </p>
 
-## Preview
+## 🔎Preview
 
 SoloX - Real-time collection tool for Android/iOS performance data.
 
@@ -24,17 +24,31 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 
 <img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348054846-b0164165-e83a-443e-9a05-8c1f9ddb355f.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%" >
 
-## Installation
+## 📦Requirements
+
+- Install Python 3.10 + [**Download**](https://www.python.org/downloads/)
+
+💡 Python 3.6 ~ 3.9 , please download a version of solox lower than 2.5.4.
+
+💡 If Windows users need to test ios, install and start Itunes.
+
+## 📥Installation
+
+### default
 
 ```shell
-1.Python:3.10+ (Python 3.6 ~ 3.9 Please download a version of solox lower than 2.5.4)
-2.pip install -U solox 
-3.pip install -i  https://mirrors.ustc.edu.cn/pypi/web/simple -U solox (China)
-
-Note: If Windows users need to test ios, install and start Itunes
+pip install -U solox 
 ```
 
-## Startup SoloX
+### mirrors
+
+```shell
+pip install -i  https://mirrors.ustc.edu.cn/pypi/web/simple -U solox
+```
+
+💡 If your network is unable to download through [pip install -U solox], please try using mirrors to download, but the download of Solox may not be the latest version.
+
+## 🚀Startup SoloX
 
 ### default
 
@@ -48,7 +62,7 @@ python -m solox
 python -m solox --host={ip} --port={port}
 ```
 
-## Collect in python
+## 🏴󠁣󠁩󠁣󠁭󠁿Collect in python
 
 ```python
 from solox.public.apm import APM
@@ -67,7 +81,7 @@ battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV p
 gpu = apm.collectGpu() # % only supports ios
 ```
 
-## Collect in API
+## 🏴󠁣󠁩󠁣󠁭󠁿Collect in API
 
 ### Start the service in the background
 
@@ -87,14 +101,15 @@ iOS: http://{ip}:{port}/apm/collect?platform=iOS&pkgname=com.bilibili.app.in&tar
 target in ['cpu','memory','network','fps','battery','gpu']
 ```
 
-## PK Model
+## 🔥Features
 
-- 2-devices: test the same app on two different phones
-- 2-apps: test two different apps on two phones with the same configuration
-
-notice: only supports android
-
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348055024-96e38b5e-d6b4-4a06-8070-0707e2fbcd99.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%">
+* **No ROOT/Jailbreak:** No need of Root for Android devices, Jailbreak for iOS devices. Efficiently solving the test and analysis challenges in Android & iOS performance.
+* **Data Integrality:** We provide the data about Screenshot, CPU, GPU, Memory, Battery, Network,FPS, Jank, etc., which you may easy to get.
+* **Beautiful report board:** A beautiful and detailed report analysis, where to store, visualize, edit, manage, and download all the test cases collected with SoloX no matter where you are or when is it.
+* **Useful monitoring settings:** Support setting alarm values, collecting duration, and accessing mobile devices on other PC machines during the monitoring process.
+* **PK model:** Supports simultaneous comparative testing of two mobile devices.
+  🌱2-devices: test the same app on two different phones.
+  🌱2-apps: test two different apps on two phones with the same configuration.
 
 ## Browser
 
@@ -105,6 +120,6 @@ notice: only supports android
 - windows: PowerShell
 - macOS：iTerm2 (https://iterm2.com/)
 
-## Thanks
+## 💕Thanks
 
 - https://github.com/alibaba/taobao-iphone-device

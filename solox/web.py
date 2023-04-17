@@ -29,8 +29,9 @@ thread_lock = Lock()
 @socketio.on('connect', namespace='/logcat')
 def connect():
     socketio.emit('start connect', {'data': 'Connected'}, namespace='/logcat')
-    if not os.path.exists('adblog'):
-        os.mkdir('adblog')
+    logDir = os.path.join(os.getcwd(),'adblog')
+    if not os.path.exists(logDir):
+        os.mkdir(logDir)
     global thread
     thread = True
     with thread_lock:
@@ -42,10 +43,10 @@ def backgroundThread():
     global thread
     try:
         current_time = time.strftime("%Y%m%d%H", time.localtime())
-        logcat = subprocess.Popen(f'adb logcat *:E > ./adblog/{current_time}_adb.log', stdout=subprocess.PIPE,
+        logPath = os.path.join(os.getcwd(),'adblog',f'{current_time}.log')
+        logcat = subprocess.Popen(f'adb logcat *:E > {logPath}', stdout=subprocess.PIPE,
                                   shell=True)
-        file = f"./adblog/{current_time}_adb.log"
-        with open(file, "r") as f:
+        with open(logPath, "r") as f:
             while thread:
                 socketio.sleep(1)
                 for line in f.readlines():
