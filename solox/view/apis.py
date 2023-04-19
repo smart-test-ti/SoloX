@@ -73,7 +73,7 @@ def deviceids():
                     result = {'status': 1, 
                               'deviceids': deviceids, 
                               'devices': devices,
-                              'pkgnames': pkgnames, 
+                              'pkgnames': pkgnames,
                               'device_detail': device_detail}
                 else:
                     result = {'status': 0, 'msg': 'no devices'}
@@ -116,6 +116,20 @@ def packageNames():
     return result
 
 
+@api.route('/package/pids', methods=['post', 'get'])
+def getPackagePids():
+    platform = method._request(request, 'platform')
+    device = method._request(request, 'device')
+    pkgname = method._request(request, 'pkgname')
+    try:
+        deviceId = d.getIdbyDevice(device, platform)
+        pids = d.getPid(deviceId, pkgname)
+        result = {'status': 1, 'pids': pids} 
+    except Exception:
+        traceback.print_exc()
+        result = {'status': 0, 'msg': 'no pid found'} 
+    return result        
+
 @api.route('/apm/cpu', methods=['post', 'get'])
 def getCpuRate():
     """get process cpu rate"""
@@ -123,6 +137,7 @@ def getCpuRate():
     platform = method._request(request, 'platform')
     pkgname = method._request(request, 'pkgname')
     device = method._request(request, 'device')
+    process = method._request(request, 'process')
     try:
         match(model):
             case '2-devices':
@@ -142,7 +157,8 @@ def getCpuRate():
                 result = {'status': 1, 'first': first, 'second': second}
             case _:
                 deviceId = d.getIdbyDevice(device, platform)
-                cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform)
+                pid = process.split(':')[0] if platform == Platform.Android else None
+                cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 appCpuRate, systemCpuRate = cpu.getCpuRate()
                 result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}        
     except Exception:
@@ -159,6 +175,7 @@ def getMEM():
     platform = method._request(request, 'platform')
     pkgname = method._request(request, 'pkgname')
     device = method._request(request, 'device')
+    process = method._request(request, 'process')
     try:
         match(model):
             case '2-devices':
@@ -178,7 +195,8 @@ def getMEM():
                 result = {'status': 1, 'first': first, 'second': second}
             case _:
                 deviceId = d.getIdbyDevice(device, platform)
-                mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform)
+                pid = process.split(':')[0] if platform == Platform.Android else None
+                mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 totalPass, nativePass, dalvikPass = mem.getProcessMem()
                 result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}        
     except Exception:
@@ -195,10 +213,12 @@ def setNetWorkData():
     device = method._request(request, 'device')
     wifi_switch = method._request(request, 'wifi_switch')
     type = method._request(request, 'type')
+    process = method._request(request, 'process')
     try:
         wifi = False if wifi_switch == 'false' else True
         deviceId = d.getIdbyDevice(device, platform)
-        flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
+        pid = process.split(':')[0] if platform == Platform.Android else None
+        flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
         data = flow.setAndroidNet(wifi=wifi)
         f.record_net(type, data[0], data[1])
         result = {'status': 1, 'msg':'set network data success'}
@@ -215,6 +235,7 @@ def getNetWorkData():
     pkgname = method._request(request, 'pkgname')
     device = method._request(request, 'device')
     wifi_switch = method._request(request, 'wifi_switch')
+    process = method._request(request, 'process')
     try:
         wifi = False if wifi_switch == 'false' else True
         match(model):
@@ -235,7 +256,8 @@ def getNetWorkData():
                 result = {'status': 1, 'first': first, 'second': second}
             case _:
                 deviceId = d.getIdbyDevice(device, platform)
-                flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform)
+                pid = process.split(':')[0] if platform == Platform.Android else None
+                flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 data = flow.getNetWorkData(wifi=wifi,noLog=False)
                 result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}    
     except Exception:
@@ -329,6 +351,7 @@ def makeReport():
     model = method._request(request, 'model')
     devices = method._request(request, 'devices')
     wifi_switch = method._request(request, 'wifi_switch')
+    process = method._request(request, 'process')
     try:
         if platform == Platform.Android:
             deviceId = d.getIdbyDevice(devices, platform)
@@ -336,12 +359,15 @@ def makeReport():
             battery_monitor.recoverBattery()
             wifi = False if wifi_switch == 'false' else True
             deviceId = d.getIdbyDevice(devices, platform)
-            flow = Flow(pkgName=app, deviceId=deviceId, platform=platform)
+            pid = process.split(':')[0] if platform == Platform.Android else None
+            flow = Flow(pkgName=app, deviceId=deviceId, platform=platform, pid=pid)
             data = flow.setAndroidNet(wifi=wifi)
             f.record_net('end', data[0], data[1])
+            app = process
         file(fileroot=f'apm_{current_time}').make_report(app=app, devices=devices, platform=platform, model=model)
         result = {'status': 1}
     except Exception as e:
+        traceback.print_exc()
         result = {'status': 0, 'msg': str(e)}
     return result
 

@@ -93,7 +93,7 @@ SoloX - APM
                 <select  class="select-device select2-selection--single" data-placeholder="Please select a device"></select>
                 {% endif %}
             </div>
-            <div class="input-group" style="width: 93%;margin-left: 10px;">
+            <div class="input-group mb-3" style="width: 93%;margin-left: 10px;">
                 <div class="input-group-text">
                     <svg t="1645171258689" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2225" width="2000" height="2000"><path d="M352 96H224c-70.4 0-128 57.6-128 128v128c0 70.4 57.6 128 128 128h192c35.2 0 64-28.8 64-64V224c0-70.4-57.6-128-128-128z m64 319.9l-0.1 0.1H224c-17 0-33-6.7-45.1-18.9S160 369 160 352V224c0-17 6.7-33 18.9-45.1S207 160 224 160h128c17 0 33 6.7 45.1 18.9S416 207 416 224v191.9zM800 96H672c-70.4 0-128 57.6-128 128v192c0 35.2 28.8 64 64 64h192c70.4 0 128-57.6 128-128V224c0-70.4-57.6-128-128-128z m64 256c0 17-6.7 33-18.9 45.1S817 416 800 416H608.1l-0.1-0.1V224c0-17 6.7-33 18.9-45.1S655 160 672 160h128c17 0 33 6.7 45.1 18.9S864 207 864 224v128zM416 544H224c-70.4 0-128 57.6-128 128v128c0 70.4 57.6 128 128 128h128c70.4 0 128-57.6 128-128V608c0-35.2-28.8-64-64-64z m0 256c0 17-6.7 33-18.9 45.1S369 864 352 864H224c-17 0-33-6.7-45.1-18.9S160 817 160 800V672c0-17 6.7-33 18.9-45.1S207 608 224 608h191.9l0.1 0.1V800zM800 544H608c-35.2 0-64 28.8-64 64v192c0 70.4 57.6 128 128 128h128c70.4 0 128-57.6 128-128V672c0-70.4-57.6-128-128-128z m64 256c0 17-6.7 33-18.9 45.1S817 864 800 864H672c-17 0-33-6.7-45.1-18.9S608 817 608 800V608.1l0.1-0.1H800c17 0 33 6.7 45.1 18.9S864 655 864 672v128z" fill="#1875F0" p-id="2226"></path></svg>
                 </div>
@@ -103,6 +103,18 @@ SoloX - APM
                 <select  class="select-app select2-selection--single" data-placeholder="Please select a package"></select>
                 {% endif %}
             </div>
+            {% if platform == 'Android' %}
+            <div class="input-group" style="width: 93%;margin-left: 10px;">
+                <div class="input-group-text">
+                    <svg t="1681890999535" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5737" width="50" height="50"><path d="M512 64.303538c-247.254314 0-447.696462 200.438055-447.696462 447.696462s200.442148 447.696462 447.696462 447.696462c247.258407 0 447.696462-200.438055 447.696462-447.696462S759.258407 64.303538 512 64.303538zM512 914.925792c-222.532259 0-402.926816-180.394556-402.926816-402.926816 0-222.532259 180.394556-402.926816 402.926816-402.926816 222.527143 0 402.926816 180.394556 402.926816 402.926816C914.926816 734.531236 734.528166 914.925792 512 914.925792zM512 243.382123c-148.352793 0-268.617877 120.265084-268.617877 268.617877s120.265084 268.617877 268.617877 268.617877 268.617877-120.265084 268.617877-268.617877S660.353816 243.382123 512 243.382123z" p-id="5738" data-spm-anchor-id="a313x.7781069.0.i3" class="selected" fill="#d81e06"></path></svg>
+                </div>
+                {% if lan == 'cn' %}
+                <select  class="select-pid select2-selection--single" data-placeholder="请选择一个进程"></select>
+                {% else %}
+                <select  class="select-pid select2-selection--single" data-placeholder="Please select a process"></select>
+                {% endif %}
+            </div>
+            {% endif %}
             <div class="card" style="margin-top: 13px;">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
@@ -311,6 +323,44 @@ SoloX - APM
         });
     });
 
+    $('.select-app').change(function() {
+        $.ajax({
+            url: Host + "/package/pids",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                device:$('.select-device').val(),
+                pkgname:this.value
+            },
+            beforeSend: function () {
+                $('.select-pid').empty();
+                $('.select-pid').append('<option></option>');
+                if(lan == 'cn' ){
+                    SwalLoading('初始化','正在获取该APP上的所有进程, 请您稍等！');
+                }else{
+                    SwalLoading('Process initialization!','Initializing Process, please wait a mmoment.');
+                }
+                
+            },
+            success: function (data) {
+                if(data['status'] != 1 ) {
+                    if(lan == 'cn' ){
+                        SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 2000);
+                    }else{
+                        SwalFire('error', 'Connet failed !', 'No pid found', 2000);
+                    } 
+                }else{
+                    for(var i=0;i<data['pids'].length;i++){
+                        $('.select-pid').append('<option>'+data['pids'][i]+'</option>')
+                    }
+                    swal.close();
+                }
+            }
+        });
+    });
+
 
     function initializeAPM(){
         $.ajax({
@@ -381,7 +431,8 @@ SoloX - APM
                 model:'normal',
                 platform:platform,
                 pkgname:pkgname,
-                device:device
+                device:device,
+                process:$('.select-pid').val()
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -510,7 +561,8 @@ SoloX - APM
                 model:'normal',
                 platform:platform,
                 pkgname:pkgname,
-                device:device
+                device:device,
+                process:$('.select-pid').val()
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -562,7 +614,8 @@ SoloX - APM
                 pkgname:pkgname,
                 device:device,
                 wifi_switch: net_switch,
-                type: type
+                type: type,
+                process:$('.select-pid').val()
             },
             success: function (data) {
                 if(data['status'] != 1){
@@ -586,7 +639,8 @@ SoloX - APM
                 platform:platform,
                 pkgname:pkgname,
                 device:device,
-                wifi_switch: net_switch
+                wifi_switch: net_switch,
+                process:$('.select-pid').val()
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -1254,7 +1308,8 @@ SoloX - APM
                 model:'normal',
                 app:$('.select-app').val(),
                 devices:$('.select-device').val(),
-                wifi_switch:wifi_switch
+                wifi_switch:wifi_switch,
+                process:$('.select-pid').val()
             },
             beforeSend: function () {
                 

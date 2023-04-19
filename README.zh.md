@@ -66,9 +66,14 @@ python -m solox --host={ip} --port={port}
 
 ```python
 from solox.public.apm import APM
+from solox.public.common import Devices
+
 # solox version >= 2.1.2
 
-apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview=True, noLog=True)
+d = Devices()
+pids = d.getPid(deviceId='ca6bd5a5', pkgName='com.bilibili.app.in')
+
+apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview=True, noLog=True, pid=None)
 # apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
 # surfaceview： False = gfxinfo (Developer - GPU rendering mode - adb shell dumpsys gfxinfo)
 # noLog : False (Save test data to log file)

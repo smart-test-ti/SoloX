@@ -24,15 +24,17 @@ class Target:
 
 class CPU(object):
 
-    def __init__(self, pkgName, deviceId, platform='Android'):
+    def __init__(self, pkgName, deviceId, platform=Platform.Android, pid=None):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
+        self.pid = pid
+        if self.pid is None and self.platform == Platform.Android:
+            self.pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)[0].split(':')[0]
 
     def getprocessCpuStat(self):
         """get the cpu usage of a process at a certain time"""
-        pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
-        cmd = f'cat /proc/{pid}/stat'
+        cmd = f'cat /proc/{self.pid}/stat'
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile("\\s+")
         toks = r.split(result)
@@ -70,7 +72,7 @@ class CPU(object):
         sysCpu = self.getTotalCpuStat() - ileCpu
         return sysCpu
 
-    def getAndroidCpuRate(self, sueApi=False):
+    def getAndroidCpuRate(self, noLog=False):
         """get the Android cpu rate of a process"""
         processCpuTime_1 = self.getprocessCpuStat()
         totalCpuTime_1 = self.getTotalCpuStat()
@@ -81,19 +83,19 @@ class CPU(object):
         sysCpuTime_2 = self.getSysCpuStat()
         appCpuRate = round(float((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
         sysCpuRate = round(float((sysCpuTime_2 - sysCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
-        if sueApi is False:
+        if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
             f.add_log(os.path.join(f.report_dir,'cpu_app.log'), apm_time, appCpuRate)
             f.add_log(os.path.join(f.report_dir,'cpu_sys.log'), apm_time, sysCpuRate)
 
         return appCpuRate, sysCpuRate
 
-    def getiOSCpuRate(self, sueApi=False):
+    def getiOSCpuRate(self, noLog=False):
         """get the iOS cpu rate of a process, unit:%"""
         apm = iosAPM(self.pkgName)
         appCpuRate = round(float(apm.getPerformance(apm.cpu)[0]), 2)
         sysCpuRate = round(float(apm.getPerformance(apm.cpu)[1]), 2)
-        if sueApi is False:
+        if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
             f.add_log(os.path.join(f.report_dir,'cpu_app.log'), apm_time, appCpuRate)
             f.add_log(os.path.join(f.report_dir,'cpu_sys.log'), apm_time, sysCpuRate)
@@ -106,15 +108,17 @@ class CPU(object):
 
 
 class MEM(object):
-    def __init__(self, pkgName, deviceId, platform=Platform.Android):
+    def __init__(self, pkgName, deviceId, platform=Platform.Android, pid=None):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
+        self.pid = pid
+        if self.pid is None and self.platform == Platform.Android:
+            self.pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)[0].split(':')[0]
 
     def getAndroidMem(self):
         """Get the Android memory ,unit:MB"""
-        pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
-        cmd = f'dumpsys meminfo {pid}'
+        cmd = f'dumpsys meminfo {self.pid}'
         output = adb.shell(cmd=cmd, deviceId=self.deviceId)
         m_total = re.search(r'TOTAL\s*(\d+)', output)
         m_native = re.search(r'Native Heap\s*(\d+)', output)
@@ -200,16 +204,18 @@ class Battery(object):
 
 class Flow(object):
 
-    def __init__(self, pkgName, deviceId, platform=Platform.Android):
+    def __init__(self, pkgName, deviceId, platform=Platform.Android, pid=None):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
+        self.pid = pid
+        if self.pid is None and self.platform == Platform.Android:
+            self.pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)[0].split(':')[0]
 
     def getAndroidNet(self, wifi=True):
         """Get Android send/recv data, unit:KB wlan0/rmnet0"""
         net = 'wlan0' if wifi else 'rmnet0'
-        pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
-        cmd = f'cat /proc/{pid}/net/dev |{d.filterType()} {net}'
+        cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
         output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
         m_pre = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)
         sendNum_pre = round(float(float(m_pre.group(2)) / 1024), 2)
@@ -225,8 +231,7 @@ class Flow(object):
     
     def setAndroidNet(self, wifi=True):
         net = 'wlan0' if wifi else 'rmnet0'
-        pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)
-        cmd = f'cat /proc/{pid}/net/dev |{d.filterType()} {net}'
+        cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
         output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
         m = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)
         sendNum = round(float(float(m.group(2)) / 1024), 2)
@@ -339,23 +344,24 @@ class iosAPM(object):
 class APM(object):
     """for python api"""
 
-    def __init__(self, pkgName, deviceId='', platform=Platform.Android, surfaceview=True, noLog=True):
+    def __init__(self, pkgName, deviceId=None, platform=Platform.Android, surfaceview=True, noLog=True, pid=None):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
         self.surfaceview = surfaceview
         self.noLog = noLog
+        self.pid = pid
         d.devicesCheck(platform=self.platform, deviceid=self.deviceId, pkgname=self.pkgName)
 
     def collectCpu(self):
-        _cpu = CPU(self.pkgName, self.deviceId, self.platform)
+        _cpu = CPU(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         appCpuRate, systemCpuRate = _cpu.getCpuRate(noLog=self.noLog)
         result = {'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
         logger.info(f'cpu: {result}')
         return result
 
     def collectMemory(self):
-        _memory = MEM(self.pkgName, self.deviceId, self.platform)
+        _memory = MEM(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         totalPass, nativePass, dalvikPass = _memory.getProcessMem(noLog=self.noLog)
         result = {'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
         logger.info(f'memory: {result}')
@@ -372,7 +378,7 @@ class APM(object):
         return result
 
     def collectFlow(self, wifi=True):
-        _flow = Flow(self.pkgName, self.deviceId, self.platform)
+        _flow = Flow(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         upFlow, downFlow = _flow.getNetWorkData(wifi=wifi,noLog=self.noLog)
         result = {'upFlow': upFlow, 'downFlow': downFlow}
         logger.info(f'network: {result}')

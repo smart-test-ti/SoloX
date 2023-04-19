@@ -46,7 +46,7 @@ pip install -U solox
 pip install -i  https://mirrors.ustc.edu.cn/pypi/web/simple -U solox
 ```
 
-💡 If your network is unable to download through [pip install -U solox], please try using mirrors to download, but the download of Solox may not be the latest version.
+💡 If your network is unable to download through [pip install -U solox], please try using mirrors to download, but the download of SoloX may not be the latest version.
 
 ## 🚀Startup SoloX
 
@@ -66,9 +66,14 @@ python -m solox --host={ip} --port={port}
 
 ```python
 from solox.public.apm import APM
+from solox.public.common import Devices
+
 # solox version >= 2.1.2
 
-apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview=True, noLog=True)
+d = Devices()
+pids = d.getPid(deviceId='ca6bd5a5', pkgName='com.bilibili.app.in')
+
+apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview=True, noLog=True, pid=None)
 # apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
 # surfaceview： False = gfxinfo (Developer - GPU rendering mode - adb shell dumpsys gfxinfo)
 # noLog : False (Save test data to log file)
