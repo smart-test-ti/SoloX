@@ -1,0 +1,391 @@
+{% extends 'base.html' %}
+
+{% block title %}SoloX - {% if lan == 'cn' %} 报告管理 {% else %} Report {% endif %}{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block page_title %}{% if lan == 'cn' %} 报告管理 {% else %} Report {% endif %}{% endblock %}
+
+{% block navbar_nav %}
+<ul class="navbar-nav">
+  <li class="nav-item" id="apm_tab" style="margin-left: 20px;font-weight: bolder;">
+    <a class="nav-link" href="/?platform=Android&lan={{ lan }}" >
+      <span class="nav-link-icon d-md-none d-lg-inline-block">
+        <svg t="1635060342196" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="82258" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FBD000" p-id="82259"></path><path d="M949.6 848H92.8c-4.8 0-8-3.2-8-8s3.2-8 8-8h856.8c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#074370" p-id="82260"></path><path d="M903.2 776c0 35.2-28.8 64-64 64H203.2c-35.2 0-64-28.8-64-64V293.6c0-35.2 28.8-64 64-64h636c35.2 0 64 28.8 64 64V776z" fill="#415E6D" p-id="82261"></path><path d="M839.2 797.6H203.2c-35.2 0-64-28.8-64-64V776c0 35.2 28.8 64 64 64h636c35.2 0 64-28.8 64-64v-42.4c0 35.2-28.8 64-64 64z" fill="#324D5B" p-id="82262"></path><path d="M839.2 229.6H203.2c-35.2 0-64 28.8-64 64V728h764V293.6c0-35.2-28.8-64-64-64z" fill="#EAEAEA" p-id="82263"></path><path d="M901.6 736H144c-4.8 0-8-3.2-8-8s3.2-8 8-8h757.6c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#074370" p-id="82264"></path><path d="M816 784m-24 0a24 24 0 1 0 48 0 24 24 0 1 0-48 0Z" fill="#28A5C6" p-id="82265"></path><path d="M216 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#3AD0F9" p-id="82266"></path><path d="M280 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#FF4848" p-id="82267"></path><path d="M344 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#75B600" p-id="82268"></path><path d="M408 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#FFFFFF" p-id="82269"></path><path d="M904 592h-72c-4.8 0-8-3.2-8-8s4-8 8-8h71.2c4.8 0 8 3.2 8 8s-3.2 8-7.2 8zM639.2 664c-3.2 0-6.4-2.4-8-5.6L592 523.2l-14.4 63.2c-0.8 4-4 6.4-8 6.4H391.2c-4 0-7.2-2.4-8-6.4l-21.6-119.2-17.6 73.6c-0.8 4-5.6 7.2-9.6 5.6-4-0.8-7.2-5.6-5.6-9.6L355.2 424c0.8-4 4-6.4 8-6.4s7.2 3.2 8 6.4l27.2 152h166.4L584 488.8c0.8-3.2 4-8.8 8-8.8s6.4 4.8 8 8.8l38.4 132.8 40.8-224.8c0.8-4 4-6.4 8-6.4s7.2 2.4 8 6.4L732 576h76c4.8 0 8 3.2 8 8s-3.2 8-8 8H725.6c-4 0-7.2-2.4-8-6.4l-30.4-146.4-40 218.4c-0.8 3.2-4 6.4-8 6.4 0.8 0 0.8 0 0 0zM305.6 680c-4 0-7.2-2.4-8-6.4L268 536l-15.2 50.4c-0.8 3.2-4 5.6-8 5.6H146.4c-4.8 0-8-3.2-8-8s3.2-8 8-8h92.8l22.4-74.4c0.8-3.2 4.8-5.6 8-5.6 4 0 6.4 2.4 7.2 6.4l28.8 132.8 11.2-47.2c0.8-4 5.6-7.2 9.6-5.6 4 0.8 7.2 5.6 5.6 9.6l-19.2 82.4c0 3.2-4 5.6-7.2 5.6z" fill="#074370" p-id="82270"></path><path d="M776 304h-56c-4.8 0-8-3.2-8-8s3.2-8 8-8h56c4.8 0 8 3.2 8 8s-3.2 8-8 8zM672 304H488c-4 0-8-3.2-8-8s3.2-8 8-8h184c4 0 8 3.2 8 8s-3.2 8-8 8zM424 304H224c-4.8 0-8-3.2-8-8s4-8 8-8h200c4.8 0 8 3.2 8 8s-4 8-8 8zM711.2 344H584c-4.8 0-8-3.2-8-8s3.2-8 8-8h127.2c4.8 0 8 3.2 8 8s-3.2 8-8 8zM528 344H224c-4.8 0-8-3.2-8-8s4-8 8-8h304c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#ADADAD" p-id="82271"></path><path d="M840 848H200c-40 0-72-32-72-72V296c0-40 32-72 72-72h640c40 0 72 32 72 72v480c0 40-32 72-72 72zM200 240c-31.2 0-56 24.8-56 56v480c0 31.2 24.8 56 56 56h640c31.2 0 56-24.8 56-56V296c0-31.2-24.8-56-56-56H200z" fill="#074370" p-id="82272"></path><path d="M864 553.6c-4.8 0-8-3.2-8-8v-80c0-4.8 3.2-8 8-8s8 3.2 8 8v80c0 4.8-3.2 8-8 8zM864 425.6c-4.8 0-8-3.2-8-8V312c0-22.4-17.6-40-40-40H408c-4.8 0-8-3.2-8-8s3.2-8 8-8h408c31.2 0 56 24.8 56 56v105.6c0 4.8-3.2 8-8 8zM345.6 272H224c-4.8 0-8-3.2-8-8s3.2-8 8-8h121.6c4.8 0 8 3.2 8 8s-4 8-8 8zM64 464c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32z m0-48c-8.8 0-16 7.2-16 16s7.2 16 16 16 16-7.2 16-16-7.2-16-16-16zM656 176c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32z m0-48c-8.8 0-16 7.2-16 16s7.2 16 16 16 16-7.2 16-16-7.2-16-16-16zM474.4 124c0-3.2-3.2-6.4-8-7.2l-15.2-2.4c-4-0.8-8.8-4.8-8.8-8.8l-2.4-15.2c-0.8-4-4-8-7.2-8s-6.4 3.2-7.2 8l-2.4 15.2c-0.8 4-4.8 8.8-8.8 8.8l-15.2 2.4c-4 0.8-8 4-8 7.2s3.2 6.4 8 7.2l15.2 2.4c4 0.8 8.8 4.8 8.8 8.8l2.4 15.2c0.8 4 4 8 7.2 8s6.4-3.2 7.2-8l2.4-16.8c0.8-4 4.8-8 8.8-8.8l14.4-0.8c5.6-1.6 8.8-4 8.8-7.2zM502.4 928c0-3.2-3.2-6.4-8-7.2l-15.2-2.4c-4-0.8-8.8-4.8-8.8-8.8l-2.4-15.2c-0.8-4-4-8-7.2-8s-6.4 3.2-7.2 8l-2.4 15.2c-0.8 4-4.8 8.8-8.8 8.8l-15.2 2.4c-4 0.8-8 4-8 7.2s3.2 6.4 8 7.2l15.2 2.4c4 0.8 8.8 4.8 8.8 8.8l2.4 15.2c0.8 4 4 8 7.2 8s6.4-3.2 7.2-8l2.4-16.8c0.8-4 4.8-8 8.8-8.8l14.4-0.8c5.6-1.6 8.8-4 8.8-7.2z" fill="#FFFFFF" p-id="82273"></path></svg>
+      </span>
+      <span class="nav-link-title strong-text">{% if lan == 'cn' %} 性能测试 {% else %} APM {% endif %} </span>
+    </a>
+  </li>
+  <li class="nav-item active" id="report_tab" style="margin-left: 20px;font-weight: bolder;">
+    <a class="nav-link" href="/report?lan={{ lan }}" >
+      <span class="nav-link-icon d-md-none d-lg-inline-block">
+        <svg t="1643364122000" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="29349" width="300" height="300"><path d="M777 806.7c0 38.7-31.1 70.3-69.7 70.3H225.9c-38.7 0-69.9-31.6-69.9-70.3V174.4c0-38.7 31.2-70.4 69.9-70.4h481.4c38.7 0 69.7 31.7 69.7 70.4v632.3z" fill="#FFFFFF" p-id="29350"></path><path d="M707.3 886H225.9c-43.5 0-78.9-35.8-78.9-79.3V174.4c0-43.5 35.4-79.4 78.9-79.4h481.4c43.5 0 79.7 35.9 79.7 79.4v632.3c0 43.5-36.2 79.3-79.7 79.3zM225.9 113c-33.7 0-59.9 27.7-59.9 61.4v632.3c0 33.7 26.2 61.3 59.9 61.3h481.4c33.7 0 60.7-27.6 60.7-61.3V174.4c0-33.7-27-61.4-60.7-61.4H225.9z" fill="#282828" p-id="29351"></path><path d="M732 763.1c0 33.3-26.1 60.9-59.4 60.9H251.7c-33.3 0-59.7-27.6-59.7-60.9V226.9c0-33.3 26.4-60.9 59.7-60.9h420.9c33.3 0 59.4 27.5 59.4 60.9v536.2z" fill="#50BCFF" p-id="29352"></path><path d="M361.8 251.9H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9h153.1c4.9 0 8.9 4 8.9 8.9s-3.9 8.9-8.8 8.9zM549.2 313H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9h340.5c4.9 0 8.9 4 8.9 8.9s-3.9 8.9-8.8 8.9zM652 448.4H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9H652c4.9 0 8.9 4 8.9 8.9s-4 8.9-8.9 8.9zM588.4 515.8H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9h379.7c4.9 0 8.9 4 8.9 8.9 0.1 4.9-3.9 8.9-8.8 8.9z" fill="#282828" p-id="29353"></path><path d="M673.3 113.3c0 19.6-15.9 35.5-35.5 35.5h-346c-19.6 0-35.5-15.9-35.5-35.5v-6.7c0-19.6 15.9-35.5 35.5-35.5h346c19.6 0 35.5 15.9 35.5 35.5v6.7z" fill="#1A6DFF" p-id="29354"></path><path d="M637.8 157.6h-346c-24.5 0-44.4-19.9-44.4-44.4v-6.7c0-24.5 19.9-44.4 44.4-44.4h346c24.5 0 44.4 19.9 44.4 44.4v6.7c0 24.5-19.9 44.4-44.4 44.4zM291.9 80c-14.7 0-26.6 11.9-26.6 26.6v6.7c0 14.7 11.9 26.6 26.6 26.6h346c14.7 0 26.6-11.9 26.6-26.6v-6.7c0-14.7-11.9-26.6-26.6-26.6h-346z" fill="#282828" p-id="29355"></path><path d="M849.7 758.4c0 106.3-86.2 192.4-192.4 192.4-106.3 0-192.4-86.2-192.4-192.4C464.8 652.1 551 566 657.3 566c106.2 0 192.4 86.1 192.4 192.4z" fill="#FFFFFF" p-id="29356"></path><path d="M657.3 959.7c-111 0-201.3-90.3-201.3-201.3s90.3-201.3 201.3-201.3 201.3 90.3 201.3 201.3-90.3 201.3-201.3 201.3z m0-384.8c-101.2 0-183.5 82.3-183.5 183.5S556.1 942 657.3 942s183.6-82.3 183.6-183.6c-0.1-101.2-82.4-183.5-183.6-183.5z" fill="#282828" p-id="29357"></path><path d="M657.3 553.6v204.9h203.6c-0.2-112.7-91.2-204-203.6-204.9z" fill="#1A6DFF" p-id="29358"></path><path d="M860.9 767.3H657.3c-4.9 0-8.9-4-8.9-8.9V553.6c0-2.4 0.9-4.6 2.6-6.3 1.7-1.7 3.6-2.4 6.3-2.6 116.9 0.9 212.2 96.8 212.4 213.7 0 2.4-0.9 4.6-2.6 6.3-1.6 1.7-3.9 2.6-6.2 2.6z m-194.8-17.8h185.6C847 649.3 766.2 568 666.1 562.7v186.8z" fill="#282828" p-id="29359"></path><path d="M794.1 903.7c-2.3 0-4.6-0.9-6.3-2.6L652.1 764.7c-3.5-3.5-3.4-9.1 0-12.6 3.5-3.5 9.1-3.4 12.6 0l135.7 136.5c3.5 3.5 3.4 9.1 0 12.6-1.8 1.7-4 2.5-6.3 2.5z" fill="#282828" p-id="29360"></path></svg>
+      </span>
+      <span class="nav-link-title strong-text">{% if lan == 'cn' %} 报告管理 {% else %} Report {% endif %} </span>
+    </a>
+  </li>
+</ul>
+{% endblock %}
+
+{% block page_body %}
+{% if apm_data_len > 0 %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title"></h3>
+        <div class="card-actions btn-actions">
+            <button type="button" class="btn btn-remove-all disabled" data-bs-toggle="modal" data-bs-target="#modal-danger-selected">
+                <svg t="1635400029781" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17941" width="200" height="200"><path d="M877.79 217.23H624.22c0-36.02-29.2-65.23-65.23-65.23H465c-36.02 0-65.23 29.2-65.23 65.23H146.21c-18.01 0-32.61 14.6-32.61 32.61 0 18.01 14.6 32.61 32.61 32.61h49.75l14.43 528.79c1.06 33.91 25.21 60.76 54.64 60.76h493.93c29.43 0 53.58-26.86 54.64-60.76l14.48-528.79h49.7c18.01 0 32.61-14.6 32.61-32.61 0.01-18.01-14.59-32.61-32.6-32.61zM364.24 748.41c-17.98 0.82-33.4-10.01-34.44-24.19L308 427.56c-1.04-14.18 12.69-26.34 30.67-27.16 17.98-0.82 33.4 10.01 34.45 24.19l21.8 296.67c1.04 14.17-12.7 26.33-30.68 27.15z m180.37-25.42c0 14.2-14.6 25.72-32.61 25.72-18.01 0-32.61-11.51-32.61-25.72V425.83c0-14.2 14.6-25.72 32.61-25.72 18.01 0 32.61 11.51 32.61 25.72v297.16zM716 427.56l-21.8 296.67c-1.04 14.18-16.46 25.01-34.44 24.19-17.98-0.82-31.71-12.98-30.67-27.16l21.8-296.67c1.04-14.18 16.46-25.01 34.44-24.19 17.98 0.82 31.72 12.98 30.67 27.16z" fill="#FF5D5D" p-id="17942"></path></svg>
+                {% if lan == 'cn' %} 删除 {% else %} Delete {% endif %}
+            </button>
+            </a>
+        </div>
+    </div>
+    <div class="table-responsive" style="font-size: 15px;">
+        <table id="file_table" class="table card-table table-vcenter text-nowrap datatable">
+            <thead>
+            <tr>
+                <th class="w-1"><input class="form-check-input m-0 align-middle" id='cekall' type="checkbox" aria-label="Select all invoices"></th>
+                {% if lan == 'cn' %}
+                <th style="font-size: 13px;">包名</th>
+                <th style="font-size: 13px;">平台</th>
+                <th style="font-size: 13px;">设备</th>
+                <th style="font-size: 13px;">场景</th>
+                <th style="font-size: 13px;">模式</th>
+                <th style="font-size: 13px;">创建时间</th>
+                {% else %}
+                <th style="font-size: 13px;">APP</th>
+                <th style="font-size: 13px;">Platform</th>
+                <th style="font-size: 13px;">Device</th>
+                <th style="font-size: 13px;">Scene</th>
+                <th style="font-size: 13px;">Model</th>
+                <th style="font-size: 13px;">Ctime</th>
+                {% endif %}
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for apm in apm_data %}
+            <tr>
+                <td><input class="form-check-input m-0 align-middle" type="checkbox" name="checksId" aria-label="Select invoice"></td>
+                <td>{{ apm.app }}</td>
+                <td>{{ apm.platform }}</td>
+                <td>{{ apm.devices }}</td>
+                <td>{{ apm.scene }}</td>
+                <td>{{ apm.model }}</td>
+                <td>{{ apm.ctime }}</td>
+                <td>
+                    <div class="btn-list flex-nowrap">
+                        {% if apm.model == 'normal' %}
+                        <a href="/analysis?app={{ apm.app }}&scene={{ apm.scene }}&platform={{ apm.platform }}&lan={{ lan }}" class="btn btn-default">
+                            <svg t="1644299572694" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6190" width="300" height="300"><path d="M836.36703 796.383677H971.170424V11.636364H836.36703v784.747313z m-240.716283 0H730.452848V363.085576H595.650747v433.298101z m-240.722747 0h134.803394v-544.025859H354.928v544.025859z m-240.717576 0H249.013818V512.333576H114.210424v284.050101z m0 0" fill="#706EE7" p-id="6191"></path><path d="M932.655354 131.993859c4.813576 0 9.63103 4.818747 14.444606 4.818747 14.444606 9.625859 19.258182 28.88404 9.625858 43.328647L942.286384 194.585859c-62.590707 28.882747-129.989818 48.140929-192.575354 72.211394-28.889212 14.444606-48.146101 33.702788-62.590707 57.773252-24.070465 48.146101-48.140929 101.105778-72.212687 154.060283-9.63103 19.258182-24.075636 38.516364-38.51507 52.959677-43.332525 38.515071-101.105778 57.773253-158.879031 52.959676-19.256889 0-43.327354-9.63103-62.585535-14.444606-9.625859-4.813576-19.256889-9.625859-33.701495-14.444606-62.586828-28.88404-134.803394 0-168.499717 62.590707-14.444606 24.070465-24.076929 52.954505-33.702788 77.030142 0 4.813576-4.813576 9.625859-9.63103 14.439434-9.625859 4.818747-19.258182 9.63103-28.884041 4.818748-9.63103 0-19.256889-9.63103-24.070464-19.258182-4.818747-9.63103-4.818747-19.258182 0-24.075637 9.625859-24.070465 24.070465-52.954505 33.696323-77.030141 9.632323-19.258182 24.075636-38.515071 38.515071-52.954505 43.333818-43.333818 96.288323-62.592 158.87903-57.773253 24.070465 0 43.328646 9.625859 67.399111 19.256889 9.63103 4.813576 19.258182 9.627152 33.702788 14.439435 14.443313 4.818747 28.882747 9.63103 43.327353 9.63103 38.515071 4.813576 72.217859-9.63103 101.101899-33.701495 9.63103-9.625859 19.256889-24.070465 28.88792-38.515071 24.070465-48.142222 48.140929-101.100606 72.216565-154.060283 14.439434-28.88404 38.515071-57.773253 67.399111-77.031434 9.63103-4.812283 24.070465-14.443313 33.701495-19.256889l187.763071-72.217858h9.627152" fill="#29C287" p-id="6192"></path></svg>
+                             {% if lan == 'cn' %} 分析 {% else %} Analyse {% endif %} 
+                        </a>
+                        {% else %}
+                        <a href="/pk_analysis?app={{ apm.app }}&scene={{ apm.scene }}&model={{ apm.model }}&lan={{ lan }}" class="btn btn-default">
+                            <svg t="1644299572694" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6190" width="300" height="300"><path d="M836.36703 796.383677H971.170424V11.636364H836.36703v784.747313z m-240.716283 0H730.452848V363.085576H595.650747v433.298101z m-240.722747 0h134.803394v-544.025859H354.928v544.025859z m-240.717576 0H249.013818V512.333576H114.210424v284.050101z m0 0" fill="#706EE7" p-id="6191"></path><path d="M932.655354 131.993859c4.813576 0 9.63103 4.818747 14.444606 4.818747 14.444606 9.625859 19.258182 28.88404 9.625858 43.328647L942.286384 194.585859c-62.590707 28.882747-129.989818 48.140929-192.575354 72.211394-28.889212 14.444606-48.146101 33.702788-62.590707 57.773252-24.070465 48.146101-48.140929 101.105778-72.212687 154.060283-9.63103 19.258182-24.075636 38.516364-38.51507 52.959677-43.332525 38.515071-101.105778 57.773253-158.879031 52.959676-19.256889 0-43.327354-9.63103-62.585535-14.444606-9.625859-4.813576-19.256889-9.625859-33.701495-14.444606-62.586828-28.88404-134.803394 0-168.499717 62.590707-14.444606 24.070465-24.076929 52.954505-33.702788 77.030142 0 4.813576-4.813576 9.625859-9.63103 14.439434-9.625859 4.818747-19.258182 9.63103-28.884041 4.818748-9.63103 0-19.256889-9.63103-24.070464-19.258182-4.818747-9.63103-4.818747-19.258182 0-24.075637 9.625859-24.070465 24.070465-52.954505 33.696323-77.030141 9.632323-19.258182 24.075636-38.515071 38.515071-52.954505 43.333818-43.333818 96.288323-62.592 158.87903-57.773253 24.070465 0 43.328646 9.625859 67.399111 19.256889 9.63103 4.813576 19.258182 9.627152 33.702788 14.439435 14.443313 4.818747 28.882747 9.63103 43.327353 9.63103 38.515071 4.813576 72.217859-9.63103 101.101899-33.701495 9.63103-9.625859 19.256889-24.070465 28.88792-38.515071 24.070465-48.142222 48.140929-101.100606 72.216565-154.060283 14.439434-28.88404 38.515071-57.773253 67.399111-77.031434 9.63103-4.812283 24.070465-14.443313 33.701495-19.256889l187.763071-72.217858h9.627152" fill="#29C287" p-id="6192"></path></svg>
+                            {% if lan == 'cn' %} 分析 {% else %} Analyse {% endif %} 
+                        </a>
+                        {% endif %}
+                        <a onclick="exportData('{{ apm.platform }}','{{ apm.scene }}')" class="btn btn-default">
+                            <svg t="1678356494310" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2849" width="50" height="50"><path d="M781.9 224.6H959v730.9c0 37.8-28.7 66.5-66.5 66.5H184c-37.8 0-66.5-28.7-66.5-66.5V69.8c0-37.8 28.7-66.5 66.5-66.5h553.7v177.1h44.4v44.1l-0.2 0.1z m-66.5-22.1V25.4H184c-24.5 0-44.4 19.9-44.4 44.4v885.6c0 24.5 19.9 44.4 44.4 44.4h708.5c24.5 0 44.4-19.9 44.4-44.4V246.6H759.8v-44.4h-44.4v0.3z" fill="#9FA0A6" p-id="2850"></path><path d="M95.5 113.9h354.2c24.5 0 44.4 19.9 44.4 44.4v354.2c0 24.5-19.9 44.4-44.4 44.4H95.5C71 557 51 537.1 51 512.6V158.1c0-24.2 20-44.2 44.5-44.2z" fill="#09CC6E" p-id="2851"></path><path d="M381.4 476.6H317c-4.5 0-8.5-2.4-10.6-6.3L259 382.9c-1.8-3.3-3.6-9.7-5.7-18.4h-0.6c-0.9 4.2-3 10.3-6.3 18.4-0.3 0.3-0.3 0.9-0.6 1.2l-47.2 86.4c-2.1 3.9-6 6.3-10.6 6.3h-43c-9.4 0-15.1-10.6-10-18.4l75-116.7c2.4-3.9 2.4-8.8 0.3-12.4l-68.6-116.7c-4.5-7.9 1.2-18.1 10.3-18.1h44.7c4.5 0 8.8 2.7 10.9 6.6l39 79.8c3.3 7 6.3 14.8 8.8 23.3h0.6c2.4-7.6 5.4-15.4 9.1-23.6 0.3-0.3 0.3-0.6 0.6-1.2l42.9-78.9c2.1-3.9 6-6.3 10.6-6.3h38.7c9.4 0 15.1 10.3 10.3 18.1l-70.4 115.5c-2.4 3.9-2.4 8.8 0 12.4l83.6 136.4z" fill="#FFFFFF" p-id="2852"></path><path d="M203.1 888.9h664.4v44.4H203.1v-44.4z m0-110.6h664.4v44.4H203.1v-44.4z m0-110.9h664.4v44.4H203.1v-44.4z" fill="#9FA0A6" p-id="2853"></path></svg>
+                            {% if lan == 'cn' %} 导出 {% else %} Export {% endif %} 
+                        </a>
+                        <a onclick="editOneData('{{ apm.scene }}')" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#modal-edit">
+                            <svg t="1638686685621" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7671" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#5866C7" p-id="7672"></path><path d="M466.304 192l-0.064 64H320a64 64 0 0 0-63.552 56.512L256 320v384a64 64 0 0 0 56.512 63.552L320 768h384a64 64 0 0 0 63.552-56.512L768 704V557.696h64v-239.36V704a128 128 0 0 1-128 128H320a128 128 0 0 1-128-128V320a128 128 0 0 1 128-128h146.304z" fill="#FFFFFF" p-id="7673"></path><path d="M788.992 267.008a32 32 0 0 1 0 45.248l-316.8 316.8a32 32 0 0 1-45.184-45.312l316.8-316.8a32 32 0 0 1 45.184 0z" fill="#FFFFFF" p-id="7674"></path></svg>
+                            {% if lan == 'cn' %} 编辑 {% else %} Edit {% endif %} 
+                        </a>
+                        <a onclick="removeOneData('{{ apm.scene }}')" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#modal-danger">
+                            <svg t="1635400029781" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17941" width="200" height="200"><path d="M877.79 217.23H624.22c0-36.02-29.2-65.23-65.23-65.23H465c-36.02 0-65.23 29.2-65.23 65.23H146.21c-18.01 0-32.61 14.6-32.61 32.61 0 18.01 14.6 32.61 32.61 32.61h49.75l14.43 528.79c1.06 33.91 25.21 60.76 54.64 60.76h493.93c29.43 0 53.58-26.86 54.64-60.76l14.48-528.79h49.7c18.01 0 32.61-14.6 32.61-32.61 0.01-18.01-14.59-32.61-32.6-32.61zM364.24 748.41c-17.98 0.82-33.4-10.01-34.44-24.19L308 427.56c-1.04-14.18 12.69-26.34 30.67-27.16 17.98-0.82 33.4 10.01 34.45 24.19l21.8 296.67c1.04 14.17-12.7 26.33-30.68 27.15z m180.37-25.42c0 14.2-14.6 25.72-32.61 25.72-18.01 0-32.61-11.51-32.61-25.72V425.83c0-14.2 14.6-25.72 32.61-25.72 18.01 0 32.61 11.51 32.61 25.72v297.16zM716 427.56l-21.8 296.67c-1.04 14.18-16.46 25.01-34.44 24.19-17.98-0.82-31.71-12.98-30.67-27.16l21.8-296.67c1.04-14.18 16.46-25.01 34.44-24.19 17.98 0.82 31.72 12.98 30.67 27.16z" fill="#FF5D5D" p-id="17942"></path></svg>
+                            {% if lan == 'cn' %} 删除 {% else %} Delete {% endif %} 
+                        </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="empty mt-5">
+    <div class="empty-img">
+        <img src="/static/image/empty.png">
+    </div>
+    <p class="empty-title">{% if lan == 'cn' %} 没有数据 {% else %} No results found {% endif %}</p>
+</div>
+{% endif %}
+
+<div class="modal modal-blur fade" id="modal-edit" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% if lan == 'cn' %} 编辑 {% else %} Edit {% endif %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="api_content">
+                            <div class="col apiform">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        {% if lan == 'cn' %} 场景 {% else %} Scene {% endif %}
+                                    </span>
+                                    <input id="scenename" type="text" class="form-control"  placeholder="请输入场景名称.."  autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a id="cancel_edit_confirm" class="btn btn-link link-secondary" data-bs-dismiss="modal">Cancel</a>
+                <a id="edit_confirm" class="btn btn-info ms-auto">
+                    <svg t="1638686890624" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8488" width="200" height="200"><path d="M286.487273 759.854545c-5.818182 0-11.403636-2.094545-16.058182-6.283636a354.816 354.816 0 0 1-111.010909-257.163636c0-30.487273 3.956364-60.741818 11.636363-90.065455 3.258182-12.567273 16.058182-19.781818 28.392728-16.523636s19.781818 16.058182 16.523636 28.392727c-6.749091 25.367273-10.007273 51.898182-10.007273 78.429091 0 85.410909 34.210909 164.770909 96.349091 223.185455a23.179636 23.179636 0 0 1-15.825454 40.02909zM510.370909 848.756364c-6.516364 0-13.032727-2.792727-17.454545-7.68s-6.981818-11.170909-6.283637-17.687273l4.189091-53.527273-89.832727 43.054546c-6.981818 10.705455-20.712727 13.265455-31.650909 6.283636-10.705455-6.981818-13.498182-21.876364-6.516364-32.814545 4.421818-6.749091 10.472727-12.101818 18.152727-15.592728l92.16-44.218182c14.429091-6.981818 31.185455-5.818182 44.683637 3.49091 13.265455 9.076364 20.712727 24.669091 19.549091 40.727272l-2.327273 30.021818C691.432727 788.247273 814.545455 656.523636 814.545455 496.407273c0-90.298182-39.563636-175.476364-108.218182-233.890909a23.505455 23.505455 0 0 1-2.792728-32.814546c8.378182-9.774545 23.04-10.938182 32.814546-2.792727 79.127273 67.258182 124.741818 165.469091 124.741818 269.265454 0 194.327273-157.323636 352.581818-350.72 352.581819z m-19.549091-81.221819zM261.818182 305.570909a23.249455 23.249455 0 0 1-17.687273-38.4c66.792727-78.196364 163.84-123.112727 266.24-123.112727 6.516364 0 13.032727 2.792727 17.454546 7.68s6.981818 11.170909 6.283636 17.687273l-4.189091 53.527272 89.832727-43.054545c6.981818-10.705455 20.945455-13.265455 31.650909-6.283637 10.705455 6.981818 13.498182 21.876364 6.516364 32.814546-4.421818 6.749091-10.472727 12.101818-18.152727 15.592727l-92.16 44.218182c-14.661818 6.981818-31.185455 5.585455-44.683637-3.490909-13.265455-9.076364-20.712727-24.669091-19.549091-40.727273l2.327273-30.021818c-79.825455 6.516364-153.832727 44.218182-206.196363 105.658182-4.654545 5.12-11.170909 7.912727-17.687273 7.912727z" fill="#ffffff" p-id="8489"></path><path d="M528.290909 270.429091c-8.843636 0-17.687273-2.792727-25.367273-7.912727-13.265455-9.076364-20.712727-24.669091-19.549091-40.727273l7.912728-102.4c1.163636-16.290909 10.705455-30.254545 25.367272-37.236364 14.661818-6.981818 31.650909-5.818182 45.149091 3.258182l84.48 58.181818c20.48 14.661818 25.6 42.821818 11.403637 63.069091-3.956364 6.050909-10.007273 11.403636-17.687273 15.127273l-92.16 44.218182c-6.283636 2.792727-13.032727 4.421818-19.549091 4.421818z m9.309091-145.454546l-7.68 98.676364 89.832727-43.985454-42.123636-26.763637-40.029091-27.927273zM506.647273 223.418182zM484.305455 915.316364c-8.843636 0-17.687273-2.56-25.367273-7.912728 0 0-0.232727 0-0.232727-0.232727l-84.247273-58.181818a45.777455 45.777455 0 0 1-11.403637-63.069091c3.956364-6.050909 10.007273-11.403636 17.687273-14.894545l92.16-44.218182c14.429091-6.981818 31.185455-5.818182 44.683637 3.490909 13.265455 9.076364 20.712727 24.669091 19.54909 40.727273l-7.912727 102.4c-1.163636 16.290909-10.705455 30.254545-25.367273 37.236363-6.050909 3.025455-12.8 4.654545-19.54909 4.654546z m6.283636-145.454546l-89.832727 43.054546 42.123636 26.763636 40.727273 28.392727 6.981818-98.210909z m0.232727-2.327273z" fill="#ffffff" p-id="8490"></path></svg>
+                    {% if lan == 'cn' %} 更新 {% else %} Update {% endif %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-danger" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v2m0 4v.01" /><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" /></svg>
+                <h3>{% if lan == 'cn' %} 确认删除 ? {% else %} Delete Confirm ? {% endif %}</h3>
+                <div class="text-muted scenetext"></div>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <a id="cancel_remove_confirm" class="btn btn-white w-100" data-bs-dismiss="modal">
+                            {% if lan == 'cn' %} 取消 {% else %} Cancel {% endif %}
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a  id="remove_confirm" class="btn btn-danger w-100">
+                            {% if lan == 'cn' %} 确认 {% else %} Confirm {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-blur fade" id="modal-danger-selected" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-status bg-danger"></div>
+            <div class="modal-body text-center py-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v2m0 4v.01" /><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" /></svg>
+                <h3>{% if lan == 'cn' %} 确认删除 ? {% else %} Delete Confirm ? {% endif %}</h3>
+                <div class="text-muted scenetext">{% if lan == 'cn' %} 选中的数据 {% else %} Selected data {% endif %}</div>
+            </div>
+            <div class="modal-footer">
+                <div class="w-100">
+                    <div class="row">
+                        <div class="col">
+                            <a id="cancel_remove_selected_confirm" class="btn btn-white w-100" data-bs-dismiss="modal">
+                            {% if lan == 'cn' %} 取消 {% else %} Cancel {% endif %}
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a onclick="removeCheckedData()"  class="btn btn-danger w-100">
+                            {% if lan == 'cn' %} 确认 {% else %} Confirm {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+
+    $(document).ready(function() {
+        checkboxHandle()
+    });
+    
+    function checkboxHandle(){
+        try{
+            var cekall = document.getElementById('cekall');
+            var inp = document.querySelector('tbody').getElementsByTagName('input');
+            cekall.onclick = function(){
+                for(var i=0; i< inp.length; i++){
+                    inp[i].checked = this.checked;
+                }
+                
+                if(checkedNum() == 0){
+                    $('.btn-remove-all').addClass('disabled')
+                }else{
+                    $('.btn-remove-all').removeClass('disabled')
+                }
+            }
+            for(var i = 0; i<inp.length; i++){
+                inp[i].onclick = function(){
+                    var flag = true;
+                    for(var i =0; i<inp.length; i++){
+                        if(!inp[i].checked){
+                            flag = false;
+                        }
+                    }
+                    cekall.checked = flag;
+                    if(checkedNum() == 0){
+                        $('.btn-remove-all').addClass('disabled')
+                    }else{
+                        $('.btn-remove-all').removeClass('disabled')
+                    }
+                }
+            }
+
+        }catch{}
+
+    }
+    
+    function checkedNum(){
+        var checkLength = $("input:checkbox[name='checksId']:checked").length;
+        var num = 0;
+        $("input[type='checkbox']").each(function(){ 
+            if($(this).prop("checked")){ 
+                num++ ;
+            }
+        });
+        return num;
+    }
+    
+    function exportData(platform, scene){
+        window.event.preventDefault();
+        $.ajax({
+            url: "/apm/export/report",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{scene: scene, platform: platform},
+            beforeSend: function () {
+                SwalLoading('Exporting',scene)
+            },
+            success: function (data) {
+                if(data['status'] != 1 ){
+                    SwalFire('error', 'Export failed !', data['msg'], 2000);
+                }else{
+                    SwalFire('success', scene+'.xls in current directory', '', 5000);
+                }
+            }
+        });
+    }
+
+    function removeCheckedData(){
+        $('#cancel_remove_selected_confirm').click();
+        var checkLength = $("input:checkbox[name='checksId']:checked").length;
+        $("input[type='checkbox']").each(function(){ 
+            if($(this).prop("checked")){ 
+                var scenename = $(this).closest('tr').find('td').eq(4).text();
+                if(scenename){
+                    removeReport(scenename);
+                }
+            }
+            location.reload();
+        });
+    }
+
+    function removeReport(scenename){
+        $.ajax({
+            url: "/apm/remove/report",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                scene: scenename
+            },
+            beforeSend: function () {
+                SwalLoading('Deleting',scenename)
+            },
+            success: function (data) {
+                if(data['status'] != 1 ){
+                    SwalFire('error','Delete failed',data['msg'])
+                }
+            }
+        })
+    }
+
+    function removeOneData(scenename){
+        window.event.preventDefault();
+        $('.scenetext').text(scenename)
+        $('#remove_confirm').on('click', function () {
+            $('#cancel_remove_confirm').click();
+            $.ajax({
+                url: "/apm/remove/report",
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    scene: scenename
+                },
+                beforeSend: function () {
+                    SwalLoading('Deleting',scenename)
+                },
+                complete: function () {
+                    location.reload();
+                },
+                success: function (data) {
+                    if(data['status'] != 1 ){
+                        SwalFire('error','Delete failed',data['msg'])
+                    }else{
+                        location.reload();
+                    }
+                }
+            });
+        });
+    }
+
+    function editOneData(old_scene){
+        window.event.preventDefault();
+        $('#scenename').val(old_scene);
+        var new_scene = $('#scenename').val().trim();
+        $('#scenename').change(function(){
+            new_scene = $(this).val().trim();
+            console.log(new_scene)
+        });
+        if(new_scene){
+            $('#edit_confirm').on('click', function () {
+                $('#cancel_edit_confirm').click();
+                $.ajax({
+                    url: "/apm/edit/report",
+                    type: "GET",
+                    async: true,
+                    cache: false,
+                    data:{
+                        old_scene:old_scene,
+                        new_scene: new_scene
+                    },
+                    beforeSend: function () {
+                        SwalLoading('Updating',new_scene);
+                    },
+                    complete: function () {
+                        location.reload();
+                    },
+                    success: function (data) {
+                        if(data['status'] != 1 ){
+                            SwalFire('error', 'update failed !', data['msg'], 2000);
+                        }else{
+                            location.reload();
+                        }
+                    }
+                });
+            });
+        }else{
+            SwalFire('error','update failed','scene cannot be empty')
+        }
+    }
+</script>
+{% endblock %}

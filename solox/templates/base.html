@@ -1,0 +1,410 @@
+<!doctype html>
+<!--
+* SoloX - real-time collection tool for Android/iOS performance data.
+* @Author Rafa Chen
+* Copyright SoloX.2022~now
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{% block title %} {% endblock %}</title>
+    <!-- CSS files -->
+    <link rel="icon" href="./static/logo/logo.png">
+    <link rel="stylesheet" href="./static/css/tabler.min.css">
+    <link rel="stylesheet" href="./static/css/tabler.demo.min.css" />
+    <!-- Select2-->
+    <link rel="stylesheet" href="./static/css/select2.min.css" />
+    <link rel="stylesheet" href="./static/css/select2-bootstrap-5-theme.min.css" />
+    <link rel="stylesheet" href="./static/css/select2-bootstrap-5-theme.rtl.min.css" />
+    <!-- Sweetalert2-->
+    <link rel="stylesheet" href="./static/css/sweetalert2.min.css" />
+    <!--highlight-->
+    <link rel="stylesheet" href="./static/css/highlight.min.css">
+
+    {% block css %}
+    {% endblock %}
+</head>
+<body class="Body layout-boxed">
+<div class="page">
+    <header class="navbar navbar-expand-md navbar-light d-print-none">
+        <div class="container-xl">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+                <a href="https://github.com/smart-test-ti/SoloX" target="_blank">
+                    <img src="./static/logo/logo.png" width="110" height="32" alt="SoloX" class="navbar-brand-image">
+                </a>
+                <label style="margin-left: 10px;font-weight: bolder;font-style: normal;font-size: 20px;">SoloX</label>
+            </h1>
+            <div class="collapse navbar-collapse" id="navbar-menu" style="margin-left: 20px;">
+                <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
+                    {% block navbar_nav %}{% endblock %}
+                </div>
+            </div>
+            {% if model in ['2-app','2-devices'] %}
+            <div class="nav-item dropdown d-none d-md-flex me-3">
+                <a  href="/?platform=Android&lan={{ lan }}" class="btn  btn-pill w-100" >
+                    <svg t="1661854459800" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="24106" width="2000" height="2000"><path d="M555.52 943.616C339.456 943.616 163.84 768 163.84 552.448s175.616-391.68 391.68-391.68S947.2 336.384 947.2 552.448s-176.128 391.168-391.68 391.168z" fill="#38CEB1" p-id="24107"></path><path d="M815.616 820.224m-20.48 0a20.48 20.48 0 1 0 40.96 0 20.48 20.48 0 1 0-40.96 0Z" fill="#231815" p-id="24108"></path><path d="M512 61.952c-248.32 0-450.56 202.24-450.56 450.56s202.24 450.56 450.56 450.56c93.184 0 182.272-28.16 258.048-81.408 9.216-6.656 11.264-19.456 5.12-28.672-6.656-9.216-19.456-11.264-28.672-5.12-69.12 48.128-150.016 73.728-235.008 73.728-225.792 0-409.6-183.808-409.6-409.6s183.808-409.6 409.6-409.6 409.6 183.808 409.6 409.6c0 87.552-27.136 171.008-78.848 241.152-6.656 9.216-4.608 22.016 4.608 28.672 9.216 6.656 22.016 4.608 28.672-4.608 56.832-77.312 86.528-169.472 86.528-265.728 0.512-247.296-201.728-449.536-450.048-449.536z" fill="#231815" p-id="24109"></path><path d="M641.536 267.776c-8.192-8.192-20.992-8.192-29.184 0L389.632 491.008c-5.632 5.632-9.216 13.312-9.216 21.504s3.072 15.872 9.216 21.504l223.232 223.232c4.096 4.096 9.216 6.144 14.336 6.144s10.24-2.048 14.336-6.144c8.192-8.192 8.192-20.992 0-29.184L425.472 512l216.064-216.064c8.192-7.168 8.192-20.48 0-28.16z" fill="#231815" p-id="24110"></path></svg>
+                    {% if lan == 'cn' %} 普通模式 {% else %} Normal Model {% endif %}
+                </a>
+            </div>
+            {% else %}
+            <div class="nav-item dropdown d-none d-md-flex me-3">
+                <a href="/pk?model=2-devices&lan={{ lan }}" class="btn  btn-pill w-100" >
+                    <svg t="1661854041585" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10784" width="2000" height="2000"><path d="M17.408 862.208a450.56 129.024 0 1 0 901.12 0 450.56 129.024 0 1 0-901.12 0Z" fill="#EEF2FF" p-id="10785"></path><path d="M509.952 880.64H75.776c-17.408 0-30.72-13.312-30.72-30.72V293.888c0-64.512 52.224-116.736 116.736-116.736h522.24c35.84 0 64.512 28.672 64.512 64.512v400.384C748.544 774.144 642.048 880.64 509.952 880.64z" fill="#70D4FF" p-id="10786"></path><path d="M764.928 880.64H212.992c-17.408 0-30.72-13.312-30.72-30.72V60.416h755.712c35.84 0 64.512 28.672 64.512 64.512v517.12C1002.496 774.144 896 880.64 764.928 880.64z" fill="#4E8EFF" p-id="10787"></path><path d="M555.008 403.456c0 20.48-7.168 35.84-22.528 48.128-14.336 11.264-30.72 16.384-51.2 16.384h-28.672v48.128c0 9.216 2.048 15.36 6.144 19.456 4.096 4.096 11.264 5.12 21.504 5.12V563.2H373.76v-22.528c15.36 0 23.552-8.192 23.552-24.576V389.12c0-16.384-8.192-24.576-23.552-24.576v-22.528h109.568c19.456 0 35.84 5.12 49.152 15.36 14.336 12.288 22.528 27.648 22.528 46.08z m-59.392 2.048c0-26.624-11.264-39.936-34.816-39.936h-9.216v80.896h11.264c13.312 0 22.528-3.072 26.624-10.24 4.096-7.168 6.144-17.408 6.144-30.72zM800.768 563.2h-60.416c-8.192-7.168-15.36-15.36-21.504-22.528l-57.344-74.752v50.176c0 16.384 9.216 24.576 26.624 24.576V563.2H584.704v-22.528c16.384 0 23.552-8.192 23.552-24.576V389.12c0-16.384-8.192-24.576-24.576-24.576v-22.528h105.472v22.528c-17.408 0-26.624 8.192-26.624 24.576v50.176l39.936-37.888c13.312-12.288 19.456-21.504 19.456-27.648 0-5.12-5.12-8.192-15.36-8.192v-22.528h81.92v22.528c-9.216 0-15.36 1.024-20.48 4.096-3.072 2.048-8.192 6.144-15.36 13.312L705.536 430.08l70.656 94.208c7.168 9.216 15.36 15.36 25.6 16.384V563.2z" fill="#FFFFFF" p-id="10788"></path></svg>
+                    {% if lan == 'cn' %} 比对模式 {% else %} PK Model {% endif %}
+                </a>
+            </div>
+            {% endif %}
+            
+            <div class="nav-item dropdown d-none d-md-flex me-3">
+                <a href="https://github.com/smart-test-ti/SoloX" target="_blank" class="btn  btn-pill w-100">
+                    <svg t="1657096287296" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="28640" width="2000" height="2000"><path d="M511.4 511.9m-426.3 0a426.3 426.3 0 1 0 852.6 0 426.3 426.3 0 1 0-852.6 0Z" fill="#FF7A4E" p-id="28641"></path><path d="M511.4 958.2c-60.2 0-118.7-11.8-173.7-35.1-53.1-22.5-100.9-54.7-141.9-95.6-41-41-73.2-88.7-95.6-141.9-23.3-55-35.1-113.5-35.1-173.7s11.8-118.7 35.1-173.7c22.5-53.1 54.7-100.9 95.6-141.9 41-41 88.7-73.2 141.9-95.6 55-23.3 113.5-35.1 173.7-35.1 60.2 0 118.7 11.8 173.7 35.1 53.1 22.5 100.9 54.7 141.9 95.6 41 41 73.2 88.7 95.6 141.9 23.3 55 35.1 113.5 35.1 173.7s-11.7 118.7-35 173.7C900.2 738.8 868 786.5 827 827.5s-88.7 73.2-141.9 95.6c-55 23.3-113.4 35.1-173.7 35.1z m0-852.6c-224 0-406.3 182.3-406.3 406.3s182.3 406.3 406.3 406.3 406.3-182.3 406.3-406.3c0.1-224-182.2-406.3-406.3-406.3z" fill="#FF7A4E" p-id="28642"></path><path d="M716.2 547.3l-196 204.1L340.8 579l0.6-0.7-27.2-25.4c-50.3-46.9-53-125.6-6.2-175.9 46.9-50.3 125.6-53 175.9-6.2l29.9 27.9 22.9-23.9c19.5-20.3 44.2-32.6 70.1-36.7 37.2-5.9 76.6 5 105.9 33.1 49.5 47.7 51.1 126.5 3.5 176.1z" fill="#FFFFFF" p-id="28643"></path></svg>
+                    {% if lan == 'cn' %} 点赞 {% else %} Star Me {% endif %}
+                </a>
+            </div>
+            <div class="nav-item dropdown  d-none d-md-flex me-3">
+                <a  class="cursor-pointer" id="tanslate" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                    <svg t="1677481883820" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2905" width="50" height="50"><path d="M608 416h288c35.36 0 64 28.48 64 64v416c0 35.36-28.48 64-64 64H480c-35.36 0-64-28.48-64-64v-288H128c-35.36 0-64-28.48-64-64V128c0-35.36 28.48-64 64-64h416c35.36 0 64 28.48 64 64v288z m0 64v64c0 35.36-28.48 64-64 64h-64v256.032c0 17.664 14.304 31.968 31.968 31.968H864a31.968 31.968 0 0 0 31.968-31.968V512a31.968 31.968 0 0 0-31.968-31.968H608zM128 159.968V512c0 17.664 14.304 31.968 31.968 31.968H512a31.968 31.968 0 0 0 31.968-31.968V160A31.968 31.968 0 0 0 512.032 128H160A31.968 31.968 0 0 0 128 159.968z m64 244.288V243.36h112.736V176h46.752c6.4 0.928 9.632 1.824 9.632 2.752a10.56 10.56 0 0 1-1.376 4.128c-2.752 7.328-4.128 16.032-4.128 26.112v34.368h119.648v156.768h-50.88v-20.64h-68.768v118.272H306.112v-118.272H238.752v24.768H192z m46.72-122.368v60.48h67.392V281.92H238.752z m185.664 60.48V281.92h-68.768v60.48h68.768z m203.84 488H576L668.128 576h64.64l89.344 254.4h-54.976l-19.264-53.664h-100.384l-19.232 53.632z m33.024-96.256h72.864l-34.368-108.608h-1.376l-37.12 108.608zM896 320h-64a128 128 0 0 0-128-128V128a192 192 0 0 1 192 192zM128 704h64a128 128 0 0 0 128 128v64a192 192 0 0 1-192-192z" fill="#333333" p-id="2906"></path></svg>
+                </a>
+                <div class="dropdown-menu">
+                    <a onclick="rutePush('cn')" class="dropdown-item">中文</a>
+                    <a onclick="rutePush('en')" class="dropdown-item">English</a>
+                  </div>
+            </div>
+            
+            <div class="nav-item dropdown d-none d-md-flex me-3">
+                <a  class="cursor-pointer" id="setting" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd">
+                    <svg t="1647500420751" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="42025" width="2000" height="2000"><path d="M520.567467 779.776c29.354667 0 57.924267 11.093333 78.4384 30.4128l8.942933 9.5232c11.1616 11.946667 33.792 17.6128 49.834667 11.8784 0 0 14.062933-5.188267 45.090133-22.869333 30.583467-17.5104 42.052267-27.067733 42.154667-27.170134 13.141333-10.990933 19.592533-32.802133 14.677333-48.878933l-2.9696-9.693867c-7.2704-30.378667-2.901333-60.279467 11.912533-85.7088a115.3024 115.3024 0 0 1 65.467734-52.3264l12.9024-3.003733c16.384-3.754667 32.221867-20.206933 35.259733-36.693333 0-0.2048 2.594133-14.813867 2.594133-50.449067-0.170667-35.4304-2.730667-50.107733-2.730666-50.2784l26.453333-4.778667-26.487467 4.7104c-2.935467-16.315733-18.944-33.0752-34.952533-36.5568l-11.9808-2.798933a115.370667 115.370667 0 0 1-66.798933-52.462933 114.176 114.176 0 0 1-12.731734-83.0464l0.682667-2.491734 3.515733-10.4448c4.778667-15.428267-1.706667-37.341867-14.677333-48.3328-0.068267-0.068267-11.5712-9.557333-42.530133-27.374933-30.993067-17.681067-44.782933-22.801067-44.919467-22.869333-15.189333-5.5296-38.434133 0.1024-49.7664 12.049066l-8.055467 8.567467c-21.367467 20.1728-49.493333 31.266133-79.223466 31.266133-29.320533 0-57.856-11.025067-78.267734-30.242133l-9.1136-9.6256c-11.332267-12.117333-34.133333-17.578667-49.834666-11.946667-1.160533 0.4096-15.121067 5.802667-45.124267 22.9376-30.583467 17.646933-41.984 27.170133-42.120533 27.272534-13.141333 10.9568-19.592533 32.768-14.677334 48.810666l3.413334 11.0592a114.688 114.688 0 0 1-12.356267 84.343467 114.449067 114.449067 0 0 1-65.399467 52.224l-13.141333 3.037867c-16.384 3.720533-32.221867 20.206933-35.259733 36.6592-0.068267 0.341333-2.594133 14.779733-2.594134 50.346666 0 35.4304 2.525867 49.937067 2.56 50.0736 3.003733 16.861867 18.705067 33.314133 35.054934 36.898134l9.557333 2.116266c30.378667 8.874667 54.272 27.648 69.12 53.384534 14.609067 25.361067 19.2512 55.569067 12.629333 82.909866l-3.4816 11.946667c-5.0176 16.2816 1.467733 38.229333 14.404267 49.152 0 0 11.5712 9.6256 42.496 27.374933 30.651733 17.544533 44.475733 22.7328 45.056 22.9376 15.0528 5.461333 38.331733-0.136533 49.698133-12.117333l7.611734-8.123733a115.8144 115.8144 0 0 1 79.6672-31.607467zM643.584 887.466667c-28.672 0-56.695467-11.707733-75.025067-31.300267l-7.7824-8.328533c-9.386667-8.8064-24.507733-14.5408-40.209066-14.5408-15.633067 0-30.549333 5.802667-42.0864 16.384l-5.802667 6.314666c-26.282667 27.716267-72.430933 38.7072-107.7248 25.838934-4.334933-1.604267-20.855467-8.192-53.282133-26.760534-33.723733-19.3536-47.9232-30.8224-50.449067-32.904533-29.320533-24.8832-42.325333-69.188267-31.095467-105.472l3.072-10.308267c3.072-12.834133 0.477867-28.808533-7.406933-42.427733a60.962133 60.962133 0 0 0-35.908267-28.228267l-7.748266-1.672533c-37.410133-8.192-69.563733-41.642667-76.322134-79.530667-0.273067-1.4336-3.413333-18.773333-3.413333-59.6992 0-41.0624 3.140267-58.436267 3.549867-60.279466 6.826667-37.102933 38.843733-70.417067 76.117333-78.916267l11.502933-2.594133c12.151467-3.652267 24.576-13.755733 32.494934-27.306667 7.714133-13.312 10.069333-29.047467 6.690133-44.407467l-2.628267-8.430933c-11.264-36.6592 1.9456-80.896 31.232-105.335467 1.024-0.887467 14.6432-12.424533 50.0736-32.8704 32.290133-18.432 49.083733-25.156267 53.4528-26.794666 36.522667-13.038933 81.681067-2.218667 107.758934 25.668266l7.918933 8.430934c9.352533 8.772267 24.405333 14.4384 40.106667 14.4384 15.598933 0 30.378667-5.666133 41.642666-16.042667l6.314667-6.826667c26.282667-27.648 72.430933-38.570667 107.588267-25.770666 2.901333 1.058133 19.319467 7.3728 53.248 26.760533 34.577067 19.831467 48.264533 31.061333 50.688 33.0752 29.149867 24.746667 42.154667 69.051733 30.9248 105.301333l-3.208534 9.728c-3.072 14.6432-0.580267 29.934933 7.099734 43.2128 7.714133 13.2096 20.138667 23.074133 34.952533 27.7504l8.977067 2.048c37.205333 8.123733 69.358933 41.506133 76.151466 79.36 0.6144 3.310933 3.413333 20.923733 3.618134 59.630934 0 39.799467-2.935467 57.2416-3.4816 60.347733-6.894933 37.2736-38.912 70.587733-76.117334 79.086933l-10.171733 2.321067a61.0304 61.0304 0 0 0-33.655467 27.648 60.757333 60.757333 0 0 0-6.587733 44.9536l2.56 8.055467c11.127467 36.522667-2.048 80.759467-31.300267 105.233066-1.058133 0.9216-14.779733 12.526933-50.244266 32.836267-33.9968 19.3536-50.619733 25.736533-53.589334 26.794667a96.256 96.256 0 0 1-32.4608 5.5296h-0.034133zM520.533333 393.898667c-60.416 0-109.568 49.152-109.568 109.568s49.152 109.568 109.568 109.568 109.568-49.152 109.568-109.568-49.152-109.568-109.568-109.568z m0 271.701333a162.304 162.304 0 0 1-162.133333-162.133333c0-89.429333 72.704-162.133333 162.133333-162.133334 89.3952 0 162.133333 72.704 162.133334 162.133334 0 89.3952-72.738133 162.133333-162.133334 162.133333z" p-id="42026"></path></svg>
+                </a>
+                <span class="status-dot status-dot-animated bg-red d-block"></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-wrapper sceen-body">
+        <div class="container-xl">
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            {% block page_title %}
+                            {% endblock %}
+                        </h2>
+                    </div>
+                    {% block ms_auto %}{% endblock %}
+                </div>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="container-xl">
+                {% block page_body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    <footer class="footer footer-transparent d-print-none">
+        <div class="container-xl">
+            <div class="row text-center align-items-center flex-row-reverse">
+                <div class="col-lg-auto ms-lg-auto">
+                    <ul class="list-inline list-inline-dots mb-0">
+                        <li class="list-inline-item">
+                            <a href="https://github.com/smart-test-ti/SoloX/blob/master/README.md" target="_blank" class="link-secondary">
+                                {% if lan == 'cn' %} 文档 {% else %} Documentation {% endif %}
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://github.com/smart-test-ti/SoloX" target="_blank" class="link-secondary" rel="noopener">
+                                {% if lan == 'cn' %} 源码 {% else %} Source code {% endif %}
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://github.com/sponsors/codecalm" target="_blank" class="link-secondary" rel="noopener" data-bs-toggle="modal" data-bs-target="#modal-coffee">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink icon-filled icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                              {% if lan == 'cn' %} 喝杯咖啡 {% else %} Sponsor {% endif %}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                    <ul class="list-inline list-inline-dots mb-0">
+                        <li class="list-inline-item">
+                            Copyright &copy; <label id="curYear"></label>
+                            <a href="https://github.com/smart-test-ti" class="link-secondary">SoloX</a>.{% if lan == 'cn' %} 保留所有权利 {% else %} All rights reserved {% endif %}
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://github.com/smart-test-ti/SoloX/releases" target="_blank" class="link-secondary" rel="noopener">
+                                {% if lan == 'cn' %} 版本 {% else %} Releases {% endif %} . V2.5.9
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<div class="offcanvas offcanvas-end layout-boxed" style="margin-top: 1%;margin-right: 4%;width: 25%;" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
+    <div class="offcanvas-header">
+        <h2 class="offcanvas-title" id="offcanvasEndLabel">
+            <svg t="1647500420751" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="42025" width="2000" height="2000"><path d="M520.567467 779.776c29.354667 0 57.924267 11.093333 78.4384 30.4128l8.942933 9.5232c11.1616 11.946667 33.792 17.6128 49.834667 11.8784 0 0 14.062933-5.188267 45.090133-22.869333 30.583467-17.5104 42.052267-27.067733 42.154667-27.170134 13.141333-10.990933 19.592533-32.802133 14.677333-48.878933l-2.9696-9.693867c-7.2704-30.378667-2.901333-60.279467 11.912533-85.7088a115.3024 115.3024 0 0 1 65.467734-52.3264l12.9024-3.003733c16.384-3.754667 32.221867-20.206933 35.259733-36.693333 0-0.2048 2.594133-14.813867 2.594133-50.449067-0.170667-35.4304-2.730667-50.107733-2.730666-50.2784l26.453333-4.778667-26.487467 4.7104c-2.935467-16.315733-18.944-33.0752-34.952533-36.5568l-11.9808-2.798933a115.370667 115.370667 0 0 1-66.798933-52.462933 114.176 114.176 0 0 1-12.731734-83.0464l0.682667-2.491734 3.515733-10.4448c4.778667-15.428267-1.706667-37.341867-14.677333-48.3328-0.068267-0.068267-11.5712-9.557333-42.530133-27.374933-30.993067-17.681067-44.782933-22.801067-44.919467-22.869333-15.189333-5.5296-38.434133 0.1024-49.7664 12.049066l-8.055467 8.567467c-21.367467 20.1728-49.493333 31.266133-79.223466 31.266133-29.320533 0-57.856-11.025067-78.267734-30.242133l-9.1136-9.6256c-11.332267-12.117333-34.133333-17.578667-49.834666-11.946667-1.160533 0.4096-15.121067 5.802667-45.124267 22.9376-30.583467 17.646933-41.984 27.170133-42.120533 27.272534-13.141333 10.9568-19.592533 32.768-14.677334 48.810666l3.413334 11.0592a114.688 114.688 0 0 1-12.356267 84.343467 114.449067 114.449067 0 0 1-65.399467 52.224l-13.141333 3.037867c-16.384 3.720533-32.221867 20.206933-35.259733 36.6592-0.068267 0.341333-2.594133 14.779733-2.594134 50.346666 0 35.4304 2.525867 49.937067 2.56 50.0736 3.003733 16.861867 18.705067 33.314133 35.054934 36.898134l9.557333 2.116266c30.378667 8.874667 54.272 27.648 69.12 53.384534 14.609067 25.361067 19.2512 55.569067 12.629333 82.909866l-3.4816 11.946667c-5.0176 16.2816 1.467733 38.229333 14.404267 49.152 0 0 11.5712 9.6256 42.496 27.374933 30.651733 17.544533 44.475733 22.7328 45.056 22.9376 15.0528 5.461333 38.331733-0.136533 49.698133-12.117333l7.611734-8.123733a115.8144 115.8144 0 0 1 79.6672-31.607467zM643.584 887.466667c-28.672 0-56.695467-11.707733-75.025067-31.300267l-7.7824-8.328533c-9.386667-8.8064-24.507733-14.5408-40.209066-14.5408-15.633067 0-30.549333 5.802667-42.0864 16.384l-5.802667 6.314666c-26.282667 27.716267-72.430933 38.7072-107.7248 25.838934-4.334933-1.604267-20.855467-8.192-53.282133-26.760534-33.723733-19.3536-47.9232-30.8224-50.449067-32.904533-29.320533-24.8832-42.325333-69.188267-31.095467-105.472l3.072-10.308267c3.072-12.834133 0.477867-28.808533-7.406933-42.427733a60.962133 60.962133 0 0 0-35.908267-28.228267l-7.748266-1.672533c-37.410133-8.192-69.563733-41.642667-76.322134-79.530667-0.273067-1.4336-3.413333-18.773333-3.413333-59.6992 0-41.0624 3.140267-58.436267 3.549867-60.279466 6.826667-37.102933 38.843733-70.417067 76.117333-78.916267l11.502933-2.594133c12.151467-3.652267 24.576-13.755733 32.494934-27.306667 7.714133-13.312 10.069333-29.047467 6.690133-44.407467l-2.628267-8.430933c-11.264-36.6592 1.9456-80.896 31.232-105.335467 1.024-0.887467 14.6432-12.424533 50.0736-32.8704 32.290133-18.432 49.083733-25.156267 53.4528-26.794666 36.522667-13.038933 81.681067-2.218667 107.758934 25.668266l7.918933 8.430934c9.352533 8.772267 24.405333 14.4384 40.106667 14.4384 15.598933 0 30.378667-5.666133 41.642666-16.042667l6.314667-6.826667c26.282667-27.648 72.430933-38.570667 107.588267-25.770666 2.901333 1.058133 19.319467 7.3728 53.248 26.760533 34.577067 19.831467 48.264533 31.061333 50.688 33.0752 29.149867 24.746667 42.154667 69.051733 30.9248 105.301333l-3.208534 9.728c-3.072 14.6432-0.580267 29.934933 7.099734 43.2128 7.714133 13.2096 20.138667 23.074133 34.952533 27.7504l8.977067 2.048c37.205333 8.123733 69.358933 41.506133 76.151466 79.36 0.6144 3.310933 3.413333 20.923733 3.618134 59.630934 0 39.799467-2.935467 57.2416-3.4816 60.347733-6.894933 37.2736-38.912 70.587733-76.117334 79.086933l-10.171733 2.321067a61.0304 61.0304 0 0 0-33.655467 27.648 60.757333 60.757333 0 0 0-6.587733 44.9536l2.56 8.055467c11.127467 36.522667-2.048 80.759467-31.300267 105.233066-1.058133 0.9216-14.779733 12.526933-50.244266 32.836267-33.9968 19.3536-50.619733 25.736533-53.589334 26.794667a96.256 96.256 0 0 1-32.4608 5.5296h-0.034133zM520.533333 393.898667c-60.416 0-109.568 49.152-109.568 109.568s49.152 109.568 109.568 109.568 109.568-49.152 109.568-109.568-49.152-109.568-109.568-109.568z m0 271.701333a162.304 162.304 0 0 1-162.133333-162.133333c0-89.429333 72.704-162.133333 162.133333-162.133334 89.3952 0 162.133333 72.704 162.133334 162.133334 0 89.3952-72.738133 162.133333-162.133334 162.133333z" p-id="42026"></path></svg>
+            {% if lan == 'cn' %} 设置 {% else %} Setting {% endif %}
+        </h2>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="card-tabs">
+            <ul class="nav nav-tabs">
+              <li class="nav-item"><a href="#tab-top-1" class="nav-link active" data-bs-toggle="tab">Warning Value</a></li>
+              <li class="nav-item"><a href="#tab-top-2" class="nav-link" data-bs-toggle="tab">Timer</a></li>
+              <li class="nav-item"><a href="#tab-top-3" class="nav-link" data-bs-toggle="tab">Agent &nbsp;
+                {% if lan == 'en' %}
+                <span class="form-help" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="
+                Start solox on the Slave machine first, and then configure the Host here.
+            </p>Note: The port number cannot be the same as the Master machine</p>
+            ">?</span>
+            {% else %}
+            <span class="form-help" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="
+            先在其他机器启动solox,然后将Host配置在这里
+            </p>注意：端口号不能和主机器一样</p>
+            ">?</span>
+            {% endif %}
+            </a></li>
+            </ul>
+            <div class="tab-content">
+              <!-- Content of card #1 -->
+              <div id="tab-top-1" class="card tab-pane active show">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6 col-xl-12">
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} CPU告警值 {% else %} CPU warning value {% endif %}</label>
+                                <input id="cpu_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ cpuWarning }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} 内存告警值 {% else %} Memory warning value {% endif %}</label>
+                                <input id="mem_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ memWarning }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} FPS告警值 {% else %} FPS warning value {% endif %}</label>
+                                <input id="fps_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ fpsWarning }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} 电量告警值 {% else %} Battery warning value {% endif %}</label>
+                                <input id="battery_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ betteryWarning }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} 上行流量告警值 {% else %} Send network data warning value {% endif %}</label>
+                                <input id="upflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ netdataSendWarning }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} 下行流量告警值 {% else %} Recv network data warning value {% endif %}</label>
+                                <input id="downflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ netdataRecvWarning }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <!-- Content of card #2 -->
+              <div id="tab-top-2" class="card tab-pane">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6 col-xl-12">
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} 持续执行时间（分钟） {% else %} Duration（minutes） {% endif %}</label>
+                                <input id="running_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ runningTime }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <div id="tab-top-3" class="card tab-pane">
+                <div class="card-body">
+                    <div class="table">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>PC</th>
+                                    <th>HOST</th>
+                                    <th>SWITCH</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <svg t="1680252875419" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="19154" width="50" height="50"><path d="M471.04 727.04h81.92v184.32h-81.92z" p-id="19155"></path><path d="M307.2 911.36m30.72 0l348.16 0q30.72 0 30.72 30.72l0 0q0 30.72-30.72 30.72l-348.16 0q-30.72 0-30.72-30.72l0 0q0-30.72 30.72-30.72Z" p-id="19156"></path><path d="M20.48 51.2m51.2 0l880.64 0q51.2 0 51.2 51.2l0 573.44q0 51.2-51.2 51.2l-880.64 0q-51.2 0-51.2-51.2l0-573.44q0-51.2 51.2-51.2Z" p-id="19157"></path><path d="M122.88 645.12m20.48 0l737.28 0q20.48 0 20.48 20.48l0 0q0 20.48-20.48 20.48l-737.28 0q-20.48 0-20.48-20.48l0 0q0-20.48 20.48-20.48Z" fill="#EBBA50" p-id="19158"></path></svg>
+                                    </td>
+                                    <td>
+                                        <input id="host" type="text" class="form-control form-control-sm" placeholder="ex : 192.168.10.10:6006" value="{{ solox_host }}">
+                                    </td>
+                                    <td>
+                                        <label class="form-check  form-switch">
+                                            {% if host_switch == '1' %}
+                                            <input  class="form-check-input host_switch" type="checkbox" checked>
+                                            {% else %}
+                                            <input  class="form-check-input host_switch" type="checkbox">
+                                            {% endif %}
+                                        </label>
+                                    </td>
+                                </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+          </div>
+        
+        <a class="btn btn-primary mt-3" onclick="saveWorningValue()">
+            {% if lan == 'cn' %} 保存 {% else %} Save {% endif %}
+        </a>
+    </div>
+</div>
+<div class="modal modal-blur fade" id="modal-coffee" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{% if lan == 'cn' %} 买杯咖啡 {% else %} Buy me coffee {% endif %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img  alt="" src="./static/image/coffee.png">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JQ JS -->
+<script src="./static/js/jquery.min.js"></script>
+<!-- tabler -->
+<script src="./static/js/tabler.min.js"></script>
+<script src="./static/js/tabler.demo.min.js"></script>
+<!-- Sweetalert2 -->
+<script src="./static/js/sweetalert2.min.js"></script>
+<!-- Select2-->
+<script src="./static/js/select2.min.js"></script>
+<!-- Apexcharts-->
+<script src="./static/js/apexcharts.js"></script>
+<!-- highlight -->
+<script src="./static/js/highlight.min.js"></script>
+<!-- Highcharts-->
+<script src="./static/js/highstock.js"></script>
+<script src="./static/js/gray.js"></script>
+
+<!-- html2canvas -->
+<script src="./static/js/html2canvas.min.js"></script>
+<script src="./static/js/socket.io.js"></script>
+<script>
+
+    var platform = '{{ platform }}'; // 平台
+    var lan = '{{ lan }}' ;
+    
+    var domain = $('.host_switch').is(':checked') == true ? $('#host').val() : window.location.host ;
+    var Host = 'http://' + domain
+
+    $(document).ready(function() {
+        $('.select2-selection--single').select2({
+            theme: "bootstrap-5",
+            containerCssClass: "select2--small",
+            selectionCssClass: "select2--small",
+            dropdownCssClass: "select2--small",
+        });
+        $('.js-example-basic-multiple').select2({
+            theme: "bootstrap-5"
+        });
+
+        $('#curYear').text(getCurDate())
+    });
+
+    function rutePush(lan){
+        var cLan = '{{ lan }}';
+        var cRute = window.location.href;
+        if(cLan == lan){
+            window.location.href = cRute
+        }else{
+            window.location.href = cRute.replace('lan='+cLan, 'lan='+lan)
+        }
+    }
+
+    function getCurDate(){
+        var date = new Date();
+        var year = date.getFullYear();
+        return year
+    };
+
+    function SwalLoading(title,html){
+        Swal.fire({
+            title: title,
+            html: html,
+            timerProgressBar: true,
+            allowOutsideClick: () => false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
+    }
+
+    function SwalFire(icon,title,text,timer=null) {
+        Swal.fire({
+            icon: icon,
+            title: title,
+            text: text,
+            showLoaderOnConfirm: true,
+            showCloseButton: true,
+            showConfirmButton: false,
+            timer:timer,
+            allowOutsideClick: () => true
+        })
+    }
+
+    Highcharts.setOptions({
+        global : {
+            useUTC : false
+        }
+    });
+
+    function screenshot(classname,downloadname) {
+        let container = document.getElementsByClassName(classname); //page-wrapper
+        html2canvas(container[0]).then(canvas => {
+            let imgData = canvas.toDataURL();
+            let link = document.createElement('a');
+            link.href = imgData;
+            link.download = downloadname;
+            let flag = link.click();
+            console.log(flag);
+        })
+    }
+
+    function saveWorningValue() {
+        var host_switch = $('.host_switch').is(':checked') == true ? 1 : 0;
+        $.ajax({
+            url: "/apm/cookie",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                cpuWarning:parseInt($('#cpu_warning_value').val()),
+                memWarning:parseInt($('#mem_warning_value').val()),
+                fpsWarning:parseInt($('#fps_warning_value').val()),
+                netdataRecvWarning:parseInt($('#down_warning_value').val()),
+                netdataSendWarning:parseInt($('#upflow_warning_value').val()),
+                betteryWarning:parseInt($('#battery_warning_value').val()),
+                runningTime:parseInt($('#running_value').val()),
+                solox_host: $('#host').val(),
+                host_switch:host_switch
+            },
+            beforeSend: function () {
+                SwalLoading('Save data','Saving warning data.')
+            },
+            success: function (data) {
+                console.log(data)
+                SwalFire('success', 'Save successuly !', '', 2000);
+            }
+        });
+    }
+</script>
+{% block js %}
+{% endblock %}
+</body>
+</html>
