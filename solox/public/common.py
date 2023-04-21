@@ -12,7 +12,8 @@ import traceback
 from urllib.request import urlopen
 import ssl
 import xlwt
-
+from jinja2 import Environment, FileSystemLoader
+ 
 class Platform:
     Android = 'Android'
     iOS = 'iOS'
@@ -55,11 +56,8 @@ class Devices:
 
     def getDevices(self):
         """Get all Android devices"""
-        Devices = []
         DeviceIds = self.getDeviceIds()
-        for id in DeviceIds:
-            devices_name = self.getDevicesName(id)
-            Devices.append(f'{id}({devices_name})')
+        Devices = [f'{id}({self.getDevicesName(id)})' for id in DeviceIds]
         return Devices
 
     def getIdbyDevice(self, deviceinfo, platform):
@@ -76,12 +74,12 @@ class Devices:
         """Get the pid corresponding to the Android package name"""
         result = os.popen(f"{self.adb} -s {deviceId} shell ps -ef | {self.filterType()} {pkgName}").readlines()
         try:
-            processList = []
-            for process in result:
-                processInfo = '{}:{}'.format(process.split()[1],process.split()[7])
-                processList.append(processInfo)
+            processList = ['{}:{}'.format(process.split()[1],process.split()[7]) for process in result]
+            processList.reverse()
+            if len(processList) == 0:
+               logger.warning('no pid found')     
         except Exception:
-            logger.error('no pid found')
+            traceback.print_exc()
         return processList
 
     def checkPkgname(self, pkgname):
@@ -115,9 +113,7 @@ class Devices:
     def getPkgnameByiOS(self, udid):
         """Get all package names of the corresponding iOS device"""
         pkgResult = self.execCmd(f'tidevice --udid {udid} applist').split('\n')
-        pkgNames = []
-        for i in range(len(pkgResult)):
-            pkgNames.append(pkgResult[i].split(' ')[0])
+        pkgNames = [pkgResult[i].split(' ')[0] for i in range(len(pkgResult))]
         return pkgNames
 
     def devicesCheck(self, platform, deviceid=None, pkgname=None):
@@ -155,14 +151,14 @@ class Devices:
                 raise Exception('{} is undefined'.format(platform)) 
         return result       
 
-class file:
+class File:
 
     def __init__(self, fileroot='.'):
         self.fileroot = fileroot
         self.report_dir = self.get_repordir()
     
     def export_excel(self, platform, scene):
-        
+        logger.info('Exporting excel ...')
         android_log_file_list = ['cpu_app','cpu_sys','mem_total','mem_native','mem_dalvik',
                                  'battery_level', 'battery_tem','upflow','downflow','fps']
         ios_log_file_list = ['cpu_app','cpu_sys', 'mem_total', 'battery_tem', 'battery_current', 
@@ -187,7 +183,53 @@ class file:
                         col += 1
                     row += 1
                     col = 0
-        wb.save(f'{scene}.xls')   
+        xls_path = os.path.join(self.report_dir, scene, f'{scene}.xls')            
+        wb.save(xls_path)
+        logger.info('Exporting excel success : {}'.format(xls_path))
+        return xls_path   
+    
+    def make_android_html(self, scene, summary : dict):
+        logger.info('Generating HTML ...')
+        STATICPATH = os.path.dirname(os.path.realpath(__file__))
+        file_loader = FileSystemLoader(os.path.join(STATICPATH, 'report_template'))
+        env = Environment(loader=file_loader)
+        template = env.get_template('android.html')
+        with open(os.path.join(self.report_dir, scene, 'report.html'),'w+') as fout:
+            html_content = template.render(cpu_app=summary['cpu_app'],cpu_sys=summary['cpu_sys'],
+                                           mem_total=summary['mem_total'],mem_native=summary['mem_native'],
+                                           mem_dalvik=summary['mem_dalvik'],fps=summary['fps'],
+                                           jank=summary['jank'],level=summary['level'],
+                                           tem=summary['tem'],net_send=summary['net_send'],
+                                           net_recv=summary['net_recv'],cpu_charts=summary['cpu_charts'],
+                                           mem_charts=summary['mem_charts'],net_charts=summary['net_charts'],
+                                           battery_charts=summary['battery_charts'],fps_charts=summary['fps_charts'],
+                                           jank_charts=summary['jank_charts'])
+            
+            fout.write(html_content)
+        html_path = os.path.join(self.report_dir, scene, 'report.html')    
+        logger.info('Generating HTML success : {}'.format(html_path))  
+        return html_path
+    
+    def make_ios_html(self, scene, summary : dict):
+        logger.info('Generating HTML ...')
+        STATICPATH = os.path.dirname(os.path.realpath(__file__))
+        file_loader = FileSystemLoader(os.path.join(STATICPATH, 'report_template'))
+        env = Environment(loader=file_loader)
+        template = env.get_template('ios.html')
+        with open(os.path.join(self.report_dir, scene, 'report.html'),'w+') as fout:
+            html_content = template.render(cpu_app=summary['cpu_app'],cpu_sys=summary['cpu_sys'],gpu=summary['gpu'],
+                                           mem_total=summary['mem_total'],fps=summary['fps'],
+                                           tem=summary['tem'],current=summary['current'],
+                                           voltage=summary['voltage'],power=summary['power'],
+                                           net_send=summary['net_send'],net_recv=summary['net_recv'],
+                                           cpu_charts=summary['cpu_charts'],mem_charts=summary['mem_charts'],
+                                           net_charts=summary['net_charts'],battery_charts=summary['battery_charts'],
+                                           fps_charts=summary['fps_charts'],gpu_charts=summary['gpu_charts'])            
+            fout.write(html_content)
+        html_path = os.path.join(self.report_dir, scene, 'report.html')    
+        logger.info('Generating HTML success : {}'.format(html_path))  
+        return html_path
+  
 
     def get_repordir(self):
         report_dir = os.path.join(os.getcwd(), 'report')
@@ -223,6 +265,7 @@ class file:
                 logger.error('record network data failed')
     
     def make_report(self, app, devices, platform='Android', model='normal'):
+        logger.info('Generating test results ...')
         current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         result_dict = {
             "app": app,
@@ -242,6 +285,7 @@ class file:
             filename = os.path.join(self.report_dir, f)
             if f.split(".")[-1] in ['log', 'json']:
                 shutil.move(filename, report_new_dir)
+        logger.info('Generating test results success: {}'.format(report_new_dir))        
 
     def instance_type(self, data):
         if isinstance(data, float):

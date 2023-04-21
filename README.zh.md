@@ -26,7 +26,7 @@ SoloX - Android/iOS性能数据的实时采集工具。
 
 ## 📦环境
 
-- 安装 Python 3.10 + [**Download**](https://www.python.org/downloads/)
+安装 Python 3.10 + [**Download**](https://www.python.org/downloads/)
 
 💡 Python 3.6 ~ 3.9 , 请安装solox版本低于2.5.4.
 
@@ -73,7 +73,8 @@ from solox.public.common import Devices
 d = Devices()
 pids = d.getPid(deviceId='ca6bd5a5', pkgName='com.bilibili.app.in')
 
-apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', surfaceview=True, noLog=True, pid=None)
+apm = APM(pkgName='com.bilibili.app.in',deviceId='ca6bd5a5',platform='Android', 
+          surfaceview=True, noLog=True, pid=None)
 # apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
 # surfaceview： False = gfxinfo (Developer - GPU rendering mode - adb shell dumpsys gfxinfo)
 # noLog : False (Save test data to log file)
@@ -116,8 +117,8 @@ target in ['cpu','memory','network','fps','battery','gpu']
 * **好用的监控设置:** 支持在监控过程中设置告警值、收集时长、访问其他PC机器的移动设备。
 
 * **比对模式:** 支持两台移动设备同时对比测试。
-🌱2-devices: 使用两台不同的设备测试同一个app。
-🌱2-apps: 使用两台配置相同的设备测试两个不同的app。
+  - 🌱2-devices: 使用两台不同的设备测试同一个app。
+  - 🌱2-apps: 使用两台配置相同的设备测试两个不同的app。
 
 ## 浏览器
 

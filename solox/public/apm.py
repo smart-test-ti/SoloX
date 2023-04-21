@@ -7,11 +7,11 @@ import tidevice
 import solox.public._iosPerf as iosP
 from solox.public.iosperf._perf import DataType, Performance
 from solox.public.adb import adb
-from solox.public.common import Devices, file, Method, Platform
+from solox.public.common import Devices, File, Method, Platform
 from solox.public.fps import FPSMonitor, TimeUtils
 
 d = Devices()
-f = file()
+f = File()
 m = Method()
 
 class Target:
@@ -106,7 +106,6 @@ class CPU(object):
         appCpuRate, systemCpuRate = self.getAndroidCpuRate(noLog) if self.platform == Platform.Android else self.getiOSCpuRate(noLog)
         return appCpuRate, systemCpuRate
 
-
 class MEM(object):
     def __init__(self, pkgName, deviceId, platform=Platform.Android, pid=None):
         self.pkgName = pkgName
@@ -147,7 +146,6 @@ class MEM(object):
                 f.add_log(os.path.join(f.report_dir,'mem_native.log'), apm_time, nativePass)
                 f.add_log(os.path.join(f.report_dir,'mem_dalvik.log'), apm_time, dalvikPass)
         return totalPass, nativePass, dalvikPass
-
 
 class Battery(object):
     def __init__(self, deviceId, platform=Platform.Android):
@@ -200,7 +198,6 @@ class Battery(object):
         """Reset phone charging status"""
         cmd = 'dumpsys battery reset'
         adb.shell(cmd=cmd, deviceId=self.deviceId)
-
 
 class Flow(object):
 
@@ -255,7 +252,6 @@ class Flow(object):
             f.add_log(os.path.join(f.report_dir,'upflow.log'), apm_time, sendNum)
             f.add_log(os.path.join(f.report_dir,'downflow.log'), apm_time, recNum)
         return sendNum, recNum
-
 
 class FPS(object):
 
@@ -339,7 +335,6 @@ class iosAPM(object):
             perf = iosP.Performance(self.deviceId, [perfTpe])
             perf_value = perf.start(self.pkgName, callback=self.callback)
         return perf_value
-
 
 class APM(object):
     """for python api"""

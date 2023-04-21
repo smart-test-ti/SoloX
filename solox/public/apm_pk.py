@@ -2,11 +2,11 @@ import datetime
 import re
 import time
 from solox.public.adb import adb
-from solox.public.common import Devices, file
+from solox.public.common import Devices, File
 from solox.public.fps import FPSMonitor, TimeUtils
 
 d = Devices()
-f = file()
+f = File()
 
 
 class CPU_PK:

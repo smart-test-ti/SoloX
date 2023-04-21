@@ -311,7 +311,7 @@ SoloX - APM
                     if(lan == 'cn' ){
                         SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 2000);
                     }else{
-                        SwalFire('error', 'Connet failed !', 'No devices found', 2000);
+                        SwalFire('error', 'Connection failed !', 'No devices found', 2000);
                     } 
                 }else{
                     for(var i=0;i<data['pkgnames'].length;i++){
@@ -336,7 +336,7 @@ SoloX - APM
             },
             beforeSend: function () {
                 $('.select-pid').empty();
-                $('.select-pid').append('<option></option>');
+                // $('.select-pid').append('<option></option>');
                 if(lan == 'cn' ){
                     SwalLoading('初始化','正在获取该APP上的所有进程, 请您稍等！');
                 }else{
@@ -349,9 +349,10 @@ SoloX - APM
                     if(lan == 'cn' ){
                         SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 2000);
                     }else{
-                        SwalFire('error', 'Connet failed !', 'No pid found', 2000);
+                        SwalFire('error', 'Connection failed !', 'No pid found', 2000);
                     } 
                 }else{
+                    // $('.select-pid').val(data['pids'][0]);
                     for(var i=0;i<data['pids'].length;i++){
                         $('.select-pid').append('<option>'+data['pids'][i]+'</option>')
                     }

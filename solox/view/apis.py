@@ -7,10 +7,10 @@ from flask import Blueprint
 import traceback
 from solox.public.apm import CPU, MEM, Flow, FPS, Battery, GPU, Target
 from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
-from solox.public.common import Devices, file, Method, Install, Platform
+from solox.public.common import Devices, File, Method, Install, Platform
 
 d = Devices()
-f = file()
+f = File()
 api = Blueprint("api", __name__)
 method = Method()
 
@@ -364,7 +364,7 @@ def makeReport():
             data = flow.setAndroidNet(wifi=wifi)
             f.record_net('end', data[0], data[1])
             app = process
-        file(fileroot=f'apm_{current_time}').make_report(app=app, devices=devices, platform=platform, model=model)
+        File(fileroot=f'apm_{current_time}').make_report(app=app, devices=devices, platform=platform, model=model)
         result = {'status': 1}
     except Exception as e:
         traceback.print_exc()
@@ -396,8 +396,88 @@ def exportReport():
     platform = method._request(request, 'platform')
     scene = method._request(request, 'scene')
     try:
-        file().export_excel(platform=platform, scene=scene)
-        result = {'status': 1, 'msg':'success'}
+        path = f.export_excel(platform=platform, scene=scene)
+        result = {'status': 1, 'msg':'success', 'path': path}
+    except Exception as e:
+        traceback.print_exc()
+        result = {'status': 0, 'msg':str(e)}    
+    return result
+
+@api.route('/apm/export/html/android', methods=['post', 'get'])
+def exportAndroidHtml():
+    scene = method._request(request, 'scene')
+    cpu_app = method._request(request, 'cpu_app')
+    cpu_sys = method._request(request, 'cpu_sys')
+    mem_total = method._request(request, 'mem_total')
+    mem_native = method._request(request, 'mem_native')
+    mem_dalvik = method._request(request, 'mem_dalvik')
+    fps = method._request(request, 'fps')
+    jank = method._request(request, 'jank')
+    level = method._request(request, 'level')
+    temperature = method._request(request, 'temperature')
+    net_send = method._request(request, 'net_send')
+    net_recv = method._request(request, 'net_recv')
+    try:
+        summary_dict = {}
+        summary_dict['cpu_app'] = cpu_app
+        summary_dict['cpu_sys'] = cpu_sys
+        summary_dict['mem_total'] = mem_total
+        summary_dict['mem_native'] = mem_native
+        summary_dict['mem_dalvik'] = mem_dalvik
+        summary_dict['fps'] = fps
+        summary_dict['jank'] = jank
+        summary_dict['level'] = level
+        summary_dict['tem'] = temperature
+        summary_dict['net_send'] = net_send
+        summary_dict['net_recv'] = net_recv
+        summary_dict['cpu_charts'] = f.getCpuLog(Platform.Android, scene)
+        summary_dict['mem_charts'] = f.getMemLog(Platform.Android, scene)
+        summary_dict['net_charts'] = f.getFlowLog(Platform.Android, scene)
+        summary_dict['battery_charts'] = f.getBatteryLog(Platform.Android, scene)
+        summary_dict['fps_charts'] = f.getFpsLog(Platform.Android, scene)['fps']
+        summary_dict['jank_charts'] = f.getFpsLog(Platform.Android, scene)['jank']
+        path = f.make_android_html(scene, summary_dict)
+        result = {'status': 1, 'msg':'success', 'path':path}
+    except Exception as e:
+        traceback.print_exc()
+        result = {'status': 0, 'msg':str(e)}    
+    return result
+
+@api.route('/apm/export/html/ios', methods=['post', 'get'])
+def exportiOSHtml():
+    scene = method._request(request, 'scene')
+    cpu_app = method._request(request, 'cpu_app')
+    cpu_sys = method._request(request, 'cpu_sys')
+    mem_total = method._request(request, 'mem_total')
+    gpu = method._request(request, 'gpu')
+    fps = method._request(request, 'fps')
+    temperature = method._request(request, 'temperature')
+    current = method._request(request, 'current')
+    voltage = method._request(request, 'voltage')
+    power = method._request(request, 'power')
+    net_send = method._request(request, 'net_send')
+    net_recv = method._request(request, 'net_recv')
+    try:
+        summary_dict = {}
+        summary_dict['cpu_app'] = cpu_app
+        summary_dict['cpu_sys'] = cpu_sys
+        summary_dict['mem_total'] = mem_total
+        summary_dict['gpu'] = gpu
+        summary_dict['fps'] = fps
+        summary_dict['tem'] = temperature
+        summary_dict['current'] = current
+        summary_dict['voltage'] = voltage
+        summary_dict['power'] = power
+        summary_dict['net_send'] = net_send
+        summary_dict['net_recv'] = net_recv
+        summary_dict['cpu_charts'] = f.getCpuLog(Platform.iOS, scene)
+        summary_dict['mem_charts'] = f.getMemLog(Platform.iOS, scene)
+        summary_dict['net_charts'] = f.getFlowLog(Platform.iOS, scene)
+        summary_dict['battery_charts'] = f.getBatteryLog(Platform.iOS, scene)
+        summary_dict['fps_charts'] = f.getFpsLog(Platform.iOS, scene)
+        summary_dict['gpu_charts'] = f.getGpuLog(Platform.iOS, scene)
+        path = f.make_ios_html(scene, summary_dict)
+        result = {'status': 1, 'msg':'success', 'path':path}
     except Exception as e:
         traceback.print_exc()
         result = {'status': 0, 'msg':str(e)}    
@@ -430,8 +510,8 @@ def getpkLogData():
     target1 = method._request(request, 'target1')
     target2 = method._request(request, 'target2')
     try:
-        first = file().readLog(scene=scene, filename=f'{target1}.log')[0]
-        second = file().readLog(scene=scene, filename=f'{target2}.log')[0]
+        first = f.readLog(scene=scene, filename=f'{target1}.log')[0]
+        second = f.readLog(scene=scene, filename=f'{target2}.log')[0]
         result = {'status': 1, 'first': first, 'second': second}
     except Exception as e:
         result = {'status': 0, 'msg': str(e)}
