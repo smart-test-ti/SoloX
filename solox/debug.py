@@ -44,6 +44,8 @@ def connect():
 def backgroundThread():
     global thread
     try:
+        os.system('adb kill-server')
+        os.system('adb start-server')
         current_time = time.strftime("%Y%m%d%H", time.localtime())
         logPath = os.path.join(os.getcwd(),'adblog',f'{current_time}.log')
         logcat = subprocess.Popen(f'adb logcat *:E > {logPath}', stdout=subprocess.PIPE,

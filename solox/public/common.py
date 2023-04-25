@@ -58,6 +58,7 @@ class Devices:
         """Get all Android devices"""
         DeviceIds = self.getDeviceIds()
         Devices = [f'{id}({self.getDevicesName(id)})' for id in DeviceIds]
+        logger.info('Connected devices: {}'.format(Devices))
         return Devices
 
     def getIdbyDevice(self, deviceinfo, platform):
@@ -108,6 +109,7 @@ class Devices:
             deviceName = deviceResult[i]['name']
             deviceUdid = deviceResult[i]['udid']
             deviceInfo.append(f'{deviceName}:{deviceUdid}')
+        logger.info('Connected devices: {}'.format(deviceInfo))    
         return deviceInfo
 
     def getPkgnameByiOS(self, udid):
@@ -121,12 +123,12 @@ class Devices:
         match(platform):
             case Platform.Android:
                 if len(self.getDeviceIds()) == 0:
-                    raise Exception('no devices')
-                if not self.getPid(deviceId=deviceid, pkgName=pkgname):
-                    raise Exception('no found app process')
+                    raise Exception('no devices found')
+                if len(self.getPid(deviceId=deviceid, pkgName=pkgname)) == 0:
+                    raise Exception('no process found')
             case Platform.iOS:
                 if len(self.getDeviceInfoByiOS()) == 0:
-                    raise Exception('no devices')
+                    raise Exception('no devices found')
             case _:
                 raise Exception('platform must be Android or iOS')        
             

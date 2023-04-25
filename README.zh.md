@@ -1,5 +1,5 @@
 <p align="center">
-  <a>English</a> | <a href="./README.zh.md">中文</a>
+  <a>中文</a> | <a href="./README.md">English</a>
 </p>
 
 <p align="center">
@@ -12,7 +12,7 @@
 </p>
 <p align="center">
 <a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/pypi/v/solox" alt="solox preview"></a>
-<a href="https://pypistats.org/packages/solox" target="__blank"><img src="https://img.shields.io/pypi/dm/solox"></a>
+<a href="https://pepy.tech/project/solox" target="__blank"><img src="https://static.pepy.tech/personalized-badge/solox?period=total&units=none&left_color=grey&right_color=brightgreen&left_text=Downloads"></a>
 <br>
 </p>
 
