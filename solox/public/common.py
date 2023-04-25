@@ -151,7 +151,19 @@ class Devices:
                 result['wifiadr'] = iosInfo['WiFiAddress']
             case _:
                 raise Exception('{} is undefined'.format(platform)) 
-        return result       
+        return result
+
+    def getCurrentActivity(self, deviceId):
+        result = adb.shell(cmd='dumpsys window | {} mCurrentFocus'.format(self.filterType()), deviceId=deviceId)
+        if result.__contains__('mCurrentFocus'):
+            activity = str(result).split(' ')[-1].replace('}','') 
+            return activity
+        else:
+            raise Exception('no activity found')
+
+    def getStartupTime(self, activity, deviceId):
+        result = adb.shell(cmd='am start -W {}'.format(activity), deviceId=deviceId)
+        return result          
 
 class File:
 
@@ -602,7 +614,7 @@ class Install:
             return False
 
     def installAPK(self, path):
-        result = adb.shell_noDevice(cmd = 'install -r {}'.format(path))
+        result = adb.shell_noDevice(cmd='install -r {}'.format(path))
         if result == 0:
             os.remove(path)
             return True, result

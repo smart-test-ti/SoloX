@@ -12,6 +12,7 @@ import sys
 import traceback
 from solox.view.apis import api
 from solox.view.pages import page
+from solox.public.adb import adb
 from logzero import logger
 from threading import Lock
 from flask_socketio import SocketIO, disconnect
@@ -42,8 +43,8 @@ def connect():
 def backgroundThread():
     global thread
     try:
-        os.system('adb kill-server')
-        os.system('adb start-server')
+        adb.shell(cmd='kill-server')
+        adb.shell(cmd='start-server')
         current_time = time.strftime("%Y%m%d%H", time.localtime())
         logPath = os.path.join(os.getcwd(),'adblog',f'{current_time}.log')
         logcat = subprocess.Popen(f'adb logcat *:E > {logPath}', stdout=subprocess.PIPE,

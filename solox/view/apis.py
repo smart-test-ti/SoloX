@@ -130,6 +130,34 @@ def getPackagePids():
         result = {'status': 0, 'msg': 'no pid found'} 
     return result        
 
+@api.route('/package/activity', methods=['post', 'get'])
+def getPackageActivity():
+    platform = method._request(request, 'platform')
+    device = method._request(request, 'device')
+    try:
+        deviceId = d.getIdbyDevice(device, platform)
+        activity = d.getCurrentActivity(deviceId)
+        result = {'status': 1, 'activity': activity} 
+    except Exception:
+        traceback.print_exc()
+        result = {'status': 0, 'msg': 'no activity found'} 
+    return result
+
+
+@api.route('/package/start/time', methods=['post', 'get'])
+def getStartupTime():
+    platform = method._request(request, 'platform')
+    device = method._request(request, 'device')
+    activity = method._request(request, 'activity')
+    try:
+        deviceId = d.getIdbyDevice(device, platform)
+        time = d.getStartupTime(activity, deviceId)
+        result = {'status': 1, 'time': time} 
+    except Exception:
+        traceback.print_exc()
+        result = {'status': 0, 'msg': 'no result found'} 
+    return result
+
 @api.route('/apm/cpu', methods=['post', 'get'])
 def getCpuRate():
     """get process cpu rate"""

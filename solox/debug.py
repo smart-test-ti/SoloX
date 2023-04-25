@@ -11,6 +11,7 @@ import socket
 import sys
 from view.apis import api
 from view.pages import page
+from solox.public.adb import adb
 from logzero import logger
 from threading import Lock
 from flask_socketio import SocketIO, disconnect
@@ -50,6 +51,7 @@ def backgroundThread():
         logPath = os.path.join(os.getcwd(),'adblog',f'{current_time}.log')
         logcat = subprocess.Popen(f'adb logcat *:E > {logPath}', stdout=subprocess.PIPE,
                                   shell=True)
+        
         with open(logPath, "r") as f:
             while thread:
                 socketio.sleep(1)
