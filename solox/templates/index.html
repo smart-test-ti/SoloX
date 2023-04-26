@@ -265,6 +265,7 @@ SoloX - APM
     </div>
     <div class="offcanvas-body">
         <div class="row">
+            {% if platform == 'Android' %}
             <div class="col-auto">
                 <div class="input-group" style="width:550px">
                     <span class="input-group-text">
@@ -276,11 +277,22 @@ SoloX - APM
                     </a>
                 </div>
             </div>
+            {% endif %}
             <div class="col-auto">
-                <a onclick="getStartupTime()" class="btn btn-default">
+                {% if platform == 'Android' %}
+                <a onclick="getStartupTimeByAndroid()" class="btn btn-default">
                     <svg t="1647757457022" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="21859" width="200" height="200"><path d="M511.4 512.1m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" fill="#006DFC" p-id="21860"></path><path d="M658.4 555.6L475.5 661.1c-33.4 19.3-75-4.8-75-43.3V406.6c0-38.5 41.7-62.6 75-43.3l182.9 105.6c33.3 19.3 33.3 67.4 0 86.7z" fill="#FFFFFF" p-id="21861"></path></svg>
                     {% if lan == 'cn' %} 开始 {% else %} Start {% endif %}
                 </a>
+                {% else %}
+                <a onclick="getStartupTimeByiOS()" class="btn btn-default">
+                    <svg t="1647757457022" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="21859" width="200" height="200"><path d="M511.4 512.1m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" fill="#006DFC" p-id="21860"></path><path d="M658.4 555.6L475.5 661.1c-33.4 19.3-75-4.8-75-43.3V406.6c0-38.5 41.7-62.6 75-43.3l182.9 105.6c33.3 19.3 33.3 67.4 0 86.7z" fill="#FFFFFF" p-id="21861"></path></svg>
+                    {% if lan == 'cn' %} 开始 {% else %} Start {% endif %}
+                </a>
+                <span class="form-help" style="margin-left: 10px;" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="
+                If no results are returned, please reinstall py-ios-device [pip install py-ios-device].
+                <p class='mb-0'><a href='https://github.com/YueChen-C/py-ios-device' target='_blank'>Documentation</a></p>">?</span> 
+                {% endif %}
             </div>
         </div>
         <pre class="mt-2" id="startup-time-content"></pre>
@@ -1482,12 +1494,12 @@ SoloX - APM
         }
     }
 
-    function getStartupTime(){
+    function getStartupTimeByAndroid(){
         let device = $('.select-device').val();
-        let activity = $('#activity').val();
+        let activity = $('#activity').val().trim();
         if(device && activity){
             $.ajax({
-                url: "/package/start/time",
+                url: "/package/start/time/android",
                 type: "GET",
                 async: true,
                 cache: false,
@@ -1513,6 +1525,37 @@ SoloX - APM
             });
         }else{
             SwalFire('error','Execution error','device or activity is empty',2000)
+        }
+    }
+
+    function getStartupTimeByiOS(){
+        let pkgname = $('.select-app').val();
+        if(pkgname){
+            $.ajax({
+                url: "/package/start/time/ios",
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    pkgname:pkgname
+                },
+                beforeSend: function () {
+                    SwalLoading('Loading','')
+                },
+                success: function (data) {
+                    if(data['status']==1){
+                        console.log(data['time'])
+                        $('#startup-time-content').text(data['time']);
+                    }else{
+                        SwalFire('error','Execution error',data['msg'],2000)
+                    }
+                },
+                complete: function(){
+                    swal.close();
+                }
+            });
+        }else{
+            SwalFire('error','Execution error','pkgname is empty',2000)
         }
     }
 

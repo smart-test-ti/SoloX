@@ -12,11 +12,11 @@
 </p>
 <p align="center">
 <a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/pypi/v/solox" alt="solox preview"></a>
-<a href="https://pepy.tech/project/solox" target="__blank"><img src="https://static.pepy.tech/personalized-badge/solox?period=total&units=none&left_color=grey&right_color=brightgreen&left_text=Downloads"></a>
+<a href="https://pepy.tech/project/solox" target="__blank"><img src="https://static.pepy.tech/personalized-badge/solox?period=total&units=international_system&left_color=grey&right_color=orange&left_text=downloads"></a>
 <br>
 </p>
 
-## 🔎Preview	
+## 🔎Preview
 
 SoloX - Real-time collection tool for Android/iOS performance data.
 
@@ -26,11 +26,12 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 
 ## 📦Requirements
 
-Install Python 3.10 + [**Download**](https://www.python.org/downloads/)
+- Install Python 3.10 + [**Download**](https://www.python.org/downloads/)
+- Install adb and configure environment variables (SoloX's  adb may not necessarily fit your computer) [**Download**](https://developer.android.com/studio/releases/platform-tools)
 
 💡 Python 3.6 ~ 3.9 , please download a version of solox lower than 2.5.4.
 
-💡 If Windows users need to test ios, install and start Itunes.
+💡 If Windows users need to test ios, install and start Itunes. [**Documentation**](https://github.com/alibaba/taobao-iphone-device)
 
 ## 📥Installation
 
@@ -111,7 +112,7 @@ target in ['cpu','memory','network','fps','battery','gpu']
 ## 🔥Features
 
 * **No ROOT/Jailbreak:** No need of Root for Android devices, Jailbreak for iOS devices. Efficiently solving the test and analysis challenges in Android & iOS performance.
-* **Data Integrality:** We provide the data about Screenshot, CPU, GPU, Memory, Battery, Network,FPS, Jank, etc., which you may easy to get.
+* **Data Integrality:** We provide the data about CPU, GPU, Memory, Battery, Network,FPS, Jank, etc., which you may easy to get.
 * **Beautiful Report:** A beautiful and detailed report analysis, where to store, visualize, edit, manage, and download all the test cases collected with SoloX no matter where you are or when is it.
 * **Useful Monitoring Settings:** Support setting alarm values, collecting duration, and accessing mobile devices on other PC machines during the monitoring process.
 * **PK Model:** Supports simultaneous comparative testing of two mobile devices.

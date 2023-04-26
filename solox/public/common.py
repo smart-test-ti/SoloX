@@ -161,8 +161,12 @@ class Devices:
         else:
             raise Exception('no activity found')
 
-    def getStartupTime(self, activity, deviceId):
+    def getStartupTimeByAndroid(self, activity, deviceId):
         result = adb.shell(cmd='am start -W {}'.format(activity), deviceId=deviceId)
+        return result
+
+    def getStartupTimeByiOS(self, pkgname):
+        result = self.execCmd('pyidevice instruments app_lifecycle -b {}'.format(pkgname))
         return result          
 
 class File:

@@ -45,6 +45,7 @@ def connect():
 def backgroundThread():
     global thread
     try:
+        logger.info('Initializing adb environment ...')
         os.system('adb kill-server')
         os.system('adb start-server')
         current_time = time.strftime("%Y%m%d%H", time.localtime())

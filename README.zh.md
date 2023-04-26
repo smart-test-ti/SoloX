@@ -12,7 +12,7 @@
 </p>
 <p align="center">
 <a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/pypi/v/solox" alt="solox preview"></a>
-<a href="https://pepy.tech/project/solox" target="__blank"><img src="https://static.pepy.tech/personalized-badge/solox?period=total&units=none&left_color=grey&right_color=brightgreen&left_text=Downloads"></a>
+<a href="https://pepy.tech/project/solox" target="__blank"><img src="https://static.pepy.tech/personalized-badge/solox?period=total&units=international_system&left_color=grey&right_color=orange&left_text=downloads"></a>
 <br>
 </p>
 
@@ -26,11 +26,13 @@ SoloX - Android/iOS性能数据的实时采集工具。
 
 ## 📦环境
 
-安装 Python 3.10 + [**Download**](https://www.python.org/downloads/)
+- 安装 Python 3.10 + [**Download**](https://www.python.org/downloads/)
+
+- 安装 adb和配置好环境变量 (SoloX自带的adb不一定适配你的电脑，建议自己安装) [**Download**](https://developer.android.com/studio/releases/platform-tools)
 
 💡 Python 3.6 ~ 3.9 , 请安装solox版本低于2.5.4.
 
-💡 如果Windows用户需要测试iOS，请先安装Itunes.
+💡 如果Windows用户需要测试iOS，请先安装Itunes. [**参考**](https://github.com/alibaba/taobao-iphone-device)
 
 ## 📥安装
 

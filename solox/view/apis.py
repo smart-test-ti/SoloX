@@ -144,14 +144,25 @@ def getPackageActivity():
     return result
 
 
-@api.route('/package/start/time', methods=['post', 'get'])
-def getStartupTime():
+@api.route('/package/start/time/android', methods=['post', 'get'])
+def getStartupTimeByAndroid():
     platform = method._request(request, 'platform')
     device = method._request(request, 'device')
     activity = method._request(request, 'activity')
     try:
         deviceId = d.getIdbyDevice(device, platform)
-        time = d.getStartupTime(activity, deviceId)
+        time = d.getStartupTimeByAndroid(activity, deviceId)
+        result = {'status': 1, 'time': time} 
+    except Exception:
+        traceback.print_exc()
+        result = {'status': 0, 'msg': 'no result found'} 
+    return result
+
+@api.route('/package/start/time/ios', methods=['post', 'get'])
+def getStartupTimeByiOS():
+    pkgname = method._request(request, 'pkgname')
+    try:
+        time = d.getStartupTimeByiOS(pkgname)
         result = {'status': 1, 'time': time} 
     except Exception:
         traceback.print_exc()
