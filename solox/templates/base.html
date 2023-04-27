@@ -120,12 +120,6 @@
                                 {% if lan == 'cn' %} 源码 {% else %} Source code {% endif %}
                             </a>
                         </li>
-                        <li class="list-inline-item">
-                            <a href="https://github.com/sponsors/codecalm" target="_blank" class="link-secondary" rel="noopener" data-bs-toggle="modal" data-bs-target="#modal-coffee">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink icon-filled icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                              {% if lan == 'cn' %} 喝杯咖啡 {% else %} Sponsor {% endif %}
-                            </a>
-                        </li>
                     </ul>
                 </div>
                 <div class="col-12 col-lg-auto mt-3 mt-lg-0">
@@ -259,19 +253,6 @@
         <a class="btn btn-primary mt-3" onclick="saveWorningValue()">
             {% if lan == 'cn' %} 保存 {% else %} Save {% endif %}
         </a>
-    </div>
-</div>
-<div class="modal modal-blur fade" id="modal-coffee" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{% if lan == 'cn' %} 买杯咖啡 {% else %} Buy me coffee {% endif %}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <img  alt="" src="./static/image/coffee.png">
-            </div>
-        </div>
     </div>
 </div>
 

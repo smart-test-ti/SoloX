@@ -67,16 +67,6 @@ def disconnect():
     thread = False
     disconnect()
 
-
-def checkPyVer():
-    versions = platform.python_version().split('.')
-    if int(versions[0]) < 3:
-        logger.error('python version must be 3.10+ ,your python version is {}'.format(platform.python_version()))
-        sys.exit()
-    elif int(versions[1]) < 10:
-        logger.error('python version must be 3.10+ ,your python version is {}'.format(platform.python_version()))
-        sys.exit()
-
 def hostIP():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

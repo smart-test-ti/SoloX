@@ -248,6 +248,11 @@ class File:
         logger.info('Generating HTML success : {}'.format(html_path))  
         return html_path
   
+    def filter_secen(self, scene):
+        dirs = os.listdir(self.report_dir)
+        dir_list = list(reversed(sorted(dirs, key=lambda x: os.path.getmtime(os.path.join(self.report_dir, x)))))
+        dir_list.remove(scene)
+        return dir_list
 
     def get_repordir(self):
         report_dir = os.path.join(os.getcwd(), 'report')

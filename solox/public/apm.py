@@ -54,7 +54,7 @@ class CPU(object):
 
     def getCpuCores(self):
         """get Android cpu cores"""
-        cmd = f'cat /sys/devices/system/cpu/online'
+        cmd = 'cat /sys/devices/system/cpu/online'
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         try:
             nums = int(result.split('-')[1]) + 1
