@@ -542,6 +542,35 @@ def getLogData():
         result = {'status': 0, 'msg': str(e)}
     return result
 
+@api.route('/apm/log/compare', methods=['post', 'get'])
+def getLogCompareData():
+    """Get apm detailed data"""
+    scene1 = method._request(request, 'scene1')
+    scene2 = method._request(request, 'scene2')
+    target = method._request(request, 'target')
+    platform = method._request(request, 'platform')
+    try:
+        match(target):
+            case Target.CPU:
+                result = f.getCpuLogCompare(platform, scene1, scene2)
+            case Target.Memory:
+                result = f.getMemLogCompare(platform, scene1, scene2)
+            case Target.Battery:
+                result = f.getBatteryLogCompare(platform, scene1, scene2)
+            case Target.FPS:
+                result = f.getFpsLogCompare(platform, scene1, scene2)
+            case Target.GPU:
+                result = f.getGpuLogCompare(platform, scene1, scene2)
+            case 'net_send':
+                result = f.getFlowSendLogCompare(platform, scene1, scene2)
+            case 'net_recv':
+                result = f.getFlowRecvLogCompare(platform, scene1, scene2)                     
+            case _:
+                result = {'status': 0, 'msg': 'no target found'}        
+    except Exception as e:
+        result = {'status': 0, 'msg': str(e)}
+    return result
+
 @api.route('/apm/log/pk', methods=['post', 'get'])
 def getpkLogData():
     """Get apm detailed data"""

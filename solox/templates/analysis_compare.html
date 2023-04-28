@@ -55,13 +55,13 @@
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene1 }}</td>
-                        <td class="text-center">2 <span class="float-right font-weight-medium text-green">-4.3%</span></td>
-                        <td class="text-center">3</td> 
+                        <td class="text-center">{{ apm_data1.cpuAppRate }}</td>
+                        <td class="text-center">{{ apm_data1.cpuSystemRate }}</td> 
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene2 }}</td>
-                        <td class="text-center">2</td>
-                        <td class="text-center">3</td> 
+                        <td class="text-center">{{ apm_data2.cpuAppRate }}</td>
+                        <td class="text-center">{{ apm_data2.cpuSystemRate }}</td> 
                     </tr>
                     <tr>
                     <tr class="bg-light"><th colspan="6" class="subheader">Memory</th></tr>
@@ -75,18 +75,18 @@
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene1 }}</td>
-                        <td class="text-center">1 <span class="float-right font-weight-medium text-red">+6.8MB</span></td>
+                        <td class="text-center">{{ apm_data1.totalPassAvg }}</td>
                         {% if platform == 'Android' %}
-                        <td class="text-center">2</td>
-                        <td class="text-center">3</td>
+                        <td class="text-center">{{ apm_data1.nativePassAvg }}</td>
+                        <td class="text-center">{{ apm_data1.dalvikPassAvg }}</td>
                         {% endif %} 
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene2 }}</td>
-                        <td class="text-center">1</td>
+                        <td class="text-center">{{ apm_data2.totalPassAvg }}</td>
                         {% if platform == 'Android' %}
-                        <td class="text-center">2</td>
-                        <td class="text-center">3</td>
+                        <td class="text-center">{{ apm_data2.nativePassAvg }}</td>
+                        <td class="text-center">{{ apm_data2.dalvikPassAvg }}</td>
                         {% endif %}   
                     </tr>
                     <tr>
@@ -98,13 +98,13 @@
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene1 }}</td>
-                        <td class="text-center">2</td>
-                        <td class="text-center">3</td> 
+                        <td class="text-center">{{ apm_data1.flow_recv }}</td>
+                        <td class="text-center">{{ apm_data1.flow_send }}</td> 
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene2 }}</td>
-                        <td class="text-center">2</td>
-                        <td class="text-center">3</td> 
+                        <td class="text-center">{{ apm_data2.flow_recv }}</td>
+                        <td class="text-center">{{ apm_data2.flow_send }}</td> 
                     </tr>
                     <tr>
                     <tr class="bg-light"><th colspan="6" class="subheader">FPS</th></tr>
@@ -117,16 +117,16 @@
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene1 }}</td>
-                        <td class="text-center">2</td>
+                        <td class="text-center">{{ apm_data1.fps }}</td>
                         {% if platform == 'Android' %}
-                        <td class="text-center">3</td>
+                        <td class="text-center">{{ apm_data1.jank }}</td>
                         {% endif %} 
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene2 }}</td>
-                        <td class="text-center">2</td>
+                        <td class="text-center">{{ apm_data2.fps }}</td>
                         {% if platform == 'Android' %}
-                        <td class="text-center">3</td>
+                        <td class="text-center">{{ apm_data2.jank }}</td>
                         {% endif %} 
                     </tr>
                     <tr class="bg-light"><th colspan="6" class="subheader">Battery</th></tr>
@@ -147,25 +147,25 @@
                     <tr>
                         <td class="text-center">{{ scene1 }}</td>
                         {% if platform == 'Android' %}
-                        <td class="text-center">2</td>
-                        <td class="text-center">3</td>
+                        <td class="text-center">{{ apm_data1.batteryLevel }}</td>
+                        <td class="text-center">{{ apm_data1.batteryTeml }}</td>
                         {% else %}
-                        <td class="text-center">1</td>
-                        <td class="text-center">2</td> 
-                        <td class="text-center">3</td>
-                        <td class="text-center">4</td>
+                        <td class="text-center">{{ apm_data1.batteryTeml }}</td>
+                        <td class="text-center">{{ apm_data1.batteryCurrent }}</td> 
+                        <td class="text-center">{{ apm_data1.batteryVoltage }}</td>
+                        <td class="text-center">{{ apm_data1.batteryPower }}</td>
                         {% endif %}
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene2 }}</td>
                         {% if platform == 'Android' %}
-                        <td class="text-center">2</td>
-                        <td class="text-center">3</td>
+                        <td class="text-center">{{ apm_data2.batteryLevel }}</td>
+                        <td class="text-center">{{ apm_data2.batteryTeml }}</td>
                         {% else %}
-                        <td class="text-center">1</td>
-                        <td class="text-center">2</td> 
-                        <td class="text-center">3</td>
-                        <td class="text-center">4</td>
+                        <td class="text-center">{{ apm_data2.batteryTeml }}</td>
+                        <td class="text-center">{{ apm_data2.batteryCurrent }}</td> 
+                        <td class="text-center">{{ apm_data2.batteryVoltage }}</td>
+                        <td class="text-center">{{ apm_data2.batteryPower }}</td>
                         {% endif %} 
                     </tr>
                     {% if platform == 'iOS' %}
@@ -176,11 +176,11 @@
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene1 }}</td>
-                        <td class="text-center">2</td>
+                        <td class="text-center">{{ apm_data1.gpu }}</td>
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene2 }}</td>
-                        <td class="text-center">2</td>
+                        <td class="text-center">{{ apm_data2.gpu }}</td>
                     </tr>
                     {% endif %}
                 </tbody>
@@ -238,24 +238,6 @@
             <div id="chart-fps"></div>
         </div>
     </div>
-    {% if platform == 'Android' %}
-    <div class="card jank-card mt-3">
-        <div class="card-header">
-            <div class='card-title'>JANK</div>
-            <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="jank_loading">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                </a>
-                <a class="btn-action cursor-pointer" id="jank_png" onclick="screenshot('jank-card','jank.png')">
-                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
-                </a>
-            </div>
-        </div>
-        <div class="card-body">
-            <div id="chart-jank"></div>
-        </div>
-    </div>
-    {% endif %}
     <div class="card battery-card mt-3">
         <div class="card-header">
             <div class='card-title'>Battery: Level</div>
@@ -272,20 +254,20 @@
             <div id="chart-battery"></div>
         </div>
     </div>
-    <div class="card networkdata-card mt-3">
+    <div class="card networkdata-card-recv mt-3">
         <div class="card-header">
             <div class='card-title'>Network Data（KB）: Recv</div>
             <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="networkdata_loading">
+                <a class="btn-action cursor-pointer" id="networkdata_recv_loading">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
                 </a>
-                <a class="btn-action cursor-pointer" id="networkdata_png" onclick="screenshot('networkdata-card','networkdata.png')">
+                <a class="btn-action cursor-pointer" id="networkdata_recv_png" onclick="screenshot('networkdata-card-recv','networkdata_recv.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
                 </a>
             </div>
         </div>
         <div class="card-body">
-            <div id="chart-networkdata"></div>
+            <div id="chart-networkdata-recv"></div>
         </div>
     </div>
     <div class="card networkdata-card-send mt-3">
@@ -332,14 +314,12 @@
         $('#cpu_loading').click();
         $('#mem_loading').click();
         $('#fps_loading').click();
-        if(platform == 'Android'){
-            $('#jank_loading').click();
-        }
+        $('#battery_loading').click();
+        $('#networkdata_send_loading').click();
+        $('#networkdata_recv_loading').click();
         if(platform == 'iOS'){
             $('#gpu_loading').click();
         }
-        $('#battery_loading').click();
-        $('#networkdata_loading').click();
     });
 
     function saveHtml(platform, scene){
@@ -387,16 +367,17 @@
         return options
     }
 
-    var cpu_chart = new ApexCharts(document.querySelector("#chart-cpu"), options('line'));
+    var cpu_chart = new ApexCharts(document.querySelector("#chart-cpu"), options('bar'));
     cpu_chart.render();
     $('#cpu_loading').click(function () {
         $.ajax({
-            url: '/apm/log',
+            url: '/apm/log/compare',
             type: "GET",
             async: true,
             cache: false,
             data:{
-                scene:'{{ scene }}',
+                scene1:'{{ scene1 }}',
+                scene2:'{{ scene2 }}',
                 target:'cpu',
                 platform:platform
             },
@@ -408,26 +389,27 @@
             },
             success: function (data) {
                 cpu_chart.updateSeries([{
-                    name: 'app',
-                    data: data['cpuAppData']
+                    name: '{{ scene1 }}',
+                    data: data['scene1']
                 },{
-                    name: 'sys',
-                    data: data['cpuSysData']
+                    name: '{{ scene2 }}',
+                    data: data['scene2']
                 }])
             }
         });
     });
     
-    var battery_chart = new ApexCharts(document.querySelector("#chart-battery"), options('line'));
+    var battery_chart = new ApexCharts(document.querySelector("#chart-battery"), options('bar'));
         battery_chart.render();
         $('#battery_loading').click(function () {
             $.ajax({
-                url: '/apm/log',
+                url: '/apm/log/compare',
                 type: "GET",
                 async: true,
                 cache: false,
                 data:{
-                    scene:'{{ scene }}',
+                    scene1:'{{ scene1 }}',
+                    scene2:'{{ scene2 }}',
                     target:'battery',
                     platform:platform
                 },
@@ -438,74 +420,28 @@
                     swal.close();
                 },
                 success: function (data) {
-                    if(platform == 'Android'){
-                        battery_chart.updateSeries([{
-                            name: 'level',
-                            data: data['batteryLevel']
-                        },{
-                            name: 'temperature',
-                            data: data['batteryTem']
-                        }])
-                    }else {
-                        battery_chart.updateSeries([{
-                            name: 'temperature',
-                            data: data['batteryTem']
-                        },{
-                            name: 'Current',
-                            data: data['batteryCurrent']
-                        },{
-                            name: 'Voltage',
-                            data: data['batteryVoltage']
-                        },{
-                            name: 'Power',
-                            data: data['batteryPower']
-                        }])
-                    }
-                }
-            });
-        });
-
-    if(platform == 'Android'){
-        var jank_chart = new ApexCharts(document.querySelector("#chart-jank"), options('line'));
-        jank_chart.render();
-        $('#jank_loading').click(function () {
-            $.ajax({
-                url: '/apm/log',
-                type: "GET",
-                async: true,
-                cache: false,
-                data:{
-                    scene:'{{ scene }}',
-                    target:'fps',
-                    platform:platform
-                },
-                beforeSend: function () {
-                    SwalLoading('Loading','')
-                },
-                complete: function () {
-                    swal.close();
-                },
-                success: function (data) {
-                    jank_chart.updateSeries([{
-                        name: 'jank',
-                        data: data['jank']
+                    battery_chart.updateSeries([{
+                        name: '{{ scene1 }}',
+                        data: data['scene1']
+                    },{
+                        name: '{{ scene2 }}',
+                        data: data['scene2']
                     }])
                 }
             });
         });
-    }
-
     if(platform == 'iOS'){
-        var gpu_chart = new ApexCharts(document.querySelector("#chart-gpu"), options('line'));
+        var gpu_chart = new ApexCharts(document.querySelector("#chart-gpu"), options('bar'));
         gpu_chart.render();
         $('#gpu_loading').click(function () {
             $.ajax({
-                url: '/apm/log',
+                url: '/apm/log/compare',
                 type: "GET",
                 async: true,
                 cache: false,
                 data:{
-                    scene:'{{ scene }}',
+                    scene1:'{{ scene1 }}',
+                    scene2:'{{ scene2 }}',
                     target:'gpu',
                     platform:platform
                 },
@@ -517,24 +453,28 @@
                 },
                 success: function (data) {
                     gpu_chart.updateSeries([{
-                        name: 'gpu',
-                        data: data['gpu']
+                        name: '{{ scene1 }}',
+                        data: data['scene1']
+                    },{
+                        name: '{{ scene2 }}',
+                        data: data['scene2']
                     }])
                 }
             });
         });
     }
 
-    var fps_chart = new ApexCharts(document.querySelector("#chart-fps"), options('line'));
+    var fps_chart = new ApexCharts(document.querySelector("#chart-fps"), options('bar'));
     fps_chart.render();
     $('#fps_loading').click(function () {
         $.ajax({
-            url: '/apm/log',
+            url: '/apm/log/compare',
             type: "GET",
             async: true,
             cache: false,
             data:{
-                scene:'{{ scene }}',
+                scene1:'{{ scene1 }}',
+                scene2:'{{ scene2 }}',
                 target:'fps',
                 platform:platform
             },
@@ -546,24 +486,28 @@
             },
             success: function (data) {
                 fps_chart.updateSeries([{
-                    name: 'fps',
-                    data: data['fps']
+                    name: '{{ scene1 }}',
+                    data: data['scene1']
+                },{
+                    name: '{{ scene2 }}',
+                    data: data['scene2']
                 }])
             }
         });
     });
 
-    var mem_chart = new ApexCharts(document.querySelector("#chart-mem"), options('line'));
+    var mem_chart = new ApexCharts(document.querySelector("#chart-mem"), options('bar'));
     mem_chart.render();
     $('#mem_loading').click(function () {
         $.ajax({
-            url: '/apm/log',
+            url: '/apm/log/compare',
             type: "GET",
             async: true,
             cache: false,
             data:{
-                scene:'{{ scene }}',
-                target:'mem',
+                scene1:'{{ scene1 }}',
+                scene2:'{{ scene2 }}',
+                target:'memory',
                 platform:platform
             },
             beforeSend: function () {
@@ -573,38 +517,29 @@
                 swal.close();
             },
             success: function (data) {
-                if(platform == 'Android'){
-                    mem_chart.updateSeries([{
-                        name: 'total',
-                        data: data['memTotalData']
-                    },{
-                        name: 'native',
-                        data: data['memNativeData']
-                    },{
-                        name: 'dalvik',
-                        data: data['memDalvikData']
-                    }])
-                }else{
-                    mem_chart.updateSeries([{
-                        name: 'total',
-                        data: data['memTotalData']
-                    }])
-                }
+                mem_chart.updateSeries([{
+                    name: '{{ scene1 }}',
+                    data: data['scene1']
+                },{
+                    name: '{{ scene2 }}',
+                    data: data['scene2']
+                }])
             }
         });
     });
 
-    var network_chart = new ApexCharts(document.querySelector("#chart-networkdata"), options('line',false));
-    network_chart.render();
-    $('#networkdata_loading').click(function () {
+    var network_recv_chart = new ApexCharts(document.querySelector("#chart-networkdata-recv"), options('bar',false));
+    network_recv_chart.render();
+    $('#networkdata_recv_loading').click(function () {
         $.ajax({
-            url: '/apm/log',
+            url: '/apm/log/compare',
             type: "GET",
             async: true,
             cache: false,
             data:{
-                scene:'{{ scene }}',
-                target:'flow',
+                scene1:'{{ scene1 }}',
+                scene2:'{{ scene2 }}',
+                target:'net_recv',
                 platform:platform
             },
             beforeSend: function () {
@@ -614,12 +549,45 @@
                 swal.close();
             },
             success: function (data) {
-                network_chart.updateSeries([{
-                    name: 'send',
-                    data: data['upFlow']
+                network_recv_chart.updateSeries([{
+                    name: '{{ scene1 }}',
+                    data: data['scene1']
                 },{
-                    name: 'recv',
-                    data: data['downFlow']
+                    name: '{{ scene2 }}',
+                    data: data['scene2']
+                }])
+            }
+        });
+    });
+
+    var network_send_chart = new ApexCharts(document.querySelector("#chart-networkdata-send"), options('bar',false));
+    network_send_chart.render();
+    $('#networkdata_send_loading').click(function () {
+        $.ajax({
+            url: '/apm/log/compare',
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                scene1:'{{ scene1 }}',
+                scene2:'{{ scene2 }}',
+                target:'net_send',
+                platform:platform
+            },
+            beforeSend: function () {
+                SwalLoading('Loading','')
+            },
+            complete: function () {
+                swal.close();
+            },
+            success: function (data) {
+                console.log(data)
+                network_send_chart.updateSeries([{
+                    name: '{{ scene1 }}',
+                    data: data['scene1']
+                },{
+                    name: '{{ scene2 }}',
+                    data: data['scene2']
                 }])
             }
         });

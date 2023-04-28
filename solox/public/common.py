@@ -348,10 +348,24 @@ class File:
         result = {'status': 1, 'cpuAppData': targetDic['cpuAppData'], 'cpuSysData': targetDic['cpuSysData']}
         return result
     
+    def getCpuLogCompare(self, platform, scene1, scene2):
+        targetDic = {}
+        targetDic['scene1'] = self.readLog(scene=scene1, filename='cpu_app.log')[0]
+        targetDic['scene2'] = self.readLog(scene=scene2, filename='cpu_app.log')[0]
+        result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
+        return result
+    
     def getGpuLog(self, platform, scene):
         targetDic = {}
         targetDic['gpu'] = self.readLog(scene=scene, filename='gpu.log')[0]
         result = {'status': 1, 'gpu': targetDic['gpu']}
+        return result
+    
+    def getGpuLogCompare(self, platform, scene1, scene2):
+        targetDic = {}
+        targetDic['scene1'] = self.readLog(scene=scene1, filename='gpu.log')[0]
+        targetDic['scene2'] = self.readLog(scene=scene2, filename='gpu.log')[0]
+        result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
     
     def getMemLog(self, platform, scene):
@@ -366,6 +380,13 @@ class File:
                       'memDalvikData': targetDic['memDalvikData']}
         else:
             result = {'status': 1, 'memTotalData': targetDic['memTotalData']}
+        return result
+    
+    def getMemLogCompare(self, platform, scene1, scene2):
+        targetDic = {}
+        targetDic['scene1'] = self.readLog(scene=scene1, filename='mem_total.log')[0]
+        targetDic['scene2'] = self.readLog(scene=scene2, filename='mem_total.log')[0]
+        result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
     
     def getBatteryLog(self, platform, scene):
@@ -388,11 +409,37 @@ class File:
                       'batteryPower': targetDic['batteryPower']}    
         return result
     
+    def getBatteryLogCompare(self, platform, scene1, scene2):
+        targetDic = {}
+        if platform == Platform.Android:
+            targetDic['scene1'] = self.readLog(scene=scene1, filename='battery_level.log')[0]
+            targetDic['scene2'] = self.readLog(scene=scene2, filename='battery_level.log')[0]
+            result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
+        else:
+            targetDic['scene1'] = self.readLog(scene=scene1, filename='batteryPower.log')[0]
+            targetDic['scene2'] = self.readLog(scene=scene2, filename='batteryPower.log')[0]
+            result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}    
+        return result
+    
     def getFlowLog(self, platform, scene):
         targetDic = {}
         targetDic['upFlow'] = self.readLog(scene=scene, filename='upflow.log')[0]
         targetDic['downFlow'] = self.readLog(scene=scene, filename='downflow.log')[0]
         result = {'status': 1, 'upFlow': targetDic['upFlow'], 'downFlow': targetDic['downFlow']}
+        return result
+    
+    def getFlowSendLogCompare(self, platform, scene1, scene2):
+        targetDic = {}
+        targetDic['scene1'] = self.readLog(scene=scene1, filename='upflow.log')[0]
+        targetDic['scene2'] = self.readLog(scene=scene2, filename='upflow.log')[0]
+        result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
+        return result
+    
+    def getFlowRecvLogCompare(self, platform, scene1, scene2):
+        targetDic = {}
+        targetDic['scene1'] = self.readLog(scene=scene1, filename='downflow.log')[0]
+        targetDic['scene2'] = self.readLog(scene=scene2, filename='downflow.log')[0]
+        result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
     
     def getFpsLog(self, platform, scene):
@@ -403,6 +450,13 @@ class File:
             result = {'status': 1, 'fps': targetDic['fps'], 'jank': targetDic['jank']}
         else:
             result = {'status': 1, 'fps': targetDic['fps']}     
+        return result
+
+    def getFpsLogCompare(self, platform, scene1, scene2):
+        targetDic = {}
+        targetDic['scene1'] = self.readLog(scene=scene1, filename='fps.log')[0]
+        targetDic['scene2'] = self.readLog(scene=scene2, filename='fps.log')[0]
+        result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
         
     def approximateSize(self, size, a_kilobyte_is_1024_bytes=True):

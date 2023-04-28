@@ -11,7 +11,7 @@ import socket
 import sys
 from view.apis import api
 from view.pages import page
-from solox.public.adb import adb
+from public.adb import adb
 from logzero import logger
 from threading import Lock
 from flask_socketio import SocketIO, disconnect
