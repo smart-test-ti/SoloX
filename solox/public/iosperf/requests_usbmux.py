@@ -7,8 +7,8 @@ from urllib.parse import splitport, unquote, urlparse
 import requests
 import urllib3
 from requests.adapters import HTTPAdapter
-from ._usbmux import Usbmux
-from ._device import Device
+from solox.public.iosperf._usbmux import Usbmux
+from solox.public.iosperf._device import Device
 
 try:
     import http.client as httplib

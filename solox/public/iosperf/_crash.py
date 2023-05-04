@@ -1,10 +1,10 @@
 import pathlib
 
 from genericpath import isdir
-from ._sync import Sync
+from solox.public.iosperf._sync import Sync
 import logging
-from ._proto import LOG
-from ._safe_socket import PlistSocketProxy
+from solox.public.iosperf._proto import LOG
+from solox.public.iosperf._safe_socket import PlistSocketProxy
 
 
 logger = logging.getLogger(LOG.main)

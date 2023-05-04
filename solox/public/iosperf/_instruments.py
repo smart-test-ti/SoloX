@@ -26,11 +26,11 @@ from typing import Any, Iterator, List, Optional, Tuple, Union
 
 from retry import retry
 
-from . import bplist
-from . import struct2 as ct
-from ._proto import LOG, InstrumentsService
-from ._safe_socket import PlistSocketProxy
-from .exceptions import MuxError, ServiceError
+from solox.public.iosperf import bplist
+from solox.public.iosperf import struct2 as ct
+from solox.public.iosperf._proto import LOG, InstrumentsService
+from solox.public.iosperf._safe_socket import PlistSocketProxy
+from solox.public.iosperf.exceptions import MuxError, ServiceError
 
 logger = logging.getLogger(LOG.xctest)
 

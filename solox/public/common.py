@@ -174,7 +174,16 @@ class File:
     def __init__(self, fileroot='.'):
         self.fileroot = fileroot
         self.report_dir = self.get_repordir()
-    
+
+    def clear_file(self):
+        logger.info('Clean up useless files ...')
+        if os.path.exists(self.report_dir):
+            for f in os.listdir(self.report_dir):
+                filename = os.path.join(self.report_dir, f)
+                if f.split(".")[-1] in ['log', 'json']:
+                    os.remove(filename)
+        logger.info('Clean up useless files success')            
+
     def export_excel(self, platform, scene):
         logger.info('Exporting excel ...')
         android_log_file_list = ['cpu_app','cpu_sys','mem_total','mem_native','mem_dalvik',
@@ -289,7 +298,7 @@ class File:
     
     def make_report(self, app, devices, platform='Android', model='normal'):
         logger.info('Generating test results ...')
-        current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        current_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
         result_dict = {
             "app": app,
             "icon": "",
@@ -300,15 +309,16 @@ class File:
         }
         content = json.dumps(result_dict)
         self.create_file(filename='result.json', content=content)
-        report_new_dir = os.path.join(self.report_dir, self.fileroot)
+        report_new_dir = os.path.join(self.report_dir, f'apm_{current_time}')
         if not os.path.exists(report_new_dir):
             os.mkdir(report_new_dir)
 
         for f in os.listdir(self.report_dir):
             filename = os.path.join(self.report_dir, f)
             if f.split(".")[-1] in ['log', 'json']:
-                shutil.move(filename, report_new_dir)
-        logger.info('Generating test results success: {}'.format(report_new_dir))        
+                shutil.move(filename, report_new_dir)        
+        logger.info('Generating test results success: {}'.format(report_new_dir))
+        return f'apm_{current_time}'        
 
     def instance_type(self, data):
         if isinstance(data, float):

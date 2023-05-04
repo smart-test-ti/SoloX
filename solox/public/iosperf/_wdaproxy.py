@@ -16,10 +16,10 @@ import traceback
 import logzero
 import requests
 
-from . import requests_usbmux
-from ._device import Device
-from ._proto import UsbmuxReplyCode
-from .exceptions import MuxReplyError
+from solox.public.iosperf import requests_usbmux
+from solox.public.iosperf._device import Device
+from solox.public.iosperf._proto import UsbmuxReplyCode
+from solox.public.iosperf.exceptions import MuxReplyError
 
 
 class WDAService:

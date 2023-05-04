@@ -2,8 +2,10 @@ import datetime
 import re
 import time
 import os
+import traceback
 from logzero import logger
 import tidevice
+import multiprocessing
 import solox.public._iosPerf as iosP
 from solox.public.iosperf._perf import DataType, Performance
 from solox.public.adb import adb
@@ -339,58 +341,159 @@ class iosAPM(object):
 class APM(object):
     """for python api"""
 
-    def __init__(self, pkgName, deviceId=None, platform=Platform.Android, surfaceview=True, noLog=True, pid=None):
+    def __init__(self, pkgName, platform=Platform.Android, deviceId=None,
+                 surfaceview=True, noLog=True, pid=None, duration=0):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
         self.surfaceview = surfaceview
         self.noLog = noLog
         self.pid = pid
+        self.duration = duration
+        self.end_time = time.time() + self.duration
         d.devicesCheck(platform=self.platform, deviceid=self.deviceId, pkgname=self.pkgName)
 
     def collectCpu(self):
         _cpu = CPU(self.pkgName, self.deviceId, self.platform, pid=self.pid)
-        appCpuRate, systemCpuRate = _cpu.getCpuRate(noLog=self.noLog)
-        result = {'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
-        logger.info(f'cpu: {result}')
+        result = {}
+        while True:
+            appCpuRate, systemCpuRate = _cpu.getCpuRate(noLog=self.noLog)
+            result = {'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
+            logger.info(f'cpu: {result}')
+            if time.time() > self.end_time:
+                break
         return result
 
     def collectMemory(self):
         _memory = MEM(self.pkgName, self.deviceId, self.platform, pid=self.pid)
-        totalPass, nativePass, dalvikPass = _memory.getProcessMem(noLog=self.noLog)
-        result = {'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
-        logger.info(f'memory: {result}')
+        result = {}
+        while True:
+            totalPass, nativePass, dalvikPass = _memory.getProcessMem(noLog=self.noLog)
+            result = {'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
+            logger.info(f'memory: {result}')
+            if time.time() > self.end_time:
+                break
         return result
 
     def collectBattery(self):
         _battery = Battery(self.deviceId, self.platform)
-        final = _battery.getBattery(noLog=self.noLog)
-        if self.platform == Platform.Android:
-            result = {'level': final[0], 'temperature': final[1]}
-        else:
-            result = {'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}
-        logger.info(f'battery: {result}')
+        result = {}
+        while True:
+            final = _battery.getBattery(noLog=self.noLog)
+            if self.platform == Platform.Android:
+                result = {'level': final[0], 'temperature': final[1]}
+            else:
+                result = {'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}
+            logger.info(f'battery: {result}')
+            if time.time() > self.end_time:
+                break
         return result
 
     def collectFlow(self, wifi=True):
         _flow = Flow(self.pkgName, self.deviceId, self.platform, pid=self.pid)
-        upFlow, downFlow = _flow.getNetWorkData(wifi=wifi,noLog=self.noLog)
-        result = {'upFlow': upFlow, 'downFlow': downFlow}
-        logger.info(f'network: {result}')
+        if self.noLog is False:
+            data = _flow.setAndroidNet(wifi=wifi)
+            f.record_net('pre', data[0], data[1])
+        result = {}
+        while True:
+            upFlow, downFlow = _flow.getNetWorkData(wifi=wifi,noLog=self.noLog)
+            result = {'upFlow': upFlow, 'downFlow': downFlow}
+            logger.info(f'network: {result}')
+            if time.time() > self.end_time:
+                break
         return result
 
     def collectFps(self):
         _fps = FPS(self.pkgName, self.deviceId, self.platform, self.surfaceview)
-        fps, jank = _fps.getFPS(noLog=self.noLog)
-        result = {'fps': fps, 'jank': jank}
-        logger.info(f'fps: {result}')
+        result = {}
+        while True:
+            fps, jank = _fps.getFPS(noLog=self.noLog)
+            result = {'fps': fps, 'jank': jank}
+            logger.info(f'fps: {result}')
+            if time.time() > self.end_time:
+                break
         return result
     
     def collectGpu(self):
         _gpu = GPU(self.pkgName)
-        if self.platform == Platform.Android:
-            raise Exception('not support android')
-        gpu = _gpu.getGPU(noLog=self.noLog)
-        result = {'gpu': gpu}
-        logger.info(f'gpu: {result}')
+        result = {}
+        while True:
+            if self.platform == Platform.Android:
+                raise Exception('not support android')
+            gpu = _gpu.getGPU(noLog=self.noLog)
+            result = {'gpu': gpu}
+            logger.info(f'gpu: {result}')
+            if time.time() > self.end_time:
+                break
         return result
+    
+
+    def collectAll(self):
+        try:
+            f.clear_file()
+            pool = multiprocessing.Pool(processes=6)
+            pool.apply_async(self.collectCpu)
+            pool.apply_async(self.collectMemory)
+            pool.apply_async(self.collectBattery)
+            pool.apply_async(self.collectFps)
+            pool.apply_async(self.collectFlow)
+            pool.apply_async(self.collectGpu)
+            pool.close()
+            pool.join()
+            match(self.platform):
+                case Platform.Android:
+                    adb.shell(cmd='dumpsys battery reset', deviceId=self.deviceId)
+                    _flow = Flow(self.pkgName, self.deviceId, self.platform, pid=self.pid)
+                    data = _flow.setAndroidNet()
+                    f.record_net('end', data[0], data[1])
+                    scene = f.make_report(app=self.pkgName, devices=self.deviceId, 
+                                          platform=self.platform, model='normal')
+                    summary = f._setAndroidPerfs(scene)
+                    summary_dict = {}
+                    summary_dict['cpu_app'] = summary['cpuAppRate']
+                    summary_dict['cpu_sys'] = summary['cpuSystemRate']
+                    summary_dict['mem_total'] = summary['totalPassAvg']
+                    summary_dict['mem_native'] = summary['nativePassAvg']
+                    summary_dict['mem_dalvik'] = summary['dalvikPassAvg']
+                    summary_dict['fps'] = summary['fps']
+                    summary_dict['jank'] = summary['jank']
+                    summary_dict['level'] = summary['batteryLevel']
+                    summary_dict['tem'] = summary['batteryTeml']
+                    summary_dict['net_send'] = summary['flow_send']
+                    summary_dict['net_recv'] = summary['flow_recv']
+                    summary_dict['cpu_charts'] = f.getCpuLog(Platform.Android, scene)
+                    summary_dict['mem_charts'] = f.getMemLog(Platform.Android, scene)
+                    summary_dict['net_charts'] = f.getFlowLog(Platform.Android, scene)
+                    summary_dict['battery_charts'] = f.getBatteryLog(Platform.Android, scene)
+                    summary_dict['fps_charts'] = f.getFpsLog(Platform.Android, scene)['fps']
+                    summary_dict['jank_charts'] = f.getFpsLog(Platform.Android, scene)['jank']
+                    f.make_android_html(scene=scene, summary=summary_dict)
+                case Platform.iOS:
+                    scene = f.make_report(app=self.pkgName, devices=self.deviceId, 
+                                          platform=self.platform, model='normal')
+                    summary = f._setiOSPerfs(scene)
+                    summary_dict = {}
+                    summary_dict['cpu_app'] = summary['cpuAppRate']
+                    summary_dict['cpu_sys'] = summary['cpuSystemRate']
+                    summary_dict['mem_total'] = summary['totalPassAvg']
+                    summary_dict['fps'] = summary['fps']
+                    summary_dict['current'] = summary['batteryCurrent']
+                    summary_dict['voltage'] = summary['batteryVoltage']
+                    summary_dict['power'] = summary['batteryPower']
+                    summary_dict['tem'] = summary['batteryTeml']
+                    summary_dict['gpu'] = summary['gpu']
+                    summary_dict['net_send'] = summary['flow_send']
+                    summary_dict['net_recv'] = summary['flow_recv']
+                    summary_dict['cpu_charts'] = f.getCpuLog(Platform.iOS, scene)
+                    summary_dict['mem_charts'] = f.getMemLog(Platform.iOS, scene)
+                    summary_dict['net_charts'] = f.getFlowLog(Platform.iOS, scene)
+                    summary_dict['battery_charts'] = f.getBatteryLog(Platform.iOS, scene)
+                    summary_dict['fps_charts'] = f.getFpsLog(Platform.iOS, scene)
+                    summary_dict['gpu_charts'] = f.getGpuLog(Platform.iOS, scene)
+                    f.make_ios_html(scene=scene, summary=summary_dict)
+                case _:
+                    raise Exception('platfrom is invalid')        
+        except KeyboardInterrupt:
+            logger.info('End of testing')
+        except Exception:
+            traceback.print_exc()

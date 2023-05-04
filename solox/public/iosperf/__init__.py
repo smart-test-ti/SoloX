@@ -4,11 +4,11 @@
 """Created on Mon Jan 04 2021 17:59:30 by codeskyblue
 """
 
-from ._device import BaseDevice as Device
-from ._usbmux import Usbmux, ConnectionType
-from ._perf import Performance, DataType
-from .exceptions import *
-from ._proto import PROGRAM_NAME
+from solox.public.iosperf._device import BaseDevice as Device
+from solox.public.iosperf._usbmux import Usbmux, ConnectionType
+from solox.public.iosperf._perf import Performance, DataType
+from solox.public.iosperf.exceptions import *
+from solox.public.iosperf._proto import PROGRAM_NAME
 from loguru import logger
 
 

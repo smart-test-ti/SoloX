@@ -44,12 +44,7 @@ def setCookie():
 def initialize():
     """initialize apm env"""
     try:
-        report_dir = os.path.join(os.getcwd(), 'report')
-        if os.path.exists(report_dir):
-            for f in os.listdir(report_dir):
-                filename = os.path.join(report_dir, f)
-                if f.split(".")[-1] in ['log', 'json']:
-                    os.remove(filename)
+        f.clear_file()
         result = {'status': 1, 'msg': 'initialize env success'}
     except Exception as e:
         traceback.print_exc()
@@ -372,7 +367,7 @@ def getGpu():
     """get gpu data"""
     pkgname = method._request(request, 'pkgname')
     try:
-        gpu = GPU(pkgname=pkgname)
+        gpu = GPU(pkgName=pkgname)
         final = gpu.getGPU()
         result = {'status': 1, 'gpu': final}
     except Exception:
@@ -403,7 +398,7 @@ def makeReport():
             data = flow.setAndroidNet(wifi=wifi)
             f.record_net('end', data[0], data[1])
             app = process
-        File(fileroot=f'apm_{current_time}').make_report(app=app, devices=devices, platform=platform, model=model)
+        f.make_report(app=app, devices=devices, platform=platform, model=model)
         result = {'status': 1}
     except Exception as e:
         traceback.print_exc()
