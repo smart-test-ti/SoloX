@@ -92,18 +92,11 @@ gpu = apm.collectGpu() # % only supports ios
 # ************* Collect all performance parameter ************* #
 apm = APM(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', 
           surfaceview=True, noLog=False, pid=None, duration=20) # duration : second
-# apm = APM(pkgName='com.bilibili.app.in', platform='iOS',  noLog=False, duration=20)    
-result = apm.collectAll()
+# apm = APM(pkgName='com.bilibili.app.in', platform='iOS',  noLog=False, duration=20)
+if __name__ == '__main__':
+     apm.collectAll()
 ```
 ```shell
-[I 230504 10:40:30 common:179] Clean up useless files ...
-[I 230504 10:40:30 common:185] Clean up useless files success
-[I 230504 10:40:38 apm:362] cpu: {'appCpuRate': 15.15, 'systemCpuRate': 98.18}
-[I 230504 10:40:38 apm:387] battery: {'level': 61, 'temperature': 35.0}
-[I 230504 10:40:38 apm:412] fps: {'fps': 57, 'jank': 0}
-[I 230504 10:40:38 apm:401] network: {'upFlow': 0.0, 'downFlow': 0.0}
-[I 230504 10:40:38 apm:373] memory: {'totalPass': 170.05, 'nativePass': 57.72, 'dalvikPass': 10.63}
-[I 230504 10:40:39 apm:387] battery: {'level': 61, 'temperature': 35.0}
 [I 230504 10:40:39 apm:412] fps: {'fps': 50, 'jank': 3}
 [I 230504 10:40:39 apm:401] network: {'upFlow': 1.0, 'downFlow': 0.65}
 [I 230504 10:40:40 apm:362] cpu: {'appCpuRate': 9.56, 'systemCpuRate': 98.68}
