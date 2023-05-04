@@ -90,7 +90,7 @@ battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV p
 gpu = apm.collectGpu() # % only supports ios
 
 # ************* Collect all performance parameter ************* #
-apm = APM(pkgName='com.playit.videoplayer',platform='Android', deviceId='BRNUT21B15044184', 
+apm = APM(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', 
           surfaceview=True, noLog=False, pid=None, duration=20) # duration : second
 # apm = APM(pkgName='com.bilibili.app.in', platform='iOS',  noLog=False, duration=20)    
 result = apm.collectAll()
