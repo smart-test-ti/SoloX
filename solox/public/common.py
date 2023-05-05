@@ -166,7 +166,11 @@ class Devices:
         return result
 
     def getStartupTimeByiOS(self, pkgname):
-        result = self.execCmd('pyidevice instruments app_lifecycle -b {}'.format(pkgname))
+        try:
+            import ios_device
+        except ImportError:
+            logger.error('py-ios-devices not found, please run [pip install py-ios-devices]') 
+        result = self.execCmd('pyidevice instruments app_lifecycle -b {}'.format(pkgname))       
         return result          
 
 class File:

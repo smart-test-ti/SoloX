@@ -271,6 +271,7 @@ class FPS(object):
         monitors.start()
         fps, jank = monitors.stop()
         if noLog is False:
+            time.sleep(1)
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
             f.add_log(os.path.join(f.report_dir,'fps.log'), apm_time, fps)
             f.add_log(os.path.join(f.report_dir,'jank.log'), apm_time, jank)
@@ -298,6 +299,7 @@ class GPU(object):
         apm = iosAPM(self.pkgName)
         gpu = apm.getPerformance(apm.gpu)
         if noLog is False:
+            time.sleep(1)
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
             f.add_log(os.path.join(f.report_dir,'gpu.log'), apm_time, gpu)
         return gpu   
