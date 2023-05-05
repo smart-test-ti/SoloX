@@ -282,6 +282,7 @@ class FPS(object):
         apm = iosAPM(self.pkgName)
         fps = int(apm.getPerformance(apm.fps))
         if noLog is False:
+            time.sleep(1)
             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
             f.add_log(os.path.join(f.report_dir,'fps.log'), apm_time, fps)
         return fps, 0
