@@ -11,7 +11,6 @@ import os
 import platform
 import stat
 import subprocess
-from logzero import logger
 
 STATICPATH = os.path.dirname(os.path.realpath(__file__))
 DEFAULT_ADB_PATH = {
@@ -81,6 +80,12 @@ class ADB(object):
         result = subprocess.Popen(run_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[
             0].decode("utf-8").strip()
         return result
+
+    def shell_noDevice(self, cmd):
+        run_cmd = f'{self.adb_path} {cmd}'
+        result = os.system(run_cmd)
+        return result    
+
 
 
 adb = ADB()

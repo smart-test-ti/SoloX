@@ -13,12 +13,12 @@ import typing
 from collections import namedtuple
 from typing import Iterator, List, Union
 
-from . import bplist
-from . import struct2 as ct
-from ._proto import *
-from ._safe_socket import PlistSocketProxy
-from ._utils import pathjoin
-from .exceptions import MuxError, MuxServiceError
+from solox.public.iosperf import bplist
+from solox.public.iosperf import struct2 as ct
+from solox.public.iosperf._proto import *
+from solox.public.iosperf._safe_socket import PlistSocketProxy
+from solox.public.iosperf._utils import pathjoin
+from solox.public.iosperf.exceptions import MuxError, MuxServiceError
 
 # 00000000: 43 46 41 36 4C 50 41 41  84 00 00 00 00 00 00 00  magic(CFA6LPAA), length(0x84)
 # 00000010: 28 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  unknown(0x28), tag(0x0)

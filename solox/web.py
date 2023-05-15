@@ -9,6 +9,7 @@ import webbrowser
 import requests
 import socket
 import sys
+import traceback
 from solox.view.apis import api
 from solox.view.pages import page
 from logzero import logger
@@ -28,8 +29,9 @@ thread_lock = Lock()
 @socketio.on('connect', namespace='/logcat')
 def connect():
     socketio.emit('start connect', {'data': 'Connected'}, namespace='/logcat')
-    if not os.path.exists('adblog'):
-        os.mkdir('adblog')
+    logDir = os.path.join(os.getcwd(),'adblog')
+    if not os.path.exists(logDir):
+        os.mkdir(logDir)
     global thread
     thread = True
     with thread_lock:
@@ -40,11 +42,14 @@ def connect():
 def backgroundThread():
     global thread
     try:
+        logger.info('Initializing adb environment ...')
+        os.system('adb kill-server')
+        os.system('adb start-server')
         current_time = time.strftime("%Y%m%d%H", time.localtime())
-        logcat = subprocess.Popen(f'adb logcat *:E > ./adblog/{current_time}_adb.log', stdout=subprocess.PIPE,
+        logPath = os.path.join(os.getcwd(),'adblog',f'{current_time}.log')
+        logcat = subprocess.Popen(f'adb logcat *:E > {logPath}', stdout=subprocess.PIPE,
                                   shell=True)
-        file = f"./adblog/{current_time}_adb.log"
-        with open(file, "r") as f:
+        with open(logPath, "r") as f:
             while thread:
                 socketio.sleep(1)
                 for line in f.readlines():
@@ -62,20 +67,7 @@ def disconnect():
     thread = False
     disconnect()
 
-
-def _checkPyVer():
-    """check python version"""
-    if int(platform.python_version().split('.')[0]) < 3:
-        logger.error('python version must be >2,your python version is {}'.format(platform.python_version()))
-        logger.error('please install python::3 and pip3 install -U solox')
-        sys.exit()
-
-
-def _hostIP():
-    """
-    :func: get local ip
-    :return: ip
-    """
+def hostIP():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(('8.8.8.8', 80))
@@ -87,12 +79,7 @@ def _hostIP():
     return ip
 
 
-def _listeningPort(port):
-    """
-    Detect whether the port is occupied and clean up
-    :param port: System port
-    :return: None
-    """
+def listeningPort(port):
     if platform.system() != 'Windows':
         os.system("lsof -i:%s| grep LISTEN| awk '{print $2}'|xargs kill -9" % port)
     else:
@@ -112,67 +99,35 @@ def _listeningPort(port):
             os.system(pid_cmd)
 
 
-def _getServerStatus(host: str, port: int):
-    """
-    get solox server status
-    :param host:
-    :param port:
-    :return:
-    """
-    try:
-        r = requests.get(f'http://{host}:{port}', timeout=2.0)
-        flag = (True, False)[r.status_code == 200]
-        return flag
-    except requests.exceptions.ConnectionError:
-        pass
-    except Exception:
-        pass
+def getServerStatus(host: str, port: int):
+    r = requests.get('http://{}:{}'.format(host, port), timeout=2.0)
+    flag = (True, False)[r.status_code == 200]
+    return flag
 
 
-def _openUrl(host: str, port: int):
-    """
-    Listen and open the url after solox is started
-    :param host:
-    :param port:
-    :return:
-    """
+def openUrl(host: str, port: int):
     flag = True
     while flag:
-        logger.info('start solox server...')
-        flag = _getServerStatus(host, port)
-    webbrowser.open(f'http://{host}:{port}/?platform=Android', new=2)
-    logger.info(f'Running on http://{host}:{port}/?platform=Android (Press CTRL+C to quit)')
+        logger.info('start solox server')
+        flag = getServerStatus(host, port)
+    webbrowser.open('http://{}:{}/?platform=Android&lan=en'.format(host, port), new=2)
+    logger.info('Running on http://{}:{}/?platform=Android&lan=en (Press CTRL+C to quit)'.format(host, port))
 
 
-def _startServer(host: str, port: int):
-    """
-    start the solox service
-    :param host:
-    :param port:
-    :return:
-    """
+def startServer(host: str, port: int):
+    socketio.run(app, host=host, debug=False, port=port)
+
+
+def main(host=hostIP(), port=50003):
     try:
-        socketio.run(app, host=host, debug=False, port=port)
-    except Exception:
-        pass
-
-
-def main(host=_hostIP(), port=50003):
-    """
-    main start
-    :param host: 0.0.0.0
-    :param port: 默认5000端口
-    :return:
-    """
-    try:
-        _checkPyVer()
-        _listeningPort(port=port)
+        listeningPort(port=port)
         pool = multiprocessing.Pool(processes=2)
-        pool.apply_async(_startServer, (host, port))
-        pool.apply_async(_openUrl, (host, port))
+        pool.apply_async(startServer, (host, port))
+        pool.apply_async(openUrl, (host, port))
         pool.close()
         pool.join()
     except Exception:
-        pass
+        traceback.print_exc()
     except KeyboardInterrupt:
         logger.info('stop solox success')
+        sys.exit()

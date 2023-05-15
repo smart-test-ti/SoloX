@@ -11,9 +11,9 @@ import zipfile
 from pprint import pprint
 from typing import Union
 
-from . import bplist, plistlib2
-from ._compat import cache
-from .exceptions import IPAError
+from solox.public.iosperf import bplist, plistlib2
+from solox.public.iosperf._compat import cache
+from solox.public.iosperf.exceptions import IPAError
 
 
 class IPAReader(zipfile.ZipFile):

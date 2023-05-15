@@ -15,9 +15,9 @@ import typing
 import weakref
 from typing import Any, Union
 
-from ._proto import PROGRAM_NAME
-from ._utils import set_socket_timeout
-from .exceptions import *
+from solox.public.iosperf._proto import PROGRAM_NAME
+from solox.public.iosperf._utils import set_socket_timeout
+from solox.public.iosperf.exceptions import *
 
 from loguru import logger
 

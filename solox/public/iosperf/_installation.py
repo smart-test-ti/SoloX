@@ -21,9 +21,9 @@
 import logging
 from typing import Optional
 
-from ._proto import LOG
-from ._safe_socket import PlistSocketProxy
-from .exceptions import ServiceError
+from solox.public.iosperf._proto import LOG
+from solox.public.iosperf._safe_socket import PlistSocketProxy
+from solox.public.iosperf.exceptions import ServiceError
 
 logger = logging.getLogger(LOG.main)
 

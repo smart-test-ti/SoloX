@@ -131,3 +131,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# solox
+report/
+.log
+.xls
+adblog/

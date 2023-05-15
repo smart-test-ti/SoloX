@@ -11,9 +11,8 @@ import typing
 from collections import defaultdict, namedtuple
 from typing import Any, Iterator, Optional, Tuple, Union
 import weakref
-
-from tidevice._device import BaseDevice
-from tidevice._proto import *
+from solox.public.iosperf._device import BaseDevice
+from solox.public.iosperf._proto import *
 
 
 class DataType(str, enum.Enum):
@@ -288,6 +287,8 @@ def append_data(wg: WaitGroup, stop_event: threading.Event,
         if data:
             if _type.value == 'network':
                 return data['downFlow'], data['upFlow']
+            elif _type.value == 'cpu':
+                return data['value'], data['sys_value']
             else:
                 return data['value']
         # print(_type, data)

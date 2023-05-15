@@ -28,20 +28,20 @@ from deprecation import deprecated
 from logzero import setup_logger
 from PIL import Image
 
-from . import bplist
-from ._crash import CrashManager
-from ._imagemounter import ImageMounter, cache_developer_image
-from ._installation import Installation
-from ._instruments import (AUXMessageBuffer, DTXMessage, DTXService, Event,
+from solox.public.iosperf import bplist
+from solox.public.iosperf._crash import CrashManager
+from solox.public.iosperf._imagemounter import ImageMounter, cache_developer_image
+from solox.public.iosperf._installation import Installation
+from solox.public.iosperf._instruments import (AUXMessageBuffer, DTXMessage, DTXService, Event,
                            ServiceInstruments)
-from ._ipautil import IPAReader
-from ._proto import *
-from ._safe_socket import *
-from ._sync import Sync
-from ._types import DeviceInfo
-from ._usbmux import Usbmux
-from ._utils import ProgressReader, get_app_dir, set_socket_timeout
-from .exceptions import *
+from solox.public.iosperf._ipautil import IPAReader
+from solox.public.iosperf._proto import *
+from solox.public.iosperf._safe_socket import *
+from solox.public.iosperf._sync import Sync
+from solox.public.iosperf._types import DeviceInfo
+from solox.public.iosperf._usbmux import Usbmux
+from solox.public.iosperf._utils import ProgressReader, get_app_dir, set_socket_timeout
+from solox.public.iosperf.exceptions import *
 
 logger = logging.getLogger(LOG.main)
 
