@@ -171,7 +171,6 @@ def getCpuRate():
     platform = method._request(request, 'platform')
     pkgname = method._request(request, 'pkgname')
     device = method._request(request, 'device')
-    process = method._request(request, 'process')
     try:
         match(model):
             case '2-devices':
@@ -190,6 +189,7 @@ def getCpuRate():
                 first, second = cpu.getAndroidCpuRate()
                 result = {'status': 1, 'first': first, 'second': second}
             case _:
+                process = method._request(request, 'process')
                 deviceId = d.getIdbyDevice(device, platform)
                 pid = process.split(':')[0] if platform == Platform.Android else None
                 cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
@@ -209,7 +209,6 @@ def getMEM():
     platform = method._request(request, 'platform')
     pkgname = method._request(request, 'pkgname')
     device = method._request(request, 'device')
-    process = method._request(request, 'process')
     try:
         match(model):
             case '2-devices':
@@ -228,6 +227,7 @@ def getMEM():
                 first, second = mem.getProcessMem()
                 result = {'status': 1, 'first': first, 'second': second}
             case _:
+                process = method._request(request, 'process')
                 deviceId = d.getIdbyDevice(device, platform)
                 pid = process.split(':')[0] if platform == Platform.Android else None
                 mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
@@ -269,7 +269,6 @@ def getNetWorkData():
     pkgname = method._request(request, 'pkgname')
     device = method._request(request, 'device')
     wifi_switch = method._request(request, 'wifi_switch')
-    process = method._request(request, 'process')
     try:
         wifi = False if wifi_switch == 'false' else True
         match(model):
@@ -289,6 +288,7 @@ def getNetWorkData():
                 first, second = network.getNetWorkData()
                 result = {'status': 1, 'first': first, 'second': second}
             case _:
+                process = method._request(request, 'process')
                 deviceId = d.getIdbyDevice(device, platform)
                 pid = process.split(':')[0] if platform == Platform.Android else None
                 flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)

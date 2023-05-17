@@ -430,6 +430,60 @@ class APM(object):
                 break
         return result
     
+    def setPerfs(self):
+        match(self.platform):
+            case Platform.Android:
+                adb.shell(cmd='dumpsys battery reset', deviceId=self.deviceId)
+                _flow = Flow(self.pkgName, self.deviceId, self.platform, pid=self.pid)
+                data = _flow.setAndroidNet()
+                f.record_net('end', data[0], data[1])
+                scene = f.make_report(app=self.pkgName, devices=self.deviceId,
+                                      platform=self.platform, model='normal')
+                summary = f._setAndroidPerfs(scene)
+                summary_dict = {}
+                summary_dict['cpu_app'] = summary['cpuAppRate']
+                summary_dict['cpu_sys'] = summary['cpuSystemRate']
+                summary_dict['mem_total'] = summary['totalPassAvg']
+                summary_dict['mem_native'] = summary['nativePassAvg']
+                summary_dict['mem_dalvik'] = summary['dalvikPassAvg']
+                summary_dict['fps'] = summary['fps']
+                summary_dict['jank'] = summary['jank']
+                summary_dict['level'] = summary['batteryLevel']
+                summary_dict['tem'] = summary['batteryTeml']
+                summary_dict['net_send'] = summary['flow_send']
+                summary_dict['net_recv'] = summary['flow_recv']
+                summary_dict['cpu_charts'] = f.getCpuLog(Platform.Android, scene)
+                summary_dict['mem_charts'] = f.getMemLog(Platform.Android, scene)
+                summary_dict['net_charts'] = f.getFlowLog(Platform.Android, scene)
+                summary_dict['battery_charts'] = f.getBatteryLog(Platform.Android, scene)
+                summary_dict['fps_charts'] = f.getFpsLog(Platform.Android, scene)['fps']
+                summary_dict['jank_charts'] = f.getFpsLog(Platform.Android, scene)['jank']
+                f.make_android_html(scene=scene, summary=summary_dict)
+            case Platform.iOS:
+                scene = f.make_report(app=self.pkgName, devices=self.deviceId, 
+                                      platform=self.platform, model='normal')
+                summary = f._setiOSPerfs(scene)
+                summary_dict = {}
+                summary_dict['cpu_app'] = summary['cpuAppRate']
+                summary_dict['cpu_sys'] = summary['cpuSystemRate']
+                summary_dict['mem_total'] = summary['totalPassAvg']
+                summary_dict['fps'] = summary['fps']
+                summary_dict['current'] = summary['batteryCurrent']
+                summary_dict['voltage'] = summary['batteryVoltage']
+                summary_dict['power'] = summary['batteryPower']
+                summary_dict['tem'] = summary['batteryTeml']
+                summary_dict['gpu'] = summary['gpu']
+                summary_dict['net_send'] = summary['flow_send']
+                summary_dict['net_recv'] = summary['flow_recv']
+                summary_dict['cpu_charts'] = f.getCpuLog(Platform.iOS, scene)
+                summary_dict['mem_charts'] = f.getMemLog(Platform.iOS, scene)
+                summary_dict['net_charts'] = f.getFlowLog(Platform.iOS, scene)
+                summary_dict['battery_charts'] = f.getBatteryLog(Platform.iOS, scene)
+                summary_dict['fps_charts'] = f.getFpsLog(Platform.iOS, scene)
+                summary_dict['gpu_charts'] = f.getGpuLog(Platform.iOS, scene)
+                f.make_ios_html(scene=scene, summary=summary_dict)
+            case _:
+                raise Exception('platfrom is invalid') 
 
     def collectAll(self):
         try:
@@ -443,60 +497,10 @@ class APM(object):
             pool.apply_async(self.collectGpu)
             pool.close()
             pool.join()
-            match(self.platform):
-                case Platform.Android:
-                    adb.shell(cmd='dumpsys battery reset', deviceId=self.deviceId)
-                    _flow = Flow(self.pkgName, self.deviceId, self.platform, pid=self.pid)
-                    data = _flow.setAndroidNet()
-                    f.record_net('end', data[0], data[1])
-                    scene = f.make_report(app=self.pkgName, devices=self.deviceId, 
-                                          platform=self.platform, model='normal')
-                    summary = f._setAndroidPerfs(scene)
-                    summary_dict = {}
-                    summary_dict['cpu_app'] = summary['cpuAppRate']
-                    summary_dict['cpu_sys'] = summary['cpuSystemRate']
-                    summary_dict['mem_total'] = summary['totalPassAvg']
-                    summary_dict['mem_native'] = summary['nativePassAvg']
-                    summary_dict['mem_dalvik'] = summary['dalvikPassAvg']
-                    summary_dict['fps'] = summary['fps']
-                    summary_dict['jank'] = summary['jank']
-                    summary_dict['level'] = summary['batteryLevel']
-                    summary_dict['tem'] = summary['batteryTeml']
-                    summary_dict['net_send'] = summary['flow_send']
-                    summary_dict['net_recv'] = summary['flow_recv']
-                    summary_dict['cpu_charts'] = f.getCpuLog(Platform.Android, scene)
-                    summary_dict['mem_charts'] = f.getMemLog(Platform.Android, scene)
-                    summary_dict['net_charts'] = f.getFlowLog(Platform.Android, scene)
-                    summary_dict['battery_charts'] = f.getBatteryLog(Platform.Android, scene)
-                    summary_dict['fps_charts'] = f.getFpsLog(Platform.Android, scene)['fps']
-                    summary_dict['jank_charts'] = f.getFpsLog(Platform.Android, scene)['jank']
-                    f.make_android_html(scene=scene, summary=summary_dict)
-                case Platform.iOS:
-                    scene = f.make_report(app=self.pkgName, devices=self.deviceId, 
-                                          platform=self.platform, model='normal')
-                    summary = f._setiOSPerfs(scene)
-                    summary_dict = {}
-                    summary_dict['cpu_app'] = summary['cpuAppRate']
-                    summary_dict['cpu_sys'] = summary['cpuSystemRate']
-                    summary_dict['mem_total'] = summary['totalPassAvg']
-                    summary_dict['fps'] = summary['fps']
-                    summary_dict['current'] = summary['batteryCurrent']
-                    summary_dict['voltage'] = summary['batteryVoltage']
-                    summary_dict['power'] = summary['batteryPower']
-                    summary_dict['tem'] = summary['batteryTeml']
-                    summary_dict['gpu'] = summary['gpu']
-                    summary_dict['net_send'] = summary['flow_send']
-                    summary_dict['net_recv'] = summary['flow_recv']
-                    summary_dict['cpu_charts'] = f.getCpuLog(Platform.iOS, scene)
-                    summary_dict['mem_charts'] = f.getMemLog(Platform.iOS, scene)
-                    summary_dict['net_charts'] = f.getFlowLog(Platform.iOS, scene)
-                    summary_dict['battery_charts'] = f.getBatteryLog(Platform.iOS, scene)
-                    summary_dict['fps_charts'] = f.getFpsLog(Platform.iOS, scene)
-                    summary_dict['gpu_charts'] = f.getGpuLog(Platform.iOS, scene)
-                    f.make_ios_html(scene=scene, summary=summary_dict)
-                case _:
-                    raise Exception('platfrom is invalid')        
+            self.setPerfs()     
         except KeyboardInterrupt:
-            logger.info('End of testing')
+            self.setPerfs()
         except Exception:
             traceback.print_exc()
+        finally:
+            logger.info('End of testing')

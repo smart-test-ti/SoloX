@@ -39,7 +39,7 @@ SoloX - Android/iOS性能数据的实时采集工具。
 ### 默认
 
 ```shell
-pip install -U solox 
+pip install -U solox (指定版本：pip install solox==2.6.2)
 ```
 
 ### 镜像
@@ -130,6 +130,8 @@ target in ['cpu','memory','network','fps','battery','gpu']
 * **比对模式:** 支持两台移动设备同时对比测试。
   - 🌱2-devices: 使用两台不同的设备测试同一个app。
   - 🌱2-apps: 使用两台配置相同的设备测试两个不同的app。
+
+* **API收集性能数据:** 支持python、API收集性能数据，帮助用户轻松集成在CI/CD流程。
 
 ## 浏览器
 

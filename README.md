@@ -29,7 +29,7 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 - Install Python 3.10 + [**Download**](https://www.python.org/downloads/)
 - Install adb and configure environment variables (SoloX's  adb may not necessarily fit your computer) [**Download**](https://developer.android.com/studio/releases/platform-tools)
 
-💡 Python 3.6 ~ 3.9 , please download a version of solox lower than 2.5.4.
+💡 Python 3.6 ~ 3.9 , please download a version of solox lower than 2.5.4. 
 
 💡 If Windows users need to test ios, install and start Itunes. [**Documentation**](https://github.com/alibaba/taobao-iphone-device)
 
@@ -38,7 +38,7 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 ### default
 
 ```shell
-pip install -U solox 
+pip install -U solox  (pip install solox==2.6.2)
 ```
 
 ### mirrors
@@ -126,6 +126,8 @@ target in ['cpu','memory','network','fps','battery','gpu']
 * **PK Model:** Supports simultaneous comparative testing of two mobile devices.
   - 🌱2-devices: test the same app on two different phones.
   - 🌱2-apps: test two different apps on two phones with the same configuration.
+
+* **Collect in python/API:** Support Python and API to collect performance data, helping users easily integrate into automated testing processes.
 
 ## Browser
 

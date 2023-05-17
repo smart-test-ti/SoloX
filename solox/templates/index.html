@@ -472,6 +472,10 @@ SoloX - APM
     var timerQ = null;
 
     function getCpuRate(pkgname,device){
+        var process = '';
+        if(platform == 'Android'){
+            process = $('.select-pid').val()
+        }
         $.ajax({
             url: Host + "/apm/cpu",
             type: "GET",
@@ -482,7 +486,7 @@ SoloX - APM
                 platform:platform,
                 pkgname:pkgname,
                 device:device,
-                process:$('.select-pid').val()
+                process:process
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -605,6 +609,10 @@ SoloX - APM
     }
 
     function getMemPss(pkgname,device)  {
+        var process = '';
+        if(platform == 'Android'){
+            process = $('.select-pid').val()
+        }
         $.ajax({
             url: Host + "/apm/mem",
             type: "GET",
@@ -615,7 +623,7 @@ SoloX - APM
                 platform:platform,
                 pkgname:pkgname,
                 device:device,
-                process:$('.select-pid').val()
+                process:process
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -658,6 +666,10 @@ SoloX - APM
     }
 
     function setNetWork(type,device,pkgname,net_switch){
+        var process = '';
+        if(platform == 'Android'){
+            process = $('.select-pid').val()
+        }
         $.ajax({
             url: Host + "/apm/set/network",
             type: "GET",
@@ -669,7 +681,7 @@ SoloX - APM
                 device:device,
                 wifi_switch: net_switch,
                 type: type,
-                process:$('.select-pid').val()
+                process:process
             },
             success: function (data) {
                 if(data['status'] != 1){
@@ -684,6 +696,10 @@ SoloX - APM
     }
 
     function getNetWork(pkgname,device,net_switch)  {
+        var process = '';
+        if(platform == 'Android'){
+            process = $('.select-pid').val()
+        }
         $.ajax({
             url: Host + "/apm/network",
             type: "GET",
@@ -695,7 +711,7 @@ SoloX - APM
                 pkgname:pkgname,
                 device:device,
                 wifi_switch: net_switch,
-                process:$('.select-pid').val()
+                process:process
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -1394,7 +1410,9 @@ SoloX - APM
         let pkgname = $('.select-app').val();
         if(device && pkgname){
             var net_switch = $('#net-switch').is(':checked');
-            setNetWork('pre',device,pkgname,net_switch)
+            if(platform == 'Android'){
+                setNetWork('pre',device,pkgname,net_switch)
+            }
             collectCpu(device,pkgname);
             collectMem(device,pkgname);
             collectNetwork(device,pkgname);
