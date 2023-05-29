@@ -1371,6 +1371,10 @@ SoloX - APM
         $('#run-apm').show();
         $('#stop-apm').hide();
         window.clearTimeout(timerQ);
+        var process = '';
+        if(platform == 'Android'){
+            process = $('.select-pid').val()
+        }
         $.ajax({
             url: "/apm/create/report",
             type: "GET",
@@ -1382,7 +1386,7 @@ SoloX - APM
                 app:$('.select-app').val(),
                 devices:$('.select-device').val(),
                 wifi_switch:wifi_switch,
-                process:$('.select-pid').val()
+                process:process
             },
             beforeSend: function () {
                 

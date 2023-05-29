@@ -127,7 +127,7 @@ target in ['cpu','memory','network','fps','battery','gpu']
   - 🌱2-devices: test the same app on two different phones.
   - 🌱2-apps: test two different apps on two phones with the same configuration.
 
-* **Collect in python/API:** Support Python and API to collect performance data, helping users easily integrate into automated testing processes.
+* **Collect In Python/API:** Support Python and API to collect performance data, helping users easily integrate into automated testing processes.
 
 ## Browser
 
