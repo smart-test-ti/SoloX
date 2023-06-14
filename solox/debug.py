@@ -45,9 +45,9 @@ def connect():
 def backgroundThread():
     global thread
     try:
-        logger.info('Initializing adb environment ...')
-        os.system('adb kill-server')
-        os.system('adb start-server')
+        # logger.info('Initializing adb environment ...')
+        # os.system('adb kill-server')
+        # os.system('adb start-server')
         current_time = time.strftime("%Y%m%d%H", time.localtime())
         logPath = os.path.join(os.getcwd(),'adblog',f'{current_time}.log')
         logcat = subprocess.Popen(f'adb logcat *:E > {logPath}', stdout=subprocess.PIPE,
@@ -149,7 +149,7 @@ def openUrl(host: str, port: int):
     """
     flag = True
     while flag:
-        logger.info('start solox server')
+        logger.info('Start solox server ...')
         flag = getServerStatus(host, port)
     webbrowser.open(f'http://{host}:{port}/?platform=Android&lan=en', new=2)
     logger.info(f'Running on http://{host}:{port}/?platform=Android&lan=en (Press CTRL+C to quit)')

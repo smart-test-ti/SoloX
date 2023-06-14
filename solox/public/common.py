@@ -9,6 +9,7 @@ from logzero import logger
 from solox.public.adb import adb
 from tqdm import tqdm
 import traceback
+import socket
 from urllib.request import urlopen
 import ssl
 import xlwt
@@ -117,6 +118,25 @@ class Devices:
         pkgResult = self.execCmd(f'tidevice --udid {udid} applist').split('\n')
         pkgNames = [pkgResult[i].split(' ')[0] for i in range(len(pkgResult))]
         return pkgNames
+    
+    def localIP(self):
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(('8.8.8.8', 80))
+            ip = s.getsockname()[0]
+        except Exception:
+            logger.error('get local ip failed')
+            ip = '127.0.0.1'
+        finally:
+            s.close()
+        return ip
+    
+    def tcpConnect(self, deviceId, port):
+        logger.info('TCP mode port')
+        adb.tcp_shell(deviceId=deviceId, cmd='tcpip {}'.format(port))
+        logger.info('Connect result')
+        result = adb.tcp_shell(cmd='connect {}:{}'.format(self.localIP(), port))
+        return result
 
     def devicesCheck(self, platform, deviceid=None, pkgname=None):
         """Check the device environment"""
@@ -354,7 +374,6 @@ class File:
                     target_data_list.append(float(line.split('=')[1].strip()))
         return log_data_list, target_data_list
         
-    
     def getCpuLog(self, platform, scene):
         targetDic = {}
         targetDic['cpuAppData'] = self.readLog(scene=scene, filename='cpu_app.log')[0]
@@ -635,7 +654,6 @@ class File:
         apm_dict['fpsAvg2'] = fpsAvg2
         return apm_dict
 
-
 class Method:
     
     @classmethod
@@ -705,3 +723,22 @@ class Install:
             return True, result
         else:
             return False, result
+
+# class Config:
+
+#     def __init__(self):
+#         self.configRoot = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config')
+
+#     def get_devices(self):
+#         config_path = os.path.join(self.configRoot, 'devices.json')
+#         content = {}
+#         with open(config_path, "r", encoding="utf-8") as f:
+#             content = json.load(f)
+#         devices = content['content']    
+#         return devices
+
+#     def set_devices(self):
+#         pass
+
+#     def remove_device(self, deviceid):
+#         pass    

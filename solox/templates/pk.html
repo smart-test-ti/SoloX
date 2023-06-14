@@ -239,7 +239,7 @@
             success: function (data) {
                 console.log(data);
                 if(data['status'] != 1 ) {
-                    SwalFire('error', 'Connet failed !', 'Please check if the device is connected', 2000);
+                    SwalFire('error', 'Connect failed !', 'Please check if the device is connected', 2000);
                 }else{
                     if(data['devices'].length <2){
                         SwalFire('error', 'Android Devices < 2 !', 'Please check if the device nums are 2', 2000);

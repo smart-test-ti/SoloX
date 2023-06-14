@@ -135,7 +135,7 @@ SoloX - APM
                         <div class="tab-pane active show" id="tabs-apm-target">
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="cpu_checkbox" type="checkbox" checked name="cpu"> CPU</label>
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_checkbox" type="checkbox" checked name="mem"> {% if lan == 'cn' %} 内存 {% else %} Memory {% endif %}</label>
-                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> {% if lan == 'cn' %} 流量 {% else %} Network Data {% endif %}
+                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> {% if lan == 'cn' %} 流量 {% else %} Network {% endif %}
                                 {% if platform == 'Android' %}
                                 <span class="ms-auto">
                                     <label class="form-check form-check-single form-switch">
@@ -347,6 +347,9 @@ SoloX - APM
             beforeSend: function () {
                 $('.select-app').empty();
                 $('.select-app').append('<option></option>');
+                if(platform == 'Android'){
+                    $('.select-pid').empty();
+                }
                 if(lan == 'cn' ){
                     SwalLoading('初始化','正在获取该设备上的所有APP, 请您稍等！');
                 }else{
@@ -359,7 +362,7 @@ SoloX - APM
                     if(lan == 'cn' ){
                         SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 2000);
                     }else{
-                        SwalFire('error', 'Connection failed !', 'No devices found', 2000);
+                        SwalFire('error', 'Connect failed !', 'No devices found', 2000);
                     } 
                 }else{
                     for(var i=0;i<data['pkgnames'].length;i++){
@@ -383,8 +386,9 @@ SoloX - APM
                 pkgname:this.value
             },
             beforeSend: function () {
-                $('.select-pid').empty();
-                // $('.select-pid').append('<option></option>');
+                if(platform == 'Android'){
+                    $('.select-pid').empty();
+                }
                 if(lan == 'cn' ){
                     SwalLoading('初始化','正在获取该APP上的所有进程, 请您稍等！');
                 }else{
@@ -400,7 +404,6 @@ SoloX - APM
                         SwalFire('error', 'Connection failed !', 'No pid found', 2000);
                     } 
                 }else{
-                    // $('.select-pid').val(data['pids'][0]);
                     for(var i=0;i<data['pids'].length;i++){
                         $('.select-pid').append('<option>'+data['pids'][i]+'</option>')
                     }
@@ -433,6 +436,9 @@ SoloX - APM
                 $('.select-device').empty();
                 $('.select-app').empty();
                 $('.select-app').append('<option></option>');
+                if(platform == 'Android'){
+                    $('.select-pid').empty();
+                }
                 if(lan == 'cn' ){
                     SwalLoading('初始化','正在初始化设备环境，请您稍等！');
                 }else{
@@ -445,7 +451,7 @@ SoloX - APM
                     if(lan == 'cn' ){
                         SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 2000);
                     }else{
-                        SwalFire('error', 'Connet failed !', 'No devices found', 2000);
+                        SwalFire('error', 'Connect failed !', 'No devices found', 2000);
                     } 
                 }else{
                     for(var i=0;i<data['devices'].length;i++){
@@ -1179,7 +1185,7 @@ SoloX - APM
     function memInitialize(){
         //初始化mem
         let type = platform == 'Android' ? 'mem_android' : 'mem_ios';
-        let mem_chart = chartsInitialize(type,'MEM（MB）');
+        let mem_chart = chartsInitialize(type,'Memory（MB）');
         return mem_chart
     }
 
@@ -1335,7 +1341,7 @@ SoloX - APM
         if(mem_checkbox){
             memInitialize();
             let type = platform == 'Android' ? 'mem_android' : 'mem_ios';
-            mem_chart = collectPers(device,pkgname,type,'MEM（MB）',getMemPss(pkgname,device));
+            mem_chart = collectPers(device,pkgname,type,'Memory（MB）',getMemPss(pkgname,device));
         }
     }
 
@@ -1425,8 +1431,8 @@ SoloX - APM
             if(platform == 'iOS'){
                 collectGpu(pkgname);
             }
-            if(parseInt($('#running_value').val()) > 0){
-                var times = parseInt($('#running_value').val()) * 60 * 1000
+            if(parseInt($('#duration').val()) > 0){
+                var times = parseInt($('#duration').val()) * 60 * 1000
                 setTimeout("stopTask()", times)
             }
         }else{
@@ -1512,7 +1518,7 @@ SoloX - APM
                 }
             });
         }else{
-            SwalFire('error','Execution error','device is empty',2000)
+            SwalFire('error','Execution error','No devices found',2000)
         }
     }
 
@@ -1546,7 +1552,7 @@ SoloX - APM
                 }
             });
         }else{
-            SwalFire('error','Execution error','device or activity is empty',2000)
+            SwalFire('error','Execution error','No devices or activity found',2000)
         }
     }
 
@@ -1607,7 +1613,7 @@ SoloX - APM
             contentType: false,
             data:formData,
             beforeSend: function () {
-                SwalLoading('Install App!','Installing file to device, please wait。');
+                SwalLoading('Install App!','Installing file to device, please wait a moment.');
                 },
             success: function (data) {
                 console.log(data);

@@ -42,9 +42,9 @@ def connect():
 def backgroundThread():
     global thread
     try:
-        logger.info('Initializing adb environment ...')
-        os.system('adb kill-server')
-        os.system('adb start-server')
+        # logger.info('Initializing adb environment ...')
+        # os.system('adb kill-server')
+        # os.system('adb start-server')
         current_time = time.strftime("%Y%m%d%H", time.localtime())
         logPath = os.path.join(os.getcwd(),'adblog',f'{current_time}.log')
         logcat = subprocess.Popen(f'adb logcat *:E > {logPath}', stdout=subprocess.PIPE,
@@ -73,7 +73,7 @@ def hostIP():
         s.connect(('8.8.8.8', 80))
         ip = s.getsockname()[0]
     except Exception as e:
-        raise e
+        ip = '127.0.0.1'
     finally:
         s.close()
     return ip
@@ -98,7 +98,6 @@ def listeningPort(port):
             pid_cmd = 'taskkill -PID {} -F'.format(pid_set)
             os.system(pid_cmd)
 
-
 def getServerStatus(host: str, port: int):
     r = requests.get('http://{}:{}'.format(host, port), timeout=2.0)
     flag = (True, False)[r.status_code == 200]
@@ -108,7 +107,7 @@ def getServerStatus(host: str, port: int):
 def openUrl(host: str, port: int):
     flag = True
     while flag:
-        logger.info('start solox server')
+        logger.info('Start solox server ...')
         flag = getServerStatus(host, port)
     webbrowser.open('http://{}:{}/?platform=Android&lan=en'.format(host, port), new=2)
     logger.info('Running on http://{}:{}/?platform=Android&lan=en (Press CTRL+C to quit)'.format(host, port))
@@ -117,17 +116,15 @@ def openUrl(host: str, port: int):
 def startServer(host: str, port: int):
     socketio.run(app, host=host, debug=False, port=port)
 
-
 def main(host=hostIP(), port=50003):
     try:
         listeningPort(port=port)
-        pool = multiprocessing.Pool(processes=2)
-        pool.apply_async(startServer, (host, port))
-        pool.apply_async(openUrl, (host, port))
-        pool.close()
-        pool.join()
-    except Exception:
-        traceback.print_exc()
+        with multiprocessing.Pool(processes=2) as pool:
+            pool.apply_async(startServer, (host, port))
+            pool.apply_async(openUrl, (host, port))
+            pool.join()
+    except Exception as e:
+        logger.exception(e)
     except KeyboardInterrupt:
         logger.info('stop solox success')
-        sys.exit()
+        sys.exit()        

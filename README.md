@@ -38,7 +38,7 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 ### default
 
 ```shell
-pip install -U solox  (pip install solox==2.6.2)
+pip install -U solox  (pip install solox==2.6.4)
 ```
 
 ### mirrors
@@ -70,8 +70,6 @@ python -m solox --host={ip} --port={port}
 from solox.public.apm import APM
 from solox.public.common import Devices
 
-# solox version >= 2.1.2
-
 d = Devices()
 pids = d.getPid(deviceId='ca6bd5a5', pkgName='com.bilibili.app.in') # for android
 
@@ -94,7 +92,7 @@ apm = APM(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5',
           surfaceview=True, noLog=False, pid=None, duration=20) # duration : second
 # apm = APM(pkgName='com.bilibili.app.in', platform='iOS',  noLog=False, duration=20)
 if __name__ == '__main__':
-     apm.collectAll()
+     apm.collectAll() # will generate HTML report
 ```
 
 ## 🏴󠁣󠁩󠁣󠁭󠁿Collect in API

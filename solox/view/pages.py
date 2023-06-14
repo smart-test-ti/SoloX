@@ -4,10 +4,11 @@ import traceback
 from flask import Blueprint
 from flask import render_template
 from flask import request
-from solox.public.common import File,Method
+from solox.public.common import Devices,File,Method
 from logzero import logger
 
 page = Blueprint("page", __name__)
+d = Devices()
 m = Method()
 f = File()
 
@@ -31,7 +32,7 @@ def index():
     netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
     netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
     betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
-    runningTime = (0, request.cookies.get('runningTime'))[request.cookies.get('runningTime') not in [None, 'NaN']]
+    duration = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
     solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
     host_switch = request.cookies.get('host_switch')
     return render_template('index.html', **locals())
@@ -46,7 +47,7 @@ def pk():
     netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
     netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
     betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
-    runningTime = (0, request.cookies.get('runningTime'))[request.cookies.get('runningTime') not in [None, 'NaN']]
+    duration = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
     solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
     host_switch = request.cookies.get('host_switch')
     return render_template('pk.html', **locals())
@@ -61,7 +62,7 @@ def report():
     netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
     netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
     betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
-    runningTime = (0, request.cookies.get('runningTime'))[request.cookies.get('runningTime') not in [None, 'NaN']]
+    duration = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
     solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
     host_switch = request.cookies.get('host_switch')
     report_dir = os.path.join(os.getcwd(), 'report')
@@ -104,7 +105,7 @@ def analysis():
     netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
     netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
     betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
-    runningTime = (0, request.cookies.get('runningTime'))[request.cookies.get('runningTime') not in [None, 'NaN']]
+    duration = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
     solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
     host_switch = request.cookies.get('host_switch')
     report_dir = os.path.join(os.getcwd(), 'report')
@@ -135,7 +136,7 @@ def analysis_pk():
     netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
     netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
     betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
-    runningTime = (0, request.cookies.get('runningTime'))[request.cookies.get('runningTime') not in [None, 'NaN']]
+    duration = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
     solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
     host_switch = request.cookies.get('host_switch')
     report_dir = os.path.join(os.getcwd(), 'report')
@@ -166,13 +167,18 @@ def analysis_compare():
     netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
     netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
     betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
-    runningTime = (0, request.cookies.get('runningTime'))[request.cookies.get('runningTime') not in [None, 'NaN']]
+    duration = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
     solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
     host_switch = request.cookies.get('host_switch')
-    if platform == 'Android':
-        apm_data1 = f._setAndroidPerfs(scene1)
-        apm_data2 = f._setAndroidPerfs(scene2)
-    elif platform == 'iOS':
-        apm_data1 = f._setiOSPerfs(scene1)
-        apm_data2 = f._setiOSPerfs(scene2)   
+    try:
+        if platform == 'Android':
+            apm_data1 = f._setAndroidPerfs(scene1)
+            apm_data2 = f._setAndroidPerfs(scene2)
+        elif platform == 'iOS':
+            apm_data1 = f._setiOSPerfs(scene1)
+            apm_data2 = f._setiOSPerfs(scene2)
+    except ZeroDivisionError:
+        pass 
+    except Exception:
+        traceback.print_exc()          
     return render_template('analysis_compare.html', **locals())

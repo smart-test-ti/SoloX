@@ -86,7 +86,7 @@ class CPU(object):
         appCpuRate = round(float((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
         sysCpuRate = round(float((sysCpuTime_2 - sysCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
         if noLog is False:
-            apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+            apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'cpu_app.log'), apm_time, appCpuRate)
             f.add_log(os.path.join(f.report_dir,'cpu_sys.log'), apm_time, sysCpuRate)
 
@@ -98,7 +98,7 @@ class CPU(object):
         appCpuRate = round(float(apm.getPerformance(apm.cpu)[0]), 2)
         sysCpuRate = round(float(apm.getPerformance(apm.cpu)[1]), 2)
         if noLog is False:
-            apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+            apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'cpu_app.log'), apm_time, appCpuRate)
             f.add_log(os.path.join(f.report_dir,'cpu_sys.log'), apm_time, sysCpuRate)
         return appCpuRate, sysCpuRate
@@ -141,8 +141,7 @@ class MEM(object):
         """Get the app memory"""
         totalPass, nativePass, dalvikPass = self.getAndroidMem() if self.platform == Platform.Android else self.getiOSMem()
         if noLog is False:    
-            time.sleep(1)    
-            apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+            apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'mem_total.log'), apm_time, totalPass)
             if self.platform == Platform.Android:
                 f.add_log(os.path.join(f.report_dir,'mem_native.log'), apm_time, nativePass)
@@ -173,8 +172,7 @@ class Battery(object):
         level = int(re.findall(u'level:\s?(\d+)', output)[0])
         temperature = int(re.findall(u'temperature:\s?(\d+)', output)[0]) / 10
         if noLog is False:
-             time.sleep(1)
-             apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+             apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
              f.add_log(os.path.join(f.report_dir,'battery_level.log'), apm_time, level)
              f.add_log(os.path.join(f.report_dir,'battery_tem.log'), apm_time, temperature)
         return level, temperature
@@ -188,8 +186,7 @@ class Battery(object):
         voltage = m._setValue(ioDict['Diagnostics']['IORegistry']['Voltage'])
         power = current * voltage / 1000
         if noLog is False:
-            time.sleep(1)
-            apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+            apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'battery_tem.log'), apm_time, tem) # unknown
             f.add_log(os.path.join(f.report_dir,'battery_current.log'), apm_time, current) #mA
             f.add_log(os.path.join(f.report_dir,'battery_voltage.log'), apm_time, voltage) #mV
@@ -250,7 +247,7 @@ class Flow(object):
         """Get the upflow and downflow data, unit:KB"""
         sendNum, recNum = self.getAndroidNet(wifi) if self.platform == Platform.Android else self.getiOSNet()
         if noLog is False:
-            apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+            apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'upflow.log'), apm_time, sendNum)
             f.add_log(os.path.join(f.report_dir,'downflow.log'), apm_time, recNum)
         return sendNum, recNum
@@ -271,8 +268,7 @@ class FPS(object):
         monitors.start()
         fps, jank = monitors.stop()
         if noLog is False:
-            time.sleep(1)
-            apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+            apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'fps.log'), apm_time, fps)
             f.add_log(os.path.join(f.report_dir,'jank.log'), apm_time, jank)
         return fps, jank
@@ -282,8 +278,7 @@ class FPS(object):
         apm = iosAPM(self.pkgName)
         fps = int(apm.getPerformance(apm.fps))
         if noLog is False:
-            time.sleep(1)
-            apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+            apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'fps.log'), apm_time, fps)
         return fps, 0
 
@@ -300,8 +295,7 @@ class GPU(object):
         apm = iosAPM(self.pkgName)
         gpu = apm.getPerformance(apm.gpu)
         if noLog is False:
-            time.sleep(1)
-            apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+            apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'gpu.log'), apm_time, gpu)
         return gpu   
 
@@ -371,8 +365,8 @@ class APM(object):
         _memory = MEM(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         result = {}
         while True:
-            totalPass, nativePass, dalvikPass = _memory.getProcessMem(noLog=self.noLog)
-            result = {'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
+            total, native, dalvik = _memory.getProcessMem(noLog=self.noLog)
+            result = {'total': total, 'native': native, 'dalvik': dalvik}
             logger.info(f'memory: {result}')
             if time.time() > self.end_time:
                 break
@@ -400,7 +394,7 @@ class APM(object):
         result = {}
         while True:
             upFlow, downFlow = _flow.getNetWorkData(wifi=wifi,noLog=self.noLog)
-            result = {'upFlow': upFlow, 'downFlow': downFlow}
+            result = {'send': upFlow, 'recv': downFlow}
             logger.info(f'network: {result}')
             if time.time() > self.end_time:
                 break

@@ -23,7 +23,7 @@ def setCookie():
     netdataRecvWarning = request.args.get('netdataRecvWarning')
     netdataSendWarning = request.args.get('netdataSendWarning')
     betteryWarning = request.args.get('betteryWarning')
-    runningTime = request.args.get('runningTime')
+    duration = request.args.get('duration')
     solox_host = request.args.get('solox_host')
     host_switch = request.args.get('host_switch')
 
@@ -34,7 +34,7 @@ def setCookie():
     resp.set_cookie('netdataRecvWarning', netdataRecvWarning)
     resp.set_cookie('netdataSendWarning', netdataSendWarning)
     resp.set_cookie('betteryWarning', betteryWarning)
-    resp.set_cookie('runningTime', runningTime)
+    resp.set_cookie('duration', duration)
     resp.set_cookie('solox_host', solox_host)
     resp.set_cookie('host_switch', host_switch)
     return resp
@@ -91,6 +91,21 @@ def deviceids():
         result = {'status': 0, 'msg': 'devices connect error!'}
     return result
 
+# @api.route('/device/tcp/connect', methods=['post', 'get'])
+# def tcpConnect():
+#     """tcp connect """
+#     deviceid = method._request(request, 'deviceid')
+#     port = method._request(request, 'port')
+#     try:
+#         final = d.tcpConnect(deviceId=deviceid, port=port)
+#         if final == 0:
+#             result = {'status': 1, 'msg': 'success'}
+#         else:
+#             result = {'status': 0, 'msg': 'connect failed'}
+#     except Exception as e:
+#          traceback.print_exc()
+#          result = {'status': 0, 'msg': e}            
+#     return result
 
 @api.route('/device/packagenames', methods=['post', 'get'])
 def packageNames():

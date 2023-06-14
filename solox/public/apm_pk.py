@@ -72,7 +72,7 @@ class CPU_PK:
         appCpuRate1 = round(float((processCpuTime1_second - processCpuTime1_first) / (totalCpuTime1_second - totalCpuTime1_first) * 100), 2)
         appCpuRate2 = round(float((processCpuTime2_second - processCpuTime2_first) / (totalCpuTime2_second - totalCpuTime2_first) * 100), 2)
         
-        apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+        apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
         f.add_log(f'{f.report_dir}/cpu_app1.log', apm_time, appCpuRate1)
         f.add_log(f'{f.report_dir}/cpu_app2.log', apm_time, appCpuRate2)
 
@@ -104,7 +104,7 @@ class MEM_PK:
             totalPass1 = self.getAndroidMem(self.pkgNameList[0], self.deviceId1)
             totalPass2 = self.getAndroidMem(self.pkgNameList[1], self.deviceId2)
         
-        apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+        apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
         f.add_log(f'{f.report_dir}/mem1.log', apm_time, totalPass1)
         f.add_log(f'{f.report_dir}/mem2.log', apm_time, totalPass2)
 
@@ -145,7 +145,7 @@ class Flow_PK:
             network1 = self.getAndroidNet(self.pkgNameList[0], self.deviceId1)
             network2 = self.getAndroidNet(self.pkgNameList[1], self.deviceId2)
         
-        apm_time = datetime.datetime.now().strftime('%H:%M:%S')    
+        apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')    
         f.add_log(f'{f.report_dir}/network1.log', apm_time, network1)
         f.add_log(f'{f.report_dir}/network2.log', apm_time, network2)
         return network1, network2
@@ -178,7 +178,7 @@ class FPS_PK:
             fps1 = self.getAndroidFps(pkgName=self.pkgNameList[0], deviceId=self.deviceId1)
             fps2 = self.getAndroidFps(pkgName=self.pkgNameList[1], deviceId=self.deviceId2)
         
-        apm_time = datetime.datetime.now().strftime('%H:%M:%S')
+        apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
         f.add_log(f'{f.report_dir}/fps1.log', apm_time, fps1)
         f.add_log(f'{f.report_dir}/fps2.log', apm_time, fps2)
 
