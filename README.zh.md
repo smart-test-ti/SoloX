@@ -22,7 +22,7 @@ SoloX - Android/iOS性能数据的实时采集工具。
 
 我们致力于解决低效、繁琐的测试执行问题，我们的目标是在【Simple Test In SoloX】
 
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1662348054846-b0164165-e83a-443e-9a05-8c1f9ddb355f.png?x-oss-process=image%2Fresize%2Cw_1500%2Climit_0"  width="100%" >
+![preview](https://github.com/smart-test-ti/SoloX/assets/24454096/79964f92-de3a-435f-b6ab-3d39ac8da425)
 
 ## 📦环境
 
