@@ -119,10 +119,11 @@ def startServer(host: str, port: int):
 def main(host=hostIP(), port=50003):
     try:
         listeningPort(port=port)
-        with multiprocessing.Pool(processes=2) as pool:
-            pool.apply_async(startServer, (host, port))
-            pool.apply_async(openUrl, (host, port))
-            pool.join()
+        pool = multiprocessing.Pool(processes=2)
+        pool.apply_async(startServer, (host, port))
+        pool.apply_async(openUrl, (host, port))
+        pool.close()
+        pool.join()
     except Exception as e:
         logger.exception(e)
     except KeyboardInterrupt:
