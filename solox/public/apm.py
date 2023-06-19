@@ -79,7 +79,7 @@ class CPU(object):
         processCpuTime_1 = self.getprocessCpuStat()
         totalCpuTime_1 = self.getTotalCpuStat()
         sysCpuTime_1 = self.getSysCpuStat()
-        time.sleep(1)
+        time.sleep(0.5)
         processCpuTime_2 = self.getprocessCpuStat()
         totalCpuTime_2 = self.getTotalCpuStat()
         sysCpuTime_2 = self.getSysCpuStat()

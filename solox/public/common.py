@@ -704,8 +704,8 @@ class Install:
                          pbar.update(1024)
             pbar.close()
             return True
-        except:
-            traceback.print_exc()
+        except Exception as e:
+            logger.exception(e)
             return False
 
     def installAPK(self, path):

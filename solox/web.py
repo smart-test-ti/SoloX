@@ -16,6 +16,7 @@ from logzero import logger
 from threading import Lock
 from flask_socketio import SocketIO, disconnect
 from flask import Flask
+from pyfiglet import Figlet
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.register_blueprint(api)
@@ -108,6 +109,8 @@ def openUrl(host: str, port: int):
     flag = True
     while flag:
         logger.info('Start solox server ...')
+        f = Figlet(font="slant", width=300)
+        print(f.renderText("SOLOX 2. 6. 7"))
         flag = getServerStatus(host, port)
     webbrowser.open('http://{}:{}/?platform=Android&lan=en'.format(host, port), new=2)
     logger.info('Running on http://{}:{}/?platform=Android&lan=en (Press CTRL+C to quit)'.format(host, port))

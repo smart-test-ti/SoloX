@@ -208,7 +208,7 @@
     </div>
     <div class="card mem-card mt-3">
         <div class="card-header">
-            <div class='card-title'>MEM（MB）: Total Usage</div>
+            <div class='card-title'>Memory（MB）: Total Usage</div>
             <div class="card-actions btn-actions">
                 <a class="btn-action cursor-pointer" id="mem_loading">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
@@ -374,7 +374,7 @@
         return options
     }
 
-    var cpu_chart = new ApexCharts(document.querySelector("#chart-cpu"), options('bar'));
+    var cpu_chart = new ApexCharts(document.querySelector("#chart-cpu"), options('line'));
     cpu_chart.render();
     $('#cpu_loading').click(function () {
         $.ajax({
@@ -406,7 +406,7 @@
         });
     });
     
-    var battery_chart = new ApexCharts(document.querySelector("#chart-battery"), options('bar'));
+    var battery_chart = new ApexCharts(document.querySelector("#chart-battery"), options('line'));
         battery_chart.render();
         $('#battery_loading').click(function () {
             $.ajax({
@@ -438,7 +438,7 @@
             });
         });
     if(platform == 'iOS'){
-        var gpu_chart = new ApexCharts(document.querySelector("#chart-gpu"), options('bar'));
+        var gpu_chart = new ApexCharts(document.querySelector("#chart-gpu"), options('line'));
         gpu_chart.render();
         $('#gpu_loading').click(function () {
             $.ajax({
@@ -471,7 +471,7 @@
         });
     }
 
-    var fps_chart = new ApexCharts(document.querySelector("#chart-fps"), options('bar'));
+    var fps_chart = new ApexCharts(document.querySelector("#chart-fps"), options('line'));
     fps_chart.render();
     $('#fps_loading').click(function () {
         $.ajax({
@@ -503,7 +503,7 @@
         });
     });
 
-    var mem_chart = new ApexCharts(document.querySelector("#chart-mem"), options('bar'));
+    var mem_chart = new ApexCharts(document.querySelector("#chart-mem"), options('line'));
     mem_chart.render();
     $('#mem_loading').click(function () {
         $.ajax({
@@ -535,7 +535,7 @@
         });
     });
 
-    var network_recv_chart = new ApexCharts(document.querySelector("#chart-networkdata-recv"), options('bar',false));
+    var network_recv_chart = new ApexCharts(document.querySelector("#chart-networkdata-recv"), options('line',false));
     network_recv_chart.render();
     $('#networkdata_recv_loading').click(function () {
         $.ajax({
@@ -567,7 +567,7 @@
         });
     });
 
-    var network_send_chart = new ApexCharts(document.querySelector("#chart-networkdata-send"), options('bar',false));
+    var network_send_chart = new ApexCharts(document.querySelector("#chart-networkdata-send"), options('line',false));
     network_send_chart.render();
     $('#networkdata_send_loading').click(function () {
         $.ajax({

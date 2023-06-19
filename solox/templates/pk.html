@@ -550,7 +550,7 @@
 
     function memInitialize(){
         //初始化mem
-        let mem_chart = chartsInitialize('mem','MEM（MB）');
+        let mem_chart = chartsInitialize('mem','Memory（MB）');
         return mem_chart
     }
 
@@ -649,7 +649,7 @@
 
     function collectMem(device,pkgname){
         memInitialize();
-        mem_chart = collectPers(device,pkgname,'mem','MEM（MB）',getMemPss(pkgname,device));
+        mem_chart = collectPers(device,pkgname,'mem','Memory（MB）',getMemPss(pkgname,device));
     }
 
     function collectNetwork(device,pkgname){

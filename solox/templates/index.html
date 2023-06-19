@@ -509,7 +509,7 @@ SoloX - APM
                                 y_sys = data['systemCpuRate'];
                             app_series.addPoint([x, y_app], true, true);
                             sys_series.addPoint([x, y_sys], true, true);
-                            timerQ = setTimeout(getCpuRate(pkgname,device), 1500);
+                            timerQ = setTimeout(getCpuRate(pkgname,device), 1000);
                         }catch (e) {}
                     }else{
                         SwalFire('error','something error',data['msg'],2000);
@@ -600,7 +600,7 @@ SoloX - APM
                                 seriesVoltage.addPoint([x, y_voltage], true, true);
                                 seriesPower.addPoint([x, y_power], true, true);
                             } 
-                            timerQ = setTimeout(getBattery(device), 10000);
+                            timerQ = setTimeout(getBattery(device), 1000);
                         }catch (e) {}
                     }else{
                         SwalFire('error','something error',data['msg'],2000);
@@ -656,7 +656,7 @@ SoloX - APM
                                     y = data['totalPass'];
                                 series.addPoint([x, y], true, true);
                             }
-                            timerQ = setTimeout(getMemPss(pkgname,device), 1500);
+                            timerQ = setTimeout(getMemPss(pkgname,device), 1000);
 
                         }catch (e) {}
                     }else{
@@ -734,7 +734,7 @@ SoloX - APM
                                 y_down = data['downflow'];
                             seriesUpFlow.addPoint([x_up, y_up], true, true);
                             seriesDownFlow.addPoint([x_down, y_down], true, true);
-                            timerQ = setTimeout(getNetWork(pkgname,device,net_switch), 1500);
+                            timerQ = setTimeout(getNetWork(pkgname,device,net_switch), 1000);
                         }catch (e) {
                             console.log(e)
                         }
@@ -781,7 +781,7 @@ SoloX - APM
                                     y_jank = data['jank'];
                                 seriesJank.addPoint([x_jsnk, y_jank], true, true);
                             }
-                            timerQ = setTimeout(getFps(pkgname,device,fps_switch), 1500);
+                            timerQ = setTimeout(getFps(pkgname,device,fps_switch), 1000);
                         }catch (e) {}
                     }else{
                         SwalFire('error','something error',data['msg'],2000);
