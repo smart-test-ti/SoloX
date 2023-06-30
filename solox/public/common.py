@@ -8,7 +8,6 @@ import requests
 from logzero import logger
 from solox.public.adb import adb
 from tqdm import tqdm
-import traceback
 import socket
 from urllib.request import urlopen
 import ssl
@@ -30,7 +29,7 @@ class Devices:
     def execCmd(self, cmd):
         """Execute the command to get the terminal print result"""
         r = os.popen(cmd)
-        text = r.read().strip()
+        text = r.buffer.read().decode(encoding='utf-8').strip()
         r.close()
         return text
 
@@ -67,7 +66,7 @@ class Devices:
         if platform == Platform.Android:
             deviceId = re.sub(u"\\(.*?\\)|\\{.*?}|\\[.*?]", "", deviceinfo)
             if deviceId not in self.getDeviceIds():
-                raise Exception('no found device: %s'.format(deviceId))
+                raise Exception('no device found')
         else:
             deviceId = deviceinfo.split(':')[1]
         return deviceId
@@ -79,9 +78,9 @@ class Devices:
             processList = ['{}:{}'.format(process.split()[1],process.split()[7]) for process in result]
             processList.reverse()
             if len(processList) == 0:
-               logger.warning('no pid found')     
-        except Exception:
-            traceback.print_exc()
+               logger.warning('{}: no pid found'.format(pkgName))     
+        except Exception as e:
+            logger.exception(e)
         return processList
 
     def checkPkgname(self, pkgname):
@@ -119,7 +118,7 @@ class Devices:
         pkgNames = [pkgResult[i].split(' ')[0] for i in range(len(pkgResult))]
         return pkgNames
     
-    def localIP(self):
+    def get_pc_ip(self):
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             s.connect(('8.8.8.8', 80))
@@ -131,13 +130,14 @@ class Devices:
             s.close()
         return ip
     
-    def tcpConnect(self, deviceId, port):
-        logger.info('TCP mode port')
-        adb.tcp_shell(deviceId=deviceId, cmd='tcpip {}'.format(port))
-        logger.info('Connect result')
-        result = adb.tcp_shell(cmd='connect {}:{}'.format(self.localIP(), port))
-        return result
-
+    def get_device_ip(self, deviceId):
+        content = os.popen(f"{self.adb} -s {deviceId} shell ip addr show wlan0").read()
+        logger.info(content)
+        math_obj = re.search(r'inet\s(\d+\.\d+\.\d+\.\d+).*?wlan0', content)
+        if math_obj and math_obj.group(1):
+            return math_obj.group(1)
+        return None
+    
     def devicesCheck(self, platform, deviceid=None, pkgname=None):
         """Check the device environment"""
         match(platform):
@@ -675,6 +675,21 @@ class Method:
         except Exception:
             result = default            
         return result
+    
+    @classmethod
+    def _get_setting(cls, request):
+        content = {}
+        content['cpuWarning'] = (0, request.cookies.get('cpuWarning'))[request.cookies.get('cpuWarning') not in [None, 'NaN']]
+        content['memWarning'] = (0, request.cookies.get('memWarning'))[request.cookies.get('memWarning') not in [None, 'NaN']]
+        content['fpsWarning'] = (0, request.cookies.get('fpsWarning'))[request.cookies.get('fpsWarning') not in [None, 'NaN']]
+        content['netdataRecvWarning'] = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
+        content['netdataSendWarning'] = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
+        content['betteryWarning'] = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
+        content['duration'] = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
+        content['solox_host'] = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
+        content['host_switch'] = request.cookies.get('host_switch')
+        return content        
+
 
 class Install:
 
@@ -683,8 +698,8 @@ class Install:
         try:
             file_obj.save(file_path)
             return True
-        except:
-            traceback.print_exc()
+        except Exception as e:
+            logger.exception(e)
             return False            
 
     def downloadLink(self,filelink=None, path=None, name=None):
@@ -723,22 +738,3 @@ class Install:
             return True, result
         else:
             return False, result
-
-# class Config:
-
-#     def __init__(self):
-#         self.configRoot = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config')
-
-#     def get_devices(self):
-#         config_path = os.path.join(self.configRoot, 'devices.json')
-#         content = {}
-#         with open(config_path, "r", encoding="utf-8") as f:
-#             content = json.load(f)
-#         devices = content['content']    
-#         return devices
-
-#     def set_devices(self):
-#         pass
-
-#     def remove_device(self, deviceid):
-#         pass    

@@ -38,7 +38,7 @@ We are committed to solving inefficient, cumbersome test execution, and our goal
 ### default
 
 ```shell
-pip install -U solox  (pip install solox==2.6.4)
+pip install -U solox    (pip install solox==2.6.8)
 ```
 
 ### mirrors

@@ -38,7 +38,7 @@ SoloX - Android/iOS性能数据的实时采集工具。
 ### 默认
 
 ```shell
-pip install -U solox (指定版本：pip install solox==2.6.4)
+pip install -U solox (指定版本：pip install solox==2.6.8)
 ```
 
 ### 镜像

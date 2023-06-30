@@ -4,7 +4,7 @@
 {% if lan == 'cn' %}
 SoloX - 性能测试
 {% else %}
-SoloX - APM
+SoloX - Application Performance Monitoring
 {% endif %}
 {% endblock %}
 
@@ -58,6 +58,13 @@ SoloX - APM
 {% endblock %}
 
 {% block ms_auto %}
+{% if platform == 'Android' %}
+<div class="ms-auto d-print-none  col-auto">
+    <a  class="cursor-pointer"  data-bs-toggle="modal" data-bs-target="#modal-scrollable">
+        <svg t="1687917727817" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2540" width="50" height="50"><path d="M861.12 596.608L786.176 678.4c-139.936-158.4-387.04-158.4-526.976 0l-74.976-81.824c179.776-203.52 497.184-203.52 676.96 0z" fill="#080808" p-id="2541"></path><path d="M1011.808 432.896l-75.328 80.544c-219.776-248.864-607.872-248.864-827.616 0l-75.328-80.544c259.616-294.4 718.624-294.4 978.24 0z" fill="#080808" p-id="2542"></path><path d="M422.784 716.128c-50.08 50.048-50.08 128.32 0 178.4 50.08 50.08 128.32 50.08 178.432 0 50.048-50.08 50.048-128.32 0-178.4-53.248-50.24-131.52-50.24-178.432 0z" fill="#FFA115" p-id="2543"></path></svg>
+    </a>
+</div>
+{% endif %}
 <div class="ms-auto d-print-none  col-auto">
     <a class="btn btn-default" id="debug-connect">
         <svg t="1638091545450" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="231707" width="200" height="200"><path d="M207.67511 241.617978v295.694382c0 15.532584 4.602247 31.065169 13.231461 43.721348L296.268369 676.530337c13.806742 20.134831 36.242697 32.21573 60.404494 32.21573h109.303371c24.161798 0 46.597753-12.080899 60.404494-32.21573L601.742526 581.033708c8.629213-12.65618 13.231461-28.188764 13.231461-43.721348V241.617978H207.67511z" fill="#4988FD" p-id="231708"></path><path d="M253.122301 4.026966h317.555056V241.617978H253.122301z" fill="#C5DCFA" p-id="231709"></path><path d="M344.016683 184.089888c-9.204494 0-16.683146-7.478652-16.683146-16.683146V83.41573c0-9.204494 7.478652-16.683146 16.683146-16.683146 9.204494 0 16.683146 7.478652 16.683146 16.683146v83.991012c0 9.204494-7.478652 16.683146-16.683146 16.683146zM476.906571 184.089888c-9.204494 0-16.683146-7.478652-16.683146-16.683146V83.41573c0-9.204494 7.478652-16.683146 16.683146-16.683146 9.204494 0 16.683146 7.478652 16.683146 16.683146v83.991012c0 9.204494-7.478652 16.683146-16.683146 16.683146z" fill="#FFFFFF" p-id="231710"></path><path d="M606.344773 1023.424719c-118.507865 0-214.579775-96.07191-214.579775-214.579775v-28.188764c0-12.080899 9.779775-21.860674 21.860674-21.860674 12.080899 0 21.860674 9.779775 21.860674 21.860674v28.188764c0 93.770787 76.51236 170.283146 170.283146 170.283146s170.283146-76.51236 170.283146-170.283146v-231.262922c0-12.080899 9.779775-21.860674 21.860674-21.860674 12.080899 0 21.860674 9.779775 21.860675 21.860674v231.262922c0.575281 118.507865-95.496629 214.579775-213.429214 214.579775z" fill="#C5DCFA" p-id="231711"></path><path d="M439.513312 780.65618h-52.925842c-12.65618 0-23.011236-10.355056-23.011236-23.011236v-48.898877h98.373033v48.898877c0.575281 12.65618-9.779775 23.011236-22.435955 23.011236z" fill="#2767F4" p-id="231712"></path><path d="M411.899829 604.620225c-9.204494 0-16.683146-7.478652-16.683146-16.683146V335.388764c0-9.204494 7.478652-16.683146 16.683146-16.683146 9.204494 0 16.683146 7.478652 16.683146 16.683146v252.548315c-0.575281 9.779775-7.478652 16.683146-16.683146 16.683146z" fill="#FFFFFF" p-id="231713"></path><path d="M411.899829 528.683146c-3.451685 0-7.478652-1.150562-10.355056-4.026966l-65.582022-54.651686c-4.026966-2.876404-5.752809-8.053933-5.752809-12.656179v-54.076405c0-9.204494 7.478652-16.683146 16.683146-16.683146 9.204494 0 16.683146 7.478652 16.683146 16.683146v46.597753L422.830166 499.34382c6.903371 5.752809 8.053933 16.107865 2.301124 23.586517-4.026966 4.026966-8.629213 5.752809-13.231461 5.752809z" fill="#FFFFFF" p-id="231714"></path><path d="M411.899829 480.934831c-4.602247 0-9.204494-1.725843-12.65618-5.752809-5.752809-6.903371-5.177528-17.258427 1.725843-23.586516l60.979775-51.775281V362.426966c0-9.204494 7.478652-16.683146 16.683146-16.683146 9.204494 0 16.683146 7.478652 16.683147 16.683146v44.87191c0 4.602247-2.301124 9.204494-5.752809 12.65618L422.830166 476.907865c-3.451685 2.876404-7.478652 4.026966-10.930337 4.026966z" fill="#FFFFFF" p-id="231715"></path></svg>
@@ -299,6 +306,20 @@ SoloX - APM
     </div>
   </div>
 </div>
+<div class="modal modal-blur fade" style="margin-top: 20px;margin-right: 20px;" id="modal-scrollable" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog  modal-full-width modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Connect to a Android device over Wi-Fi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <iframe src="https://adbshell.com/commands/adb-connect" width="100%" height="1500px"></iframe>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block js %}
@@ -401,7 +422,7 @@ SoloX - APM
                     if(lan == 'cn' ){
                         SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 2000);
                     }else{
-                        SwalFire('error', 'Connection failed !', 'No pid found', 2000);
+                        SwalFire('error', 'Connect failed !', 'No pid found', 2000);
                     } 
                 }else{
                     for(var i=0;i<data['pids'].length;i++){
@@ -512,7 +533,7 @@ SoloX - APM
                             timerQ = setTimeout(getCpuRate(pkgname,device), 1000);
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','Something error',data['msg'],2000);
                     }
                 }
             },
@@ -547,7 +568,7 @@ SoloX - APM
                             timerQ = setTimeout(getGpu(pkgname), 1000);
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','Something error',data['msg'],2000);
                     }
                 }
             },
@@ -603,7 +624,7 @@ SoloX - APM
                             timerQ = setTimeout(getBattery(device), 1000);
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','Something error',data['msg'],2000);
                     }
                 }
             },
@@ -660,7 +681,7 @@ SoloX - APM
 
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','Something error',data['msg'],2000);
                     }
                 }
             },
@@ -691,7 +712,7 @@ SoloX - APM
             },
             success: function (data) {
                 if(data['status'] != 1){
-                    SwalFire('error','something error',data['msg'],2000);
+                    SwalFire('error','Something error',data['msg'],2000);
                 }
             },
             error: function(error){
@@ -739,7 +760,7 @@ SoloX - APM
                             console.log(e)
                         }
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','Something error',data['msg'],2000);
                     }
                 }
             },
@@ -784,7 +805,7 @@ SoloX - APM
                             timerQ = setTimeout(getFps(pkgname,device,fps_switch), 1000);
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','Something error',data['msg'],2000);
                     }
                 }
             },
@@ -1092,7 +1113,6 @@ SoloX - APM
     }
 
     function chartsInitialize(apmType,title){
-        //charts初始化
         let seriesFinal = series;
         let legend = false;
         let yAxis = {
@@ -1169,28 +1189,24 @@ SoloX - APM
     };
 
     function cpuInitialize(){
-        //初始化cpu
         let type = 'cpu';
         let cpu_chart = chartsInitialize(type,'CPU（%）');
         return cpu_chart
     }
 
     function batteryInitialize(){
-        //初始化battery
         let type = platform == 'Android' ? 'battery_android' : 'battery_ios';
         let battery_chart = chartsInitialize(type,'Battery');
         return battery_chart
     }
 
     function memInitialize(){
-        //初始化mem
         let type = platform == 'Android' ? 'mem_android' : 'mem_ios';
         let mem_chart = chartsInitialize(type,'Memory（MB）');
         return mem_chart
     }
 
     function networkInitialize(){
-        //初始化network
         let network_chart = chartsInitialize('network','Network Data（KB)');
         return network_chart
     }
@@ -1203,7 +1219,6 @@ SoloX - APM
     }
 
     function fpsInitialize(){
-        //初始化fps
         if(platform === 'Android'){
             let title = 'FPS and Jank';
             let fps_chart = chartsInitialize('fps',title);
@@ -1224,7 +1239,6 @@ SoloX - APM
 
 
     function collectPers(device,pkgname=null,type,title,func){
-        // 收集性能数据初始化
         let seriesFinal = series;
         let legend = false;
         let yAxis = {
@@ -1411,6 +1425,7 @@ SoloX - APM
             }
         });
     }
+    
     $('#run-apm').click(function () {
         stop = false;
         $('#stop-apm').show();
@@ -1583,7 +1598,7 @@ SoloX - APM
                 }
             });
         }else{
-            SwalFire('error','Execution error','pkgname is empty',2000)
+            SwalFire('error','Execution error','No package found',2000)
         }
     }
 
@@ -1603,30 +1618,35 @@ SoloX - APM
         var link = $('.app-link').val().trim()
         formData.append('platform','{{ platform }}');
         formData.append('link',link);
-        
-        $.ajax({
-            url: "/apm/install/link",
-            type: "POST",
-            async: true,
-            cache: false,
-            processData: false,
-            contentType: false,
-            data:formData,
-            beforeSend: function () {
-                SwalLoading('Install App!','Installing file to device, please wait a moment.');
+        if(link){
+            $.ajax({
+                url: "/apm/install/link",
+                type: "POST",
+                async: true,
+                cache: false,
+                processData: false,
+                contentType: false,
+                data:formData,
+                beforeSend: function () {
+                    SwalLoading('Install App!','Installing file to device, please wait a moment.');
                 },
-            success: function (data) {
-                console.log(data);
-                if(data['status'] != 1 ) {
-                    SwalFire('error', 'Install failed !', data['msg'], 2000);
-                }else{
-                    SwalFire('success', 'Install success !', '', 2000);
+                success: function (data) {
+                    console.log(data);
+                    if(data['status'] != 1 ) {
+                        SwalFire('error', 'Install failed !', data['msg'], 2000);
+                    }else{
+                        SwalFire('success', 'Install success !', '', 2000);
+                    }
+                },
+                error:function (data) {
+                    SwalFire('error', 'Install failed !', '', 2000);
                 }
-            },
-            error:function (data) {
-                SwalFire('error', 'Install failed !', '', 2000);
-            }
-        });
+            });
+        }else{
+            SwalFire('error', 'Install failed !', 'No link found', 2000);
+        }
+        
+        
     }
 
     function installFile(){

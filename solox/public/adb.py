@@ -81,8 +81,8 @@ class ADB(object):
             0].decode("utf-8").strip()
         return result
     
-    def tcp_shell(self, cmd, deviceId):
-        run_cmd = f'{self.adb_path} -s {deviceId} shell {cmd}'
+    def tcp_shell(self, deviceId, cmd):
+        run_cmd = f'{self.adb_path} -s {deviceId} {cmd}'
         result = os.system(run_cmd)
         return result
 

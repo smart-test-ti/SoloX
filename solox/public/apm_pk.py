@@ -1,5 +1,6 @@
 import datetime
 import re
+import os
 import time
 from solox.public.adb import adb
 from solox.public.common import Devices, File
@@ -52,31 +53,28 @@ class CPU_PK:
         """get the Android cpu rate of a process"""
         processCpuTime1_first = self.getprocessCpuStat(pkgName=self.pkgNameList[0], deviceId=self.deviceId1)
         totalCpuTime1_first = self.getTotalCpuStat(deviceId=self.deviceId1)
-        time.sleep(1)
+        time.sleep(0.5)
         processCpuTime1_second = self.getprocessCpuStat(pkgName=self.pkgNameList[0], deviceId=self.deviceId1)
         totalCpuTime1_second = self.getTotalCpuStat(deviceId=self.deviceId1)
 
         if len(self.pkgNameList) == 1:
             processCpuTime2_first = self.getprocessCpuStat(pkgName=self.pkgNameList[0], deviceId=self.deviceId2)
             totalCpuTime2_first = self.getTotalCpuStat(deviceId=self.deviceId2)
-            time.sleep(1)
+            time.sleep(0.5)
             processCpuTime2_second = self.getprocessCpuStat(pkgName=self.pkgNameList[0], deviceId=self.deviceId2)
             totalCpuTime2_second = self.getTotalCpuStat(deviceId=self.deviceId2)
         else:
             processCpuTime2_first = self.getprocessCpuStat(pkgName=self.pkgNameList[1], deviceId=self.deviceId2)
             totalCpuTime2_first = self.getTotalCpuStat(deviceId=self.deviceId2)
-            time.sleep(1)
+            time.sleep(0.5)
             processCpuTime2_second = self.getprocessCpuStat(pkgName=self.pkgNameList[1], deviceId=self.deviceId2)
             totalCpuTime2_second = self.getTotalCpuStat(deviceId=self.deviceId2)
 
         appCpuRate1 = round(float((processCpuTime1_second - processCpuTime1_first) / (totalCpuTime1_second - totalCpuTime1_first) * 100), 2)
         appCpuRate2 = round(float((processCpuTime2_second - processCpuTime2_first) / (totalCpuTime2_second - totalCpuTime2_first) * 100), 2)
-        
         apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
-        f.add_log(f'{f.report_dir}/cpu_app1.log', apm_time, appCpuRate1)
-        f.add_log(f'{f.report_dir}/cpu_app2.log', apm_time, appCpuRate2)
-
-
+        f.add_log(os.path.join(f.report_dir, 'cpu_app1.log'), apm_time, appCpuRate1)
+        f.add_log(os.path.join(f.report_dir, 'cpu_app2.log'), apm_time, appCpuRate2)
         return appCpuRate1, appCpuRate2
 
 
@@ -103,10 +101,9 @@ class MEM_PK:
         else:
             totalPass1 = self.getAndroidMem(self.pkgNameList[0], self.deviceId1)
             totalPass2 = self.getAndroidMem(self.pkgNameList[1], self.deviceId2)
-        
         apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
-        f.add_log(f'{f.report_dir}/mem1.log', apm_time, totalPass1)
-        f.add_log(f'{f.report_dir}/mem2.log', apm_time, totalPass2)
+        f.add_log(os.path.join(f.report_dir, 'mem1.log'), apm_time, totalPass1)
+        f.add_log(os.path.join(f.report_dir, 'mem1.log'), apm_time, totalPass2)
 
         return totalPass1, totalPass2
 
@@ -126,7 +123,7 @@ class Flow_PK:
         m_pre = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output_pre)
         sendNum_pre = round(float(float(m_pre.group(2)) / 1024), 2)
         recNum_pre = round(float(float(m_pre.group(1)) / 1024), 2)
-        time.sleep(1)
+        time.sleep(0.5)
         output_final = adb.shell(cmd=cmd, deviceId=deviceId)
         m_final = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output_final)
         sendNum_final = round(float(float(m_final.group(2)) / 1024), 2)
@@ -144,10 +141,9 @@ class Flow_PK:
         else:
             network1 = self.getAndroidNet(self.pkgNameList[0], self.deviceId1)
             network2 = self.getAndroidNet(self.pkgNameList[1], self.deviceId2)
-        
         apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')    
-        f.add_log(f'{f.report_dir}/network1.log', apm_time, network1)
-        f.add_log(f'{f.report_dir}/network2.log', apm_time, network2)
+        f.add_log(os.path.join(f.report_dir, 'network1.log'), apm_time, network1)
+        f.add_log(os.path.join(f.report_dir, 'network2.log'), apm_time, network2)
         return network1, network2
 
 
@@ -173,15 +169,12 @@ class FPS_PK:
         if len(self.pkgNameList) == 1:
             fps1 = self.getAndroidFps(pkgName=self.pkgNameList[0], deviceId=self.deviceId1)
             fps2 = self.getAndroidFps(pkgName=self.pkgNameList[0], deviceId=self.deviceId2)
-
         else:
             fps1 = self.getAndroidFps(pkgName=self.pkgNameList[0], deviceId=self.deviceId1)
             fps2 = self.getAndroidFps(pkgName=self.pkgNameList[1], deviceId=self.deviceId2)
-        
         apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
-        f.add_log(f'{f.report_dir}/fps1.log', apm_time, fps1)
-        f.add_log(f'{f.report_dir}/fps2.log', apm_time, fps2)
-
+        f.add_log(os.path.join(f.report_dir, 'fps1.log'), apm_time, fps1)
+        f.add_log(os.path.join(f.report_dir, 'fps2.log'), apm_time, fps2)
         return fps1, fps2
 
 

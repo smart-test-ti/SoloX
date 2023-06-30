@@ -130,7 +130,7 @@
                         </li>
                         <li class="list-inline-item">
                             <a href="https://github.com/smart-test-ti/SoloX/releases" target="_blank" class="link-secondary" rel="noopener">
-                                {% if lan == 'cn' %} 版本 {% else %} Releases {% endif %} . V2.6.7
+                                {% if lan == 'cn' %} 版本 {% else %} Releases {% endif %} . V2.6.8
                             </a>
                         </li>
                     </ul>
@@ -169,27 +169,27 @@
                         <div class="col-md-6 col-xl-12">
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} CPU告警值 {% else %} CPU warning value {% endif %}</label>
-                                <input id="cpu_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ cpuWarning }}">
+                                <input id="cpu_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.cpuWarning }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} 内存告警值 {% else %} Memory warning value {% endif %}</label>
-                                <input id="mem_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ memWarning }}">
+                                <input id="mem_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.memWarning }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} FPS告警值 {% else %} FPS warning value {% endif %}</label>
-                                <input id="fps_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ fpsWarning }}">
+                                <input id="fps_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.fpsWarning }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} 电量告警值 {% else %} Battery warning value {% endif %}</label>
-                                <input id="battery_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ betteryWarning }}">
+                                <input id="battery_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.betteryWarning }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} 上行流量告警值 {% else %} Send network data warning value {% endif %}</label>
-                                <input id="upflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ netdataSendWarning }}">
+                                <input id="upflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.netdataSendWarning }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} 下行流量告警值 {% else %} Recv network data warning value {% endif %}</label>
-                                <input id="downflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ netdataRecvWarning }}">
+                                <input id="downflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.netdataRecvWarning }}">
                             </div>
                         </div>
                     </div>
@@ -202,7 +202,7 @@
                         <div class="col-md-6 col-xl-12">
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} 持续执行时间（分钟） {% else %} Duration（minutes） {% endif %}</label>
-                                <input id="duration" type="text" class="form-control"  placeholder="Input placeholder" value="{{ duration }}">
+                                <input id="duration" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.duration }}">
                             </div>
                         </div>
                     </div>
@@ -225,11 +225,11 @@
                                         <svg t="1680252875419" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="19154" width="50" height="50"><path d="M471.04 727.04h81.92v184.32h-81.92z" p-id="19155"></path><path d="M307.2 911.36m30.72 0l348.16 0q30.72 0 30.72 30.72l0 0q0 30.72-30.72 30.72l-348.16 0q-30.72 0-30.72-30.72l0 0q0-30.72 30.72-30.72Z" p-id="19156"></path><path d="M20.48 51.2m51.2 0l880.64 0q51.2 0 51.2 51.2l0 573.44q0 51.2-51.2 51.2l-880.64 0q-51.2 0-51.2-51.2l0-573.44q0-51.2 51.2-51.2Z" p-id="19157"></path><path d="M122.88 645.12m20.48 0l737.28 0q20.48 0 20.48 20.48l0 0q0 20.48-20.48 20.48l-737.28 0q-20.48 0-20.48-20.48l0 0q0-20.48 20.48-20.48Z" fill="#EBBA50" p-id="19158"></path></svg>
                                     </td>
                                     <td>
-                                        <input id="host" type="text" class="form-control form-control-sm" placeholder="ex : 192.168.10.10:6006" value="{{ solox_host }}">
+                                        <input id="host" type="text" class="form-control form-control-sm" placeholder="ex : 192.168.10.10:6006" value="{{ settings.solox_host }}">
                                     </td>
                                     <td>
                                         <label class="form-check  form-switch">
-                                            {% if host_switch == '1' %}
+                                            {% if settings.host_switch == '1' %}
                                             <input  class="form-check-input host_switch" type="checkbox" checked>
                                             {% else %}
                                             <input  class="form-check-input host_switch" type="checkbox">

@@ -1,11 +1,10 @@
 import json
 import os
-import traceback
 from flask import Blueprint
 from flask import render_template
 from flask import request
-from solox.public.common import Devices,File,Method
 from logzero import logger
+from solox.public.common import Devices,File,Method
 
 page = Blueprint("page", __name__)
 d = Devices()
@@ -26,45 +25,21 @@ def page_500(e):
 def index():
     platform = request.args.get('platform')
     lan = request.args.get('lan')
-    cpuWarning = (0, request.cookies.get('cpuWarning'))[request.cookies.get('cpuWarning') not in [None, 'NaN']]
-    memWarning = (0, request.cookies.get('memWarning'))[request.cookies.get('memWarning') not in [None, 'NaN']]
-    fpsWarning = (0, request.cookies.get('fpsWarning'))[request.cookies.get('fpsWarning') not in [None, 'NaN']]
-    netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
-    netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
-    betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
-    duration = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
-    solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
-    host_switch = request.cookies.get('host_switch')
+    settings = m._get_setting(request)
     return render_template('index.html', **locals())
 
 @page.route('/pk')
 def pk():
     lan = request.args.get('lan')
     model = request.args.get('model')
-    cpuWarning = (0, request.cookies.get('cpuWarning'))[request.cookies.get('cpuWarning') not in [None, 'NaN']]
-    memWarning = (0, request.cookies.get('memWarning'))[request.cookies.get('memWarning') not in [None, 'NaN']]
-    fpsWarning = (0, request.cookies.get('fpsWarning'))[request.cookies.get('fpsWarning') not in [None, 'NaN']]
-    netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
-    netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
-    betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
-    duration = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
-    solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
-    host_switch = request.cookies.get('host_switch')
+    settings = m._get_setting(request)
     return render_template('pk.html', **locals())
 
 
 @page.route('/report')
 def report():
     lan = request.args.get('lan')
-    cpuWarning = (0, request.cookies.get('cpuWarning'))[request.cookies.get('cpuWarning') not in [None, 'NaN']]
-    memWarning = (0, request.cookies.get('memWarning'))[request.cookies.get('memWarning') not in [None, 'NaN']]
-    fpsWarning = (0, request.cookies.get('fpsWarning'))[request.cookies.get('fpsWarning') not in [None, 'NaN']]
-    netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
-    netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
-    betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
-    duration = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
-    solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
-    host_switch = request.cookies.get('host_switch')
+    settings = m._get_setting(request)
     report_dir = os.path.join(os.getcwd(), 'report')
     if not os.path.exists(report_dir):
         os.mkdir(report_dir)
@@ -86,8 +61,8 @@ def report():
                 }
                 fpath.close()
                 apm_data.append(dict_data)
-            except Exception:
-                traceback.print_exc()
+            except Exception as e:
+                logger.exception(e)
                 continue
     apm_data_len = len(apm_data)
     return render_template('report.html', **locals())
@@ -99,15 +74,7 @@ def analysis():
     scene = request.args.get('scene')
     app = request.args.get('app')
     platform = request.args.get('platform')
-    cpuWarning = (0, request.cookies.get('cpuWarning'))[request.cookies.get('cpuWarning') not in [None, 'NaN']]
-    memWarning = (0, request.cookies.get('memWarning'))[request.cookies.get('memWarning') not in [None, 'NaN']]
-    fpsWarning = (0, request.cookies.get('fpsWarning'))[request.cookies.get('fpsWarning') not in [None, 'NaN']]
-    netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
-    netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
-    betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
-    duration = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
-    solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
-    host_switch = request.cookies.get('host_switch')
+    settings = m._get_setting(request)
     report_dir = os.path.join(os.getcwd(), 'report')
     dirs = os.listdir(report_dir)
     filter_dir = f.filter_secen(scene)
@@ -118,8 +85,8 @@ def analysis():
                 apm_data = f._setAndroidPerfs(scene) if platform == 'Android' else f._setiOSPerfs(scene)
             except ZeroDivisionError:
                 pass    
-            except Exception:
-                traceback.print_exc()
+            except Exception as e:
+                logger.exception(e)
             finally:
                 break
     return render_template('analysis.html', **locals())
@@ -130,15 +97,7 @@ def analysis_pk():
     scene = request.args.get('scene')
     app = request.args.get('app')
     model = request.args.get('model')
-    cpuWarning = (0, request.cookies.get('cpuWarning'))[request.cookies.get('cpuWarning') not in [None, 'NaN']]
-    memWarning = (0, request.cookies.get('memWarning'))[request.cookies.get('memWarning') not in [None, 'NaN']]
-    fpsWarning = (0, request.cookies.get('fpsWarning'))[request.cookies.get('fpsWarning') not in [None, 'NaN']]
-    netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
-    netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
-    betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
-    duration = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
-    solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
-    host_switch = request.cookies.get('host_switch')
+    settings = m._get_setting(request)
     report_dir = os.path.join(os.getcwd(), 'report')
     dirs = os.listdir(report_dir)
     apm_data = {}
@@ -146,8 +105,8 @@ def analysis_pk():
         if dir == scene:
             try:
                 apm_data = f._setpkPerfs(scene)
-            except Exception:
-                traceback.print_exc()
+            except Exception as e:
+                logger.exception(e)
             finally:
                 break
     return render_template('analysis_pk.html', **locals())
@@ -161,15 +120,7 @@ def analysis_compare():
     scene1 = request.args.get('scene1')
     scene2 = request.args.get('scene2')
     app = request.args.get('app')
-    cpuWarning = (0, request.cookies.get('cpuWarning'))[request.cookies.get('cpuWarning') not in [None, 'NaN']]
-    memWarning = (0, request.cookies.get('memWarning'))[request.cookies.get('memWarning') not in [None, 'NaN']]
-    fpsWarning = (0, request.cookies.get('fpsWarning'))[request.cookies.get('fpsWarning') not in [None, 'NaN']]
-    netdataRecvWarning = (0, request.cookies.get('netdataRecvWarning'))[request.cookies.get('netdataRecvWarning') not in [None, 'NaN']]
-    netdataSendWarning = (0, request.cookies.get('netdataSendWarning'))[request.cookies.get('netdataSendWarning') not in [None, 'NaN']]
-    betteryWarning = (0, request.cookies.get('betteryWarning'))[request.cookies.get('betteryWarning') not in [None, 'NaN']]
-    duration = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
-    solox_host = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
-    host_switch = request.cookies.get('host_switch')
+    settings = m._get_setting(request)
     try:
         if platform == 'Android':
             apm_data1 = f._setAndroidPerfs(scene1)
@@ -179,6 +130,6 @@ def analysis_compare():
             apm_data2 = f._setiOSPerfs(scene2)
     except ZeroDivisionError:
         pass 
-    except Exception:
-        traceback.print_exc()          
+    except Exception as e:
+        logger.exception(e)          
     return render_template('analysis_compare.html', **locals())

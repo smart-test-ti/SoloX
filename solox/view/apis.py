@@ -4,7 +4,6 @@ import time
 from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
-import traceback
 from solox.public.apm import CPU, MEM, Flow, FPS, Battery, GPU, Target
 from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
 from solox.public.common import Devices, File, Method, Install, Platform
@@ -47,9 +46,8 @@ def initialize():
         f.clear_file()
         result = {'status': 1, 'msg': 'initialize env success'}
     except Exception as e:
-        traceback.print_exc()
+        logger.exception(e)
         result = {'status': 0, 'msg': str(e)}
-
     return result
 
 
@@ -86,26 +84,10 @@ def deviceids():
                     result = {'status': 0, 'msg': 'no devices'}
             case _:
                 result = {'status': 0, 'msg': f'no this platform = {platform}'}        
-    except Exception:
-        traceback.print_exc()
+    except Exception as e:
+        logger.exception(e)
         result = {'status': 0, 'msg': 'devices connect error!'}
     return result
-
-# @api.route('/device/tcp/connect', methods=['post', 'get'])
-# def tcpConnect():
-#     """tcp connect """
-#     deviceid = method._request(request, 'deviceid')
-#     port = method._request(request, 'port')
-#     try:
-#         final = d.tcpConnect(deviceId=deviceid, port=port)
-#         if final == 0:
-#             result = {'status': 1, 'msg': 'success'}
-#         else:
-#             result = {'status': 0, 'msg': 'connect failed'}
-#     except Exception as e:
-#          traceback.print_exc()
-#          result = {'status': 0, 'msg': e}            
-#     return result
 
 @api.route('/device/packagenames', methods=['post', 'get'])
 def packageNames():
@@ -135,8 +117,8 @@ def getPackagePids():
         deviceId = d.getIdbyDevice(device, platform)
         pids = d.getPid(deviceId, pkgname)
         result = {'status': 1, 'pids': pids} 
-    except Exception:
-        traceback.print_exc()
+    except Exception as e:
+        logger.exception(e)
         result = {'status': 0, 'msg': 'no pid found'} 
     return result        
 
@@ -148,8 +130,8 @@ def getPackageActivity():
         deviceId = d.getIdbyDevice(device, platform)
         activity = d.getCurrentActivity(deviceId)
         result = {'status': 1, 'activity': activity} 
-    except Exception:
-        traceback.print_exc()
+    except Exception as e:
+        logger.exception(e)
         result = {'status': 0, 'msg': 'no activity found'} 
     return result
 
@@ -163,8 +145,8 @@ def getStartupTimeByAndroid():
         deviceId = d.getIdbyDevice(device, platform)
         time = d.getStartupTimeByAndroid(activity, deviceId)
         result = {'status': 1, 'time': time} 
-    except Exception:
-        traceback.print_exc()
+    except Exception as e:
+        logger.exception(e)
         result = {'status': 0, 'msg': 'no result found'} 
     return result
 
@@ -174,8 +156,8 @@ def getStartupTimeByiOS():
     try:
         time = d.getStartupTimeByiOS(pkgname)
         result = {'status': 1, 'time': time} 
-    except Exception:
-        traceback.print_exc()
+    except Exception as e:
+        logger.exception(e)
         result = {'status': 0, 'msg': 'no result found'} 
     return result
 
@@ -210,9 +192,9 @@ def getCpuRate():
                 cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 appCpuRate, systemCpuRate = cpu.getCpuRate()
                 result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}        
-    except Exception:
+    except Exception as e:
         logger.error('get cpu failed')
-        traceback.print_exc()
+        logger.exception(e)
         result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate': 0, 'first': 0, 'second': 0}
     return result
 
@@ -248,9 +230,9 @@ def getMEM():
                 mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 totalPass, nativePass, dalvikPass = mem.getProcessMem()
                 result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}        
-    except Exception:
+    except Exception as e:
         logger.error('get memory data failed')
-        traceback.print_exc()
+        logger.exception(e)
         result = {'status': 1, 'totalPass': 0, 'nativePass': 0, 'dalvikPass': 0, 'first': 0, 'second': 0}
     return result
 
@@ -272,7 +254,7 @@ def setNetWorkData():
         f.record_net(type, data[0], data[1])
         result = {'status': 1, 'msg':'set network data success'}
     except Exception as e:
-        traceback.print_exc()
+        logger.exception(e)
         result = {'status': 0, 'msg':'set network data failed'}
     return result        
 
@@ -309,9 +291,9 @@ def getNetWorkData():
                 flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 data = flow.getNetWorkData(wifi=wifi,noLog=False)
                 result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}    
-    except Exception:
+    except Exception as e:
         logger.error('get network data failed')
-        traceback.print_exc()
+        logger.exception(e)
         result = {'status': 1, 'upflow': 0, 'downflow': 0, 'first': 0, 'second': 0}    
     return result
 
@@ -347,9 +329,9 @@ def getFps():
                 fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId, surfaceview=surfaceview, platform=platform)
                 fps, jank = fps_monitor.getFPS()
                 result = {'status': 1, 'fps': fps, 'jank': jank}       
-    except Exception:
+    except Exception as e:
         logger.error('get fps failed')
-        traceback.print_exc()
+        logger.exception(e)
         result = {'status': 1, 'fps': 0, 'jank': 0, 'first': 0, 'second': 0}
     return result
 
@@ -372,8 +354,8 @@ def getBattery():
                 'current': final[1], 
                 'voltage': final[2], 
                 'power': final[3]}    
-    except Exception:
-        traceback.print_exc()
+    except Exception as e:
+        logger.exception(e)
         result = {'status': 1, 'level': 0, 'temperature': 0, 'current':0, 'voltage':0 , 'power':0}
     return result
 
@@ -385,8 +367,8 @@ def getGpu():
         gpu = GPU(pkgName=pkgname)
         final = gpu.getGPU()
         result = {'status': 1, 'gpu': final}
-    except Exception:
-        traceback.print_exc()
+    except Exception as e:
+        logger.exception(e)
         result = {'status': 1, 'gpu': 0}
     return result
 
@@ -416,7 +398,7 @@ def makeReport():
         f.make_report(app=app, devices=devices, platform=platform, model=model)
         result = {'status': 1}
     except Exception as e:
-        traceback.print_exc()
+        logger.exception(e)
         result = {'status': 0, 'msg': str(e)}
     return result
 
@@ -429,14 +411,15 @@ def editReport():
     report_dir = os.path.join(os.getcwd(), 'report')
     if old_scene == new_scene:
         result = {'status': 0, 'msg': 'scene not changed'}
-    elif os.path.exists(f'{report_dir}/{new_scene}'):
+    elif os.path.exists(os.path.join(report_dir, new_scene)):
         result = {'status': 0, 'msg': 'scene existed'}
     else:
         try:
             new_scene = new_scene.replace('/', '_').replace(' ', '').replace('&', '_')
-            os.rename(f'{report_dir}/{old_scene}', f'{report_dir}/{new_scene}')
+            os.rename(os.path.join(report_dir, old_scene), os.path.join(report_dir, new_scene))
             result = {'status': 1}
         except Exception as e:
+            logger.exception(e)
             result = {'status': 0, 'msg': str(e)}
     return result
 
@@ -448,7 +431,7 @@ def exportReport():
         path = f.export_excel(platform=platform, scene=scene)
         result = {'status': 1, 'msg':'success', 'path': path}
     except Exception as e:
-        traceback.print_exc()
+        logger.exception(e)
         result = {'status': 0, 'msg':str(e)}    
     return result
 
@@ -488,7 +471,7 @@ def exportAndroidHtml():
         path = f.make_android_html(scene, summary_dict)
         result = {'status': 1, 'msg':'success', 'path':path}
     except Exception as e:
-        traceback.print_exc()
+        logger.exception(e)
         result = {'status': 0, 'msg':str(e)}    
     return result
 
@@ -528,7 +511,7 @@ def exportiOSHtml():
         path = f.make_ios_html(scene, summary_dict)
         result = {'status': 1, 'msg':'success', 'path':path}
     except Exception as e:
-        traceback.print_exc()
+        logger.exception(e)
         result = {'status': 0, 'msg':str(e)}    
     return result    
 
@@ -549,6 +532,7 @@ def getLogData():
         }
         result = fucDic[target]
     except Exception as e:
+        logger.exception(e)
         result = {'status': 0, 'msg': str(e)}
     return result
 
@@ -578,6 +562,7 @@ def getLogCompareData():
             case _:
                 result = {'status': 0, 'msg': 'no target found'}        
     except Exception as e:
+        logger.exception(e)
         result = {'status': 0, 'msg': str(e)}
     return result
 
@@ -592,6 +577,7 @@ def getpkLogData():
         second = f.readLog(scene=scene, filename=f'{target2}.log')[0]
         result = {'status': 1, 'first': first, 'second': second}
     except Exception as e:
+        logger.exception(e)
         result = {'status': 0, 'msg': str(e)}
     return result
 
@@ -605,6 +591,7 @@ def removeReport():
         shutil.rmtree(f'{report_dir}/{scene}', True)
         result = {'status': 1}
     except Exception as e:
+        logger.exception(e)
         result = {'status': 0, 'msg': str(e)}
     return result
 
@@ -651,7 +638,7 @@ def apmCollect():
             case _:
                 result = {'status': 0, 'msg': 'no this target'}
     except Exception as e:
-        traceback.print_exc()
+        logger.exception(e)
         result = {'status': 0, 'msg': str(e)}
     return result
 

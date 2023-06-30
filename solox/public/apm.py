@@ -2,7 +2,6 @@ import datetime
 import re
 import time
 import os
-import traceback
 from logzero import logger
 import tidevice
 import multiprocessing
@@ -494,7 +493,7 @@ class APM(object):
             self.setPerfs()     
         except KeyboardInterrupt:
             self.setPerfs()
-        except Exception:
-            traceback.print_exc()
+        except Exception as e:
+            logger.exception(e)
         finally:
             logger.info('End of testing')
