@@ -594,11 +594,11 @@ class File:
         batteryCurrentData = self.readLog(scene=scene, filename='battery_current.log')[1]
         batteryCurrent = round(sum(batteryCurrentData) / len(batteryCurrentData), 2)
 
-        batteryVoltageData = self.readLog(scene=scene, filename='battery_voltage.log')[1]
-        batteryVoltage = round(sum(batteryVoltageData) / len(batteryVoltageData), 2)
+        # batteryVoltageData = self.readLog(scene=scene, filename='battery_voltage.log')[1]
+        # batteryVoltage = round(sum(batteryVoltageData) / len(batteryVoltageData), 2)
 
-        batteryPowerData = self.readLog(scene=scene, filename='battery_power.log')[1]
-        batteryPower = round(sum(batteryPowerData) / len(batteryPowerData), 2)
+        # batteryPowerData = self.readLog(scene=scene, filename='battery_power.log')[1]
+        # batteryPower = round(sum(batteryPowerData) / len(batteryPowerData), 2)
 
         gpuData = self.readLog(scene=scene, filename='gpu.log')[1]
         gpu = round(sum(gpuData) / len(gpuData), 2)
@@ -615,8 +615,8 @@ class File:
         apm_dict['flow_recv'] = flowRecv
         apm_dict['batteryTeml'] = batteryTeml
         apm_dict['batteryCurrent'] = batteryCurrent
-        apm_dict['batteryVoltage'] = batteryVoltage
-        apm_dict['batteryPower'] = batteryPower
+        # apm_dict['batteryVoltage'] = batteryVoltage
+        # apm_dict['batteryPower'] = batteryPower
         apm_dict['gpu'] = gpu
         
         return apm_dict
