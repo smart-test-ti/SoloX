@@ -609,17 +609,17 @@ SoloX - Application Performance Monitoring
                             }else{
                                 var seriesTemperature = battery_chart.series[0];
                                 var seriesCurrent = battery_chart.series[1];
-                                var seriesVoltage = battery_chart.series[2];
-                                var seriesPower = battery_chart.series[3];
+                                // var seriesVoltage = battery_chart.series[2];
+                                // var seriesPower = battery_chart.series[3];
                                 var x = (new Date()).getTime(),
                                 y_temperature = data['temperature'];
                                 y_current = data['current'];
-                                y_voltage = data['voltage'];
-                                y_power = data['power'];
+                                // y_voltage = data['voltage'];
+                                // y_power = data['power'];
                                 seriesTemperature.addPoint([x, y_temperature], true, true);
                                 seriesCurrent.addPoint([x, y_current], true, true);
-                                seriesVoltage.addPoint([x, y_voltage], true, true);
-                                seriesPower.addPoint([x, y_power], true, true);
+                                // seriesVoltage.addPoint([x, y_voltage], true, true);
+                                // seriesPower.addPoint([x, y_power], true, true);
                             } 
                             timerQ = setTimeout(getBattery(device), 1000);
                         }catch (e) {}
@@ -1000,33 +1000,35 @@ SoloX - Application Performance Monitoring
             }
             return data;
         }())
-    },{
-        name : 'voltage',
-        pointInterval: 120 * 1000,
-        data : (function () {
-            var data = [], time = (new Date()).getTime(), i;
-            for (i = -999; i <= 0; i += 1) {
-                data.push([
-                    time + i * 1000,
-                    Math.round(0)
-                ]);
-            }
-            return data;
-        }())
-    },{
-        name : 'power',
-        pointInterval: 120 * 1000,
-        data : (function () {
-            var data = [], time = (new Date()).getTime(), i;
-            for (i = -999; i <= 0; i += 1) {
-                data.push([
-                    time + i * 1000,
-                    Math.round(0)
-                ]);
-            }
-            return data;
-        }())
-    }];
+    },
+    // {
+    //     name : 'voltage',
+    //     pointInterval: 120 * 1000,
+    //     data : (function () {
+    //         var data = [], time = (new Date()).getTime(), i;
+    //         for (i = -999; i <= 0; i += 1) {
+    //             data.push([
+    //                 time + i * 1000,
+    //                 Math.round(0)
+    //             ]);
+    //         }
+    //         return data;
+    //     }())
+    // },{
+    //     name : 'power',
+    //     pointInterval: 120 * 1000,
+    //     data : (function () {
+    //         var data = [], time = (new Date()).getTime(), i;
+    //         for (i = -999; i <= 0; i += 1) {
+    //             data.push([
+    //                 time + i * 1000,
+    //                 Math.round(0)
+    //             ]);
+    //         }
+    //         return data;
+    //     }())
+    // }
+    ];
 
     var seriesFps =  [{
         name : 'fps',
@@ -1337,7 +1339,7 @@ SoloX - Application Performance Monitoring
         var gpu_checkbox = $('#gpu_checkbox').is(':checked');
         if(gpu_checkbox){
             gpuInitialize();
-            cpu_chart = collectPers('',pkgname,'gpu','GPU（%）',getGpu(pkgname));
+            gpu_chart = collectPers('',pkgname,'gpu','GPU（%）',getGpu(pkgname));
         }
     }
 

@@ -157,8 +157,10 @@ class Battery(object):
             level, temperature = self.getAndroidBattery(noLog)
             return level, temperature
         else:
-            temperature, current, voltage, power = self.getiOSBattery(noLog)
-            return temperature, current, voltage, power
+            temperature, current = self.getiOSBattery(noLog)
+            # temperature, current, voltage, power = self.getiOSBattery(noLog)
+            return temperature, current
+            # return temperature, current, voltage, power
         
     def getAndroidBattery(self, noLog=False):
         """Get android battery info, unit:%"""
@@ -180,17 +182,18 @@ class Battery(object):
         """Get ios battery info, unit:%"""
         d  = tidevice.Device()
         ioDict =  d.get_io_power()
-        tem = m._setValue(ioDict['Diagnostics']['IORegistry']['Temperature'])
-        current = m._setValue(abs(ioDict['Diagnostics']['IORegistry']['InstantAmperage']))
-        voltage = m._setValue(ioDict['Diagnostics']['IORegistry']['Voltage'])
-        power = current * voltage / 1000
+        tem = round(m._setValue(ioDict['Diagnostics']['IORegistry']['Temperature']) / 100, 3)
+        current = m._setValue(abs(ioDict['Diagnostics']['IORegistry']['CurrentCapacity']))
+        # voltage = m._setValue(ioDict['Diagnostics']['IORegistry']['Voltage'])
+        # power = current * voltage / 1000
         if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
-            f.add_log(os.path.join(f.report_dir,'battery_tem.log'), apm_time, tem) # unknown
+            f.add_log(os.path.join(f.report_dir,'battery_tem.log'), apm_time, tem)
             f.add_log(os.path.join(f.report_dir,'battery_current.log'), apm_time, current) #mA
-            f.add_log(os.path.join(f.report_dir,'battery_voltage.log'), apm_time, voltage) #mV
-            f.add_log(os.path.join(f.report_dir,'battery_power.log'), apm_time, power)
-        return tem, current, voltage, power
+            # f.add_log(os.path.join(f.report_dir,'battery_voltage.log'), apm_time, voltage) #mV
+            # f.add_log(os.path.join(f.report_dir,'battery_power.log'), apm_time, power)
+        return tem, current
+        # return tem, current, voltage, power
 
     def recoverBattery(self):
         """Reset phone charging status"""
@@ -379,7 +382,8 @@ class APM(object):
             if self.platform == Platform.Android:
                 result = {'level': final[0], 'temperature': final[1]}
             else:
-                result = {'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}
+                result = {'temperature': final[0], 'current': final[1]}
+                # result = {'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}
             logger.info(f'battery: {result}')
             if time.time() > self.end_time:
                 break

@@ -352,8 +352,9 @@ def getBattery():
                 'status': 1, 
                 'temperature': final[0], 
                 'current': final[1], 
-                'voltage': final[2], 
-                'power': final[3]}    
+                # 'voltage': final[2], 
+                # 'power': final[3]
+                }    
     except Exception as e:
         logger.exception(e)
         result = {'status': 1, 'level': 0, 'temperature': 0, 'current':0, 'voltage':0 , 'power':0}
@@ -627,7 +628,8 @@ def apmCollect():
                 if platform == 'Android':
                     result = {'status': 1, 'level': final[0], 'temperature': final[1]}
                 else:
-                    result = {'status': 1, 'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}
+                    result = {'status': 1, 'temperature': final[0], 'current': final[1]}
+                    # result = {'status': 1, 'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}
             case Target.GPU:
                 if platform == Platform.iOS:
                     gpu = GPU(pkgname=pkgname)
