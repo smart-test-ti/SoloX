@@ -131,28 +131,43 @@ class SurfaceStatsCollector(object):
 
     def _calculate_results_new(self, refresh_period, timestamps):
         frame_count = len(timestamps)
+        # print('xxxxx')
+        # print(timestamps)
         if frame_count == 0:
             fps = 0
             jank = 0
-        elif frame_count == 1:
-            fps = 1
-            jank = 0
-        elif frame_count == 2 or frame_count == 3 or frame_count == 4:
-            seconds = timestamps[-1][1] - timestamps[0][1]
-            if seconds > 0:
-                fps = int(round((frame_count - 1) / seconds))
-                jank = self._calculate_janky(timestamps)
-            else:
-                fps = 1
-                jank = 0
+        # elif frame_count == 1:
+        #     fps = 1
+        #     jank = 0
+        # elif frame_count == 2 or frame_count == 3 or frame_count == 4:
+        #     seconds = timestamps[-1][1] - timestamps[0][1]
+        #     if seconds > 0:
+        #         fps = int(round((frame_count - 1) / seconds))
+        #         jank = self._calculate_janky(timestamps)
+        #     else:
+        #         fps = 1
+        #         jank = 0
         else:
-            seconds = timestamps[-1][1] - timestamps[0][1]
-            if seconds > 0:
-                fps = int(round((frame_count - 1) / seconds))
-                jank = self._calculate_jankey_new(timestamps)
-            else:
-                fps = 1
-                jank = 0
+            # logger.debug('timestamps[-1][-1]:%2s'%(timestamps[-1][-1]))
+            # logger.debug('timestamps[-1][0]:%2s'%(timestamps[-1][0]))
+            # avg_frame_time = abs(timestamps[-1][-1] - timestamps[-1][0]) / (len(timestamps[-1]) - 1)
+            # avg_frame_time = abs(timestamps[-1][-1] - timestamps[-1][0])
+            # logger.debug('avg_frame_time:%2s'%(avg_frame_time))
+            # seconds = timestamps[-1][1] - timestamps[0][1]
+            # if avg_frame_time > 0:
+            # if seconds > 0:
+                # fps = int(round((frame_count - 1) / seconds))
+                # fps = int(round(1 / (refresh_period * avg_frame_time)))
+                # fps = int(round(1 / refresh_period))
+                # fps = 1 / (refresh_period + avg_frame_time)
+                # fps = (len(timestamps[-1]) - 1) / seconds
+            fps = int(round(1 / refresh_period))
+            # logger.debug('refresh_period:%2s'%(refresh_period))
+            # logger.debug('fps:%2s'%(fps))
+            jank = self._calculate_jankey_new(timestamps)
+            # else:
+            #     fps = 1
+            #     jank = 0
         return fps, jank
 
     def _calculate_jankey_new(self, timestamps):
