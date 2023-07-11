@@ -1337,7 +1337,7 @@ SoloX - Application Performance Monitoring
         var gpu_checkbox = $('#gpu_checkbox').is(':checked');
         if(gpu_checkbox){
             gpuInitialize();
-            cpu_chart = collectPers('',pkgname,'gpu','GPU（%）',getGpu(pkgname));
+            gpu_chart = collectPers('',pkgname,'gpu','GPU（%）',getGpu(pkgname));
         }
     }
 

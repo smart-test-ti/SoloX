@@ -29,7 +29,7 @@ class Devices:
     def execCmd(self, cmd):
         """Execute the command to get the terminal print result"""
         r = os.popen(cmd)
-        text = r.buffer.read().decode(encoding='utf-8').strip()
+        text = r.buffer.read().decode(encoding='gbk').strip()
         r.close()
         return text
 
