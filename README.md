@@ -1,5 +1,5 @@
 <p align="center">
-  <a>English</a> | <a href="./README.zh.md">中文</a>
+  <a>English</a> | <a href="./README.zh.md">中文</a> | <a href="./FAQ.md">FAQ</a>
 </p>
 
 <p align="center">
@@ -13,6 +13,7 @@
 <p align="center">
 <a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/pypi/v/solox" alt="solox preview"></a>
 <a href="https://pepy.tech/project/solox" target="__blank"><img src="https://static.pepy.tech/personalized-badge/solox?period=total&units=international_system&left_color=grey&right_color=orange&left_text=downloads"></a>
+
 <br>
 </p>
 
@@ -49,7 +50,7 @@ pip install -i  https://mirrors.ustc.edu.cn/pypi/web/simple -U solox
 
 💡 If your network is unable to download through [pip install -U solox], please try using mirrors to download, but the download of SoloX may not be the latest version.
 
-## 🚀Startup SoloX
+## 🚀Quickstart
 
 ### default
 

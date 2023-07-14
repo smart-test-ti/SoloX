@@ -1,5 +1,5 @@
 <p align="center">
-  <a>中文</a> | <a href="./README.md">English</a>
+  <a>中文</a> | <a href="./README.md">English</a> | <a href="./FAQ.md">FAQ</a>
 </p>
 
 <p align="center">
@@ -49,7 +49,7 @@ pip install -i  https://mirrors.ustc.edu.cn/pypi/web/simple -U solox
 
 💡 如果你的网络无法通过 [pip install -U solox] 下载, 可以尝试使用镜像下载，但是可能不是最新版本.
 
-## 🚀启动SoloX
+## 🚀启动
 
 ### 默认
 
