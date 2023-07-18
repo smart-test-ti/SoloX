@@ -76,7 +76,11 @@ class Devices:
         result = os.popen(f"{self.adb} -s {deviceId} shell ps -ef | {self.filterType()} {pkgName}").readlines()
         try:
             processList = ['{}:{}'.format(process.split()[1],process.split()[7]) for process in result]
-            processList.reverse()
+            for i in range(len(processList)):
+                if processList[i].count(':') == 1:
+                    index = processList.index(processList[i])
+                    processList.insert(0, processList.pop(index))
+                    break
             if len(processList) == 0:
                logger.warning('{}: no pid found'.format(pkgName))     
         except Exception as e:
