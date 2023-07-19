@@ -140,3 +140,4 @@ target in ['cpu','memory','network','fps','battery','gpu']
 ## 💕Thanks
 
 - https://github.com/alibaba/taobao-iphone-device
+- https://github.com/Genymobile/scrcpy
