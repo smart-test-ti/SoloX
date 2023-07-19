@@ -12,6 +12,8 @@ import socket
 from urllib.request import urlopen
 import ssl
 import xlwt
+import psutil
+import signal
 from jinja2 import Environment, FileSystemLoader
  
 class Platform:
@@ -208,7 +210,7 @@ class File:
         if os.path.exists(self.report_dir):
             for f in os.listdir(self.report_dir):
                 filename = os.path.join(self.report_dir, f)
-                if f.split(".")[-1] in ['log', 'json']:
+                if f.split(".")[-1] in ['log', 'json', 'mkv']:
                     os.remove(filename)
         logger.info('Clean up useless files success')            
 
@@ -343,7 +345,7 @@ class File:
 
         for f in os.listdir(self.report_dir):
             filename = os.path.join(self.report_dir, f)
-            if f.split(".")[-1] in ['log', 'json']:
+            if f.split(".")[-1] in ['log', 'json', 'mkv']:
                 shutil.move(filename, report_new_dir)        
         logger.info('Generating test results success: {}'.format(report_new_dir))
         return f'apm_{current_time}'        
@@ -742,3 +744,61 @@ class Install:
             return True, result
         else:
             return False, result
+
+class Scrcpy:
+
+    STATICPATH = os.path.dirname(os.path.realpath(__file__))
+    DEFAULT_SCRCPY_PATH = {
+        "64": os.path.join(STATICPATH, "scrcpy", "scrcpy-win64-v2.1.1", "scrcpy.exe"),
+        "32": os.path.join(STATICPATH, "scrcpy", "scrcpy-win32-v2.1.1", "scrcpy.exe"),
+        "default":"scrcpy"
+    }
+    
+    @classmethod
+    def scrcpy_path(cls):
+        bit = platform.architecture()[0]
+        path = cls.DEFAULT_SCRCPY_PATH["default"]
+        if platform.system().lower().__contains__('windows'):
+            if bit.__contains__('64'):
+                path =  cls.DEFAULT_SCRCPY_PATH["64"]
+            elif bit.__contains__('32'):
+                path =  cls.DEFAULT_SCRCPY_PATH["32"]
+        return path
+    
+    @classmethod
+    def start_record(cls, device):
+        f = File()
+        logger.info('start record screen')
+        win_cmd = "start /b {scrcpy_path} -s {deviceId} --no-playback --record={video}".format(
+            scrcpy_path = cls.scrcpy_path(), 
+            deviceId = device, 
+            video = os.path.join(f.report_dir, 'record.mkv')
+        )
+        mac_cmd = "nohup {scrcpy_path} -s {deviceId} --no-playback --record={video} &".format(
+            scrcpy_path = cls.scrcpy_path(), 
+            deviceId = device, 
+            video = os.path.join(f.report_dir, 'record.mkv')
+        )
+        if platform.system().lower().__contains__('windows'):
+            result = os.system(win_cmd)
+        else:
+            result = os.system(mac_cmd)    
+        if result == 0:
+            logger.info("record screen success : {}".format(os.path.join(f.report_dir, 'record.mkv')))
+        else:
+            logger.error("solox's scrcpy is incompatible with your PC")
+            logger.info("Please install the software yourself : brew install scrcpy")    
+        return result
+    
+    @classmethod
+    def stop_record(cls):
+        logger.info('stop scrcpy process')
+        pids = psutil.pids()
+        try:
+            for pid in pids:
+                p = psutil.Process(pid)
+                if p.name().__contains__('scrcpy'):
+                    os.kill(pid, signal.SIGABRT)
+                    logger.info(pid)
+        except Exception as e:
+            logger.exception(e)

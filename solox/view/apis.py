@@ -6,7 +6,7 @@ from logzero import logger
 from flask import Blueprint
 from solox.public.apm import CPU, MEM, Flow, FPS, Battery, GPU, Target
 from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
-from solox.public.common import Devices, File, Method, Install, Platform
+from solox.public.common import Devices, File, Method, Install, Platform, Scrcpy
 
 d = Devices()
 f = File()
@@ -376,12 +376,12 @@ def getGpu():
 @api.route('/apm/create/report', methods=['post', 'get'])
 def makeReport():
     """Create test report records"""
-    current_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
     platform = method._request(request, 'platform')
     app = method._request(request, 'app')
     model = method._request(request, 'model')
     devices = method._request(request, 'devices')
     wifi_switch = method._request(request, 'wifi_switch')
+    record_switch = method._request(request, 'record_switch')
     process = method._request(request, 'process')
     try:
         if platform == Platform.Android:
@@ -395,6 +395,9 @@ def makeReport():
             data = flow.setAndroidNet(wifi=wifi)
             f.record_net('end', data[0], data[1])
             app = process
+            record = False if record_switch == 'false' else True
+            if record:
+                Scrcpy.stop_record()
         f.make_report(app=app, devices=devices, platform=platform, model=model)
         result = {'status': 1}
     except Exception as e:
@@ -697,3 +700,15 @@ def installLink():
     else:
         result = {'status': 0, 'msg': install_status[1]}                 
     return result
+
+@api.route('/apm/record/start', methods=['post', 'get'])
+def start_record():
+    device = method._request(request, 'device')
+    platform = method._request(request, 'platform')
+    deviceId = d.getIdbyDevice(device, platform)
+    final = Scrcpy.start_record(deviceId)
+    if final == 0:
+        result = {'status': 1, 'msg': 'record screen failed'}
+    else:
+        result = {'status': 0, 'msg': 'success'}  
+    return result      

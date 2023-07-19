@@ -18,6 +18,7 @@ from flask_socketio import SocketIO, disconnect
 from flask import Flask
 import fire as fire
 import signal
+import psutil
 
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -168,6 +169,17 @@ def startServer(host: str, port: int):
     except Exception:
         sys.exit(0)
 
+def stopSolox():
+    logger.info('stop python process')
+    pids = psutil.pids()
+    try:
+        for pid in pids:
+            p = psutil.Process(pid)
+            if p.name().__contains__('python'):
+                os.kill(pid, signal.SIGABRT)
+    except Exception as e:
+        logger.exception(e) 
+
 def main(host=_hostIP(), port=50003):
     """
     startup solox
@@ -187,6 +199,7 @@ def main(host=_hostIP(), port=50003):
     except Exception:
         sys.exit(0)
     except KeyboardInterrupt:
+        stopSolox()
         logger.info('stop solox success')                   
 
 if __name__ == '__main__':
