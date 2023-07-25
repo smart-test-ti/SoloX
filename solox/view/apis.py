@@ -402,11 +402,12 @@ def makeReport():
             battery_monitor.recoverBattery()
             wifi = False if wifi_switch == 'false' else True
             deviceId = d.getIdbyDevice(devices, platform)
-            pid = process.split(':')[0] if platform == Platform.Android else None
+            pid = None
+            if process and platform == Platform.Android :
+                pid = process.split(':')[0]
             flow = Flow(pkgName=app, deviceId=deviceId, platform=platform, pid=pid)
             data = flow.setAndroidNet(wifi=wifi)
             f.record_net('end', data[0], data[1])
-            app = process
             record = False if record_switch == 'false' else True
             if record:
                 video = 1

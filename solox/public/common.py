@@ -76,9 +76,14 @@ class Devices:
 
     def getPid(self, deviceId, pkgName):
         """Get the pid corresponding to the Android package name"""
-        result = os.popen(f"{self.adb} -s {deviceId} shell ps -ef | {self.filterType()} {pkgName}").readlines()
         try:
-            processList = ['{}:{}'.format(process.split()[1],process.split()[7]) for process in result]
+            sdkversion = adb.shell(cmd='getprop ro.build.version.sdk', deviceId=deviceId)
+            if int(sdkversion) < 26:
+                result = os.popen(f"{self.adb} -s {deviceId} shell ps | {self.filterType()} {pkgName}").readlines()
+                processList = ['{}:{}'.format(process.split()[1],process.split()[8]) for process in result]
+            else:
+                result = os.popen(f"{self.adb} -s {deviceId} shell ps -ef | {self.filterType()} {pkgName}").readlines()
+                processList = ['{}:{}'.format(process.split()[1],process.split()[7]) for process in result]
             for i in range(len(processList)):
                 if processList[i].count(':') == 1:
                     index = processList.index(processList[i])
@@ -87,6 +92,7 @@ class Devices:
             if len(processList) == 0:
                logger.warning('{}: no pid found'.format(pkgName))     
         except Exception as e:
+            processList = []
             logger.exception(e)
         return processList
 

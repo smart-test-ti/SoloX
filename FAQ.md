@@ -97,5 +97,6 @@
 ## 1️⃣8️⃣ 如何在收集过程种录制APP的屏幕？
 
 * 目前支持Android端。
-* 在首页打开“Record Screen”开关，点击Start开始收集数据并同时录制视频，结束后Report管理页会显示播放按钮。
+* 界面收集：在首页打开“Record Screen”开关，点击Start开始收集数据并同时录制视频，结束后Report管理页会显示播放按钮。
+* Python API收集：record=True。
 * Mac电脑录制视频，请检查Scrcpy是否安装成功，可以自行安装：brew install scrcpy。
