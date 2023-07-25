@@ -811,7 +811,7 @@ class Scrcpy:
         cap = cv2.VideoCapture(video)
         while(cap.isOpened()):
             ret, frame = cap.read()
-            if ret == True:
+            if ret:
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 cv2.namedWindow("frame", 0)  
                 cv2.resizeWindow("frame", 430, 900)

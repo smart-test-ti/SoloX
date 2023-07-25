@@ -432,9 +432,9 @@ SoloX - Application Performance Monitoring
             success: function (data) {
                 if(data['status'] != 1 ) {
                     if(lan == 'cn' ){
-                        SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 2000);
+                        SwalFire('warning', '警告','没有发现该app的进程', 5000);
                     }else{
-                        SwalFire('error', 'Connect failed !', 'No pid found', 2000);
+                        SwalFire('warning', 'Warning', data['msg'], 5000);
                     } 
                 }else{
                     for(var i=0;i<data['pids'].length;i++){
@@ -1474,9 +1474,7 @@ SoloX - Application Performance Monitoring
             if(platform == 'Android'){
                 setNetWork('pre',device,pkgname,net_switch)
                 var record_switch = $('#record-switch').is(':checked');
-                console.log(record_switch)
                 if(record_switch){
-                    console.log('start record')
                     record()
                 }
             }

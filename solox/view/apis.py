@@ -116,10 +116,13 @@ def getPackagePids():
     try:
         deviceId = d.getIdbyDevice(device, platform)
         pids = d.getPid(deviceId, pkgname)
-        result = {'status': 1, 'pids': pids} 
+        if len(pids) > 0:
+            result = {'status': 1, 'pids': pids}
+        else:
+            result = {'status': 0, 'msg': 'No process found'} 
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg': 'no pid found'} 
+        result = {'status': 0, 'msg': 'No process found'} 
     return result        
 
 @api.route('/package/activity', methods=['post', 'get'])
@@ -187,8 +190,10 @@ def getCpuRate():
                 result = {'status': 1, 'first': first, 'second': second}
             case _:
                 process = method._request(request, 'process')
+                pid = None
                 deviceId = d.getIdbyDevice(device, platform)
-                pid = process.split(':')[0] if platform == Platform.Android else None
+                if process and platform == Platform.Android :
+                    pid = process.split(':')[0] 
                 cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 appCpuRate, systemCpuRate = cpu.getCpuRate()
                 result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}        
@@ -225,8 +230,10 @@ def getMEM():
                 result = {'status': 1, 'first': first, 'second': second}
             case _:
                 process = method._request(request, 'process')
+                pid = None
                 deviceId = d.getIdbyDevice(device, platform)
-                pid = process.split(':')[0] if platform == Platform.Android else None
+                if process and platform == Platform.Android :
+                    pid = process.split(':')[0] 
                 mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 totalPass, nativePass, dalvikPass = mem.getProcessMem()
                 result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}        
@@ -248,7 +255,9 @@ def setNetWorkData():
     try:
         wifi = False if wifi_switch == 'false' else True
         deviceId = d.getIdbyDevice(device, platform)
-        pid = process.split(':')[0] if platform == Platform.Android else None
+        pid = None
+        if process and platform == Platform.Android :
+            pid = process.split(':')[0] 
         flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
         data = flow.setAndroidNet(wifi=wifi)
         f.record_net(type, data[0], data[1])
@@ -286,8 +295,10 @@ def getNetWorkData():
                 result = {'status': 1, 'first': first, 'second': second}
             case _:
                 process = method._request(request, 'process')
+                pid = None
                 deviceId = d.getIdbyDevice(device, platform)
-                pid = process.split(':')[0] if platform == Platform.Android else None
+                if process and platform == Platform.Android :
+                    pid = process.split(':')[0] 
                 flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 data = flow.getNetWorkData(wifi=wifi,noLog=False)
                 result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}    
