@@ -8,7 +8,7 @@ import multiprocessing
 import solox.public._iosPerf as iosP
 from solox.public.iosperf._perf import DataType, Performance
 from solox.public.adb import adb
-from solox.public.common import Devices, File, Method, Platform
+from solox.public.common import Devices, File, Method, Platform, Scrcpy
 from solox.public.fps import FPSMonitor, TimeUtils
 
 d = Devices()
@@ -338,7 +338,7 @@ class APM(object):
     """for python api"""
 
     def __init__(self, pkgName, platform=Platform.Android, deviceId=None,
-                 surfaceview=True, noLog=True, pid=None, duration=0):
+                 surfaceview=True, noLog=True, pid=None, duration=0, record=False):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
@@ -346,6 +346,7 @@ class APM(object):
         self.noLog = noLog
         self.pid = pid
         self.duration = duration
+        self.record = record
         self.end_time = time.time() + self.duration
         d.devicesCheck(platform=self.platform, deviceid=self.deviceId, pkgname=self.pkgName)
 
@@ -481,19 +482,24 @@ class APM(object):
     def collectAll(self):
         try:
             f.clear_file()
-            pool = multiprocessing.Pool(processes=6)
+            process_num = 6 if self.record else 7
+            pool = multiprocessing.Pool(processes=process_num)
             pool.apply_async(self.collectCpu)
             pool.apply_async(self.collectMemory)
             pool.apply_async(self.collectBattery)
             pool.apply_async(self.collectFps)
             pool.apply_async(self.collectFlow)
             pool.apply_async(self.collectGpu)
+            if self.record:
+                pool.apply_async(Scrcpy.start_record, (self.deviceId))
             pool.close()
             pool.join()
             self.setPerfs()     
         except KeyboardInterrupt:
+            Scrcpy.stop_record()
             self.setPerfs()
         except Exception as e:
+            Scrcpy.stop_record()
             logger.exception(e)
         finally:
             logger.info('End of testing')

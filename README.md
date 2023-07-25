@@ -90,8 +90,9 @@ gpu = apm.collectGpu() # % only supports ios
 
 # ************* Collect all performance parameter ************* #
 apm = APM(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', 
-          surfaceview=True, noLog=False, pid=None, duration=20) # duration : second
-# apm = APM(pkgName='com.bilibili.app.in', platform='iOS',  noLog=False, duration=20)
+          surfaceview=True, noLog=False, pid=None, duration=20, record=False) 
+          # duration : second   record: record android screen
+# apm = APM(pkgName='com.bilibili.app.in', platform='iOS',  noLog=False, duration=20, record=False)
 if __name__ == '__main__':
      apm.collectAll() # will generate HTML report
 ```
