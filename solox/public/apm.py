@@ -431,7 +431,7 @@ class APM(object):
                 data = _flow.setAndroidNet()
                 f.record_net('end', data[0], data[1])
                 scene = f.make_report(app=self.pkgName, devices=self.deviceId,
-                                      platform=self.platform, model='normal')
+                                      video=0, platform=self.platform, model='normal')
                 summary = f._setAndroidPerfs(scene)
                 summary_dict = {}
                 summary_dict['cpu_app'] = summary['cpuAppRate']
@@ -454,7 +454,7 @@ class APM(object):
                 f.make_android_html(scene=scene, summary=summary_dict)
             case Platform.iOS:
                 scene = f.make_report(app=self.pkgName, devices=self.deviceId, 
-                                      platform=self.platform, model='normal')
+                                      video=0, platform=self.platform, model='normal')
                 summary = f._setiOSPerfs(scene)
                 summary_dict = {}
                 summary_dict['cpu_app'] = summary['cpuAppRate']

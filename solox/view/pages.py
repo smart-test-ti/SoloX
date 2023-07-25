@@ -49,7 +49,7 @@ def report():
     for dir in dir_list:
         if dir.split(".")[-1] not in ['log', 'json', 'mkv']:
             try:
-                fpath = open(f'{report_dir}/{dir}/result.json')
+                fpath = open(os.path.join(report_dir, dir, 'result.json'))
                 json_data = json.loads(fpath.read())
                 dict_data = {
                     'scene': dir,
@@ -58,6 +58,7 @@ def report():
                     'model': json_data['model'],
                     'devices': json_data['devices'],
                     'ctime': json_data['ctime'],
+                    'video': json_data.get('video', 0)
                 }
                 fpath.close()
                 apm_data.append(dict_data)
@@ -82,7 +83,10 @@ def analysis():
     for dir in dirs:
         if dir == scene:
             try:
-                apm_data = f._setAndroidPerfs(scene) if platform == 'Android' else f._setiOSPerfs(scene)
+                if platform == 'Android':
+                    apm_data = f._setAndroidPerfs(scene)
+                else:
+                    apm_data = f._setiOSPerfs(scene)    
             except ZeroDivisionError:
                 pass    
             except Exception as e:

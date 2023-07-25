@@ -14,6 +14,7 @@ import ssl
 import xlwt
 import psutil
 import signal
+import cv2
 from jinja2 import Environment, FileSystemLoader
  
 class Platform:
@@ -212,6 +213,7 @@ class File:
                 filename = os.path.join(self.report_dir, f)
                 if f.split(".")[-1] in ['log', 'json', 'mkv']:
                     os.remove(filename)
+        Scrcpy.stop_record()            
         logger.info('Clean up useless files success')            
 
     def export_excel(self, platform, scene):
@@ -326,7 +328,7 @@ class File:
             case _:
                 logger.error('record network data failed')
     
-    def make_report(self, app, devices, platform='Android', model='normal'):
+    def make_report(self, app, devices, video, platform=Platform.Android, model='normal'):
         logger.info('Generating test results ...')
         current_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
         result_dict = {
@@ -335,7 +337,8 @@ class File:
             "platform": platform,
             "model": model,
             "devices": devices,
-            "ctime": current_time
+            "ctime": current_time,
+            "video": video
         }
         content = json.dumps(result_dict)
         self.create_file(filename='result.json', content=content)
@@ -802,3 +805,20 @@ class Scrcpy:
                     logger.info(pid)
         except Exception as e:
             logger.exception(e)
+
+    @classmethod
+    def play_video(cls, video):
+        cap = cv2.VideoCapture(video)
+        while(cap.isOpened()):
+            ret, frame = cap.read()
+            if ret == True:
+                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                cv2.namedWindow("frame", 0)  
+                cv2.resizeWindow("frame", 430, 900)
+                cv2.imshow('frame', gray)
+                if cv2.waitKey(25) & 0xFF == ord('q') or not cv2.getWindowProperty("frame", cv2.WND_PROP_VISIBLE):
+                    break
+            else:
+                break
+        cap.release()
+        cv2.destroyAllWindows()

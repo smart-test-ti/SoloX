@@ -384,6 +384,7 @@ def makeReport():
     record_switch = method._request(request, 'record_switch')
     process = method._request(request, 'process')
     try:
+        video = 0
         if platform == Platform.Android:
             deviceId = d.getIdbyDevice(devices, platform)
             battery_monitor = Battery(deviceId=deviceId)
@@ -397,8 +398,9 @@ def makeReport():
             app = process
             record = False if record_switch == 'false' else True
             if record:
+                video = 1
                 Scrcpy.stop_record()
-        f.make_report(app=app, devices=devices, platform=platform, model=model)
+        f.make_report(app=app, devices=devices, video=video, platform=platform, model=model)
         result = {'status': 1}
     except Exception as e:
         logger.exception(e)
@@ -711,4 +713,16 @@ def start_record():
         result = {'status': 1, 'msg': 'record screen failed'}
     else:
         result = {'status': 0, 'msg': 'success'}  
-    return result      
+    return result  
+
+@api.route('/apm/record/play', methods=['post', 'get'])
+def play_record():
+    scene = method._request(request, 'scene')
+    video = os.path.join(f.get_repordir(), scene, 'record.mkv')
+    try:
+        Scrcpy.play_video(video)
+        result = {'status': 1, 'msg': 'success'}  
+    except Exception as e:
+        logger.exception(e)
+        result = {'status': 0, 'msg': 'play video failed'}  
+    return result    
