@@ -119,10 +119,10 @@ def getPackagePids():
         if len(pids) > 0:
             result = {'status': 1, 'pids': pids}
         else:
-            result = {'status': 0, 'msg': 'No process found'} 
+            result = {'status': 0, 'msg': 'No process found, please start the app first.'} 
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg': 'No process found'} 
+        result = {'status': 0, 'msg': 'No process foundd, please start the app first.'} 
     return result        
 
 @api.route('/package/activity', methods=['post', 'get'])
@@ -719,12 +719,32 @@ def installLink():
 def start_record():
     device = method._request(request, 'device')
     platform = method._request(request, 'platform')
-    deviceId = d.getIdbyDevice(device, platform)
-    final = Scrcpy.start_record(deviceId)
-    if final == 0:
-        result = {'status': 1, 'msg': 'record screen failed'}
-    else:
-        result = {'status': 0, 'msg': 'success'}  
+    try:
+        deviceId = d.getIdbyDevice(device, platform)
+        final = Scrcpy.start_record(deviceId)
+        if final == 0:
+            result = {'status': 1, 'msg': 'success'}
+        else:
+            result = {'status': 0, 'msg': 'record screen failed'}
+    except Exception as e:
+        logger.exception(e)
+        result = {'status': 0, 'msg': 'record screen failed'}          
+    return result
+
+@api.route('/apm/record/cast', methods=['post', 'get'])
+def cast_screen():
+    device = method._request(request, 'device')
+    platform = method._request(request, 'platform')
+    try:
+        deviceId = d.getIdbyDevice(device, platform)
+        final = Scrcpy.cast_screen(deviceId)
+        if final == 0:
+            result = {'status': 1, 'msg': 'success'}
+        else:
+            result = {'status': 0, 'msg': 'cast screen failed'}
+    except Exception as e:
+        logger.exception(e)
+        result = {'status': 0, 'msg': 'cast screen failed'}          
     return result  
 
 @api.route('/apm/record/play', methods=['post', 'get'])

@@ -78,7 +78,7 @@ class Devices:
         """Get the pid corresponding to the Android package name"""
         try:
             sdkversion = adb.shell(cmd='getprop ro.build.version.sdk', deviceId=deviceId)
-            if int(sdkversion) < 26:
+            if sdkversion and int(sdkversion) < 26:
                 result = os.popen(f"{self.adb} -s {deviceId} shell ps | {self.filterType()} {pkgName}").readlines()
                 processList = ['{}:{}'.format(process.split()[1],process.split()[8]) for process in result]
             else:
@@ -811,9 +811,32 @@ class Scrcpy:
                     logger.info(pid)
         except Exception as e:
             logger.exception(e)
-
+    
+    @classmethod
+    def cast_screen(cls, device):
+        logger.info('start cast screen')
+        win_cmd = "start /i {scrcpy_path} -s {deviceId} --stay-awake".format(
+            scrcpy_path = cls.scrcpy_path(), 
+            deviceId = device
+        )
+        mac_cmd = "nohup {scrcpy_path} -s {deviceId} --stay-awake &".format(
+            scrcpy_path = cls.scrcpy_path(), 
+            deviceId = device
+        )
+        if platform.system().lower().__contains__('windows'):
+            result = os.system(win_cmd)
+        else:
+            result = os.system(mac_cmd)
+        if result == 0:
+            logger.info("cast screen success")
+        else:
+            logger.error("solox's scrcpy is incompatible with your PC")
+            logger.info("Please install the software yourself : brew install scrcpy")    
+        return result
+    
     @classmethod
     def play_video(cls, video):
+        logger.info('start play video : {}'.format(video))
         cap = cv2.VideoCapture(video)
         while(cap.isOpened()):
             ret, frame = cap.read()

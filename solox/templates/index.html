@@ -64,6 +64,12 @@ SoloX - Application Performance Monitoring
         <svg t="1687917727817" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2540" width="50" height="50"><path d="M861.12 596.608L786.176 678.4c-139.936-158.4-387.04-158.4-526.976 0l-74.976-81.824c179.776-203.52 497.184-203.52 676.96 0z" fill="#080808" p-id="2541"></path><path d="M1011.808 432.896l-75.328 80.544c-219.776-248.864-607.872-248.864-827.616 0l-75.328-80.544c259.616-294.4 718.624-294.4 978.24 0z" fill="#080808" p-id="2542"></path><path d="M422.784 716.128c-50.08 50.048-50.08 128.32 0 178.4 50.08 50.08 128.32 50.08 178.432 0 50.048-50.08 50.048-128.32 0-178.4-53.248-50.24-131.52-50.24-178.432 0z" fill="#FFA115" p-id="2543"></path></svg>
     </a>
 </div>
+<div class="ms-auto d-print-none  col-auto">
+    <a class="btn btn-default" onclick="cast()">
+        <svg t="1690357482122" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5413" width="128" height="128"><path d="M896 192a64 64 0 0 1 63.84 59.2L960 256v384a64 64 0 0 1-59.2 63.84L896 704h-272v64h195.2c7.04 0 12.8 5.76 12.8 12.8v38.4a12.8 12.8 0 0 1-12.8 12.8H448v-64h80v-64h-110.848v-64H896V256H256v32H192V256a64 64 0 0 1 59.2-63.84L256 192h640z m-544 128a32 32 0 0 1 32 32v448a32 32 0 0 1-32 32H128a32 32 0 0 1-32-32V352a32 32 0 0 1 32-32h224z m-32 64H160v384h160V384z" fill="#000000" p-id="5414"></path></svg>
+        {% if lan == 'cn' %} 投屏 {% else %} Cast {% endif %}
+    </a>
+</div>
 {% endif %}
 <div class="ms-auto d-print-none  col-auto">
     <a class="btn btn-default" id="debug-connect">
@@ -432,7 +438,7 @@ SoloX - Application Performance Monitoring
             success: function (data) {
                 if(data['status'] != 1 ) {
                     if(lan == 'cn' ){
-                        SwalFire('warning', '警告','没有发现该app的进程', 5000);
+                        SwalFire('warning', '警告','没有发现该app的进程,请检查app是否已经启动', 5000);
                     }else{
                         SwalFire('warning', 'Warning', data['msg'], 5000);
                     } 
@@ -445,7 +451,6 @@ SoloX - Application Performance Monitoring
             }
         });
     });
-
 
     function initializeAPM(){
         $.ajax({
@@ -482,9 +487,9 @@ SoloX - Application Performance Monitoring
                 console.log(data);
                 if(data['status'] != 1 ) {
                     if(lan == 'cn' ){
-                        SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 2000);
+                        SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 5000);
                     }else{
-                        SwalFire('error', 'Connect failed !', 'No devices found', 2000);
+                        SwalFire('error', 'Connect failed !', 'No devices found', 5000);
                     } 
                 }else{
                     for(var i=0;i<data['devices'].length;i++){
@@ -1394,6 +1399,39 @@ SoloX - Application Performance Monitoring
                 let title = 'FPS（HZ）';
                 fps_chart = collectPers(device,pkgname,'fps_ios',title,getFps(pkgname,device,fps_switch));
             }
+        }
+    }
+
+    function cast(){
+        var device = $('.select-device').val();
+        if(device){
+            $.ajax({
+                url: "/apm/record/cast",
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    platform:platform,
+                    device:$('.select-device').val(),
+                },
+                beforeSend: function () {
+                    SwalLoading('Casting','')
+                },
+                success: function (data) {
+                    if(data['status']==0){
+                        SwalFire('error','Cast Failed',data['msg'],2000)
+                    }
+                },
+                complete: function(){
+                    swal.close();
+                },
+                error: function(error){
+                    SwalFire('error','Scrcpy Error',error ,5000);
+                    console.log(error);
+                }
+            });
+        }else{
+            SwalFire('error', 'Cast failed !', 'No devices found', 5000);
         }
     }
 
