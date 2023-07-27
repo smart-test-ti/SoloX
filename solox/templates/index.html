@@ -547,6 +547,9 @@ SoloX - Application Performance Monitoring
                                 y_sys = data['systemCpuRate'];
                             app_series.addPoint([x, y_app], true, true);
                             sys_series.addPoint([x, y_sys], true, true);
+                            if(data['appCpuRate'] == 0 && data['systemCpuRate'] == 0 && platform == 'Android'){
+                                $('.select-pid').empty();
+                            }
                             timerQ = setTimeout(getCpuRate(pkgname,device), 1000);
                         }catch (e) {}
                     }else{

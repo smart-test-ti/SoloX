@@ -121,17 +121,6 @@ def openUrl(host: str, port: int):
 def startServer(host: str, port: int):
     socketio.run(app, host=host, debug=False, port=port)
 
-def stopSolox():
-    logger.info('stop python process')
-    pids = psutil.pids()
-    try:
-        for pid in pids:
-            p = psutil.Process(pid)
-            if p.name().__contains__('python'):
-                os.kill(pid, signal.SIGABRT)
-    except Exception as e:
-        logger.exception(e)    
-
 def main(host=hostIP(), port=50003):
     try:
         listeningPort(port=port)
@@ -142,8 +131,6 @@ def main(host=hostIP(), port=50003):
         pool.join()
     except Exception as e:
         logger.exception(e)
-        stopSolox()
     except KeyboardInterrupt:
-        stopSolox()
         logger.info('stop solox success')
         sys.exit()        

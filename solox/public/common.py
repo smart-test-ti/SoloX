@@ -15,6 +15,7 @@ import xlwt
 import psutil
 import signal
 import cv2
+from functools import wraps
 from jinja2 import Environment, FileSystemLoader
  
 class Platform:
@@ -703,8 +704,7 @@ class Method:
         content['duration'] = (0, request.cookies.get('duration'))[request.cookies.get('duration') not in [None, 'NaN']]
         content['solox_host'] = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
         content['host_switch'] = request.cookies.get('host_switch')
-        return content        
-
+        return content
 
 class Install:
 

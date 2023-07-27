@@ -4,7 +4,7 @@ import time
 from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
-from solox.public.apm import CPU, MEM, Flow, FPS, Battery, GPU, Target
+from solox.public.apm import CPU, Memory, Network, FPS, Battery, GPU, Target
 from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
 from solox.public.common import Devices, File, Method, Install, Platform, Scrcpy
 
@@ -234,7 +234,7 @@ def getMEM():
                 deviceId = d.getIdbyDevice(device, platform)
                 if process and platform == Platform.Android :
                     pid = process.split(':')[0] 
-                mem = MEM(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
+                mem = Memory(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 totalPass, nativePass, dalvikPass = mem.getProcessMem()
                 result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}        
     except Exception as e:
@@ -258,8 +258,8 @@ def setNetWorkData():
         pid = None
         if process and platform == Platform.Android :
             pid = process.split(':')[0] 
-        flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
-        data = flow.setAndroidNet(wifi=wifi)
+        network = Network(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
+        data = network.setAndroidNet(wifi=wifi)
         f.record_net(type, data[0], data[1])
         result = {'status': 1, 'msg':'set network data success'}
     except Exception as e:
@@ -299,8 +299,8 @@ def getNetWorkData():
                 deviceId = d.getIdbyDevice(device, platform)
                 if process and platform == Platform.Android :
                     pid = process.split(':')[0] 
-                flow = Flow(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
-                data = flow.getNetWorkData(wifi=wifi,noLog=False)
+                network = Network(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
+                data = network.getNetWorkData(wifi=wifi,noLog=False)
                 result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}    
     except Exception as e:
         logger.error('get network data failed')
@@ -405,8 +405,8 @@ def makeReport():
             pid = None
             if process and platform == Platform.Android :
                 pid = process.split(':')[0]
-            flow = Flow(pkgName=app, deviceId=deviceId, platform=platform, pid=pid)
-            data = flow.setAndroidNet(wifi=wifi)
+            network = Network(pkgName=app, deviceId=deviceId, platform=platform, pid=pid)
+            data = network.setAndroidNet(wifi=wifi)
             f.record_net('end', data[0], data[1])
             record = False if record_switch == 'false' else True
             if record:
@@ -627,12 +627,12 @@ def apmCollect():
                 appCpuRate, systemCpuRate = cpu.getCpuRate(noLog=True)
                 result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
             case Target.Memory:
-                mem = MEM(pkgName=pkgname, deviceId=deviceid, platform=platform)
+                mem = Memory(pkgName=pkgname, deviceId=deviceid, platform=platform)
                 totalPass, nativePass, dalvikPass = mem.getProcessMem(noLog=True)
                 result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
             case Target.Network:
-                flow = Flow(pkgName=pkgname, deviceId=deviceid, platform=platform)
-                data = flow.getNetWorkData(wifi=True, noLog=True)
+                network = Network(pkgName=pkgname, deviceId=deviceid, platform=platform)
+                data = network.getNetWorkData(wifi=True, noLog=True)
                 result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
             case Target.FPS:
                 fps_monitor = FPS(pkgName=pkgname, deviceId=deviceid, platform=platform)

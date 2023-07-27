@@ -35,16 +35,16 @@ class CPU(object):
 
     def getprocessCpuStat(self):
         """get the cpu usage of a process at a certain time"""
-        cmd = f'cat /proc/{self.pid}/stat'
+        cmd = 'cat /proc/{}/stat'.format(self.pid)
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile("\\s+")
         toks = r.split(result)
-        processCpu = float(int(toks[13]) + int(toks[14]) + int(toks[15]) + int(toks[16]))
+        processCpu = float(toks[13]) + float(toks[14]) + float(toks[15]) + float(toks[16])
         return processCpu
 
     def getTotalCpuStat(self):
         """get the total cpu usage at a certain time"""
-        cmd = f'cat /proc/stat |{d.filterType()} ^cpu'
+        cmd = 'cat /proc/stat |{} ^cpu'.format(d.filterType())
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
@@ -69,26 +69,32 @@ class CPU(object):
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
-        ileCpu = int(toks[4])
+        ileCpu = float(toks[4])
         sysCpu = self.getTotalCpuStat() - ileCpu
         return sysCpu
-
+    
     def getAndroidCpuRate(self, noLog=False):
         """get the Android cpu rate of a process"""
-        processCpuTime_1 = self.getprocessCpuStat()
-        totalCpuTime_1 = self.getTotalCpuStat()
-        sysCpuTime_1 = self.getSysCpuStat()
-        time.sleep(0.5)
-        processCpuTime_2 = self.getprocessCpuStat()
-        totalCpuTime_2 = self.getTotalCpuStat()
-        sysCpuTime_2 = self.getSysCpuStat()
-        appCpuRate = round(float((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
-        sysCpuRate = round(float((sysCpuTime_2 - sysCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
-        if noLog is False:
-            apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
-            f.add_log(os.path.join(f.report_dir,'cpu_app.log'), apm_time, appCpuRate)
-            f.add_log(os.path.join(f.report_dir,'cpu_sys.log'), apm_time, sysCpuRate)
-
+        try:
+            processCpuTime_1 = self.getprocessCpuStat()
+            totalCpuTime_1 = self.getTotalCpuStat()
+            sysCpuTime_1 = self.getSysCpuStat()
+            time.sleep(0.5)
+            processCpuTime_2 = self.getprocessCpuStat()
+            totalCpuTime_2 = self.getTotalCpuStat()
+            sysCpuTime_2 = self.getSysCpuStat()
+            appCpuRate = round(float((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
+            sysCpuRate = round(float((sysCpuTime_2 - sysCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
+            if noLog is False:
+                apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+                f.add_log(os.path.join(f.report_dir,'cpu_app.log'), apm_time, appCpuRate)
+                f.add_log(os.path.join(f.report_dir,'cpu_sys.log'), apm_time, sysCpuRate)
+        except Exception as e:
+            appCpuRate, sysCpuRate = 0, 0
+            if len(d.getPid(self.deviceId, self.pkgName)) == 0:
+                logger.error('[CPU] {} : No process found'.format(self.pkgName))
+            else:
+                logger.exception(e)   
         return appCpuRate, sysCpuRate
 
     def getiOSCpuRate(self, noLog=False):
@@ -107,7 +113,7 @@ class CPU(object):
         appCpuRate, systemCpuRate = self.getAndroidCpuRate(noLog) if self.platform == Platform.Android else self.getiOSCpuRate(noLog)
         return appCpuRate, systemCpuRate
 
-class MEM(object):
+class Memory(object):
     def __init__(self, pkgName, deviceId, platform=Platform.Android, pid=None):
         self.pkgName = pkgName
         self.deviceId = deviceId
@@ -118,14 +124,21 @@ class MEM(object):
 
     def getAndroidMem(self):
         """Get the Android memory ,unit:MB"""
-        cmd = f'dumpsys meminfo {self.pid}'
-        output = adb.shell(cmd=cmd, deviceId=self.deviceId)
-        m_total = re.search(r'TOTAL\s*(\d+)', output)
-        m_native = re.search(r'Native Heap\s*(\d+)', output)
-        m_dalvik = re.search(r'Dalvik Heap\s*(\d+)', output)
-        totalPass = round(float(float(m_total.group(1))) / 1024, 2)
-        nativePass = round(float(float(m_native.group(1))) / 1024, 2)
-        dalvikPass = round(float(float(m_dalvik.group(1))) / 1024, 2)
+        try:
+            cmd = f'dumpsys meminfo {self.pid}'
+            output = adb.shell(cmd=cmd, deviceId=self.deviceId)
+            m_total = re.search(r'TOTAL\s*(\d+)', output)
+            m_native = re.search(r'Native Heap\s*(\d+)', output)
+            m_dalvik = re.search(r'Dalvik Heap\s*(\d+)', output)
+            totalPass = round(float(float(m_total.group(1))) / 1024, 2)
+            nativePass = round(float(float(m_native.group(1))) / 1024, 2)
+            dalvikPass = round(float(float(m_dalvik.group(1))) / 1024, 2)
+        except Exception as e:
+            totalPass, nativePass, dalvikPass = 0, 0, 0
+            if len(d.getPid(self.deviceId, self.pkgName)) == 0:
+                logger.error('[Memory] {} : No process found'.format(self.pkgName))
+            else:
+                logger.exception(e)    
         return totalPass, nativePass, dalvikPass
 
     def getiOSMem(self):
@@ -197,7 +210,7 @@ class Battery(object):
         cmd = 'dumpsys battery reset'
         adb.shell(cmd=cmd, deviceId=self.deviceId)
 
-class Flow(object):
+class Network(object):
 
     def __init__(self, pkgName, deviceId, platform=Platform.Android, pid=None):
         self.pkgName = pkgName
@@ -209,28 +222,42 @@ class Flow(object):
 
     def getAndroidNet(self, wifi=True):
         """Get Android send/recv data, unit:KB wlan0/rmnet0"""
-        net = 'wlan0' if wifi else 'rmnet0'
-        cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
-        output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
-        m_pre = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)
-        sendNum_pre = round(float(float(m_pre.group(2)) / 1024), 2)
-        recNum_pre = round(float(float(m_pre.group(1)) / 1024), 2)
-        time.sleep(1)
-        output_final = adb.shell(cmd=cmd, deviceId=self.deviceId)
-        m_final = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_final)
-        sendNum_final = round(float(float(m_final.group(2)) / 1024), 2)
-        recNum_final = round(float(float(m_final.group(1)) / 1024), 2)
-        sendNum = round(float(sendNum_final - sendNum_pre), 2)
-        recNum = round(float(recNum_final - recNum_pre), 2)
+        try:
+            net = 'wlan0' if wifi else 'rmnet0'
+            cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
+            output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
+            m_pre = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)
+            sendNum_pre = round(float(float(m_pre.group(2)) / 1024), 2)
+            recNum_pre = round(float(float(m_pre.group(1)) / 1024), 2)
+            time.sleep(0.5)
+            output_final = adb.shell(cmd=cmd, deviceId=self.deviceId)
+            m_final = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_final)
+            sendNum_final = round(float(float(m_final.group(2)) / 1024), 2)
+            recNum_final = round(float(float(m_final.group(1)) / 1024), 2)
+            sendNum = round(float(sendNum_final - sendNum_pre), 2)
+            recNum = round(float(recNum_final - recNum_pre), 2)
+        except Exception as e:
+            sendNum, recNum = 0, 0
+            if len(d.getPid(self.deviceId, self.pkgName)) == 0:
+                logger.error('[Network] {} : No process found'.format(self.pkgName))
+            else:
+                logger.exception(e)    
         return sendNum, recNum
     
     def setAndroidNet(self, wifi=True):
-        net = 'wlan0' if wifi else 'rmnet0'
-        cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
-        output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
-        m = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)
-        sendNum = round(float(float(m.group(2)) / 1024), 2)
-        recNum = round(float(float(m.group(1)) / 1024), 2)
+        try:
+            net = 'wlan0' if wifi else 'rmnet0'
+            cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
+            output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
+            m = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)
+            sendNum = round(float(float(m.group(2)) / 1024), 2)
+            recNum = round(float(float(m.group(1)) / 1024), 2)
+        except Exception as e:
+            sendNum, recNum = 0, 0
+            if len(d.getPid(self.deviceId, self.pkgName)) == 0:
+                logger.error('[Network] {} : No process found'.format(self.pkgName))
+            else:
+                logger.exception(e)    
         return sendNum, recNum
 
 
@@ -262,14 +289,21 @@ class FPS(object):
 
     def getAndroidFps(self, noLog=False):
         """get Android Fps, unit:HZ"""
-        monitors = FPSMonitor(device_id=self.deviceId, package_name=self.pkgName, frequency=1,
-                              surfaceview=self.surfaceview, start_time=TimeUtils.getCurrentTimeUnderline())
-        monitors.start()
-        fps, jank = monitors.stop()
-        if noLog is False:
-            apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
-            f.add_log(os.path.join(f.report_dir,'fps.log'), apm_time, fps)
-            f.add_log(os.path.join(f.report_dir,'jank.log'), apm_time, jank)
+        try:
+            monitors = FPSMonitor(device_id=self.deviceId, package_name=self.pkgName, frequency=1,
+                                  surfaceview=self.surfaceview, start_time=TimeUtils.getCurrentTimeUnderline())
+            monitors.start()
+            fps, jank = monitors.stop()
+            if noLog is False:
+                apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+                f.add_log(os.path.join(f.report_dir,'fps.log'), apm_time, fps)
+                f.add_log(os.path.join(f.report_dir,'jank.log'), apm_time, jank)
+        except Exception as e:
+            fps, jank = 0
+            if len(d.getPid(self.deviceId, self.pkgName)) == 0:
+                logger.error('[FPS] {} : No process found'.format(self.pkgName))
+            else:
+                logger.exception(e)        
         return fps, jank
 
     def getiOSFps(self, noLog=False):
@@ -362,7 +396,7 @@ class APM(object):
         return result
 
     def collectMemory(self):
-        _memory = MEM(self.pkgName, self.deviceId, self.platform, pid=self.pid)
+        _memory = Memory(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         result = {}
         while True:
             total, native, dalvik = _memory.getProcessMem(noLog=self.noLog)
@@ -387,7 +421,7 @@ class APM(object):
         return result
 
     def collectFlow(self, wifi=True):
-        _flow = Flow(self.pkgName, self.deviceId, self.platform, pid=self.pid)
+        _flow = Network(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         if self.noLog is False:
             data = _flow.setAndroidNet(wifi=wifi)
             f.record_net('pre', data[0], data[1])
@@ -428,7 +462,7 @@ class APM(object):
         match(self.platform):
             case Platform.Android:
                 adb.shell(cmd='dumpsys battery reset', deviceId=self.deviceId)
-                _flow = Flow(self.pkgName, self.deviceId, self.platform, pid=self.pid)
+                _flow = Network(self.pkgName, self.deviceId, self.platform, pid=self.pid)
                 data = _flow.setAndroidNet()
                 f.record_net('end', data[0], data[1])
                 scene = f.make_report(app=self.pkgName, devices=self.deviceId,
