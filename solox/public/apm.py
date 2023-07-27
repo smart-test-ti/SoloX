@@ -65,7 +65,7 @@ class CPU(object):
 
     def getSysCpuStat(self):
         """get the total cpu usage at a certain time"""
-        cmd = f'cat /proc/stat |{d.filterType()} ^cpu'
+        cmd = 'cat /proc/stat |{} ^cpu'.format(d.filterType())
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
@@ -125,7 +125,7 @@ class Memory(object):
     def getAndroidMem(self):
         """Get the Android memory ,unit:MB"""
         try:
-            cmd = f'dumpsys meminfo {self.pid}'
+            cmd = 'dumpsys meminfo {}'.format(self.pid)
             output = adb.shell(cmd=cmd, deviceId=self.deviceId)
             m_total = re.search(r'TOTAL\s*(\d+)', output)
             m_native = re.search(r'Native Heap\s*(\d+)', output)
@@ -224,7 +224,7 @@ class Network(object):
         """Get Android send/recv data, unit:KB wlan0/rmnet0"""
         try:
             net = 'wlan0' if wifi else 'rmnet0'
-            cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
+            cmd = 'cat /proc/{}/net/dev |{} {}'.format(self.pid, d.filterType(), net)
             output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
             m_pre = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)
             sendNum_pre = round(float(float(m_pre.group(2)) / 1024), 2)

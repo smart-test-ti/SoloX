@@ -129,8 +129,8 @@ def main(host=hostIP(), port=50003):
         pool.apply_async(openUrl, (host, port))
         pool.close()
         pool.join()
-    except Exception as e:
-        logger.exception(e)
     except KeyboardInterrupt:
         logger.info('stop solox success')
-        sys.exit()        
+        sys.exit()
+    except Exception as e:
+        logger.exception(e)            

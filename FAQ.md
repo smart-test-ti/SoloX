@@ -100,3 +100,9 @@
 * 界面收集：在首页打开“Record Screen”开关，点击Start开始收集数据并同时录制视频，结束后Report管理页会显示播放按钮。
 * Python API收集：record=True。
 * Mac电脑录制视频，请检查Scrcpy是否安装成功，可以自行安装：brew install scrcpy。
+
+## 1️⃣9️⃣ Android哪些指标以来app的进程需要存活？
+
+* Cpu、Memory、Network、FPS
+* 界面如果不选择进程就点击Start收集，那么默认使用的是这个包名的主进程。
+* 界面选择了app的某个进程收集，如果收集过程中将app杀掉，然后再恢复后自动使用的是主进程，有可能和你界面选择的进程不一致。
