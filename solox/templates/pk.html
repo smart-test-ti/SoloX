@@ -338,7 +338,8 @@
                 model:model,
                 platform:'Android',
                 pkgname:pkgname,
-                device:device
+                device:device,
+                wifi_switch: 'true',
             },
             success: function (data) {
                 if(data['status'] == 1){
@@ -369,7 +370,8 @@
                 model:model,
                 platform:'Android',
                 pkgname:pkgname,
-                device:device
+                device:device,
+                surv:'true'
             },
             success: function (data) {
                 console.log(data)
@@ -688,13 +690,19 @@
             platform:'Android',
             model:model,
             app:$('#select-app').val(),
-            devices:'['+$('.device1').val()+','+$('.device2').val()+']'
+            devices:'['+$('.device1').val()+','+$('.device2').val()+']',
+            wifi_switch:'true',
+            process:'',
+            record_switch:'false'
         };
         let data2 = {
             platform:'Android',
             model:model,
             app:'['+$('#select-app1').val()+','+$('#select-app2').val()+']',
-            devices:'['+$('.device1').val()+','+$('.device2').val()+']'
+            devices:'['+$('.device1').val()+','+$('.device2').val()+']',
+            wifi_switch:'true',
+            process:'',
+            record_switch:'false'
         };
         let data = model == '2-devices' ? data1 : data2;
         $('#run-apm').show();

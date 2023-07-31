@@ -25,21 +25,21 @@ def page_500(e):
 def index():
     platform = request.args.get('platform')
     lan = request.args.get('lan')
-    settings = m._get_setting(request)
+    settings = m._settings(request)
     return render_template('index.html', **locals())
 
 @page.route('/pk')
 def pk():
     lan = request.args.get('lan')
     model = request.args.get('model')
-    settings = m._get_setting(request)
+    settings = m._settings(request)
     return render_template('pk.html', **locals())
 
 
 @page.route('/report')
 def report():
     lan = request.args.get('lan')
-    settings = m._get_setting(request)
+    settings = m._settings(request)
     report_dir = os.path.join(os.getcwd(), 'report')
     if not os.path.exists(report_dir):
         os.mkdir(report_dir)
@@ -75,7 +75,7 @@ def analysis():
     scene = request.args.get('scene')
     app = request.args.get('app')
     platform = request.args.get('platform')
-    settings = m._get_setting(request)
+    settings = m._settings(request)
     report_dir = os.path.join(os.getcwd(), 'report')
     dirs = os.listdir(report_dir)
     filter_dir = f.filter_secen(scene)
@@ -101,7 +101,7 @@ def analysis_pk():
     scene = request.args.get('scene')
     app = request.args.get('app')
     model = request.args.get('model')
-    settings = m._get_setting(request)
+    settings = m._settings(request)
     report_dir = os.path.join(os.getcwd(), 'report')
     dirs = os.listdir(report_dir)
     apm_data = {}
@@ -124,7 +124,7 @@ def analysis_compare():
     scene1 = request.args.get('scene1')
     scene2 = request.args.get('scene2')
     app = request.args.get('app')
-    settings = m._get_setting(request)
+    settings = m._settings(request)
     try:
         if platform == 'Android':
             apm_data1 = f._setAndroidPerfs(scene1)

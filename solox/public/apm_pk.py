@@ -17,20 +17,19 @@ class CPU_PK:
         self.deviceId1 = deviceId1
         self.deviceId2 = deviceId2
 
-    def getprocessCpuStat(self, pkgName, deviceId):
+    def getprocessCpuStat(self):
         """get the cpu usage of a process at a certain time"""
-        pid = d.getPid(pkgName=pkgName, deviceId=deviceId)
-        cmd = f'cat /proc/{pid}/stat'
-        result = adb.shell(cmd=cmd, deviceId=deviceId)
+        cmd = 'cat /proc/{}/stat'.format(self.pid)
+        result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         r = re.compile("\\s+")
         toks = r.split(result)
-        processCpu = float(int(toks[13]) + int(toks[14]) + int(toks[15]) + int(toks[16]))
+        processCpu = float(toks[13]) + float(toks[14]) + float(toks[15]) + float(toks[16])
         return processCpu
 
 
     def getTotalCpuStat(self, deviceId):
         """get the total cpu usage at a certain time"""
-        cmd = f'cat /proc/stat |{d.filterType()} ^cpu'
+        cmd = 'cat /proc/stat |{} ^cpu'.format(d.filterType())
         result = adb.shell(cmd=cmd, deviceId=deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
@@ -42,11 +41,11 @@ class CPU_PK:
 
     def getIdleCpuStat(self, deviceId):
         """get the idle cpu usage at a certain time"""
-        cmd = f'cat /proc/stat |{d.filterType()} ^cpu'
+        cmd = 'cat /proc/stat |{} ^cpu'.format(d.filterType())
         result = adb.shell(cmd=cmd, deviceId=deviceId)
         r = re.compile(r'(?<!cpu)\d+')
         toks = r.findall(result)
-        IdleCpu = float(int(toks[4]))
+        IdleCpu = float(toks[4])
         return IdleCpu
 
     def getAndroidCpuRate(self):
@@ -86,8 +85,8 @@ class MEM_PK:
 
     def getAndroidMem(self, pkgName, deviceId):
         """Get the Android memory ,unit:MB"""
-        pid = d.getPid(pkgName=pkgName, deviceId=deviceId)
-        cmd = f'dumpsys meminfo {pid}'
+        pid = d.getPid(pkgName=pkgName, deviceId=deviceId)[0].split(':')[0]
+        cmd = 'dumpsys meminfo {}'.format(pid)
         output = adb.shell(cmd=cmd, deviceId=deviceId)
         m_total = re.search(r'TOTAL\s*(\d+)', output)
         totalPass = round(float(float(m_total.group(1))) / 1024, 2)
@@ -117,8 +116,8 @@ class Flow_PK:
 
     def getAndroidNet(self, pkgName, deviceId):
         """Get Android upflow and downflow data, unit:KB"""
-        pid = d.getPid(pkgName=pkgName, deviceId=deviceId)
-        cmd = f'cat /proc/{pid}/net/dev |{d.filterType()} wlan0'
+        pid = d.getPid(pkgName=pkgName, deviceId=deviceId)[0].split(':')[0]
+        cmd = 'cat /proc/{}/net/dev |{} wlan0'.format(pid, d.filterType())
         output_pre = adb.shell(cmd=cmd, deviceId=deviceId)
         m_pre = re.search(r'wlan0:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)', output_pre)
         sendNum_pre = round(float(float(m_pre.group(2)) / 1024), 2)

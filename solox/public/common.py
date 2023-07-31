@@ -693,7 +693,7 @@ class Method:
         return result
     
     @classmethod
-    def _get_setting(cls, request):
+    def _settings(cls, request):
         content = {}
         content['cpuWarning'] = (0, request.cookies.get('cpuWarning'))[request.cookies.get('cpuWarning') not in [None, 'NaN']]
         content['memWarning'] = (0, request.cookies.get('memWarning'))[request.cookies.get('memWarning') not in [None, 'NaN']]
