@@ -83,23 +83,16 @@ def hostIP():
 
 
 def listeningPort(port):
-    if platform.system() != 'Windows':
-        os.system("lsof -i:%s| grep LISTEN| awk '{print $2}'|xargs kill -9" % port)
-    else:
-        port_cmd = 'netstat -ano | findstr {}'.format(port)
-        r = os.popen(port_cmd)
-        r_data_list = r.readlines()
-        if len(r_data_list) == 0:
-            return
-        else:
-            pid_list = []
-            for line in r_data_list:
-                line = line.strip()
-                pid = re.findall(r'[1-9]\d*', line)
-                pid_list.append(pid[-1])
-            pid_set = list(set(pid_list))[0]
-            pid_cmd = 'taskkill -PID {} -F'.format(pid_set)
-            os.system(pid_cmd)
+    net_connections = psutil.net_connections()
+    conn = [c for c in net_connections if c.status == "LISTEN" and c.laddr.port == port]
+    if conn:
+        pid = conn[0].pid
+        logger.warning('Port {port} is used by process {pid}'.format(port, pid))
+        logger.info('you can start solox : python -m solox --host={ip} --port={port}')
+        # os.kill(pid, signal.SIGABRT)
+        return False
+    return True
+    
 
 def getServerStatus(host: str, port: int):
     r = requests.get('http://{}:{}'.format(host, port), timeout=2.0)
@@ -123,12 +116,12 @@ def startServer(host: str, port: int):
 
 def main(host=hostIP(), port=50003):
     try:
-        listeningPort(port=port)
-        pool = multiprocessing.Pool(processes=2)
-        pool.apply_async(startServer, (host, port))
-        pool.apply_async(openUrl, (host, port))
-        pool.close()
-        pool.join()
+        if listeningPort(port=port):
+            pool = multiprocessing.Pool(processes=2)
+            pool.apply_async(startServer, (host, port))
+            pool.apply_async(openUrl, (host, port))
+            pool.close()
+            pool.join()
     except KeyboardInterrupt:
         logger.info('stop solox success')
         sys.exit()
