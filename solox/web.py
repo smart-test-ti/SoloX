@@ -15,8 +15,6 @@ from logzero import logger
 from threading import Lock
 from flask_socketio import SocketIO, disconnect
 from flask import Flask
-import psutil
-import signal
 from pyfiglet import Figlet
 from solox import __version__
 
@@ -45,9 +43,6 @@ def connect():
 def backgroundThread():
     global thread
     try:
-        # logger.info('Initializing adb environment ...')
-        # os.system('adb kill-server')
-        # os.system('adb start-server')
         current_time = time.strftime("%Y%m%d%H", time.localtime())
         logPath = os.path.join(os.getcwd(),'adblog',f'{current_time}.log')
         logcat = subprocess.Popen(f'adb logcat *:E > {logPath}', stdout=subprocess.PIPE,
@@ -83,16 +78,23 @@ def hostIP():
 
 
 def listeningPort(port):
-    net_connections = psutil.net_connections()
-    conn = [c for c in net_connections if c.status == "LISTEN" and c.laddr.port == port]
-    if conn:
-        pid = conn[0].pid
-        logger.warning('Port {port} is used by process {pid}'.format(port, pid))
-        logger.info('you can start solox : python -m solox --host={ip} --port={port}')
-        # os.kill(pid, signal.SIGABRT)
-        return False
-    return True
-    
+    if platform.system() != 'Windows':
+        os.system("lsof -i:%s| grep LISTEN| awk '{print $2}'|xargs kill -9" % port)
+    else:
+        port_cmd = 'netstat -ano | findstr {}'.format(port)
+        r = os.popen(port_cmd)
+        r_data_list = r.readlines()
+        if len(r_data_list) == 0:
+            return
+        else:
+            pid_list = []
+            for line in r_data_list:
+                line = line.strip()
+                pid = re.findall(r'[1-9]\d*', line)
+                pid_list.append(pid[-1])
+            pid_set = list(set(pid_list))[0]
+            pid_cmd = 'taskkill -PID {} -F'.format(pid_set)
+            os.system(pid_cmd)
 
 def getServerStatus(host: str, port: int):
     r = requests.get('http://{}:{}'.format(host, port), timeout=2.0)
@@ -116,12 +118,12 @@ def startServer(host: str, port: int):
 
 def main(host=hostIP(), port=50003):
     try:
-        if listeningPort(port=port):
-            pool = multiprocessing.Pool(processes=2)
-            pool.apply_async(startServer, (host, port))
-            pool.apply_async(openUrl, (host, port))
-            pool.close()
-            pool.join()
+        listeningPort(port=port)
+        pool = multiprocessing.Pool(processes=2)
+        pool.apply_async(startServer, (host, port))
+        pool.apply_async(openUrl, (host, port))
+        pool.close()
+        pool.join()
     except KeyboardInterrupt:
         logger.info('stop solox success')
         sys.exit()

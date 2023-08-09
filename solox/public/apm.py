@@ -517,7 +517,7 @@ class APM(object):
     def collectAll(self):
         try:
             f.clear_file()
-            process_num = 6 if self.record else 7
+            process_num = 7 if self.record else 6
             pool = multiprocessing.Pool(processes=process_num)
             pool.apply_async(self.collectCpu)
             pool.apply_async(self.collectMemory)
