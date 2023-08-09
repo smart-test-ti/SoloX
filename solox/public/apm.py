@@ -176,6 +176,7 @@ class Battery(object):
     def getAndroidBattery(self, noLog=False):
         """Get android battery info, unit:%"""
         # Switch mobile phone battery to non-charging state
+        self.recoverBattery()
         cmd = 'dumpsys battery set status 1'
         adb.shell(cmd=cmd, deviceId=self.deviceId)
         # Get phone battery info
