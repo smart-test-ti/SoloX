@@ -414,42 +414,43 @@ SoloX - Application Performance Monitoring
     });
 
     $('.select-app').change(function() {
-        $.ajax({
-            url: Host + "/package/pids",
-            type: "GET",
-            async: true,
-            cache: false,
-            data:{
-                platform:platform,
-                device:$('.select-device').val(),
-                pkgname:this.value
-            },
-            beforeSend: function () {
-                if(platform == 'Android'){
-                    $('.select-pid').empty();
-                }
-                if(lan == 'cn' ){
-                    SwalLoading('初始化','正在获取该APP上的所有进程, 请您稍等！');
-                }else{
-                    SwalLoading('Process initialization!','Initializing Process, please wait a mmoment.');
-                }
-                
-            },
-            success: function (data) {
-                if(data['status'] != 1 ) {
-                    if(lan == 'cn' ){
-                        SwalFire('warning', '警告','没有发现该app的进程,请检查app是否已经启动', 5000);
-                    }else{
-                        SwalFire('warning', 'Warning', data['msg'], 5000);
-                    } 
-                }else{
-                    for(var i=0;i<data['pids'].length;i++){
-                        $('.select-pid').append('<option>'+data['pids'][i]+'</option>')
+        if(platform == 'Android'){
+            $.ajax({
+                url: Host + "/package/pids",
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    platform:platform,
+                    device:$('.select-device').val(),
+                    pkgname:this.value
+                },
+                beforeSend: function () {
+                    if(platform == 'Android'){
+                        $('.select-pid').empty();
                     }
-                    swal.close();
+                    if(lan == 'cn' ){
+                        SwalLoading('初始化','正在获取该APP上的所有进程, 请您稍等！');
+                    }else{
+                        SwalLoading('Process initialization!','Initializing Process, please wait a mmoment.');
+                    }
+                },
+                success: function (data) {
+                    if(data['status'] != 1 ) {
+                        if(lan == 'cn' ){
+                            SwalFire('warning', '警告','没有发现该app的进程,请检查app是否已经启动', 5000);
+                        }else{
+                            SwalFire('warning', 'Warning', data['msg'], 5000);
+                        } 
+                    }else{
+                        for(var i=0;i<data['pids'].length;i++){
+                            $('.select-pid').append('<option>'+data['pids'][i]+'</option>')
+                        }
+                        swal.close();
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
     function initializeAPM(){

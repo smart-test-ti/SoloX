@@ -101,7 +101,7 @@
 * Python API收集：record=True。
 * Mac电脑录制视频，请检查Scrcpy是否安装成功，可以自行安装：brew install scrcpy。
 
-## 1️⃣9️⃣ Android哪些指标以来app的进程需要存活？
+## 1️⃣9️⃣ Android哪些指标依赖app的进程需要存活？
 
 * Cpu、Memory、Network、FPS
 * 界面如果不选择进程就点击Start收集，那么默认使用的是这个包名的主进程。

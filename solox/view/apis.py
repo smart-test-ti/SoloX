@@ -122,7 +122,7 @@ def getPackagePids():
             result = {'status': 0, 'msg': 'No process found, please start the app first.'} 
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg': 'No process foundd, please start the app first.'} 
+        result = {'status': 0, 'msg': 'No process found, please start the app first.'} 
     return result        
 
 @api.route('/package/activity', methods=['post', 'get'])
