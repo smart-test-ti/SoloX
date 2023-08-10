@@ -15,8 +15,6 @@ from logzero import logger
 from threading import Lock
 from flask_socketio import SocketIO, disconnect
 from flask import Flask
-import psutil
-import signal
 from pyfiglet import Figlet
 from solox import __version__
 
@@ -70,19 +68,12 @@ def disconnect():
     thread = False
     disconnect()
 
-def hostIP():
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(('8.8.8.8', 80))
-        ip = s.getsockname()[0]
-    except Exception as e:
-        ip = '127.0.0.1'
-    finally:
-        s.close()
+def ip() -> str:
+    ip = socket.gethostbyname(socket.gethostname())
     return ip
 
 
-def listeningPort(port):
+def listen(port):
     if platform.system() != 'Windows':
         os.system("lsof -i:%s| grep LISTEN| awk '{print $2}'|xargs kill -9" % port)
     else:
@@ -101,32 +92,32 @@ def listeningPort(port):
             pid_cmd = 'taskkill -PID {} -F'.format(pid_set)
             os.system(pid_cmd)
 
-def getServerStatus(host: str, port: int):
+def status(host: str, port: int):
     r = requests.get('http://{}:{}'.format(host, port), timeout=2.0)
     flag = (True, False)[r.status_code == 200]
     return flag
 
 
-def openUrl(host: str, port: int):
+def open_url(host: str, port: int):
     flag = True
     while flag:
         logger.info('start solox server ...')
         f = Figlet(font="slant", width=300)
         print(f.renderText("SOLOX {}".format(__version__)))
-        flag = getServerStatus(host, port)
+        flag = status(host, port)
     webbrowser.open('http://{}:{}/?platform=Android&lan=en'.format(host, port), new=2)
     logger.info('Running on http://{}:{}/?platform=Android&lan=en (Press CTRL+C to quit)'.format(host, port))
 
 
-def startServer(host: str, port: int):
+def start(host: str, port: int):
     socketio.run(app, host=host, debug=False, port=port)
 
-def main(host=hostIP(), port=50003):
+def main(host=ip(), port=50003):
     try:
-        listeningPort(port=port)
+        listen(port=port)
         pool = multiprocessing.Pool(processes=2)
-        pool.apply_async(startServer, (host, port))
-        pool.apply_async(openUrl, (host, port))
+        pool.apply_async(start, (host, port))
+        pool.apply_async(open_url, (host, port))
         pool.close()
         pool.join()
     except KeyboardInterrupt:

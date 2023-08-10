@@ -49,7 +49,6 @@ class Devices:
         for i in range(1, len(Ids) - 1):
             id, state = Ids[i].strip().split('\t')
             if state == 'device':
-                logger.info('debug')
                 deviceIds.append(id)
         return deviceIds
 
@@ -175,7 +174,8 @@ class Devices:
                 result['version'] = adb.shell(cmd='getprop ro.build.version.release', deviceId=deviceId)
                 result['serialno'] = adb.shell(cmd='getprop ro.serialno', deviceId=deviceId)
                 cmd = f'ip addr show wlan0 | {self.filterType()} link/ether'
-                result['wifiadr'] = adb.shell(cmd=cmd, deviceId=deviceId).split(' ')[1]
+                wifiadr_content = adb.shell(cmd=cmd, deviceId=deviceId)                
+                result['wifiadr'] = Method._index(wifiadr_content.split(' '), 1, '')
             case Platform.iOS:
                 iosInfo = json.loads(self.execCmd('tidevice info --json'))
                 result['brand'] = iosInfo['DeviceClass']
@@ -705,6 +705,14 @@ class Method:
         content['solox_host'] = ('', request.cookies.get('solox_host'))[request.cookies.get('solox_host') not in [None, 'NaN']]
         content['host_switch'] = request.cookies.get('host_switch')
         return content
+    
+    @classmethod
+    def _index(cls, target: list, index: int, default: any):
+        try:
+            return target[index]
+        except IndexError:
+            return default
+
 
 class Install:
 
