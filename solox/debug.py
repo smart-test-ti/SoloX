@@ -68,9 +68,11 @@ def disconnect():
     disconnect()
 
 def ip() -> str:
-    ip = socket.gethostbyname(socket.gethostname())
+    try:
+        ip = socket.gethostbyname(socket.gethostname())
+    except:
+        ip = '127.0.0.1'    
     return ip
-
 
 def listen(port):
     net_connections = psutil.net_connections()
@@ -102,7 +104,7 @@ def open_url(host: str, port: int):
 def start(host: str, port: int):
     socketio.run(app, host=host, debug=False, port=port)
 
-def main(host=ip(), port=50003):
+def main(host='127.0.0.1', port=50003):
     try:
         if listen(port=port):
             pool = multiprocessing.Pool(processes=2)

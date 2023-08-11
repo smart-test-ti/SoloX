@@ -38,6 +38,7 @@
 
 * solox 2.5.4及以上版本只支持python 3.10 +的版本（因为使用了python新的特性，3.10以下版本不支持），2.5.3及以下版本支持python3.0 ~3.9。
 * 如果显示的是50003端口被占用，可以用自定义的方式启动  `python -m solox --host={ip} --port={port}` 。
+* socket.gaierror: [Errno 8] nodename nor servname provided, or not known ：https://github.com/smart-test-ti/SoloX/issues/198
 
 ## 7️⃣ 为什么感觉收集速度慢 ？
 

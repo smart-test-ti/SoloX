@@ -66,7 +66,12 @@ def disconnect():
     disconnect()
 
 def ip() -> str:
-    ip = socket.gethostbyname(socket.gethostname())
+    try:
+        ip = socket.gethostbyname(socket.gethostname())
+    except:
+        logger.info('hostname:{}'.format(socket.gethostname()))
+        logger.warning('config [127.0.0.1 hostname] in /etc/hosts file')
+        ip = '127.0.0.1'    
     return ip
 
 
