@@ -33,8 +33,12 @@ class Devices:
     def execCmd(self, cmd):
         """Execute the command to get the terminal print result"""
         r = os.popen(cmd)
-        text = r.buffer.read().decode(encoding='gbk').replace('\x1b[0m','').strip()
-        r.close()
+        try:
+            text = r.buffer.read().decode(encoding='gbk').replace('\x1b[0m','').strip()
+        except UnicodeDecodeError:
+            text = r.buffer.read().decode(encoding='utf-8').replace('\x1b[0m','').strip()
+        finally:
+            r.close()
         return text
 
     def filterType(self):

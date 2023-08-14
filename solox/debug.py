@@ -104,7 +104,7 @@ def open_url(host: str, port: int):
 def start(host: str, port: int):
     socketio.run(app, host=host, debug=False, port=port)
 
-def main(host='127.0.0.1', port=50003):
+def main(host=ip(), port=50003):
     try:
         if listen(port=port):
             pool = multiprocessing.Pool(processes=2)
