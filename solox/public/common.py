@@ -545,10 +545,10 @@ class File:
         cpuSystemRate = f'{round(sum(cpuSystemData) / len(cpuSystemData), 2)}%'
 
         batteryLevelData = self.readLog(scene=scene, filename=f'battery_level.log')[1]
-        batteryLevel = f'{round(sum(batteryLevelData) / len(batteryLevelData), 2)}%'
+        batteryLevel = f'{batteryLevelData[-1]}%'
 
         batteryTemlData = self.readLog(scene=scene, filename=f'battery_tem.log')[1]
-        batteryTeml = f'{round(sum(batteryTemlData) / len(batteryTemlData), 2)}°C'
+        batteryTeml = f'{batteryTemlData[-1]}°C'
 
         totalPassData = self.readLog(scene=scene, filename=f'mem_total.log')[1]
         totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
@@ -609,16 +609,16 @@ class File:
         flowRecv = f'{round(float(sum(flowRecvData) / 1024), 2)}MB'
 
         batteryTemlData = self.readLog(scene=scene, filename='battery_tem.log')[1]
-        batteryTeml = round(sum(batteryTemlData) / len(batteryTemlData), 2)
+        batteryTeml = batteryTemlData[-1]
 
         batteryCurrentData = self.readLog(scene=scene, filename='battery_current.log')[1]
-        batteryCurrent = round(sum(batteryCurrentData) / len(batteryCurrentData), 2)
+        batteryCurrent = sum(batteryCurrentData)
 
         batteryVoltageData = self.readLog(scene=scene, filename='battery_voltage.log')[1]
-        batteryVoltage = round(sum(batteryVoltageData) / len(batteryVoltageData), 2)
+        batteryVoltage = sum(batteryVoltageData)
 
         batteryPowerData = self.readLog(scene=scene, filename='battery_power.log')[1]
-        batteryPower = round(sum(batteryPowerData) / len(batteryPowerData), 2)
+        batteryPower = sum(batteryPowerData)
 
         gpuData = self.readLog(scene=scene, filename='gpu.log')[1]
         gpu = round(sum(gpuData) / len(gpuData), 2)
