@@ -111,11 +111,7 @@ class Devices:
     def getPkgname(self, devicesId):
         """Get all package names of Android devices"""
         pkginfo = os.popen(f"{self.adb} -s {devicesId} shell pm list package")
-        pkglist = []
-        for p in pkginfo:
-            p = p.lstrip('package').lstrip(":").strip()
-            if self.checkPkgname(p):
-                pkglist.append(p)
+        pkglist = [p.lstrip('package').lstrip(":").strip() for p in pkginfo]
         return pkglist
 
     def getDeviceInfoByiOS(self):

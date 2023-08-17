@@ -79,7 +79,7 @@ def listen(port):
     conn = [c for c in net_connections if c.status == "LISTEN" and c.laddr.port == port]
     if conn:
         pid = conn[0].pid
-        logger.warning('Port {port} is used by process {pid}'.format(port, pid))
+        logger.warning('Port {} is used by process {}'.format(port, pid))
         logger.info('you can start solox : python -m solox --host={ip} --port={port}')
         return False
     return True
@@ -106,7 +106,7 @@ def start(host: str, port: int):
 
 def main(host=ip(), port=50003):
     try:
-        if listen(port=port):
+        if listen(port):
             pool = multiprocessing.Pool(processes=2)
             pool.apply_async(start, (host, port))
             pool.apply_async(open_url, (host, port))
