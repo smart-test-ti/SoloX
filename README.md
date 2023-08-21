@@ -129,6 +129,30 @@ target in ['cpu','memory','network','fps','battery','gpu']
   - 🌱2-apps: test two different apps on two phones with the same configuration.
 * **Collect In Python/API:** Support Python and API to collect performance data, helping users easily integrate into automated testing processes.
 
+## Develop
+
+* https://github.com/pallets/flask
+* https://github.com/tabler/tabler
+
+##### debug
+
+* remove [solox] moudel in all python file
+
+  ```python
+
+  example
+  from solox.view.apis import api  
+  change to 
+  from view.apis import api
+
+  ```
+* run [python ./solox/debug.py]
+
+```python
+cd solox
+python debug.py
+```
+
 ## Browser
 
 <img src="https://cdn.nlark.com/yuque/0/2023/png/153412/1677553244198-96ce5709-f33f-4038-888f-f330d1f74450.png" alt="Chrome" width="50px" height="50px" />
