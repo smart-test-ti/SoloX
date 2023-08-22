@@ -99,7 +99,7 @@ class CPU(object):
 
     def getiOSCpuRate(self, noLog=False):
         """get the iOS cpu rate of a process, unit:%"""
-        apm = iosAPM(self.pkgName)
+        apm = iosAPM(self.pkgName, self.deviceId)
         appCpuRate = round(float(apm.getPerformance(apm.cpu)[0]), 2)
         sysCpuRate = round(float(apm.getPerformance(apm.cpu)[1]), 2)
         if noLog is False:
@@ -143,7 +143,7 @@ class Memory(object):
 
     def getiOSMem(self):
         """Get the iOS memory"""
-        apm = iosAPM(self.pkgName)
+        apm = iosAPM(self.pkgName, self.deviceId)
         totalPass = round(float(apm.getPerformance(apm.memory)), 2)
         nativePass = 0
         dalvikPass = 0
@@ -192,7 +192,7 @@ class Battery(object):
     
     def getiOSBattery(self, noLog=False):
         """Get ios battery info, unit:%"""
-        d  = tidevice.Device()
+        d  = tidevice.Device(udid=self.deviceId)
         ioDict =  d.get_io_power()
         tem = m._setValue(ioDict['Diagnostics']['IORegistry']['Temperature'])
         current = m._setValue(abs(ioDict['Diagnostics']['IORegistry']['InstantAmperage']))
@@ -264,7 +264,7 @@ class Network(object):
 
     def getiOSNet(self):
         """Get iOS upflow and downflow data"""
-        apm = iosAPM(self.pkgName)
+        apm = iosAPM(self.pkgName, self.deviceId)
         apm_data = apm.getPerformance(apm.network)
         sendNum = round(float(apm_data[1]), 2)
         recNum = round(float(apm_data[0]), 2)
@@ -309,7 +309,7 @@ class FPS(object):
 
     def getiOSFps(self, noLog=False):
         """get iOS Fps"""
-        apm = iosAPM(self.pkgName)
+        apm = iosAPM(self.pkgName, self.deviceId)
         fps = int(apm.getPerformance(apm.fps))
         if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
@@ -322,11 +322,12 @@ class FPS(object):
         return fps, jank
 
 class GPU(object):
-    def __init__(self, pkgName):
+    def __init__(self, pkgName, deviceId):
         self.pkgName = pkgName
+        self.deviceId = deviceId
 
     def getGPU(self, noLog=False):
-        apm = iosAPM(self.pkgName)
+        apm = iosAPM(self.pkgName, self.deviceId)
         gpu = apm.getPerformance(apm.gpu)
         if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
@@ -335,7 +336,7 @@ class GPU(object):
 
 class iosAPM(object):
 
-    def __init__(self, pkgName, deviceId=tidevice.Device()):
+    def __init__(self, pkgName, deviceId):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
@@ -359,13 +360,13 @@ class iosAPM(object):
 
     def getPerformance(self, perfTpe: DataType):
         if perfTpe == DataType.NETWORK:
-            perf = Performance(self.deviceId, [perfTpe])
+            perf = Performance(tidevice.Device(udid=self.deviceId), [perfTpe])
             perf.start(self.pkgName, callback=self.callback)
             time.sleep(3)
             perf.stop()
             perf_value = self.downflow, self.upflow
         else:
-            perf = iosP.Performance(self.deviceId, [perfTpe])
+            perf = iosP.Performance(tidevice.Device(udid=self.deviceId), [perfTpe])
             perf_value = perf.start(self.pkgName, callback=self.callback)
         return perf_value
 

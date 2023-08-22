@@ -405,7 +405,7 @@ SoloX - Application Performance Monitoring
                     } 
                 }else{
                     for(var i=0;i<data['pkgnames'].length;i++){
-                        $('.select-app').append('<option>'+data['pkgnames'][i]+'</option>')
+                        $('.select-app').append('<option>'+data['pkgnames'][i].trim()+'</option>')
                     }
                     swal.close();
                 }
@@ -494,10 +494,10 @@ SoloX - Application Performance Monitoring
                     } 
                 }else{
                     for(var i=0;i<data['devices'].length;i++){
-                        $('.select-device').append('<option>'+data['devices'][i]+'</option>');
+                        $('.select-device').append('<option>'+data['devices'][i].trim()+'</option>');
                     }
                     for(var i=0;i<data['pkgnames'].length;i++){
-                        $('.select-app').append('<option>'+data['pkgnames'][i]+'</option>');
+                        $('.select-app').append('<option>'+data['pkgnames'][i].trim()+'</option>');
                     }
                     $('#brand').text(data['device_detail']['brand']);
                     $('#device_name').text(data['device_detail']['name']);
@@ -565,14 +565,15 @@ SoloX - Application Performance Monitoring
         });
     }
 
-    function getGpu(pkgname){
+    function getGpu(pkgname,device){
         $.ajax({
             url: Host + "/apm/gpu",
             type: "GET",
             async: true,
             cache: false,
             data:{
-                pkgname:pkgname
+                pkgname:pkgname,
+                device:device
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -586,7 +587,7 @@ SoloX - Application Performance Monitoring
                             var x = (new Date()).getTime(),
                             y = data['gpu'];
                             series.addPoint([x, y], true, true);
-                            timerQ = setTimeout(getGpu(pkgname), 1000);
+                            timerQ = setTimeout(getGpu(pkgname, device), 1000);
                         }catch (e) {}
                     }else{
                         SwalFire('error','Something error',data['msg'],2000);
@@ -1354,11 +1355,11 @@ SoloX - Application Performance Monitoring
         }
     }
 
-    function collectGpu(pkgname){
+    function collectGpu(device,pkgname){
         var gpu_checkbox = $('#gpu_checkbox').is(':checked');
         if(gpu_checkbox){
             gpuInitialize();
-            gpu_chart = collectPers('',pkgname,'gpu','GPU（%）',getGpu(pkgname));
+            gpu_chart = collectPers(device,pkgname,'gpu','GPU（%）',getGpu(pkgname,device));
         }
     }
 
@@ -1526,7 +1527,7 @@ SoloX - Application Performance Monitoring
             collectFps(device,pkgname);
             collectBattery(device);
             if(platform == 'iOS'){
-                collectGpu(pkgname);
+                collectGpu(device,pkgname);
             }
             if(parseInt($('#duration').val()) > 0){
                 var times = parseInt($('#duration').val()) * 60 * 1000

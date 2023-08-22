@@ -77,7 +77,7 @@ class Devices:
             if deviceId not in self.getDeviceIds():
                 raise Exception('no device found')
         else:
-            deviceId = deviceinfo.split(':')[1]
+            deviceId = deviceinfo
         return deviceId
 
     def getPid(self, deviceId, pkgName):

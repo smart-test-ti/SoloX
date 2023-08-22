@@ -373,8 +373,9 @@ def getBattery():
 def getGpu():
     """get gpu data"""
     pkgname = method._request(request, 'pkgname')
+    device = method._request(request, 'device')
     try:
-        gpu = GPU(pkgName=pkgname)
+        gpu = GPU(pkgName=pkgname, deviceId=device)
         final = gpu.getGPU()
         result = {'status': 1, 'gpu': final}
     except Exception as e:
