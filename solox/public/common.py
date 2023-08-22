@@ -17,7 +17,9 @@ import signal
 import cv2
 from functools import wraps
 from jinja2 import Environment, FileSystemLoader
- 
+from tidevice._device import Device
+from tidevice import Usbmux
+
 class Platform:
     Android = 'Android'
     iOS = 'iOS'
@@ -116,19 +118,14 @@ class Devices:
 
     def getDeviceInfoByiOS(self):
         """Get a list of all successfully connected iOS devices"""
-        deviceResult = json.loads(self.execCmd('tidevice list --json'))
-        deviceInfo = []
-        for i in range(len(deviceResult)):
-            deviceName = deviceResult[i]['name']
-            deviceUdid = deviceResult[i]['udid']
-            deviceInfo.append(f'{deviceName}:{deviceUdid}')
+        deviceInfo = [udid for udid in Usbmux().device_udid_list()]
         logger.info('Connected devices: {}'.format(deviceInfo))    
         return deviceInfo
 
     def getPkgnameByiOS(self, udid):
         """Get all package names of the corresponding iOS device"""
-        pkgResult = self.execCmd(f'tidevice --udid {udid} applist').split('\n')
-        pkgNames = [pkgResult[i].split(' ')[0] for i in range(len(pkgResult))]
+        d = Device(udid)
+        pkgNames = [i.get("CFBundleIdentifier") for i in d.installation.iter_installed(app_type="User")]
         return pkgNames
     
     def get_pc_ip(self):

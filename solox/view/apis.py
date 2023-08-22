@@ -73,8 +73,8 @@ def deviceids():
             case Platform.iOS:
                 deviceinfos = d.getDeviceInfoByiOS()
                 if len(deviceinfos) > 0:
-                    pkgnames = d.getPkgnameByiOS(deviceinfos[0].split(':')[1])
-                    device_detail = d.getDdeviceDetail(deviceId=deviceinfos[0].split(':')[1], platform=platform)
+                    pkgnames = d.getPkgnameByiOS(deviceinfos[0])
+                    device_detail = d.getDdeviceDetail(deviceId=deviceinfos[0], platform=platform)
                     result = {'status': 1, 
                               'deviceids': deviceinfos, 
                               'devices': deviceinfos,
