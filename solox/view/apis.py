@@ -401,7 +401,6 @@ def makeReport():
             battery_monitor = Battery(deviceId=deviceId)
             battery_monitor.recoverBattery()
             wifi = False if wifi_switch == 'false' else True
-            deviceId = d.getIdbyDevice(devices, platform)
             pid = None
             if process and platform == Platform.Android :
                 pid = process.split(':')[0]

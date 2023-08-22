@@ -17,10 +17,11 @@ class CPU_PK:
         self.deviceId1 = deviceId1
         self.deviceId2 = deviceId2
 
-    def getprocessCpuStat(self):
+    def getprocessCpuStat(self, pkgName, deviceId):
         """get the cpu usage of a process at a certain time"""
-        cmd = 'cat /proc/{}/stat'.format(self.pid)
-        result = adb.shell(cmd=cmd, deviceId=self.deviceId)
+        pid = pid = d.getPid(pkgName=pkgName, deviceId=deviceId)[0].split(':')[0]
+        cmd = 'cat /proc/{}/stat'.format(pid)
+        result = adb.shell(cmd=cmd, deviceId=deviceId)
         r = re.compile("\\s+")
         toks = r.split(result)
         processCpu = float(toks[13]) + float(toks[14]) + float(toks[15]) + float(toks[16])
