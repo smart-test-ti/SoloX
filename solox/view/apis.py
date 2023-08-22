@@ -99,8 +99,7 @@ def packageNames():
             deviceId = d.getIdbyDevice(device, platform)
             pkgnames = d.getPkgname(deviceId)
         case Platform.iOS:
-            udid = device.split(':')[1]
-            pkgnames = d.getPkgnameByiOS(udid)
+            pkgnames = d.getPkgnameByiOS(device)
         case _:
             result = {'status': 0, 'msg': 'platform is undefined'}
             return result
