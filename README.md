@@ -134,18 +134,18 @@ target in ['cpu','memory','network','fps','battery','gpu']
 * https://github.com/pallets/flask
 * https://github.com/tabler/tabler
 
-##### debug
+#### debug
 
 * remove [solox] moudel in all python file
 
-  ```python
+```python
 
-  example
-  from solox.view.apis import api  
-  change to 
-  from view.apis import api
+example
+from solox.view.apis import api  
+change to 
+from view.apis import api
 
-  ```
+```
 * run [python ./solox/debug.py]
 
 ```python
