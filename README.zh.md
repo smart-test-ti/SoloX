@@ -90,7 +90,7 @@ gpu = apm.collectGpu() # % only supports ios
 # ************* 收集全部的性能指标 ************* #
 apm = APM(pkgName='com.bilibili.app.i',platform='Android', deviceId='ca6bd5a5', 
           surfaceview=True, noLog=False, pid=None, duration=20, record=False) # duration : 秒 （持续执行时间） record: 是否录屏（只支持安卓）
-# apm = APM(pkgName='com.bilibili.app.in', platform='iOS',  noLog=False, duration=20)  
+# apm = APM(pkgName='com.bilibili.app.in.ios', platform='iOS',  deviceId='xxxx',noLog=False, duration=20)  
 if __name__ == '__main__':
      apm.collectAll() # 会生成HTML报告
 ```
