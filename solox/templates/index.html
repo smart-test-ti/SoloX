@@ -4,7 +4,7 @@
 {% if lan == 'cn' %}
 SoloX - 性能测试
 {% else %}
-SoloX - APM
+SoloX - Application Performance Monitoring
 {% endif %}
 {% endblock %}
 
@@ -58,6 +58,19 @@ SoloX - APM
 {% endblock %}
 
 {% block ms_auto %}
+{% if platform == 'Android' %}
+<div class="ms-auto d-print-none  col-auto">
+    <a  class="cursor-pointer"  data-bs-toggle="modal" data-bs-target="#modal-scrollable">
+        <svg t="1687917727817" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2540" width="50" height="50"><path d="M861.12 596.608L786.176 678.4c-139.936-158.4-387.04-158.4-526.976 0l-74.976-81.824c179.776-203.52 497.184-203.52 676.96 0z" fill="#080808" p-id="2541"></path><path d="M1011.808 432.896l-75.328 80.544c-219.776-248.864-607.872-248.864-827.616 0l-75.328-80.544c259.616-294.4 718.624-294.4 978.24 0z" fill="#080808" p-id="2542"></path><path d="M422.784 716.128c-50.08 50.048-50.08 128.32 0 178.4 50.08 50.08 128.32 50.08 178.432 0 50.048-50.08 50.048-128.32 0-178.4-53.248-50.24-131.52-50.24-178.432 0z" fill="#FFA115" p-id="2543"></path></svg>
+    </a>
+</div>
+<div class="ms-auto d-print-none  col-auto">
+    <a class="btn btn-default" onclick="cast()">
+        <svg t="1690357482122" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5413" width="128" height="128"><path d="M896 192a64 64 0 0 1 63.84 59.2L960 256v384a64 64 0 0 1-59.2 63.84L896 704h-272v64h195.2c7.04 0 12.8 5.76 12.8 12.8v38.4a12.8 12.8 0 0 1-12.8 12.8H448v-64h80v-64h-110.848v-64H896V256H256v32H192V256a64 64 0 0 1 59.2-63.84L256 192h640z m-544 128a32 32 0 0 1 32 32v448a32 32 0 0 1-32 32H128a32 32 0 0 1-32-32V352a32 32 0 0 1 32-32h224z m-32 64H160v384h160V384z" fill="#000000" p-id="5414"></path></svg>
+        {% if lan == 'cn' %} 投屏 {% else %} Cast {% endif %}
+    </a>
+</div>
+{% endif %}
 <div class="ms-auto d-print-none  col-auto">
     <a class="btn btn-default" id="debug-connect">
         <svg t="1638091545450" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="231707" width="200" height="200"><path d="M207.67511 241.617978v295.694382c0 15.532584 4.602247 31.065169 13.231461 43.721348L296.268369 676.530337c13.806742 20.134831 36.242697 32.21573 60.404494 32.21573h109.303371c24.161798 0 46.597753-12.080899 60.404494-32.21573L601.742526 581.033708c8.629213-12.65618 13.231461-28.188764 13.231461-43.721348V241.617978H207.67511z" fill="#4988FD" p-id="231708"></path><path d="M253.122301 4.026966h317.555056V241.617978H253.122301z" fill="#C5DCFA" p-id="231709"></path><path d="M344.016683 184.089888c-9.204494 0-16.683146-7.478652-16.683146-16.683146V83.41573c0-9.204494 7.478652-16.683146 16.683146-16.683146 9.204494 0 16.683146 7.478652 16.683146 16.683146v83.991012c0 9.204494-7.478652 16.683146-16.683146 16.683146zM476.906571 184.089888c-9.204494 0-16.683146-7.478652-16.683146-16.683146V83.41573c0-9.204494 7.478652-16.683146 16.683146-16.683146 9.204494 0 16.683146 7.478652 16.683146 16.683146v83.991012c0 9.204494-7.478652 16.683146-16.683146 16.683146z" fill="#FFFFFF" p-id="231710"></path><path d="M606.344773 1023.424719c-118.507865 0-214.579775-96.07191-214.579775-214.579775v-28.188764c0-12.080899 9.779775-21.860674 21.860674-21.860674 12.080899 0 21.860674 9.779775 21.860674 21.860674v28.188764c0 93.770787 76.51236 170.283146 170.283146 170.283146s170.283146-76.51236 170.283146-170.283146v-231.262922c0-12.080899 9.779775-21.860674 21.860674-21.860674 12.080899 0 21.860674 9.779775 21.860675 21.860674v231.262922c0.575281 118.507865-95.496629 214.579775-213.429214 214.579775z" fill="#C5DCFA" p-id="231711"></path><path d="M439.513312 780.65618h-52.925842c-12.65618 0-23.011236-10.355056-23.011236-23.011236v-48.898877h98.373033v48.898877c0.575281 12.65618-9.779775 23.011236-22.435955 23.011236z" fill="#2767F4" p-id="231712"></path><path d="M411.899829 604.620225c-9.204494 0-16.683146-7.478652-16.683146-16.683146V335.388764c0-9.204494 7.478652-16.683146 16.683146-16.683146 9.204494 0 16.683146 7.478652 16.683146 16.683146v252.548315c-0.575281 9.779775-7.478652 16.683146-16.683146 16.683146z" fill="#FFFFFF" p-id="231713"></path><path d="M411.899829 528.683146c-3.451685 0-7.478652-1.150562-10.355056-4.026966l-65.582022-54.651686c-4.026966-2.876404-5.752809-8.053933-5.752809-12.656179v-54.076405c0-9.204494 7.478652-16.683146 16.683146-16.683146 9.204494 0 16.683146 7.478652 16.683146 16.683146v46.597753L422.830166 499.34382c6.903371 5.752809 8.053933 16.107865 2.301124 23.586517-4.026966 4.026966-8.629213 5.752809-13.231461 5.752809z" fill="#FFFFFF" p-id="231714"></path><path d="M411.899829 480.934831c-4.602247 0-9.204494-1.725843-12.65618-5.752809-5.752809-6.903371-5.177528-17.258427 1.725843-23.586516l60.979775-51.775281V362.426966c0-9.204494 7.478652-16.683146 16.683146-16.683146 9.204494 0 16.683146 7.478652 16.683147 16.683146v44.87191c0 4.602247-2.301124 9.204494-5.752809 12.65618L422.830166 476.907865c-3.451685 2.876404-7.478652 4.026966-10.930337 4.026966z" fill="#FFFFFF" p-id="231715"></path></svg>
@@ -135,7 +148,7 @@ SoloX - APM
                         <div class="tab-pane active show" id="tabs-apm-target">
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="cpu_checkbox" type="checkbox" checked name="cpu"> CPU</label>
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_checkbox" type="checkbox" checked name="mem"> {% if lan == 'cn' %} 内存 {% else %} Memory {% endif %}</label>
-                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> {% if lan == 'cn' %} 流量 {% else %} Network Data {% endif %}
+                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="flow_checkbox" type="checkbox" checked name="Network-Data"> {% if lan == 'cn' %} 流量 {% else %} Network {% endif %}
                                 {% if platform == 'Android' %}
                                 <span class="ms-auto">
                                     <label class="form-check form-check-single form-switch">
@@ -178,16 +191,35 @@ SoloX - APM
                     </div>
                 </div>
             </div>
-            {% if platform == 'Android' %}
+            
             <a class="dropdown-item" style="margin-top: 10px;">
-                <svg t="1657093102367" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="27860" width="2000" height="2000"><path d="M938.362 256.2V149.626c0-23.576-19.11-42.654-42.652-42.654H43.046C19.502 106.972 0.392 126.05 0.392 149.626V256.2h937.97z" fill="#E6E9ED" p-id="27861"></path><path d="M792.164 831.75H0.392V192.25h937.97v446.306z" fill="#656D78" p-id="27862"></path><path d="M85.67 149.626c0 11.772-9.526 21.296-21.328 21.296-11.74 0-21.294-9.524-21.294-21.296S52.602 128.3 64.342 128.3c11.802 0 21.328 9.556 21.328 21.326z" fill="#ED5564" p-id="27863"></path><path d="M149.62 149.626c0 11.772-9.524 21.296-21.326 21.296-11.742 0-21.296-9.524-21.296-21.296S116.55 128.3 128.292 128.3c11.804 0 21.328 9.556 21.328 21.326z" fill="#FFCE54" p-id="27864"></path><path d="M213.568 149.626c0 11.772-9.524 21.296-21.326 21.296-11.74 0-21.294-9.524-21.294-21.296S180.502 128.3 192.242 128.3c11.802 0 21.326 9.556 21.326 21.326z" fill="#A0D468" p-id="27865"></path><path d="M746.512 277.496H106.996c-11.772 0-21.326 9.554-21.326 21.326s9.554 21.328 21.326 21.328h639.516c11.74 0 21.294-9.556 21.294-21.328s-9.554-21.326-21.294-21.326z" fill="#FC6E51" p-id="27866"></path><path d="M106.996 405.426h341.046c11.802 0 21.326-9.554 21.326-21.328 0-11.772-9.524-21.326-21.326-21.326H106.996c-11.772 0-21.326 9.554-21.326 21.326 0 11.774 9.554 21.328 21.326 21.328z" fill="#AC92EB" p-id="27867"></path><path d="M575.958 448.05H106.996c-11.772 0-21.326 9.556-21.326 21.328s9.554 21.296 21.326 21.296h468.962c11.8 0 21.294-9.524 21.294-21.296s-9.492-21.328-21.294-21.328z" fill="#48CFAD" p-id="27868"></path><path d="M106.996 575.952H405.42c11.772 0 21.326-9.556 21.326-21.328s-9.554-21.296-21.326-21.296H106.996c-11.772 0-21.326 9.526-21.326 21.296s9.554 21.328 21.326 21.328z" fill="#5D9CEC" p-id="27869"></path><path d="M615.678 669.22c8.618 0 16.734-5.278 19.984-13.832 4.122-11.024-1.5-23.326-12.492-27.45-41.03-15.392-47.336-54.708-47.336-55.112a21.332 21.332 0 0 0-24.232-17.956c-11.662 1.716-19.688 12.552-17.97 24.2 0.376 2.624 10.242 64.668 74.55 88.776 2.5 0.938 4.996 1.374 7.496 1.374zM959.534 917.028c1 0 2.06-0.094 3.122-0.25 11.68-1.716 19.674-12.552 17.988-24.2-0.376-2.624-10.242-64.668-74.566-88.776-11.054-4.152-23.296 1.438-27.48 12.458-4.122 11.024 1.5 23.326 12.492 27.448 41.03 15.394 47.336 54.708 47.398 55.114a21.28 21.28 0 0 0 21.046 18.206zM448.042 618.572H106.996c-11.772 0-21.326 9.554-21.326 21.328 0 11.772 9.554 21.326 21.326 21.326h341.046c11.802 0 21.326-9.554 21.326-21.326a21.312 21.312 0 0 0-21.326-21.328z" fill="#FFCE54" p-id="27870"></path><path d="M277.52 703.85H106.996c-11.772 0-21.326 9.554-21.326 21.328 0 11.772 9.554 21.294 21.326 21.294h170.524c11.772 0 21.326-9.524 21.326-21.294 0-11.774-9.554-21.328-21.326-21.328z" fill="#ED5564" p-id="27871"></path><path d="M1002.312 746.472H533.318a21.28 21.28 0 0 1-21.294-21.294c0-11.774 9.524-21.328 21.294-21.328h468.994c11.74 0 21.294 9.554 21.294 21.328 0.002 11.772-9.554 21.294-21.294 21.294zM725.592 555.53a21.332 21.332 0 0 1-18.298-10.368l-64.388-107.478c-5.994-10.086-2.746-23.202 7.372-29.228a21.276 21.276 0 0 1 29.226 7.338l64.324 107.478c6.058 10.086 2.81 23.17-7.306 29.228a21.286 21.286 0 0 1-10.93 3.03zM810.212 555.53c-3.686 0-7.496-0.968-10.93-3.03-10.054-6.058-13.364-19.142-7.306-29.26l64.324-107.446a21.278 21.278 0 0 1 29.228-7.338c10.118 6.026 13.364 19.11 7.368 29.228l-64.324 107.478c-3.996 6.65-11.116 10.368-18.36 10.368zM920.002 669.22c-8.62 0-16.738-5.278-19.922-13.832-4.184-11.024 1.436-23.326 12.426-27.45 41.094-15.392 47.34-54.708 47.402-55.112 1.686-11.648 12.55-19.674 24.168-17.956 11.68 1.716 19.734 12.552 17.986 24.2-0.376 2.624-10.242 64.668-74.568 88.776a20.884 20.884 0 0 1-7.492 1.374zM575.958 917.028c-1 0-2.062-0.094-3.124-0.25-11.616-1.716-19.672-12.552-17.984-24.2 0.438-2.624 10.242-64.668 74.566-88.776 11.054-4.152 23.356 1.438 27.478 12.458 4.124 11.024-1.436 23.326-12.49 27.448-41.032 15.394-47.276 54.708-47.338 55.114-1.56 10.586-10.68 18.206-21.108 18.206z" fill="#FFCE54" p-id="27872"></path><path d="M938.236 682.524c0 129.524-48.71 234.504-170.43 234.504-121.716 0-170.43-104.98-170.43-234.504 0-129.494 63.39-191.85 170.43-191.85 107.044-0.002 170.43 62.356 170.43 191.85z" fill="#ED5564" p-id="27873"></path><path d="M746.512 915.872c6.806 0.75 13.928 1.156 21.294 1.156 7.372 0 14.49-0.406 21.296-1.156v-297.3h-42.592v297.3z" fill="#DA4453" p-id="27874"></path><path d="M603.56 618.572h328.494c-18.298-86.12-76.626-127.9-164.248-127.9-87.616 0-145.946 41.782-164.246 127.9z" fill="#DA4453" p-id="27875"></path></svg>
-                {% if lan == 'cn' %} 错误日志 {% else %} Error Log {% endif %}
-                <span class="ms-auto badge bg-red" data-bs-toggle="offcanvas" href="#offcanvasBottom" role="button" aria-controls="offcanvasBottom">
+                <svg t="1689735902363" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1518" width="320" height="320"><path d="M512.9 503.4m-184.8 0a184.8 184.8 0 1 0 369.6 0 184.8 184.8 0 1 0-369.6 0Z" fill="#03BD61" p-id="1519"></path><path d="M512 79.3C273.4 79.3 79.3 273.4 79.3 512S273.4 944.7 512 944.7 944.7 750.6 944.7 512 750.6 79.3 512 79.3z m0 790.9c-197.5 0-358.2-160.7-358.2-358.2S314.5 153.8 512 153.8 870.2 314.5 870.2 512 709.5 870.2 512 870.2z" fill="#23202D" p-id="1520"></path><path d="M753.7 467.5H548.5V244.2c0-20.6-16.7-37.2-37.2-37.2S474 223.6 474 244.2v260.6c0 20.6 16.7 37.2 37.2 37.2h242.5c20.6 0 37.2-16.7 37.2-37.2s-16.6-37.3-37.2-37.3z" fill="#23202D" p-id="1521"></path></svg>
+                {% if lan == 'cn' %} 启动时间 {% else %} Start-up Time {% endif %}
+                <span class="ms-auto badge" data-bs-toggle="offcanvas" href="#offcanvas-startup-time" role="button" aria-controls="offcanvas-startup-time">
                     OPEN
                 </span>
             </a>
-            <div class="dropdown-divider"></div>
+            {% if platform == 'Android' %}
+            <a class="dropdown-item" style="margin-top: 10px;">
+                <svg t="1689735866582" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4419" width="100" height="100"><path d="M513.2288 509.3888m-456.8576 0a456.8576 456.8576 0 1 0 913.7152 0 456.8576 456.8576 0 1 0-913.7152 0Z" fill="#529FF4" p-id="4420"></path><path d="M561.3056 466.8928l-71.3216-40.96a49.7664 49.7664 0 0 0-74.5984 43.0592v82.3296a49.7664 49.7664 0 0 0 49.7152 49.8176 50.0224 50.0224 0 0 0 24.8832-6.7072l71.3216-40.96a49.7664 49.7664 0 0 0 0-86.1696z m-20.48 50.688l-71.3216 40.96a8.8064 8.8064 0 0 1-13.1584-7.6288V468.7872a8.448 8.448 0 0 1 4.4544-7.5776 8.6528 8.6528 0 0 1 4.4032-1.2288 8.5504 8.5504 0 0 1 4.352 1.2288l71.3216 40.96a8.7552 8.7552 0 0 1 0 15.36z" fill="#FFFFFF" p-id="4421"></path><path d="M803.328 355.4816a54.4768 54.4768 0 0 0-54.9888 0l-21.6576 12.4928v-8.8064a97.28 97.28 0 0 0-97.28-97.28H315.4432a97.28 97.28 0 0 0-97.28 97.28v300.3904a97.28 97.28 0 0 0 97.28 97.28h313.856a97.28 97.28 0 0 0 97.28-97.28v-15.7696l21.6576 12.4928a54.9888 54.9888 0 0 0 82.4832-47.616V403.0976a54.4768 54.4768 0 0 0-27.392-47.616z m-117.76 304.0768a56.32 56.32 0 0 1-56.32 56.32H315.4432a56.32 56.32 0 0 1-56.32-56.32V359.168a56.32 56.32 0 0 1 56.32-56.32h313.856a56.32 56.32 0 0 1 56.32 56.32v300.3904z m104.1408-50.8928a14.0288 14.0288 0 0 1-21.0432 12.1856l-42.1376-24.3712V415.2832l42.1376-24.32a14.0288 14.0288 0 0 1 21.0432 12.1344z" fill="#FFFFFF" p-id="4422"></path><path d="M341.8112 351.488A31.8464 31.8464 0 1 0 373.76 383.2832a31.7952 31.7952 0 0 0-31.9488-31.7952z" fill="#FFFFFF" p-id="4423"></path></svg>
+                {% if lan == 'cn' %} 屏幕录制 {% else %} Record Screen {% endif %}
+                <span class="ms-auto">
+                    <label class="form-check form-check-single form-switch">
+                        <input id="record-switch" class="form-check-input cursor-pointer" type="checkbox"  name="record-switch" style="margin-right: 5px">
+                    </label>
+                </span>
+            </a>
+
+            <a class="dropdown-item" style="margin-top: 10px;">
+                <svg t="1657093102367" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="27860" width="2000" height="2000"><path d="M938.362 256.2V149.626c0-23.576-19.11-42.654-42.652-42.654H43.046C19.502 106.972 0.392 126.05 0.392 149.626V256.2h937.97z" fill="#E6E9ED" p-id="27861"></path><path d="M792.164 831.75H0.392V192.25h937.97v446.306z" fill="#656D78" p-id="27862"></path><path d="M85.67 149.626c0 11.772-9.526 21.296-21.328 21.296-11.74 0-21.294-9.524-21.294-21.296S52.602 128.3 64.342 128.3c11.802 0 21.328 9.556 21.328 21.326z" fill="#ED5564" p-id="27863"></path><path d="M149.62 149.626c0 11.772-9.524 21.296-21.326 21.296-11.742 0-21.296-9.524-21.296-21.296S116.55 128.3 128.292 128.3c11.804 0 21.328 9.556 21.328 21.326z" fill="#FFCE54" p-id="27864"></path><path d="M213.568 149.626c0 11.772-9.524 21.296-21.326 21.296-11.74 0-21.294-9.524-21.294-21.296S180.502 128.3 192.242 128.3c11.802 0 21.326 9.556 21.326 21.326z" fill="#A0D468" p-id="27865"></path><path d="M746.512 277.496H106.996c-11.772 0-21.326 9.554-21.326 21.326s9.554 21.328 21.326 21.328h639.516c11.74 0 21.294-9.556 21.294-21.328s-9.554-21.326-21.294-21.326z" fill="#FC6E51" p-id="27866"></path><path d="M106.996 405.426h341.046c11.802 0 21.326-9.554 21.326-21.328 0-11.772-9.524-21.326-21.326-21.326H106.996c-11.772 0-21.326 9.554-21.326 21.326 0 11.774 9.554 21.328 21.326 21.328z" fill="#AC92EB" p-id="27867"></path><path d="M575.958 448.05H106.996c-11.772 0-21.326 9.556-21.326 21.328s9.554 21.296 21.326 21.296h468.962c11.8 0 21.294-9.524 21.294-21.296s-9.492-21.328-21.294-21.328z" fill="#48CFAD" p-id="27868"></path><path d="M106.996 575.952H405.42c11.772 0 21.326-9.556 21.326-21.328s-9.554-21.296-21.326-21.296H106.996c-11.772 0-21.326 9.526-21.326 21.296s9.554 21.328 21.326 21.328z" fill="#5D9CEC" p-id="27869"></path><path d="M615.678 669.22c8.618 0 16.734-5.278 19.984-13.832 4.122-11.024-1.5-23.326-12.492-27.45-41.03-15.392-47.336-54.708-47.336-55.112a21.332 21.332 0 0 0-24.232-17.956c-11.662 1.716-19.688 12.552-17.97 24.2 0.376 2.624 10.242 64.668 74.55 88.776 2.5 0.938 4.996 1.374 7.496 1.374zM959.534 917.028c1 0 2.06-0.094 3.122-0.25 11.68-1.716 19.674-12.552 17.988-24.2-0.376-2.624-10.242-64.668-74.566-88.776-11.054-4.152-23.296 1.438-27.48 12.458-4.122 11.024 1.5 23.326 12.492 27.448 41.03 15.394 47.336 54.708 47.398 55.114a21.28 21.28 0 0 0 21.046 18.206zM448.042 618.572H106.996c-11.772 0-21.326 9.554-21.326 21.328 0 11.772 9.554 21.326 21.326 21.326h341.046c11.802 0 21.326-9.554 21.326-21.326a21.312 21.312 0 0 0-21.326-21.328z" fill="#FFCE54" p-id="27870"></path><path d="M277.52 703.85H106.996c-11.772 0-21.326 9.554-21.326 21.328 0 11.772 9.554 21.294 21.326 21.294h170.524c11.772 0 21.326-9.524 21.326-21.294 0-11.774-9.554-21.328-21.326-21.328z" fill="#ED5564" p-id="27871"></path><path d="M1002.312 746.472H533.318a21.28 21.28 0 0 1-21.294-21.294c0-11.774 9.524-21.328 21.294-21.328h468.994c11.74 0 21.294 9.554 21.294 21.328 0.002 11.772-9.554 21.294-21.294 21.294zM725.592 555.53a21.332 21.332 0 0 1-18.298-10.368l-64.388-107.478c-5.994-10.086-2.746-23.202 7.372-29.228a21.276 21.276 0 0 1 29.226 7.338l64.324 107.478c6.058 10.086 2.81 23.17-7.306 29.228a21.286 21.286 0 0 1-10.93 3.03zM810.212 555.53c-3.686 0-7.496-0.968-10.93-3.03-10.054-6.058-13.364-19.142-7.306-29.26l64.324-107.446a21.278 21.278 0 0 1 29.228-7.338c10.118 6.026 13.364 19.11 7.368 29.228l-64.324 107.478c-3.996 6.65-11.116 10.368-18.36 10.368zM920.002 669.22c-8.62 0-16.738-5.278-19.922-13.832-4.184-11.024 1.436-23.326 12.426-27.45 41.094-15.392 47.34-54.708 47.402-55.112 1.686-11.648 12.55-19.674 24.168-17.956 11.68 1.716 19.734 12.552 17.986 24.2-0.376 2.624-10.242 64.668-74.568 88.776a20.884 20.884 0 0 1-7.492 1.374zM575.958 917.028c-1 0-2.062-0.094-3.124-0.25-11.616-1.716-19.672-12.552-17.984-24.2 0.438-2.624 10.242-64.668 74.566-88.776 11.054-4.152 23.356 1.438 27.478 12.458 4.124 11.024-1.436 23.326-12.49 27.448-41.032 15.394-47.276 54.708-47.338 55.114-1.56 10.586-10.68 18.206-21.108 18.206z" fill="#FFCE54" p-id="27872"></path><path d="M938.236 682.524c0 129.524-48.71 234.504-170.43 234.504-121.716 0-170.43-104.98-170.43-234.504 0-129.494 63.39-191.85 170.43-191.85 107.044-0.002 170.43 62.356 170.43 191.85z" fill="#ED5564" p-id="27873"></path><path d="M746.512 915.872c6.806 0.75 13.928 1.156 21.294 1.156 7.372 0 14.49-0.406 21.296-1.156v-297.3h-42.592v297.3z" fill="#DA4453" p-id="27874"></path><path d="M603.56 618.572h328.494c-18.298-86.12-76.626-127.9-164.248-127.9-87.616 0-145.946 41.782-164.246 127.9z" fill="#DA4453" p-id="27875"></path></svg>
+                {% if lan == 'cn' %} 错误日志 {% else %} Error Log {% endif %}
+                <span class="ms-auto badge" data-bs-toggle="offcanvas" href="#offcanvasBottom" role="button" aria-controls="offcanvasBottom">
+                    OPEN
+                </span>
+            </a>
             {% endif %}
+            
+            <div class="dropdown-divider"></div>
             <a class="dropdown-item" style="margin-top: 10px;">
                 <input type="file" class="form-control" id="app-file" accept=".apk,.ipa"/>
             </a>
@@ -251,6 +283,61 @@ SoloX - APM
     </div>
   </div>
 </div>
+<div class="offcanvas offcanvas-bottom layout-boxed" tabindex="-1" id="offcanvas-startup-time" aria-labelledby="offcanvasBottomLabel" style="height: 85%;margin-left: 10%;margin-right: 10%;">
+    <div class="offcanvas-header">
+      <h2 class="offcanvas-title" id="offcanvasBottomLabel">Start-up Time</h2>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="row">
+            {% if platform == 'Android' %}
+            <div class="col-auto">
+                <div class="input-group" style="width:550px">
+                    <span class="input-group-text">
+                      Activity
+                    </span>
+                    <input type="text" id="activity" class="form-control"  placeholder="Input activity"  autocomplete="off">
+                    <a onclick="getCurActivity()" class="input-group-text" style="cursor: pointer;color: rgb(0, 132, 255);">
+                      <strong>Get current activity</strong>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            <div class="col-auto">
+                {% if platform == 'Android' %}
+                <a onclick="getStartupTimeByAndroid()" class="btn btn-default">
+                    <svg t="1647757457022" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="21859" width="200" height="200"><path d="M511.4 512.1m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" fill="#006DFC" p-id="21860"></path><path d="M658.4 555.6L475.5 661.1c-33.4 19.3-75-4.8-75-43.3V406.6c0-38.5 41.7-62.6 75-43.3l182.9 105.6c33.3 19.3 33.3 67.4 0 86.7z" fill="#FFFFFF" p-id="21861"></path></svg>
+                    {% if lan == 'cn' %} 开始 {% else %} Start {% endif %}
+                </a>
+                {% else %}
+                <a onclick="getStartupTimeByiOS()" class="btn btn-default">
+                    <svg t="1647757457022" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="21859" width="200" height="200"><path d="M511.4 512.1m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" fill="#006DFC" p-id="21860"></path><path d="M658.4 555.6L475.5 661.1c-33.4 19.3-75-4.8-75-43.3V406.6c0-38.5 41.7-62.6 75-43.3l182.9 105.6c33.3 19.3 33.3 67.4 0 86.7z" fill="#FFFFFF" p-id="21861"></path></svg>
+                    {% if lan == 'cn' %} 开始 {% else %} Start {% endif %}
+                </a>
+                <span class="form-help" style="margin-left: 10px;" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="
+                If no results are returned, please reinstall py-ios-device [pip install py-ios-device].
+                <p class='mb-0'><a href='https://github.com/YueChen-C/py-ios-device' target='_blank'>Documentation</a></p>">?</span> 
+                {% endif %}
+            </div>
+        </div>
+        <pre class="mt-2" id="startup-time-content"></pre>
+    </div>
+  </div>
+</div>
+<div class="modal modal-blur fade" style="margin-top: 20px;margin-right: 20px;" id="modal-scrollable" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog  modal-full-width modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Connect to a Android device over Wi-Fi</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <iframe src="https://adbshell.com/commands/adb-connect" width="100%" height="1500px"></iframe>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block js %}
@@ -299,6 +386,9 @@ SoloX - APM
             beforeSend: function () {
                 $('.select-app').empty();
                 $('.select-app').append('<option></option>');
+                if(platform == 'Android'){
+                    $('.select-pid').empty();
+                }
                 if(lan == 'cn' ){
                     SwalLoading('初始化','正在获取该设备上的所有APP, 请您稍等！');
                 }else{
@@ -311,11 +401,11 @@ SoloX - APM
                     if(lan == 'cn' ){
                         SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 2000);
                     }else{
-                        SwalFire('error', 'Connet failed !', 'No devices found', 2000);
+                        SwalFire('error', 'Connect failed !', 'No devices found', 2000);
                     } 
                 }else{
                     for(var i=0;i<data['pkgnames'].length;i++){
-                        $('.select-app').append('<option>'+data['pkgnames'][i]+'</option>')
+                        $('.select-app').append('<option>'+data['pkgnames'][i].trim()+'</option>')
                     }
                     swal.close();
                 }
@@ -324,43 +414,44 @@ SoloX - APM
     });
 
     $('.select-app').change(function() {
-        $.ajax({
-            url: Host + "/package/pids",
-            type: "GET",
-            async: true,
-            cache: false,
-            data:{
-                platform:platform,
-                device:$('.select-device').val(),
-                pkgname:this.value
-            },
-            beforeSend: function () {
-                $('.select-pid').empty();
-                $('.select-pid').append('<option></option>');
-                if(lan == 'cn' ){
-                    SwalLoading('初始化','正在获取该APP上的所有进程, 请您稍等！');
-                }else{
-                    SwalLoading('Process initialization!','Initializing Process, please wait a mmoment.');
-                }
-                
-            },
-            success: function (data) {
-                if(data['status'] != 1 ) {
-                    if(lan == 'cn' ){
-                        SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 2000);
-                    }else{
-                        SwalFire('error', 'Connet failed !', 'No pid found', 2000);
-                    } 
-                }else{
-                    for(var i=0;i<data['pids'].length;i++){
-                        $('.select-pid').append('<option>'+data['pids'][i]+'</option>')
+        if(platform == 'Android'){
+            $.ajax({
+                url: Host + "/package/pids",
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    platform:platform,
+                    device:$('.select-device').val(),
+                    pkgname:this.value
+                },
+                beforeSend: function () {
+                    if(platform == 'Android'){
+                        $('.select-pid').empty();
                     }
-                    swal.close();
+                    if(lan == 'cn' ){
+                        SwalLoading('初始化','正在获取该APP上的所有进程, 请您稍等！');
+                    }else{
+                        SwalLoading('Process initialization!','Initializing Process, please wait a mmoment.');
+                    }
+                },
+                success: function (data) {
+                    if(data['status'] != 1 ) {
+                        if(lan == 'cn' ){
+                            SwalFire('warning', '警告','没有发现该app的进程,请检查app是否已经启动', 5000);
+                        }else{
+                            SwalFire('warning', 'Warning', data['msg'], 5000);
+                        } 
+                    }else{
+                        for(var i=0;i<data['pids'].length;i++){
+                            $('.select-pid').append('<option>'+data['pids'][i]+'</option>')
+                        }
+                        swal.close();
+                    }
                 }
-            }
-        });
+            });
+        }
     });
-
 
     function initializeAPM(){
         $.ajax({
@@ -384,6 +475,9 @@ SoloX - APM
                 $('.select-device').empty();
                 $('.select-app').empty();
                 $('.select-app').append('<option></option>');
+                if(platform == 'Android'){
+                    $('.select-pid').empty();
+                }
                 if(lan == 'cn' ){
                     SwalLoading('初始化','正在初始化设备环境，请您稍等！');
                 }else{
@@ -394,16 +488,16 @@ SoloX - APM
                 console.log(data);
                 if(data['status'] != 1 ) {
                     if(lan == 'cn' ){
-                        SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 2000);
+                        SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 5000);
                     }else{
-                        SwalFire('error', 'Connet failed !', 'No devices found', 2000);
+                        SwalFire('error', 'Connect failed !', 'No devices found', 5000);
                     } 
                 }else{
                     for(var i=0;i<data['devices'].length;i++){
-                        $('.select-device').append('<option>'+data['devices'][i]+'</option>');
+                        $('.select-device').append('<option>'+data['devices'][i].trim()+'</option>');
                     }
                     for(var i=0;i<data['pkgnames'].length;i++){
-                        $('.select-app').append('<option>'+data['pkgnames'][i]+'</option>');
+                        $('.select-app').append('<option>'+data['pkgnames'][i].trim()+'</option>');
                     }
                     $('#brand').text(data['device_detail']['brand']);
                     $('#device_name').text(data['device_detail']['name']);
@@ -413,8 +507,9 @@ SoloX - APM
                     swal.close();
                 }
             },
-            error: function(){
-                SwalFire('error','Host Error','Host is invalid',5000);
+            error: function(error){
+                SwalFire('error','Server Error','Please press [ctrl+shift+i] and provide the browser\'s error message',5000);
+                console.log(error)
             }
         });
     }
@@ -422,6 +517,10 @@ SoloX - APM
     var timerQ = null;
 
     function getCpuRate(pkgname,device){
+        var process = '';
+        if(platform == 'Android'){
+            process = $('.select-pid').val()
+        }
         $.ajax({
             url: Host + "/apm/cpu",
             type: "GET",
@@ -432,7 +531,7 @@ SoloX - APM
                 platform:platform,
                 pkgname:pkgname,
                 device:device,
-                process:$('.select-pid').val()
+                process:process
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -449,27 +548,32 @@ SoloX - APM
                                 y_sys = data['systemCpuRate'];
                             app_series.addPoint([x, y_app], true, true);
                             sys_series.addPoint([x, y_sys], true, true);
-                            timerQ = setTimeout(getCpuRate(pkgname,device), 1500);
+                            if(data['appCpuRate'] == 0 && data['systemCpuRate'] == 0 && platform == 'Android'){
+                                $('.select-pid').empty();
+                            }
+                            timerQ = setTimeout(getCpuRate(pkgname,device), 1000);
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','Something error',data['msg'],2000);
                     }
                 }
             },
-            error: function(){
-                SwalFire('error','Host Error','Host is invalid',5000);
+            error: function(error){
+                SwalFire('error','Server Error','Please press [ctrl+shift+i] and provide the browser\'s error message',5000);
+                console.log(error);
             }
         });
     }
 
-    function getGpu(pkgname){
+    function getGpu(pkgname,device){
         $.ajax({
             url: Host + "/apm/gpu",
             type: "GET",
             async: true,
             cache: false,
             data:{
-                pkgname:pkgname
+                pkgname:pkgname,
+                device:device
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -483,15 +587,16 @@ SoloX - APM
                             var x = (new Date()).getTime(),
                             y = data['gpu'];
                             series.addPoint([x, y], true, true);
-                            timerQ = setTimeout(getGpu(pkgname), 1000);
+                            timerQ = setTimeout(getGpu(pkgname, device), 1000);
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','Something error',data['msg'],2000);
                     }
                 }
             },
-            error: function(){
-                SwalFire('error','Host Error','Host is invalid',5000);
+            error: function(error){
+                SwalFire('error','Server Error','Please press [ctrl+shift+i] and provide the browser\'s error message',5000);
+                console.log(error);
             }
         });
     }
@@ -538,20 +643,25 @@ SoloX - APM
                                 seriesVoltage.addPoint([x, y_voltage], true, true);
                                 seriesPower.addPoint([x, y_power], true, true);
                             } 
-                            timerQ = setTimeout(getBattery(device), 10000);
+                            timerQ = setTimeout(getBattery(device), 1000);
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','Something error',data['msg'],2000);
                     }
                 }
             },
-            error: function(){
-                SwalFire('error','Host Error','Host is invalid',5000);
+            error: function(error){
+                SwalFire('error','Server Error','Please press [ctrl+shift+i] and provide the browser\'s error message',5000);
+                console.log(error);
             }
         });
     }
 
     function getMemPss(pkgname,device)  {
+        var process = '';
+        if(platform == 'Android'){
+            process = $('.select-pid').val()
+        }
         $.ajax({
             url: Host + "/apm/mem",
             type: "GET",
@@ -562,7 +672,7 @@ SoloX - APM
                 platform:platform,
                 pkgname:pkgname,
                 device:device,
-                process:$('.select-pid').val()
+                process:process
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -589,21 +699,26 @@ SoloX - APM
                                     y = data['totalPass'];
                                 series.addPoint([x, y], true, true);
                             }
-                            timerQ = setTimeout(getMemPss(pkgname,device), 1500);
+                            timerQ = setTimeout(getMemPss(pkgname,device), 1000);
 
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','Something error',data['msg'],2000);
                     }
                 }
             },
-            error: function(){
-                SwalFire('error','Host Error','Host is invalid',5000);
+            error: function(error){
+                SwalFire('error','Server Error','Please press [ctrl+shift+i] and provide the browser\'s error message',5000);
+                console.log(error);
             }
         });
     }
 
     function setNetWork(type,device,pkgname,net_switch){
+        var process = '';
+        if(platform == 'Android'){
+            process = $('.select-pid').val()
+        }
         $.ajax({
             url: Host + "/apm/set/network",
             type: "GET",
@@ -615,20 +730,25 @@ SoloX - APM
                 device:device,
                 wifi_switch: net_switch,
                 type: type,
-                process:$('.select-pid').val()
+                process:process
             },
             success: function (data) {
                 if(data['status'] != 1){
-                    SwalFire('error','something error',data['msg'],2000);
+                    SwalFire('error','Something error',data['msg'],2000);
                 }
             },
-            error: function(){
-                SwalFire('error','Host Error','Host is invalid',5000);
+            error: function(error){
+                SwalFire('error','Server Error','Please press [ctrl+shift+i] and provide the browser\'s error message',5000);
+                console.log(error);
             }
         });
     }
 
     function getNetWork(pkgname,device,net_switch)  {
+        var process = '';
+        if(platform == 'Android'){
+            process = $('.select-pid').val()
+        }
         $.ajax({
             url: Host + "/apm/network",
             type: "GET",
@@ -640,7 +760,7 @@ SoloX - APM
                 pkgname:pkgname,
                 device:device,
                 wifi_switch: net_switch,
-                process:$('.select-pid').val()
+                process:process
             },
             beforeSend: function () {
                window.clearTimeout(timerQ);
@@ -657,17 +777,18 @@ SoloX - APM
                                 y_down = data['downflow'];
                             seriesUpFlow.addPoint([x_up, y_up], true, true);
                             seriesDownFlow.addPoint([x_down, y_down], true, true);
-                            timerQ = setTimeout(getNetWork(pkgname,device,net_switch), 1500);
+                            timerQ = setTimeout(getNetWork(pkgname,device,net_switch), 1000);
                         }catch (e) {
                             console.log(e)
                         }
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','Something error',data['msg'],2000);
                     }
                 }
             },
-            error: function(){
-                SwalFire('error','Host Error','Host is invalid',5000);
+            error: function(error){
+                SwalFire('error','Server Error','Please press [ctrl+shift+i] and provide the browser\'s error message',5000);
+                console.log(error);
             }
         });
     }
@@ -703,15 +824,16 @@ SoloX - APM
                                     y_jank = data['jank'];
                                 seriesJank.addPoint([x_jsnk, y_jank], true, true);
                             }
-                            timerQ = setTimeout(getFps(pkgname,device,fps_switch), 1500);
+                            timerQ = setTimeout(getFps(pkgname,device,fps_switch), 1000);
                         }catch (e) {}
                     }else{
-                        SwalFire('error','something error',data['msg'],2000);
+                        SwalFire('error','Something error',data['msg'],2000);
                     }
                 }
             },
-            error: function(){
-                SwalFire('error','Host Error','Host is invalid',5000);
+            error: function(error){
+                SwalFire('error','Server Error','Please press [ctrl+shift+i] and provide the browser\'s error message',5000);
+                console.log(error);
             }
         });
     }
@@ -1013,7 +1135,6 @@ SoloX - APM
     }
 
     function chartsInitialize(apmType,title){
-        //charts初始化
         let seriesFinal = series;
         let legend = false;
         let yAxis = {
@@ -1090,28 +1211,24 @@ SoloX - APM
     };
 
     function cpuInitialize(){
-        //初始化cpu
         let type = 'cpu';
         let cpu_chart = chartsInitialize(type,'CPU（%）');
         return cpu_chart
     }
 
     function batteryInitialize(){
-        //初始化battery
         let type = platform == 'Android' ? 'battery_android' : 'battery_ios';
         let battery_chart = chartsInitialize(type,'Battery');
         return battery_chart
     }
 
     function memInitialize(){
-        //初始化mem
         let type = platform == 'Android' ? 'mem_android' : 'mem_ios';
-        let mem_chart = chartsInitialize(type,'MEM（MB）');
+        let mem_chart = chartsInitialize(type,'Memory（MB）');
         return mem_chart
     }
 
     function networkInitialize(){
-        //初始化network
         let network_chart = chartsInitialize('network','Network Data（KB)');
         return network_chart
     }
@@ -1124,7 +1241,6 @@ SoloX - APM
     }
 
     function fpsInitialize(){
-        //初始化fps
         if(platform === 'Android'){
             let title = 'FPS and Jank';
             let fps_chart = chartsInitialize('fps',title);
@@ -1145,7 +1261,6 @@ SoloX - APM
 
 
     function collectPers(device,pkgname=null,type,title,func){
-        // 收集性能数据初始化
         let seriesFinal = series;
         let legend = false;
         let yAxis = {
@@ -1240,11 +1355,11 @@ SoloX - APM
         }
     }
 
-    function collectGpu(pkgname){
+    function collectGpu(device,pkgname){
         var gpu_checkbox = $('#gpu_checkbox').is(':checked');
         if(gpu_checkbox){
             gpuInitialize();
-            cpu_chart = collectPers('',pkgname,'gpu','GPU（%）',getGpu(pkgname));
+            gpu_chart = collectPers(device,pkgname,'gpu','GPU（%）',getGpu(pkgname,device));
         }
     }
 
@@ -1262,7 +1377,7 @@ SoloX - APM
         if(mem_checkbox){
             memInitialize();
             let type = platform == 'Android' ? 'mem_android' : 'mem_ios';
-            mem_chart = collectPers(device,pkgname,type,'MEM（MB）',getMemPss(pkgname,device));
+            mem_chart = collectPers(device,pkgname,type,'Memory（MB）',getMemPss(pkgname,device));
         }
     }
 
@@ -1292,12 +1407,72 @@ SoloX - APM
         }
     }
 
+    function cast(){
+        var device = $('.select-device').val();
+        if(device){
+            $.ajax({
+                url: "/apm/record/cast",
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    platform:platform,
+                    device:$('.select-device').val(),
+                },
+                beforeSend: function () {
+                    SwalLoading('Casting','')
+                },
+                success: function (data) {
+                    if(data['status']==0){
+                        SwalFire('error','Cast Failed',data['msg'],2000)
+                    }
+                },
+                complete: function(){
+                    swal.close();
+                },
+                error: function(error){
+                    SwalFire('error','Scrcpy Error',error ,5000);
+                    console.log(error);
+                }
+            });
+        }else{
+            SwalFire('error', 'Cast failed !', 'No devices found', 5000);
+        }
+    }
+
+    function record(){
+        $.ajax({
+            url: "/apm/record/start",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                device:$('.select-device').val(),
+            },
+            success: function (data) {
+                if(data['status']==0){
+                    SwalFire('error','Record Failed',data['msg'],2000)
+                }
+            },
+            error: function(error){
+                SwalFire('error','Scrcpy Error',error ,5000);
+                console.log(error);
+            }
+        });
+    }
+
     function stopTask(){
         stop = true;
         var wifi_switch = $('#net-switch').is(':checked');
+        var record_switch = $('#record-switch').is(':checked');
         $('#run-apm').show();
         $('#stop-apm').hide();
         window.clearTimeout(timerQ);
+        var process = '';
+        if(platform == 'Android'){
+            process = $('.select-pid').val()
+        }
         $.ajax({
             url: "/apm/create/report",
             type: "GET",
@@ -1309,7 +1484,8 @@ SoloX - APM
                 app:$('.select-app').val(),
                 devices:$('.select-device').val(),
                 wifi_switch:wifi_switch,
-                process:$('.select-pid').val()
+                process:process,
+                record_switch:record_switch
             },
             beforeSend: function () {
                 
@@ -1328,6 +1504,7 @@ SoloX - APM
             }
         });
     }
+    
     $('#run-apm').click(function () {
         stop = false;
         $('#stop-apm').show();
@@ -1337,17 +1514,23 @@ SoloX - APM
         let pkgname = $('.select-app').val();
         if(device && pkgname){
             var net_switch = $('#net-switch').is(':checked');
-            setNetWork('pre',device,pkgname,net_switch)
+            if(platform == 'Android'){
+                setNetWork('pre',device,pkgname,net_switch)
+                var record_switch = $('#record-switch').is(':checked');
+                if(record_switch){
+                    record()
+                }
+            }
             collectCpu(device,pkgname);
             collectMem(device,pkgname);
             collectNetwork(device,pkgname);
             collectFps(device,pkgname);
             collectBattery(device);
             if(platform == 'iOS'){
-                collectGpu(pkgname);
+                collectGpu(device,pkgname);
             }
-            if(parseInt($('#running_value').val()) > 0){
-                var times = parseInt($('#running_value').val()) * 60 * 1000
+            if(parseInt($('#duration').val()) > 0){
+                var times = parseInt($('#duration').val()) * 60 * 1000
                 setTimeout("stopTask()", times)
             }
         }else{
@@ -1361,7 +1544,11 @@ SoloX - APM
         }});
 
     var status = false;
-    var socket = io.connect('http://' + document.domain + ':' + location.port + '/logcat',{'forceNew':true });
+    var socket
+    if(platform == 'Android'){
+        socket = io.connect('http://' + document.domain + ':' + location.port + '/logcat',{'forceNew':true });
+        
+    }
     function startLogcat() {
         let device = $('.select-device').val();
         if(device){
@@ -1402,6 +1589,102 @@ SoloX - APM
         $('#logcat-content').empty();
     };
     
+    function getCurActivity(){
+        let device = $('.select-device').val();
+        if(device){
+            $.ajax({
+                url: "/package/activity",
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    platform:platform,
+                    device:$('.select-device').val(),
+                },
+                beforeSend: function () {
+                    SwalLoading('Loading','')
+                },
+                success: function (data) {
+                    if(data['status']==1){
+                        $('#activity').val(data['activity']);
+                    }else{
+                        SwalFire('error','Execution error',data['msg'],2000)
+                    }
+                },
+                complete: function(){
+                    swal.close();
+                }
+            });
+        }else{
+            SwalFire('error','Execution error','No devices found',2000)
+        }
+    }
+
+    function getStartupTimeByAndroid(){
+        let device = $('.select-device').val();
+        let activity = $('#activity').val().trim();
+        if(device && activity){
+            $.ajax({
+                url: "/package/start/time/android",
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    platform:platform,
+                    device:$('.select-device').val(),
+                    activity: activity
+                },
+                beforeSend: function () {
+                    SwalLoading('Loading','')
+                },
+                success: function (data) {
+                    if(data['status']==1){
+                        console.log(data['time'])
+                        $('#startup-time-content').text(data['time']);
+                    }else{
+                        SwalFire('error','Execution error',data['msg'],2000)
+                    }
+                },
+                complete: function(){
+                    swal.close();
+                }
+            });
+        }else{
+            SwalFire('error','Execution error','No devices or activity found',2000)
+        }
+    }
+
+    function getStartupTimeByiOS(){
+        let pkgname = $('.select-app').val();
+        if(pkgname){
+            $.ajax({
+                url: "/package/start/time/ios",
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    pkgname:pkgname
+                },
+                beforeSend: function () {
+                    SwalLoading('Loading','')
+                },
+                success: function (data) {
+                    if(data['status']==1){
+                        console.log(data['time'])
+                        $('#startup-time-content').text(data['time']);
+                    }else{
+                        SwalFire('error','Execution error',data['msg'],2000)
+                    }
+                },
+                complete: function(){
+                    swal.close();
+                }
+            });
+        }else{
+            SwalFire('error','Execution error','No package found',2000)
+        }
+    }
+
     function install(){
         var fileObj = document.getElementById("app-file").files[0];
         var type = (fileObj) ? 'file' : 'link'
@@ -1418,30 +1701,35 @@ SoloX - APM
         var link = $('.app-link').val().trim()
         formData.append('platform','{{ platform }}');
         formData.append('link',link);
-        
-        $.ajax({
-            url: "/apm/install/link",
-            type: "POST",
-            async: true,
-            cache: false,
-            processData: false,
-            contentType: false,
-            data:formData,
-            beforeSend: function () {
-                SwalLoading('Install App!','Installing file to device, please wait。');
+        if(link){
+            $.ajax({
+                url: "/apm/install/link",
+                type: "POST",
+                async: true,
+                cache: false,
+                processData: false,
+                contentType: false,
+                data:formData,
+                beforeSend: function () {
+                    SwalLoading('Install App!','Installing file to device, please wait a moment.');
                 },
-            success: function (data) {
-                console.log(data);
-                if(data['status'] != 1 ) {
-                    SwalFire('error', 'Install failed !', data['msg'], 2000);
-                }else{
-                    SwalFire('success', 'Install success !', '', 2000);
+                success: function (data) {
+                    console.log(data);
+                    if(data['status'] != 1 ) {
+                        SwalFire('error', 'Install failed !', data['msg'], 2000);
+                    }else{
+                        SwalFire('success', 'Install success !', '', 2000);
+                    }
+                },
+                error:function (data) {
+                    SwalFire('error', 'Install failed !', '', 2000);
                 }
-            },
-            error:function (data) {
-                SwalFire('error', 'Install failed !', '', 2000);
-            }
-        });
+            });
+        }else{
+            SwalFire('error', 'Install failed !', 'No link found', 2000);
+        }
+        
+        
     }
 
     function installFile(){

@@ -24,18 +24,18 @@ from logzero import setup_logger
 from tabulate import tabulate
 from loguru import logger as ulogger
 
-from ._device import Device
-from ._imagemounter import cache_developer_image
-from ._ipautil import IPAReader
-from ._perf import DataType
-from ._proto import LOG, MODELS, PROGRAM_NAME
-from ._relay import relay
-from ._types import ConnectionType
-from ._usbmux import Usbmux
-from ._utils import get_app_dir, get_binary_by_name, is_atty
-from ._version import __version__
-from ._wdaproxy import WDAService
-from .exceptions import MuxError, MuxServiceError, ServiceError
+from solox.public.iosperf._device import Device
+from solox.public.iosperf._imagemounter import cache_developer_image
+from solox.public.iosperf._ipautil import IPAReader
+from solox.public.iosperf._perf import DataType
+from solox.public.iosperf._proto import LOG, MODELS, PROGRAM_NAME
+from solox.public.iosperf._relay import relay
+from solox.public.iosperf._types import ConnectionType
+from solox.public.iosperf._usbmux import Usbmux
+from solox.public.iosperf._utils import get_app_dir, get_binary_by_name, is_atty
+from solox.public.iosperf._version import __version__
+from solox.public.iosperf._wdaproxy import WDAService
+from solox.public.iosperf.exceptions import MuxError, MuxServiceError, ServiceError
 
 um: Usbmux = None  # Usbmux
 logger = logging.getLogger(PROGRAM_NAME)

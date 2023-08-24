@@ -47,7 +47,7 @@
             {% if model in ['2-app','2-devices'] %}
             <div class="nav-item dropdown d-none d-md-flex me-3">
                 <a  href="/?platform=Android&lan={{ lan }}" class="btn  btn-pill w-100" >
-                    <svg t="1661854459800" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="24106" width="2000" height="2000"><path d="M555.52 943.616C339.456 943.616 163.84 768 163.84 552.448s175.616-391.68 391.68-391.68S947.2 336.384 947.2 552.448s-176.128 391.168-391.68 391.168z" fill="#38CEB1" p-id="24107"></path><path d="M815.616 820.224m-20.48 0a20.48 20.48 0 1 0 40.96 0 20.48 20.48 0 1 0-40.96 0Z" fill="#231815" p-id="24108"></path><path d="M512 61.952c-248.32 0-450.56 202.24-450.56 450.56s202.24 450.56 450.56 450.56c93.184 0 182.272-28.16 258.048-81.408 9.216-6.656 11.264-19.456 5.12-28.672-6.656-9.216-19.456-11.264-28.672-5.12-69.12 48.128-150.016 73.728-235.008 73.728-225.792 0-409.6-183.808-409.6-409.6s183.808-409.6 409.6-409.6 409.6 183.808 409.6 409.6c0 87.552-27.136 171.008-78.848 241.152-6.656 9.216-4.608 22.016 4.608 28.672 9.216 6.656 22.016 4.608 28.672-4.608 56.832-77.312 86.528-169.472 86.528-265.728 0.512-247.296-201.728-449.536-450.048-449.536z" fill="#231815" p-id="24109"></path><path d="M641.536 267.776c-8.192-8.192-20.992-8.192-29.184 0L389.632 491.008c-5.632 5.632-9.216 13.312-9.216 21.504s3.072 15.872 9.216 21.504l223.232 223.232c4.096 4.096 9.216 6.144 14.336 6.144s10.24-2.048 14.336-6.144c8.192-8.192 8.192-20.992 0-29.184L425.472 512l216.064-216.064c8.192-7.168 8.192-20.48 0-28.16z" fill="#231815" p-id="24110"></path></svg>
+                    <svg t="1684145849174" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12372" width="50" height="50"><path d="M512 64C264.576 64 64 264.576 64 512s200.576 448 448 448 448-200.576 448-448S759.424 64 512 64z" fill="#94BFFF" p-id="12373"></path><path d="M498.56 519.666a10.668 10.668 0 0 1 0-15.332c21.718-21.126 84.97-82.904 148.374-147.128 14.336-14.516 19.86-35.152 7.744-51.408-4.972-6.654-11.584-14.192-20.352-22.284-11.926-11.014-23.296-18.38-32.768-23.28-15.51-8.02-33.686-3.928-47.766 6.24-110.25 79.572-185.43 165.484-221.802 211.612-15.98 20.29-15.98 47.538 0 67.828 36.372 46.128 111.552 132.04 221.802 211.614 14.08 10.166 32.256 14.256 47.766 6.238 9.472-4.9 20.842-12.266 32.768-23.28 8.768-8.092 15.38-15.63 20.352-22.284 12.116-16.256 6.592-36.892-7.744-51.406-63.404-64.226-126.656-126.004-148.374-147.13z" fill="#1677FF" p-id="12374"></path></svg>
                     {% if lan == 'cn' %} 普通模式 {% else %} Normal Model {% endif %}
                 </a>
             </div>
@@ -120,12 +120,6 @@
                                 {% if lan == 'cn' %} 源码 {% else %} Source code {% endif %}
                             </a>
                         </li>
-                        <li class="list-inline-item">
-                            <a href="https://github.com/sponsors/codecalm" target="_blank" class="link-secondary" rel="noopener" data-bs-toggle="modal" data-bs-target="#modal-coffee">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink icon-filled icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                              {% if lan == 'cn' %} 喝杯咖啡 {% else %} Sponsor {% endif %}
-                            </a>
-                        </li>
                     </ul>
                 </div>
                 <div class="col-12 col-lg-auto mt-3 mt-lg-0">
@@ -136,7 +130,7 @@
                         </li>
                         <li class="list-inline-item">
                             <a href="https://github.com/smart-test-ti/SoloX/releases" target="_blank" class="link-secondary" rel="noopener">
-                                {% if lan == 'cn' %} 版本 {% else %} Releases {% endif %} . V2.5.9
+                                {% if lan == 'cn' %} 版本 {% else %} Releases {% endif %} . V2.7.3
                             </a>
                         </li>
                     </ul>
@@ -156,70 +150,65 @@
     <div class="offcanvas-body">
         <div class="card-tabs">
             <ul class="nav nav-tabs">
-              <li class="nav-item"><a href="#tab-top-1" class="nav-link active" data-bs-toggle="tab">Warning Value</a></li>
-              <li class="nav-item"><a href="#tab-top-2" class="nav-link" data-bs-toggle="tab">Timer</a></li>
-              <li class="nav-item"><a href="#tab-top-3" class="nav-link" data-bs-toggle="tab">Agent &nbsp;
-                {% if lan == 'en' %}
-                <span class="form-help" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="
-                Start solox on the Slave machine first, and then configure the Host here.
-            </p>Note: The port number cannot be the same as the Master machine</p>
-            ">?</span>
-            {% else %}
-            <span class="form-help" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="
-            先在其他机器启动solox,然后将Host配置在这里
-            </p>注意：端口号不能和主机器一样</p>
-            ">?</span>
-            {% endif %}
-            </a></li>
+                <!-- https://adbshell.com/commands/adb-connect -->
+                <li class="nav-item active"><a href="#tab-top-2" class="nav-link active" data-bs-toggle="tab">{% if lan == 'cn' %} 告警值 {% else %} Warning Value {% endif %}</a></li>
+                <li class="nav-item"><a href="#tab-top-3" class="nav-link" data-bs-toggle="tab">{% if lan == 'cn' %} 定时器 {% else %} Timer {% endif %}</a></li>
+                <li class="nav-item"><a href="#tab-top-4" class="nav-link" data-bs-toggle="tab">{% if lan == 'cn' %} 远程访问 {% else %} Remote {% endif %} &nbsp;
+                    {% if lan == 'en' %}
+                    <span class="form-help" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="
+                    Start solox on the Slave machine first, and then configure the Host here.</p>Note: The port number cannot be the same as the Master machine</p>">?</span>
+                    {% else %}
+                    <span class="form-help" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="先在其他机器启动solox,然后将Host配置在这里</p>注意：端口号不能和主机器一样</p> ">?</span>
+                    {% endif %}</a>
+                </li>
             </ul>
             <div class="tab-content">
-              <!-- Content of card #1 -->
-              <div id="tab-top-1" class="card tab-pane active show">
+              <div id="tab-top-2" class="card tab-pane active show">
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-6 col-xl-12">
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} CPU告警值 {% else %} CPU warning value {% endif %}</label>
-                                <input id="cpu_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ cpuWarning }}">
+                                <input id="cpu_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.cpuWarning }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} 内存告警值 {% else %} Memory warning value {% endif %}</label>
-                                <input id="mem_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ memWarning }}">
+                                <input id="mem_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.memWarning }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} FPS告警值 {% else %} FPS warning value {% endif %}</label>
-                                <input id="fps_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ fpsWarning }}">
+                                <input id="fps_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.fpsWarning }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} 电量告警值 {% else %} Battery warning value {% endif %}</label>
-                                <input id="battery_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ betteryWarning }}">
+                                <input id="battery_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.betteryWarning }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} 上行流量告警值 {% else %} Send network data warning value {% endif %}</label>
-                                <input id="upflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ netdataSendWarning }}">
+                                <input id="upflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.netdataSendWarning }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} 下行流量告警值 {% else %} Recv network data warning value {% endif %}</label>
-                                <input id="downflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ netdataRecvWarning }}">
+                                <input id="downflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.netdataRecvWarning }}">
                             </div>
                         </div>
                     </div>
                 </div>
               </div>
               <!-- Content of card #2 -->
-              <div id="tab-top-2" class="card tab-pane">
+              <div id="tab-top-3" class="card tab-pane">
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-md-6 col-xl-12">
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} 持续执行时间（分钟） {% else %} Duration（minutes） {% endif %}</label>
-                                <input id="running_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ runningTime }}">
+                                <input id="duration" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.duration }}">
                             </div>
                         </div>
                     </div>
                 </div>
               </div>
-              <div id="tab-top-3" class="card tab-pane">
+              <div id="tab-top-4" class="card tab-pane">
                 <div class="card-body">
                     <div class="table">
                         <table class="table mb-0">
@@ -236,11 +225,11 @@
                                         <svg t="1680252875419" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="19154" width="50" height="50"><path d="M471.04 727.04h81.92v184.32h-81.92z" p-id="19155"></path><path d="M307.2 911.36m30.72 0l348.16 0q30.72 0 30.72 30.72l0 0q0 30.72-30.72 30.72l-348.16 0q-30.72 0-30.72-30.72l0 0q0-30.72 30.72-30.72Z" p-id="19156"></path><path d="M20.48 51.2m51.2 0l880.64 0q51.2 0 51.2 51.2l0 573.44q0 51.2-51.2 51.2l-880.64 0q-51.2 0-51.2-51.2l0-573.44q0-51.2 51.2-51.2Z" p-id="19157"></path><path d="M122.88 645.12m20.48 0l737.28 0q20.48 0 20.48 20.48l0 0q0 20.48-20.48 20.48l-737.28 0q-20.48 0-20.48-20.48l0 0q0-20.48 20.48-20.48Z" fill="#EBBA50" p-id="19158"></path></svg>
                                     </td>
                                     <td>
-                                        <input id="host" type="text" class="form-control form-control-sm" placeholder="ex : 192.168.10.10:6006" value="{{ solox_host }}">
+                                        <input id="host" type="text" class="form-control form-control-sm" placeholder="ex : 192.168.10.10:6006" value="{{ settings.solox_host }}">
                                     </td>
                                     <td>
                                         <label class="form-check  form-switch">
-                                            {% if host_switch == '1' %}
+                                            {% if settings.host_switch == '1' %}
                                             <input  class="form-check-input host_switch" type="checkbox" checked>
                                             {% else %}
                                             <input  class="form-check-input host_switch" type="checkbox">
@@ -253,26 +242,12 @@
                     </div>
                 </div>
             </div>
-            </div>
-          </div>
-        
-        <a class="btn btn-primary mt-3" onclick="saveWorningValue()">
-            {% if lan == 'cn' %} 保存 {% else %} Save {% endif %}
-        </a>
-    </div>
-</div>
-<div class="modal modal-blur fade" id="modal-coffee" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{% if lan == 'cn' %} 买杯咖啡 {% else %} Buy me coffee {% endif %}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <img  alt="" src="./static/image/coffee.png">
-            </div>
         </div>
     </div>
+    <a class="btn btn-primary mt-3" onclick="saveWorningValue()">
+        {% if lan == 'cn' %} 保存 {% else %} Save {% endif %}
+    </a>
+</div>
 </div>
 
 <!-- JQ JS -->
@@ -300,7 +275,7 @@
     var platform = '{{ platform }}'; // 平台
     var lan = '{{ lan }}' ;
     
-    var domain = $('.host_switch').is(':checked') == true ? $('#host').val() : window.location.host ;
+    var domain = $('.host_switch').is(':checked') == true ? $('#host').val().trim() : window.location.host ;
     var Host = 'http://' + domain
 
     $(document).ready(function() {
@@ -390,7 +365,7 @@
                 netdataRecvWarning:parseInt($('#down_warning_value').val()),
                 netdataSendWarning:parseInt($('#upflow_warning_value').val()),
                 betteryWarning:parseInt($('#battery_warning_value').val()),
-                runningTime:parseInt($('#running_value').val()),
+                duration:parseInt($('#duration').val()),
                 solox_host: $('#host').val(),
                 host_switch:host_switch
             },

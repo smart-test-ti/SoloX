@@ -60,19 +60,27 @@ class SurfaceStatsCollector(object):
     def get_surfaceview_activity(self):
         activity_name = ''
         activity_line = ''
-        dumpsys_result = adb.shell(cmd='dumpsys SurfaceFlinger --list | {} {}'.format(d.filterType(), self.package_name), deviceId=self.device)
-        dumpsys_result_list = dumpsys_result.split('\n')    
-        for line in dumpsys_result_list:
-            if line.startswith('SurfaceView') and line.find(self.package_name) != -1:
-                activity_line = line.strip()
-                break
-        if activity_line:       
-            activity_name = activity_line.split(' ')[2]
-        else:
-            activity_name = dumpsys_result_list[len(dumpsys_result_list) - 1]
-            if not activity_name.__contains__(self.package_name):
-                logger.error('get activity name failed, Please provide SurfaceFlinger --list information to the author')
-                logger.info('dumpsys SurfaceFlinger --list info: {}'.format(dumpsys_result))
+        try:
+            dumpsys_result = adb.shell(cmd='dumpsys SurfaceFlinger --list | {} {}'.format(d.filterType(), self.package_name), deviceId=self.device)
+            dumpsys_result_list = dumpsys_result.split('\n')    
+            for line in dumpsys_result_list:
+                if line.startswith('SurfaceView') and line.find(self.package_name) != -1:
+                    activity_line = line.strip()
+                    break
+            if activity_line:
+                if activity_line.find(' ')  != -1:      
+                    activity_name = activity_line.split(' ')[2]
+                else:
+                    activity_name = activity_line.replace('SurfaceView','').replace('[','').replace(']','')    
+            else:
+                activity_name = dumpsys_result_list[len(dumpsys_result_list) - 1]
+                if not activity_name.__contains__(self.package_name):
+                    logger.error('get activity name failed, Please provide SurfaceFlinger --list information to the author')
+                    logger.info('dumpsys SurfaceFlinger --list info: {}'.format(dumpsys_result))
+        except Exception:
+            traceback.print_exc()
+            logger.error('get activity name failed, Please provide SurfaceFlinger --list information to the author')
+            logger.info('dumpsys SurfaceFlinger --list info: {}'.format(dumpsys_result))
         return activity_name
      
     def get_focus_activity(self):

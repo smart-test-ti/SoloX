@@ -80,6 +80,11 @@ class ADB(object):
         result = subprocess.Popen(run_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[
             0].decode("utf-8").strip()
         return result
+    
+    def tcp_shell(self, deviceId, cmd):
+        run_cmd = f'{self.adb_path} -s {deviceId} {cmd}'
+        result = os.system(run_cmd)
+        return result
 
     def shell_noDevice(self, cmd):
         run_cmd = f'{self.adb_path} {cmd}'

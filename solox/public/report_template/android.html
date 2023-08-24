@@ -1,0 +1,464 @@
+
+<!doctype html>
+<!--
+* SoloX - real-time collection tool for Android/iOS performance data.
+* @Author Rafa Chen
+* Copyright SoloX
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>SoloX -  Analysis </title>
+    <!-- CSS files -->
+    <link rel="icon" href="https://camo.githubusercontent.com/7aa90e99c7edd53978a8948e0473cb863f79f150b83096754d13dbce5c7ed759/68747470733a2f2f63646e2e6e6c61726b2e636f6d2f79757175652f302f323032322f706e672f3135333431322f313634333336343735373634302d62343532393435382d656338642d343263632d613264382d6330636536306664663530662e706e67">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
+</head>
+<body class="Body layout-boxed">
+    <div class="page">
+        <div class="page-wrapper sceen-body">
+            <div class="page-body">
+                <div class="container-xl">
+                    <div class="col-12 mb-3">
+                        <div class="row row-cards">
+                            <div class="col-sm-6 col-lg-2">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-dark text-white avatar">CPU</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">APP</div>
+                                                <div class="text-muted">Avg: {{ cpu_app }}</div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-2">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-dark text-white avatar">CPU</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">System</div>
+                                                <div class="text-muted">Avg: {{ cpu_sys }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-2">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-yellow text-white avatar">MEM</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">Total</div>
+                                                <div class="text-muted">Avg: {{ mem_total }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-2">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-yellow text-white avatar">MEM</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">Native</div>
+                                                <div class="text-muted">Avg: {{ mem_native }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-2">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-yellow text-white avatar">MEM</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">Dalvik</div>
+                                                <div class="text-muted">Avg: {{ mem_dalvik }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-2">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-pink text-white avatar">FPS</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">FPS</div>
+                                                <div class="text-muted">Avg: {{ fps }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-2">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-pink text-white avatar">FPS</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">Jank</div>
+                                                <div class="text-muted">All: {{ jank }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-2">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-green text-white avatar">A.C</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">Level</div>
+                                                <div class="text-muted">Avg: {{ level }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-2">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-green text-white avatar">A.C</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">Temperature</div>
+                                                <div class="text-muted">Avg: {{ tem }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-2">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-blue text-white avatar">NET</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">Send</div>
+                                                <div class="text-muted">All: {{ net_send }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-lg-2">
+                                <div class="card card-sm">
+                                    <div class="card-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <span class="bg-blue text-white avatar">NET</span>
+                                            </div>
+                                            <div class="col">
+                                                <div class="font-weight-medium">Recv</div>
+                                                <div class="text-muted">All: {{ net_recv }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card cpu-card mb-2">
+                            <div class="card-header">
+                                <div class='card-title'>CPU (%)</div>
+                                <div class="card-actions btn-actions">
+                                    <a class="btn-action cursor-pointer"  onclick="screenshot('cpu-card','cpu.png')">
+                                        <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-cpu"></div>
+                            </div>
+                        </div>
+                        <div class="card memory-card mb-2">
+                            <div class="card-header">
+                                <div class='card-title'>Memory (MB)</div>
+                                <div class="card-actions btn-actions">
+                                    <a class="btn-action cursor-pointer"  onclick="screenshot('memory-card','memery.png')">
+                                        <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-mem"></div>
+                            </div>
+                        </div>
+                        <div class="card net-card mb-2">
+                            <div class="card-header">
+                                <div class='card-title'>Network (KB)</div>
+                                <div class="card-actions btn-actions">
+                                    <a class="btn-action cursor-pointer"  onclick="screenshot('net-card','net.png')">
+                                        <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-net"></div>
+                            </div>
+                        </div>
+                        <div class="card fps-card mb-2">
+                            <div class="card-header">
+                                <div class='card-title'>FPS (HZ)</div>
+                                <div class="card-actions btn-actions">
+                                    <a class="btn-action cursor-pointer"  onclick="screenshot('fps-card','fps.png')">
+                                        <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-fps"></div>
+                            </div>
+                        </div>
+                        <div class="card jank-card mb-2">
+                            <div class="card-header">
+                                <div class='card-title'>Jank</div>
+                                <div class="card-actions btn-actions">
+                                    <a class="btn-action cursor-pointer"  onclick="screenshot('jank-card','jank.png')">
+                                        <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-jank"></div>
+                            </div>
+                        </div>
+                        <div class="card battery-card mb-2">
+                            <div class="card-header">
+                                <div class='card-title'>Battery</div>
+                                <div class="card-actions btn-actions">
+                                    <a class="btn-action cursor-pointer"  onclick="screenshot('battery-card','battery.png')">
+                                        <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-battery"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer footer-transparent d-print-none">
+            <div class="container-xl">
+                <div class="row text-center align-items-center flex-row-reverse">
+                    <div class="col-12  mt-3 mt-lg-0">
+                        <ul class="list-inline list-inline-dots mb-0">
+                            <li class="list-inline-item">Copyright &copy; <label id="curYear"></label>
+                                <a href="https://github.com/smart-test-ti" class="link-secondary">SoloX</a>. All rights reserved 
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://github.com/smart-test-ti/SoloX" target="_blank" class="link-secondary" rel="noopener">
+                                    <svg t="1681963194743" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1443" width="50" height="50"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#161614" p-id="1444"></path><path d="M411.306667 831.146667c3.413333-5.12 6.826667-10.24 6.826666-11.946667v-69.973333c-105.813333 22.186667-128-44.373333-128-44.373334-17.066667-44.373333-42.666667-56.32-42.666666-56.32-34.133333-23.893333 3.413333-23.893333 3.413333-23.893333 37.546667 3.413333 58.026667 39.253333 58.026667 39.253333 34.133333 58.026667 88.746667 40.96 110.933333 32.426667 3.413333-23.893333 13.653333-40.96 23.893333-51.2-85.333333-10.24-174.08-42.666667-174.08-187.733333 0-40.96 15.36-75.093333 39.253334-102.4-3.413333-10.24-17.066667-47.786667 3.413333-100.693334 0 0 32.426667-10.24 104.106667 39.253334 30.72-8.533333 63.146667-11.946667 95.573333-11.946667 32.426667 0 64.853333 5.12 95.573333 11.946667 73.386667-49.493333 104.106667-39.253333 104.106667-39.253334 20.48 52.906667 8.533333 90.453333 3.413333 100.693334 23.893333 27.306667 39.253333 59.733333 39.253334 102.4 0 145.066667-88.746667 177.493333-174.08 187.733333 13.653333 11.946667 25.6 34.133333 25.6 69.973333v104.106667c0 3.413333 1.706667 6.826667 6.826666 11.946667 5.12 6.826667 3.413333 18.773333-3.413333 23.893333-3.413333 1.706667-6.826667 3.413333-10.24 3.413333h-174.08c-10.24 0-17.066667-6.826667-17.066667-17.066666 0-5.12 1.706667-8.533333 3.413334-10.24z" fill="#FFFFFF" p-id="1445"></path></svg>
+                                    Source Code
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+<!-- JQ JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<!-- tabler -->
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+<!-- Sweetalert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Apexcharts-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.39.0/apexcharts.min.js"></script>
+<!-- html2canvas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+
+    $(document).ready(function() {
+        $('#curYear').text(getCurDate())
+    });
+
+    function getCurDate(){
+        var date = new Date();
+        var year = date.getFullYear();
+        return year
+    };
+
+    function SwalLoading(title,html){
+        Swal.fire({
+            title: title,
+            html: html,
+            timerProgressBar: true,
+            allowOutsideClick: () => false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
+    }
+
+    function SwalFire(icon,title,text,timer=null) {
+        Swal.fire({
+            icon: icon,
+            title: title,
+            text: text,
+            showLoaderOnConfirm: true,
+            showCloseButton: true,
+            showConfirmButton: false,
+            timer:timer,
+            allowOutsideClick: () => true
+        })
+    }
+
+
+    function screenshot(classname,downloadname) {
+        let container = document.getElementsByClassName(classname); //page-wrapper
+        html2canvas(container[0]).then(canvas => {
+            let imgData = canvas.toDataURL();
+            let link = document.createElement('a');
+            link.href = imgData;
+            link.download = downloadname;
+            let flag = link.click();
+            console.log(flag);
+        })
+    }
+</script>
+
+<script>
+
+    function options(type,dataLabels=false) {
+        let options = {
+            chart: {
+                type: type,
+                fontFamily: 'inherit',
+                height: 240,
+                parentHeightOffset: 0,
+                toolbar: {
+                    show: false,
+                },
+                animations: {
+                    enabled: false
+                },
+            },
+            dataLabels: {
+                enabled: dataLabels
+            },
+            fill: {
+                opacity: 1
+            },
+            stroke: {
+                width: 2,
+                lineCap: "round",
+                curve: "smooth",
+            },
+            series: [],
+            grid: {
+                padding: {
+                    top: -20,
+                    bottom: -4
+                },
+            strokeDashArray: 4,
+            },
+            xaxis: {
+                name: "time",
+                tickAmount:6,
+                labels: {
+                    rotate: 0,
+                }
+            },
+        };
+        return options
+    }
+
+    var cpu_chart = new ApexCharts(document.querySelector("#chart-cpu"), options('line'));
+    cpu_chart.render();
+    cpu_chart.updateSeries([{
+        name: 'app',
+        data: {{ cpu_charts.cpuAppData }}
+    },{
+        name: 'sys',
+        data: {{ cpu_charts.cpuSysData }}
+    }])
+
+    var mem_chart = new ApexCharts(document.querySelector("#chart-mem"), options('line'));
+    mem_chart.render();
+    mem_chart.updateSeries([{
+        name: 'total',
+        data: {{ mem_charts.memTotalData }}
+    },{
+        name: 'native',
+        data: {{ mem_charts.memNativeData }}
+    },{
+        name: 'dalvik',
+        data: {{ mem_charts.memDalvikData }}
+    }])
+
+    var network_chart = new ApexCharts(document.querySelector("#chart-net"), options('line',false));
+    network_chart.render();
+    network_chart.updateSeries([{
+        name: 'send',
+        data: {{ net_charts.upFlow }}
+    },{
+        name: 'recv',
+        data: {{ net_charts.downFlow }}
+    }])
+
+    var fps_chart = new ApexCharts(document.querySelector("#chart-fps"), options('line'));
+    fps_chart.render();
+    fps_chart.updateSeries([{
+        name: 'fps',
+        data: {{ fps_charts }}
+    }])
+
+    var jank_chart = new ApexCharts(document.querySelector("#chart-jank"), options('line'));
+    jank_chart.render();
+    jank_chart.updateSeries([{
+        name: 'jank',
+        data: {{ jank_charts }}
+    }])
+    
+    
+    var battery_chart = new ApexCharts(document.querySelector("#chart-battery"), options('line'));
+    battery_chart.render();
+    battery_chart.updateSeries([{
+        name: 'level',
+        data: {{ battery_charts.batteryLevel }}
+    },{
+        name: 'temperature',
+        data: {{ battery_charts.batteryTem }}
+    }])
+
+</script>
+
+</body>
+</html>

@@ -4,3 +4,5 @@ recursive-include solox/static *.html *.js *.css *.png *.py
 recursive-include solox/templates *.html *.js *.css *.png *.py
 recursive-include solox/view *.html *.js *.css *.png *.py
 recursive-include solox/public/adb *
+recursive-include solox/public/scrcpy *
+recursive-include solox/public/report_template *

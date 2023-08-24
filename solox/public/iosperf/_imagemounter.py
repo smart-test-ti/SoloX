@@ -11,9 +11,9 @@ from typing import List
 import retry
 import requests
 
-from ._safe_socket import PlistSocketProxy
-from ._utils import get_app_dir, logger
-from .exceptions import MuxError, MuxServiceError
+from solox.public.iosperf._safe_socket import PlistSocketProxy
+from solox.public.iosperf._utils import get_app_dir, logger
+from solox.public.iosperf.exceptions import MuxError, MuxServiceError
 
 _REQUESTS_TIMEOUT = 30.0
 

@@ -1,0 +1,603 @@
+{% extends 'base.html' %}
+{% block title %}SoloX - {% if lan == 'cn' %} 数据比对 {% else %} Data Comparison {% endif %}{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block page_title %}
+<a class="active" style="color: #1e71df" href="/report?lan={{ lan }}">{% if lan == 'cn' %} 报告管理 {% else %} Report {% endif %}</a>
+<svg t="1635085520789" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="165732" width="200" height="200"><path d="M360.704 280.746667l45.226667-45.226667 246.570666 246.528a42.666667 42.666667 0 0 1 0 60.330667l-246.528 246.570666-45.22666601-45.269333 231.42400001-231.466667-231.466667-231.424z" p-id="165733"></path></svg>
+{{ app }}
+{% endblock %}
+
+{% block ms_auto %}
+<div class="col-auto ms-auto d-print-none">
+    <div class="btn-list">
+        <a download="compare.png" onclick="screenshot('sceen-body','compare.png')" class="btn">
+            <svg t="1681980127752" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11730" width="50" height="50"><path d="M957.31 368.25L903.1 732.12c-6 40.19-33.93 71.32-69.35 82.48a96.61 96.61 0 0 1-44.19 3.26L213.21 727c-39.51-6.23-70-35.53-80.55-72.54l90.55-64.06L363.29 702l193.4-234.78L847.8 681.67V394c0-56.57-44.59-102.43-99.6-102.43H177.34l6.73-45.17c8.33-55.92 59.16-94.3 113.53-85.73l576.35 90.83c54.37 8.56 91.69 60.83 83.36 116.75z" fill="#C5E3FF" p-id="11731"></path><path d="M804.86 831.57a110.71 110.71 0 0 1-17.24-1.36l-576.35-90.83c-42.89-6.76-78.46-38.74-90.62-81.47a12.5 12.5 0 0 1 4.8-13.62L216 580.22a12.5 12.5 0 0 1 15 0.43l130.45 103.9L547 459.27a12.5 12.5 0 0 1 17.06-2.12L835.3 656.93V394c0-49.59-39.07-89.93-87.1-89.93H177.34A12.5 12.5 0 0 1 165 289.71l6.73-45.17a114.5 114.5 0 0 1 45.56-76.09 109.35 109.35 0 0 1 82.29-20.14l576.35 90.83c61 9.62 103.11 68.37 93.78 131L915.46 734A115.87 115.87 0 0 1 889 792.38a112.1 112.1 0 0 1-51.45 34.14 108.3 108.3 0 0 1-32.69 5.05zM147.47 659.32c11.42 29.21 37.19 50.55 67.69 55.36l576.35 90.83a83.72 83.72 0 0 0 38.49-2.84c31.84-10 55.68-38.44 60.74-72.4l54.21-363.87c7.31-49.07-25.41-95.08-72.95-102.58L295.65 173a84.54 84.54 0 0 0-63.6 15.6 89.67 89.67 0 0 0-35.62 59.63l-4.59 30.82h556.37c61.81 0 112.1 51.56 112.1 114.93v287.69a12.5 12.5 0 0 1-19.91 10.06L558.81 484.3 372.93 709.93a12.5 12.5 0 0 1-17.44 1.83L222.77 606z" fill="#3D9FF9" p-id="11732"></path><path d="M748.21 877H165.12C103.31 877 53 825.48 53 762.11V394c0-63.37 50.29-114.93 112.1-114.93h583.11c61.81 0 112.1 51.56 112.1 114.93v368.11C860.3 825.48 810 877 748.21 877zM165.13 304c-48 0-87.1 40.34-87.1 89.93v368.18C78 811.7 117.1 852 165.12 852h583.09c48 0 87.1-40.34 87.1-89.93V394c0-49.59-39.07-89.93-87.1-89.93z" fill="#3D9FF9" p-id="11733"></path><path d="M748.21 877H165.12C103.31 877 53 825.48 53 762.11V702a12.5 12.5 0 0 1 5.28-10.2L216 580.22a12.5 12.5 0 0 1 15 0.43l130.45 103.9L547 459.27a12.5 12.5 0 0 1 17.06-2.12L855.22 671.6a12.5 12.5 0 0 1 5.09 10.06v80.44a117 117 0 0 1-15.75 58.77 114.17 114.17 0 0 1-40.07 40.64A109.94 109.94 0 0 1 748.21 877zM78 708.46v53.65C78 811.7 117.1 852 165.12 852h583.09c30.88 0 58.82-16.35 74.74-43.73a92 92 0 0 0 12.36-46.21V688l-276.5-203.7-185.88 225.63a12.5 12.5 0 0 1-17.44 1.83L222.77 606z" fill="#3D9FF9" p-id="11734"></path><path d="M847.8 681.67v80.44a104.16 104.16 0 0 1-14.05 52.49c-17.39 29.91-49.19 49.94-85.54 49.94H165.12c-55 0-99.6-45.86-99.6-102.43V702l67.14-47.5 90.55-64.06L363.29 702l193.4-234.78z" fill="#C5E3FF" p-id="11735"></path><path d="M748.21 877H165.12C103.31 877 53 825.48 53 762.11V702a12.5 12.5 0 0 1 5.28-10.2L216 580.22a12.5 12.5 0 0 1 15 0.43l130.45 103.9L547 459.27a12.5 12.5 0 0 1 17.06-2.12L855.22 671.6a12.5 12.5 0 0 1 5.09 10.06v80.44a117 117 0 0 1-15.75 58.77 114.17 114.17 0 0 1-40.07 40.64A109.94 109.94 0 0 1 748.21 877zM78 708.46v53.65C78 811.7 117.1 852 165.12 852h583.09c30.88 0 58.82-16.35 74.74-43.73a92 92 0 0 0 12.36-46.21V688l-276.5-203.7-185.88 225.63a12.5 12.5 0 0 1-17.44 1.83L222.77 606z" fill="#3D9FF9" p-id="11736"></path><path d="M226.91 418.1m-69.43 0a69.43 69.43 0 1 0 138.86 0 69.43 69.43 0 1 0-138.86 0Z" fill="#C5E3FF" p-id="11737"></path><path d="M226.91 500a81.93 81.93 0 1 1 81.93-81.93A82 82 0 0 1 226.91 500z m0-138.86a56.93 56.93 0 1 0 56.93 56.93 57 57 0 0 0-56.93-56.9z" fill="#3D9FF9" p-id="11738"></path></svg>
+            {% if lan == 'cn' %} 保存图片 {% else %} Save Image {% endif %}
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block navbar_nav %}
+<ul class="navbar-nav">
+  <li class="nav-item" id="apm_tab" style="margin-left: 20px;font-weight: bolder;">
+    <a class="nav-link" href="/?platform=Android&lan={{ lan }}" >
+      <span class="nav-link-icon d-md-none d-lg-inline-block">
+        <svg t="1635060342196" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="82258" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FBD000" p-id="82259"></path><path d="M949.6 848H92.8c-4.8 0-8-3.2-8-8s3.2-8 8-8h856.8c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#074370" p-id="82260"></path><path d="M903.2 776c0 35.2-28.8 64-64 64H203.2c-35.2 0-64-28.8-64-64V293.6c0-35.2 28.8-64 64-64h636c35.2 0 64 28.8 64 64V776z" fill="#415E6D" p-id="82261"></path><path d="M839.2 797.6H203.2c-35.2 0-64-28.8-64-64V776c0 35.2 28.8 64 64 64h636c35.2 0 64-28.8 64-64v-42.4c0 35.2-28.8 64-64 64z" fill="#324D5B" p-id="82262"></path><path d="M839.2 229.6H203.2c-35.2 0-64 28.8-64 64V728h764V293.6c0-35.2-28.8-64-64-64z" fill="#EAEAEA" p-id="82263"></path><path d="M901.6 736H144c-4.8 0-8-3.2-8-8s3.2-8 8-8h757.6c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#074370" p-id="82264"></path><path d="M816 784m-24 0a24 24 0 1 0 48 0 24 24 0 1 0-48 0Z" fill="#28A5C6" p-id="82265"></path><path d="M216 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#3AD0F9" p-id="82266"></path><path d="M280 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#FF4848" p-id="82267"></path><path d="M344 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#75B600" p-id="82268"></path><path d="M408 784m-16 0a16 16 0 1 0 32 0 16 16 0 1 0-32 0Z" fill="#FFFFFF" p-id="82269"></path><path d="M904 592h-72c-4.8 0-8-3.2-8-8s4-8 8-8h71.2c4.8 0 8 3.2 8 8s-3.2 8-7.2 8zM639.2 664c-3.2 0-6.4-2.4-8-5.6L592 523.2l-14.4 63.2c-0.8 4-4 6.4-8 6.4H391.2c-4 0-7.2-2.4-8-6.4l-21.6-119.2-17.6 73.6c-0.8 4-5.6 7.2-9.6 5.6-4-0.8-7.2-5.6-5.6-9.6L355.2 424c0.8-4 4-6.4 8-6.4s7.2 3.2 8 6.4l27.2 152h166.4L584 488.8c0.8-3.2 4-8.8 8-8.8s6.4 4.8 8 8.8l38.4 132.8 40.8-224.8c0.8-4 4-6.4 8-6.4s7.2 2.4 8 6.4L732 576h76c4.8 0 8 3.2 8 8s-3.2 8-8 8H725.6c-4 0-7.2-2.4-8-6.4l-30.4-146.4-40 218.4c-0.8 3.2-4 6.4-8 6.4 0.8 0 0.8 0 0 0zM305.6 680c-4 0-7.2-2.4-8-6.4L268 536l-15.2 50.4c-0.8 3.2-4 5.6-8 5.6H146.4c-4.8 0-8-3.2-8-8s3.2-8 8-8h92.8l22.4-74.4c0.8-3.2 4.8-5.6 8-5.6 4 0 6.4 2.4 7.2 6.4l28.8 132.8 11.2-47.2c0.8-4 5.6-7.2 9.6-5.6 4 0.8 7.2 5.6 5.6 9.6l-19.2 82.4c0 3.2-4 5.6-7.2 5.6z" fill="#074370" p-id="82270"></path><path d="M776 304h-56c-4.8 0-8-3.2-8-8s3.2-8 8-8h56c4.8 0 8 3.2 8 8s-3.2 8-8 8zM672 304H488c-4 0-8-3.2-8-8s3.2-8 8-8h184c4 0 8 3.2 8 8s-3.2 8-8 8zM424 304H224c-4.8 0-8-3.2-8-8s4-8 8-8h200c4.8 0 8 3.2 8 8s-4 8-8 8zM711.2 344H584c-4.8 0-8-3.2-8-8s3.2-8 8-8h127.2c4.8 0 8 3.2 8 8s-3.2 8-8 8zM528 344H224c-4.8 0-8-3.2-8-8s4-8 8-8h304c4.8 0 8 3.2 8 8s-4 8-8 8z" fill="#ADADAD" p-id="82271"></path><path d="M840 848H200c-40 0-72-32-72-72V296c0-40 32-72 72-72h640c40 0 72 32 72 72v480c0 40-32 72-72 72zM200 240c-31.2 0-56 24.8-56 56v480c0 31.2 24.8 56 56 56h640c31.2 0 56-24.8 56-56V296c0-31.2-24.8-56-56-56H200z" fill="#074370" p-id="82272"></path><path d="M864 553.6c-4.8 0-8-3.2-8-8v-80c0-4.8 3.2-8 8-8s8 3.2 8 8v80c0 4.8-3.2 8-8 8zM864 425.6c-4.8 0-8-3.2-8-8V312c0-22.4-17.6-40-40-40H408c-4.8 0-8-3.2-8-8s3.2-8 8-8h408c31.2 0 56 24.8 56 56v105.6c0 4.8-3.2 8-8 8zM345.6 272H224c-4.8 0-8-3.2-8-8s3.2-8 8-8h121.6c4.8 0 8 3.2 8 8s-4 8-8 8zM64 464c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32z m0-48c-8.8 0-16 7.2-16 16s7.2 16 16 16 16-7.2 16-16-7.2-16-16-16zM656 176c-17.6 0-32-14.4-32-32s14.4-32 32-32 32 14.4 32 32-14.4 32-32 32z m0-48c-8.8 0-16 7.2-16 16s7.2 16 16 16 16-7.2 16-16-7.2-16-16-16zM474.4 124c0-3.2-3.2-6.4-8-7.2l-15.2-2.4c-4-0.8-8.8-4.8-8.8-8.8l-2.4-15.2c-0.8-4-4-8-7.2-8s-6.4 3.2-7.2 8l-2.4 15.2c-0.8 4-4.8 8.8-8.8 8.8l-15.2 2.4c-4 0.8-8 4-8 7.2s3.2 6.4 8 7.2l15.2 2.4c4 0.8 8.8 4.8 8.8 8.8l2.4 15.2c0.8 4 4 8 7.2 8s6.4-3.2 7.2-8l2.4-16.8c0.8-4 4.8-8 8.8-8.8l14.4-0.8c5.6-1.6 8.8-4 8.8-7.2zM502.4 928c0-3.2-3.2-6.4-8-7.2l-15.2-2.4c-4-0.8-8.8-4.8-8.8-8.8l-2.4-15.2c-0.8-4-4-8-7.2-8s-6.4 3.2-7.2 8l-2.4 15.2c-0.8 4-4.8 8.8-8.8 8.8l-15.2 2.4c-4 0.8-8 4-8 7.2s3.2 6.4 8 7.2l15.2 2.4c4 0.8 8.8 4.8 8.8 8.8l2.4 15.2c0.8 4 4 8 7.2 8s6.4-3.2 7.2-8l2.4-16.8c0.8-4 4.8-8 8.8-8.8l14.4-0.8c5.6-1.6 8.8-4 8.8-7.2z" fill="#FFFFFF" p-id="82273"></path></svg>
+      </span>
+      <span class="nav-link-title strong-text">{% if lan == 'cn' %} 性能测试 {% else %} APM {% endif %}</span>
+    </a>
+  </li>
+  <li class="nav-item active" id="report_tab" style="margin-left: 20px;font-weight: bolder;">
+    <a class="nav-link" href="/report?lan={{ lan }}" >
+      <span class="nav-link-icon d-md-none d-lg-inline-block">
+        <svg t="1643364122000" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="29349" width="300" height="300"><path d="M777 806.7c0 38.7-31.1 70.3-69.7 70.3H225.9c-38.7 0-69.9-31.6-69.9-70.3V174.4c0-38.7 31.2-70.4 69.9-70.4h481.4c38.7 0 69.7 31.7 69.7 70.4v632.3z" fill="#FFFFFF" p-id="29350"></path><path d="M707.3 886H225.9c-43.5 0-78.9-35.8-78.9-79.3V174.4c0-43.5 35.4-79.4 78.9-79.4h481.4c43.5 0 79.7 35.9 79.7 79.4v632.3c0 43.5-36.2 79.3-79.7 79.3zM225.9 113c-33.7 0-59.9 27.7-59.9 61.4v632.3c0 33.7 26.2 61.3 59.9 61.3h481.4c33.7 0 60.7-27.6 60.7-61.3V174.4c0-33.7-27-61.4-60.7-61.4H225.9z" fill="#282828" p-id="29351"></path><path d="M732 763.1c0 33.3-26.1 60.9-59.4 60.9H251.7c-33.3 0-59.7-27.6-59.7-60.9V226.9c0-33.3 26.4-60.9 59.7-60.9h420.9c33.3 0 59.4 27.5 59.4 60.9v536.2z" fill="#50BCFF" p-id="29352"></path><path d="M361.8 251.9H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9h153.1c4.9 0 8.9 4 8.9 8.9s-3.9 8.9-8.8 8.9zM549.2 313H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9h340.5c4.9 0 8.9 4 8.9 8.9s-3.9 8.9-8.8 8.9zM652 448.4H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9H652c4.9 0 8.9 4 8.9 8.9s-4 8.9-8.9 8.9zM588.4 515.8H208.6c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9h379.7c4.9 0 8.9 4 8.9 8.9 0.1 4.9-3.9 8.9-8.8 8.9z" fill="#282828" p-id="29353"></path><path d="M673.3 113.3c0 19.6-15.9 35.5-35.5 35.5h-346c-19.6 0-35.5-15.9-35.5-35.5v-6.7c0-19.6 15.9-35.5 35.5-35.5h346c19.6 0 35.5 15.9 35.5 35.5v6.7z" fill="#1A6DFF" p-id="29354"></path><path d="M637.8 157.6h-346c-24.5 0-44.4-19.9-44.4-44.4v-6.7c0-24.5 19.9-44.4 44.4-44.4h346c24.5 0 44.4 19.9 44.4 44.4v6.7c0 24.5-19.9 44.4-44.4 44.4zM291.9 80c-14.7 0-26.6 11.9-26.6 26.6v6.7c0 14.7 11.9 26.6 26.6 26.6h346c14.7 0 26.6-11.9 26.6-26.6v-6.7c0-14.7-11.9-26.6-26.6-26.6h-346z" fill="#282828" p-id="29355"></path><path d="M849.7 758.4c0 106.3-86.2 192.4-192.4 192.4-106.3 0-192.4-86.2-192.4-192.4C464.8 652.1 551 566 657.3 566c106.2 0 192.4 86.1 192.4 192.4z" fill="#FFFFFF" p-id="29356"></path><path d="M657.3 959.7c-111 0-201.3-90.3-201.3-201.3s90.3-201.3 201.3-201.3 201.3 90.3 201.3 201.3-90.3 201.3-201.3 201.3z m0-384.8c-101.2 0-183.5 82.3-183.5 183.5S556.1 942 657.3 942s183.6-82.3 183.6-183.6c-0.1-101.2-82.4-183.5-183.6-183.5z" fill="#282828" p-id="29357"></path><path d="M657.3 553.6v204.9h203.6c-0.2-112.7-91.2-204-203.6-204.9z" fill="#1A6DFF" p-id="29358"></path><path d="M860.9 767.3H657.3c-4.9 0-8.9-4-8.9-8.9V553.6c0-2.4 0.9-4.6 2.6-6.3 1.7-1.7 3.6-2.4 6.3-2.6 116.9 0.9 212.2 96.8 212.4 213.7 0 2.4-0.9 4.6-2.6 6.3-1.6 1.7-3.9 2.6-6.2 2.6z m-194.8-17.8h185.6C847 649.3 766.2 568 666.1 562.7v186.8z" fill="#282828" p-id="29359"></path><path d="M794.1 903.7c-2.3 0-4.6-0.9-6.3-2.6L652.1 764.7c-3.5-3.5-3.4-9.1 0-12.6 3.5-3.5 9.1-3.4 12.6 0l135.7 136.5c3.5 3.5 3.4 9.1 0 12.6-1.8 1.7-4 2.5-6.3 2.5z" fill="#282828" p-id="29360"></path></svg>
+      </span>
+      <span class="nav-link-title strong-text">{% if lan == 'cn' %} 报告管理 {% else %} Report {% endif %}</span>
+    </a>
+  </li>
+</ul>
+{% endblock %}
+
+{% block page_body %}
+<div class="col-12 mb-3">
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-vcenter table-bordered table-nowrap card-table">
+                <tbody>
+                    <tr class="bg-light"><th colspan="6" class="subheader">CPU</th></tr>
+                    <tr>
+                        <td class="text-center subheader" style="width: 20%;">Scene</td>
+                        <td class="text-center subheader" style="width: 20%;">APP</td>
+                        <td class="text-center subheader" style="width: 20%;">System</td> 
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{ scene1 }}</td>
+                        <td class="text-center">{{ apm_data1.cpuAppRate }}</td>
+                        <td class="text-center">{{ apm_data1.cpuSystemRate }}</td> 
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{ scene2 }}</td>
+                        <td class="text-center">{{ apm_data2.cpuAppRate }}</td>
+                        <td class="text-center">{{ apm_data2.cpuSystemRate }}</td> 
+                    </tr>
+                    <tr>
+                    <tr class="bg-light"><th colspan="6" class="subheader">Memory</th></tr>
+                    <tr>
+                        <td class="text-center subheader" style="width: 20%;">Scene</td>
+                        <td class="text-center subheader" style="width: 20%;">Total</td>
+                        {% if platform == 'Android' %}
+                        <td class="text-center subheader" style="width: 20%;">Native</td>
+                        <td class="text-center subheader" style="width: 20%;">Dalivik</td> 
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{ scene1 }}</td>
+                        <td class="text-center">{{ apm_data1.totalPassAvg }}</td>
+                        {% if platform == 'Android' %}
+                        <td class="text-center">{{ apm_data1.nativePassAvg }}</td>
+                        <td class="text-center">{{ apm_data1.dalvikPassAvg }}</td>
+                        {% endif %} 
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{ scene2 }}</td>
+                        <td class="text-center">{{ apm_data2.totalPassAvg }}</td>
+                        {% if platform == 'Android' %}
+                        <td class="text-center">{{ apm_data2.nativePassAvg }}</td>
+                        <td class="text-center">{{ apm_data2.dalvikPassAvg }}</td>
+                        {% endif %}   
+                    </tr>
+                    <tr>
+                    <tr class="bg-light"><th colspan="6" class="subheader">Network</th></tr>
+                    <tr>
+                        <td class="text-center subheader" style="width: 20%;">Scene</td>
+                        <td class="text-center subheader" style="width: 20%;">Recv</td>
+                        <td class="text-center subheader" style="width: 20%;">Send</td> 
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{ scene1 }}</td>
+                        <td class="text-center">{{ apm_data1.flow_recv }}</td>
+                        <td class="text-center">{{ apm_data1.flow_send }}</td> 
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{ scene2 }}</td>
+                        <td class="text-center">{{ apm_data2.flow_recv }}</td>
+                        <td class="text-center">{{ apm_data2.flow_send }}</td> 
+                    </tr>
+                    <tr>
+                    <tr class="bg-light"><th colspan="6" class="subheader">FPS</th></tr>
+                    <tr>
+                        <td class="text-center subheader" style="width: 20%;">Scene</td>
+                        <td class="text-center subheader" style="width: 20%;">fps</td>
+                        {% if platform == 'Android' %}
+                        <td class="text-center subheader" style="width: 20%;">jank</td>
+                        {% endif %}  
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{ scene1 }}</td>
+                        <td class="text-center">{{ apm_data1.fps }}</td>
+                        {% if platform == 'Android' %}
+                        <td class="text-center">{{ apm_data1.jank }}</td>
+                        {% endif %} 
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{ scene2 }}</td>
+                        <td class="text-center">{{ apm_data2.fps }}</td>
+                        {% if platform == 'Android' %}
+                        <td class="text-center">{{ apm_data2.jank }}</td>
+                        {% endif %} 
+                    </tr>
+                    <tr class="bg-light"><th colspan="6" class="subheader">Battery</th></tr>
+                    <tr>
+                        
+                        {% if platform == 'Android' %}
+                        <td class="text-center subheader" style="width: 20%;">Scene</td>
+                        <td class="text-center subheader" style="width: 20%;">Level</td>
+                        <td class="text-center subheader" style="width: 20%;">Temperature</td>
+                        {% else %}
+                        <td class="text-center subheader" style="width: 20%;">Scene</td>
+                        <td class="text-center subheader" style="width: 20%;">Temperature</td>
+                        <td class="text-center subheader" style="width: 20%;">Current</td>
+                        <td class="text-center subheader" style="width: 20%;">Voltage</td>
+                        <td class="text-center subheader" style="width: 20%;">Power</td>  
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{ scene1 }}</td>
+                        {% if platform == 'Android' %}
+                        <td class="text-center">{{ apm_data1.batteryLevel }}</td>
+                        <td class="text-center">{{ apm_data1.batteryTeml }}</td>
+                        {% else %}
+                        <td class="text-center">{{ apm_data1.batteryTeml }}</td>
+                        <td class="text-center">{{ apm_data1.batteryCurrent }}</td> 
+                        <td class="text-center">{{ apm_data1.batteryVoltage }}</td>
+                        <td class="text-center">{{ apm_data1.batteryPower }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{ scene2 }}</td>
+                        {% if platform == 'Android' %}
+                        <td class="text-center">{{ apm_data2.batteryLevel }}</td>
+                        <td class="text-center">{{ apm_data2.batteryTeml }}</td>
+                        {% else %}
+                        <td class="text-center">{{ apm_data2.batteryTeml }}</td>
+                        <td class="text-center">{{ apm_data2.batteryCurrent }}</td> 
+                        <td class="text-center">{{ apm_data2.batteryVoltage }}</td>
+                        <td class="text-center">{{ apm_data2.batteryPower }}</td>
+                        {% endif %} 
+                    </tr>
+                    {% if platform == 'iOS' %}
+                    <tr class="bg-light"><th colspan="6" class="subheader">GPU</th></tr>
+                    <tr>
+                        <td class="text-center subheader" style="width: 20%;">Scene</td>
+                        <td class="text-center subheader" style="width: 20%;">gpu</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{ scene1 }}</td>
+                        <td class="text-center">{{ apm_data1.gpu }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">{{ scene2 }}</td>
+                        <td class="text-center">{{ apm_data2.gpu }}</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+                <tfoot></tfoot>
+          </table>
+        </div>
+      </div>
+</div>
+<div class="col-12">
+    <div class="card cpu-card">
+        <div class="card-header">
+            <div class='card-title'>CPU（%）: APP Usage</div>
+            <div class="card-actions btn-actions">
+                <a class="btn-action cursor-pointer" id="cpu_loading">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                </a>
+                <a class="btn-action cursor-pointer" id="cpu_png" onclick="screenshot('cpu-card','cpu.png')">
+                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="chart-cpu"></div>
+        </div>
+    </div>
+    <div class="card mem-card mt-3">
+        <div class="card-header">
+            <div class='card-title'>Memory（MB）: Total Usage</div>
+            <div class="card-actions btn-actions">
+                <a class="btn-action cursor-pointer" id="mem_loading">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                </a>
+                <a class="btn-action cursor-pointer" id="mem_png" onclick="screenshot('mem-card','mem.png')">
+                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="chart-mem"></div>
+        </div>
+    </div>
+    <div class="card fps-card mt-3">
+        <div class="card-header">
+            <div class='card-title'>FPS（HZ）</div>
+            <div class="card-actions btn-actions">
+                <a class="btn-action cursor-pointer" id="fps_loading">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                </a>
+                <a class="btn-action cursor-pointer" id="fps_png" onclick="screenshot('fps-card','fps.png')">
+                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="chart-fps"></div>
+        </div>
+    </div>
+    <div class="card battery-card mt-3">
+        <div class="card-header">
+            <div class='card-title'>Battery: Level</div>
+            <div class="card-actions btn-actions">
+                <a class="btn-action cursor-pointer" id="battery_loading">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                </a>
+                <a class="btn-action cursor-pointer" id="battery_png" onclick="screenshot('battery-card','battery.png')">
+                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="chart-battery"></div>
+        </div>
+    </div>
+    <div class="card networkdata-card-recv mt-3">
+        <div class="card-header">
+            <div class='card-title'>Network Data（KB）: Recv</div>
+            <div class="card-actions btn-actions">
+                <a class="btn-action cursor-pointer" id="networkdata_recv_loading">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                </a>
+                <a class="btn-action cursor-pointer" id="networkdata_recv_png" onclick="screenshot('networkdata-card-recv','networkdata_recv.png')">
+                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="chart-networkdata-recv"></div>
+        </div>
+    </div>
+    <div class="card networkdata-card-send mt-3">
+        <div class="card-header">
+            <div class='card-title'>Network Data（KB）: Send</div>
+            <div class="card-actions btn-actions">
+                <a class="btn-action cursor-pointer" id="networkdata_send_loading">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                </a>
+                <a class="btn-action cursor-pointer" id="networkdata_send_png" onclick="screenshot('networkdata-card-send','networkdata_send.png')">
+                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="chart-networkdata-send"></div>
+        </div>
+    </div>
+    {% if platform == 'iOS' %}
+    <div class="card gpu-card mt-3">
+        <div class="card-header">
+            <div class='card-title'>GPU（%）</div>
+            <div class="card-actions btn-actions">
+                <a class="btn-action cursor-pointer" id="gpu_loading">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                </a>
+                <a class="btn-action cursor-pointer" id="gpu_png" onclick="screenshot('gpu-card','gpu.png')">
+                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="chart-gpu"></div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+
+    $(document).ready(function() {
+        $('#cpu_loading').click();
+        $('#mem_loading').click();
+        $('#fps_loading').click();
+        $('#battery_loading').click();
+        $('#networkdata_send_loading').click();
+        $('#networkdata_recv_loading').click();
+        if(platform == 'iOS'){
+            $('#gpu_loading').click();
+        }
+    });
+
+    function saveHtml(platform, scene){
+        if(platform=='Android'){
+            saveAndroidHtml(scene)
+        }else{
+            saveiOSHtml(scene)
+        }
+    }
+
+    function options(type,dataLabels=false) {
+        let options = {
+            chart: {
+                type: type,
+                fontFamily: 'inherit',
+                height: 240,
+                parentHeightOffset: 0,
+                toolbar: {
+                    show: false,
+                },
+                animations: {
+                    enabled: false
+                },
+            },
+            dataLabels: {
+                enabled: dataLabels
+            },
+            fill: {
+                opacity: 1
+            },
+            stroke: {
+                width: 2,
+                lineCap: "round",
+                curve: "smooth",
+            },
+            series: [],
+            grid: {
+                padding: {
+                    top: -20,
+                    bottom: -4
+                },
+            strokeDashArray: 4,
+            },
+            xaxis: {
+                name: "time",
+                tickAmount:6,
+                labels: {
+                    rotate: 0,
+                }
+            },
+        };
+        return options
+    }
+
+    var cpu_chart = new ApexCharts(document.querySelector("#chart-cpu"), options('line'));
+    cpu_chart.render();
+    $('#cpu_loading').click(function () {
+        $.ajax({
+            url: '/apm/log/compare',
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                scene1:'{{ scene1 }}',
+                scene2:'{{ scene2 }}',
+                target:'cpu',
+                platform:platform
+            },
+            beforeSend: function () {
+                SwalLoading('Loading','')
+            },
+            complete: function () {
+                swal.close();
+            },
+            success: function (data) {
+                cpu_chart.updateSeries([{
+                    name: '{{ scene1 }}',
+                    data: data['scene1']
+                },{
+                    name: '{{ scene2 }}',
+                    data: data['scene2']
+                }])
+            }
+        });
+    });
+    
+    var battery_chart = new ApexCharts(document.querySelector("#chart-battery"), options('line'));
+        battery_chart.render();
+        $('#battery_loading').click(function () {
+            $.ajax({
+                url: '/apm/log/compare',
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    scene1:'{{ scene1 }}',
+                    scene2:'{{ scene2 }}',
+                    target:'battery',
+                    platform:platform
+                },
+                beforeSend: function () {
+                    SwalLoading('Loading','')
+                },
+                complete: function () {
+                    swal.close();
+                },
+                success: function (data) {
+                    battery_chart.updateSeries([{
+                        name: '{{ scene1 }}',
+                        data: data['scene1']
+                    },{
+                        name: '{{ scene2 }}',
+                        data: data['scene2']
+                    }])
+                }
+            });
+        });
+    if(platform == 'iOS'){
+        var gpu_chart = new ApexCharts(document.querySelector("#chart-gpu"), options('line'));
+        gpu_chart.render();
+        $('#gpu_loading').click(function () {
+            $.ajax({
+                url: '/apm/log/compare',
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    scene1:'{{ scene1 }}',
+                    scene2:'{{ scene2 }}',
+                    target:'gpu',
+                    platform:platform
+                },
+                beforeSend: function () {
+                    SwalLoading('Loading','')
+                },
+                complete: function () {
+                    swal.close();
+                },
+                success: function (data) {
+                    gpu_chart.updateSeries([{
+                        name: '{{ scene1 }}',
+                        data: data['scene1']
+                    },{
+                        name: '{{ scene2 }}',
+                        data: data['scene2']
+                    }])
+                }
+            });
+        });
+    }
+
+    var fps_chart = new ApexCharts(document.querySelector("#chart-fps"), options('line'));
+    fps_chart.render();
+    $('#fps_loading').click(function () {
+        $.ajax({
+            url: '/apm/log/compare',
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                scene1:'{{ scene1 }}',
+                scene2:'{{ scene2 }}',
+                target:'fps',
+                platform:platform
+            },
+            beforeSend: function () {
+                SwalLoading('Loading','')
+            },
+            complete: function () {
+                swal.close();
+            },
+            success: function (data) {
+                fps_chart.updateSeries([{
+                    name: '{{ scene1 }}',
+                    data: data['scene1']
+                },{
+                    name: '{{ scene2 }}',
+                    data: data['scene2']
+                }])
+            }
+        });
+    });
+
+    var mem_chart = new ApexCharts(document.querySelector("#chart-mem"), options('line'));
+    mem_chart.render();
+    $('#mem_loading').click(function () {
+        $.ajax({
+            url: '/apm/log/compare',
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                scene1:'{{ scene1 }}',
+                scene2:'{{ scene2 }}',
+                target:'memory',
+                platform:platform
+            },
+            beforeSend: function () {
+                SwalLoading('Loading','')
+            },
+            complete: function () {
+                swal.close();
+            },
+            success: function (data) {
+                mem_chart.updateSeries([{
+                    name: '{{ scene1 }}',
+                    data: data['scene1']
+                },{
+                    name: '{{ scene2 }}',
+                    data: data['scene2']
+                }])
+            }
+        });
+    });
+
+    var network_recv_chart = new ApexCharts(document.querySelector("#chart-networkdata-recv"), options('line',false));
+    network_recv_chart.render();
+    $('#networkdata_recv_loading').click(function () {
+        $.ajax({
+            url: '/apm/log/compare',
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                scene1:'{{ scene1 }}',
+                scene2:'{{ scene2 }}',
+                target:'net_recv',
+                platform:platform
+            },
+            beforeSend: function () {
+                SwalLoading('Loading','')
+            },
+            complete: function () {
+                swal.close();
+            },
+            success: function (data) {
+                network_recv_chart.updateSeries([{
+                    name: '{{ scene1 }}',
+                    data: data['scene1']
+                },{
+                    name: '{{ scene2 }}',
+                    data: data['scene2']
+                }])
+            }
+        });
+    });
+
+    var network_send_chart = new ApexCharts(document.querySelector("#chart-networkdata-send"), options('line',false));
+    network_send_chart.render();
+    $('#networkdata_send_loading').click(function () {
+        $.ajax({
+            url: '/apm/log/compare',
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                scene1:'{{ scene1 }}',
+                scene2:'{{ scene2 }}',
+                target:'net_send',
+                platform:platform
+            },
+            beforeSend: function () {
+                SwalLoading('Loading','')
+            },
+            complete: function () {
+                swal.close();
+            },
+            success: function (data) {
+                console.log(data)
+                network_send_chart.updateSeries([{
+                    name: '{{ scene1 }}',
+                    data: data['scene1']
+                },{
+                    name: '{{ scene2 }}',
+                    data: data['scene2']
+                }])
+            }
+        });
+    });
+</script>
+{% endblock %}

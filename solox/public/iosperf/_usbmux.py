@@ -12,10 +12,10 @@ import typing
 import uuid
 from typing import Optional, Union
 
-from ._types import DeviceInfo, ConnectionType
-from ._proto import PROGRAM_NAME, UsbmuxReplyCode, LOG
-from ._safe_socket import PlistSocket, PlistSocketProxy
-from .exceptions import * # pragma warning disables S2208
+from solox.public.iosperf._types import DeviceInfo, ConnectionType
+from solox.public.iosperf._proto import PROGRAM_NAME, UsbmuxReplyCode, LOG
+from solox.public.iosperf._safe_socket import PlistSocket, PlistSocketProxy
+from solox.public.iosperf.exceptions import * # pragma warning disables S2208
 
 
 logger = logging.getLogger(LOG.main)

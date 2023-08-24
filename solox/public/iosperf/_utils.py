@@ -14,7 +14,7 @@ import threading
 import time
 import typing
 
-from ._proto import PROGRAM_NAME
+from solox.public.iosperf._proto import PROGRAM_NAME
 
 logger = logging.getLogger(PROGRAM_NAME)
 is_atty = getattr(sys.stdout, 'isatty', lambda: False)()
