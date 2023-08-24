@@ -396,7 +396,7 @@ def makeReport():
     process = method._request(request, 'process')
     try:
         video = 0
-        if platform == Platform.Android:
+        if platform == Platform.Android and model == 'normal':
             deviceId = d.getIdbyDevice(devices, platform)
             battery_monitor = Battery(deviceId=deviceId)
             battery_monitor.recoverBattery()
