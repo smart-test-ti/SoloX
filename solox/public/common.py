@@ -6,7 +6,6 @@ import shutil
 import time
 import requests
 from logzero import logger
-from solox.public.adb import adb
 from tqdm import tqdm
 import socket
 from urllib.request import urlopen
@@ -19,6 +18,8 @@ from functools import wraps
 from jinja2 import Environment, FileSystemLoader
 from tidevice._device import Device
 from tidevice import Usbmux
+from solox.public.adb import adb
+
 
 class Platform:
     Android = 'Android'
@@ -53,7 +54,7 @@ class Devices:
         Ids = list(os.popen(f"{self.adb} devices").readlines())
         deviceIds = []
         for i in range(1, len(Ids) - 1):
-            id, state = Ids[i].strip().split('\t')
+            id, state = Ids[i].strip().split()
             if state == 'device':
                 deviceIds.append(id)
         return deviceIds
@@ -172,14 +173,14 @@ class Devices:
                 result['serialno'] = adb.shell(cmd='getprop ro.serialno', deviceId=deviceId)
                 cmd = f'ip addr show wlan0 | {self.filterType()} link/ether'
                 wifiadr_content = adb.shell(cmd=cmd, deviceId=deviceId)                
-                result['wifiadr'] = Method._index(wifiadr_content.split(' '), 1, '')
+                result['wifiadr'] = Method._index(wifiadr_content.split(), 1, '')
             case Platform.iOS:
-                iosInfo = json.loads(self.execCmd('tidevice info --json'))
-                result['brand'] = iosInfo['DeviceClass']
-                result['name'] = iosInfo['DeviceName']
-                result['version'] = iosInfo['ProductVersion']
-                result['serialno'] = iosInfo['SerialNumber']
-                result['wifiadr'] = iosInfo['WiFiAddress']
+                ios_device = Device(udid=deviceId)
+                result['brand'] = ios_device.get_value("DeviceClass", no_session=True)
+                result['name'] = ios_device.get_value("DeviceName", no_session=True)
+                result['version'] = ios_device.get_value("ProductVersion", no_session=True)
+                result['serialno'] = ios_device.get_value("SerialNumber", no_session=True)
+                result['wifiadr'] = ios_device.get_value("WiFiAddress", no_session=True)
             case _:
                 raise Exception('{} is undefined'.format(platform)) 
         return result
