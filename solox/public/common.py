@@ -164,7 +164,7 @@ class Devices:
                 raise Exception('platform must be Android or iOS')        
             
     def getDdeviceDetail(self, deviceId, platform):
-        result = {}
+        result = dict()
         match(platform):
             case Platform.Android:
                 result['brand'] = adb.shell(cmd='getprop ro.product.brand', deviceId=deviceId)
@@ -179,7 +179,7 @@ class Devices:
                 result['brand'] = ios_device.get_value("DeviceClass", no_session=True)
                 result['name'] = ios_device.get_value("DeviceName", no_session=True)
                 result['version'] = ios_device.get_value("ProductVersion", no_session=True)
-                result['serialno'] = ios_device.get_value("SerialNumber", no_session=True)
+                result['serialno'] = deviceId
                 result['wifiadr'] = ios_device.get_value("WiFiAddress", no_session=True)
             case _:
                 raise Exception('{} is undefined'.format(platform)) 
