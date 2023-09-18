@@ -108,12 +108,11 @@ def start(host: str, port: int):
 
 def main(host=ip(), port=50003):
     try:
-        if listen(port):
-            pool = multiprocessing.Pool(processes=2)
-            pool.apply_async(start, (host, port))
-            pool.apply_async(open_url, (host, port))
-            pool.close()
-            pool.join()
+        pool = multiprocessing.Pool(processes=2)
+        pool.apply_async(start, (host, port))
+        pool.apply_async(open_url, (host, port))
+        pool.close()
+        pool.join()
     except KeyboardInterrupt:
         logger.info('stop solox success')
         sys.exit()
