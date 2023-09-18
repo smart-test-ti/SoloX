@@ -20,7 +20,7 @@ class SurfaceStatsCollector(object):
         self.device = device
         self.frequency = frequency
         self.package_name = package_name
-        self.jank_threshold = jank_threshold / 1000.0 
+        self.jank_threshold = jank_threshold / 1000.0
         self.use_legacy_method = use_legacy
         self.surface_before = 0
         self.last_timestamp = 0
@@ -29,6 +29,11 @@ class SurfaceStatsCollector(object):
         self.focus_window = None
         self.surfaceview = surfaceview
         self.fps_queue = fps_queue
+
+        self.persistent_mode = True
+        self.last_timestamp_calc = 0
+        self.last_calc_result = (0, 0)
+        self.timestamps_calc_count = 0
 
     def start(self, start_time):
         if not self.use_legacy_method:
@@ -56,22 +61,43 @@ class SurfaceStatsCollector(object):
             self.collector_thread = None
             if self.fps_queue:
                 self.fps_queue.task_done()
-     
+
+    def get_surfaceview(self):
+        activity_name = ''
+        activity_line = ''
+        try:
+            dumpsys_result = adb.shell(cmd='dumpsys SurfaceFlinger --list | {} {}'.format(d.filterType(), self.package_name), deviceId=self.device)
+            dumpsys_result_list = dumpsys_result.split('\n')
+            for line in dumpsys_result_list:
+                if line.startswith('SurfaceView') and line.find(self.package_name) != -1:
+                    activity_line = line.strip()
+                    return activity_line
+
+            activity_name = dumpsys_result_list[len(dumpsys_result_list) - 1]
+            if not activity_name.__contains__(self.package_name):
+                logger.error('get activity name failed, Please provide SurfaceFlinger --list information to the author')
+                logger.info('dumpsys SurfaceFlinger --list info: {}'.format(dumpsys_result))
+        except Exception:
+            traceback.print_exc()
+            logger.error('get activity name failed, Please provide SurfaceFlinger --list information to the author')
+            logger.info('dumpsys SurfaceFlinger --list info: {}'.format(dumpsys_result))
+        return activity_name
+
     def get_surfaceview_activity(self):
         activity_name = ''
         activity_line = ''
         try:
             dumpsys_result = adb.shell(cmd='dumpsys SurfaceFlinger --list | {} {}'.format(d.filterType(), self.package_name), deviceId=self.device)
-            dumpsys_result_list = dumpsys_result.split('\n')    
+            dumpsys_result_list = dumpsys_result.split('\n')
             for line in dumpsys_result_list:
                 if line.startswith('SurfaceView') and line.find(self.package_name) != -1:
                     activity_line = line.strip()
                     break
             if activity_line:
-                if activity_line.find(' ')  != -1:      
+                if activity_line.find(' ')  != -1:
                     activity_name = activity_line.split(' ')[2]
                 else:
-                    activity_name = activity_line.replace('SurfaceView','').replace('[','').replace(']','')    
+                    activity_name = activity_line.replace('SurfaceView','').replace('[','').replace(']','')
             else:
                 activity_name = dumpsys_result_list[len(dumpsys_result_list) - 1]
                 if not activity_name.__contains__(self.package_name):
@@ -82,10 +108,11 @@ class SurfaceStatsCollector(object):
             logger.error('get activity name failed, Please provide SurfaceFlinger --list information to the author')
             logger.info('dumpsys SurfaceFlinger --list info: {}'.format(dumpsys_result))
         return activity_name
-     
+
     def get_focus_activity(self):
         activity_name = ''
         activity_line = ''
+        activity_line_split = []
         dumpsys_result = adb.shell(cmd='dumpsys window windows', deviceId=self.device)
         dumpsys_result_list = dumpsys_result.split('\n')
         for line in dumpsys_result_list:
@@ -94,14 +121,15 @@ class SurfaceStatsCollector(object):
         if activity_line:
             activity_line_split = activity_line.split(' ')
         else:
-            return activity_name
+            if activity_name:
+                return activity_name
         if len(activity_line_split) > 1:
             if activity_line_split[1] == 'u0':
                 activity_name = activity_line_split[2].rstrip('}')
             else:
                 activity_name = activity_line_split[1]
         if not activity_name:
-            activity_name = self.get_surfaceview_activity()        
+            activity_name = self.get_surfaceview_activity()
         return activity_name
 
     def get_foreground_process(self):
@@ -181,6 +209,29 @@ class SurfaceStatsCollector(object):
                     jank = jank + 1
         return jank
 
+    def _calculate_results_persistent(self, refresh_period, timestamps):
+        if len(timestamps) == 0:
+            return 0, 0
+        if self.last_timestamp_calc == 0:
+            self.last_timestamp_calc = timestamps[0][1]
+            self.timestamps_calc_count = len(timestamps)
+            return
+
+        ts = timestamps[-1][1] # s
+        self.timestamps_calc_count += len(timestamps)
+
+        # logger.debug('elapse: %.2f frams: %d'% (ts - self.last_timestamp_calc, self.timestamps_calc_count))
+        if ts - self.last_timestamp_calc < 1.0:
+            return self.last_calc_result
+
+        fps = 1.0 * self.timestamps_calc_count / (ts - self.last_timestamp_calc)
+        jank = self._calculate_janky(timestamps)
+        self.last_timestamp_calc = ts
+        self.timestamps_calc_count = 0
+        self.last_calc_result = (fps, jank)
+        return self.last_calc_result
+
+
     def _calculate_janky(self, timestamps):
         tempstamp = 0
         jank = 0
@@ -219,7 +270,10 @@ class SurfaceStatsCollector(object):
                     timestamps = data[1]
                     collect_time = data[2]
                     # fps,jank = self._calculate_results(refresh_period, timestamps)
-                    fps, jank = self._calculate_results_new(refresh_period, timestamps)
+                    if self.persistent_mode:
+                        fps, jank = self._calculate_results_persistent(refresh_period, timestamps)
+                    else:
+                        fps, jank = self._calculate_results_new(refresh_period, timestamps)
                     # logger.debug('FPS:%2s Jank:%s'%(fps,jank))
                     collect_fps = fps
                     collect_jank = jank
@@ -375,6 +429,10 @@ class SurfaceStatsCollector(object):
                 fields = []
                 fields = line.split(",")
                 if fields and '0' == fields[0]:
+                    # https://www.cnblogs.com/zhengna/p/10032078.html
+                    # 1 INTENDED_VSYNC
+                    # 2 VSYNC
+                    # 13 FRAME_COMPLETED
                     timestamp = [int(fields[1]), int(fields[2]), int(fields[13])]
                     if timestamp[1] == pending_fence_timestamp:
                         continue
@@ -383,9 +441,10 @@ class SurfaceStatsCollector(object):
                 if 2 == PROFILEDATA_line:
                     break
         else:
-            self.focus_window = self.get_surfaceview_activity()
+            # self.focus_window = self.get_surfaceview_activity()
+            self.focus_window = self.get_surfaceview()
             results = adb.shell(
-                cmd='dumpsys SurfaceFlinger --latency %s' % self.focus_window, deviceId=self.device)
+                cmd='dumpsys SurfaceFlinger --latency \\"%s\\"' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
             if not len(results):
                 return (None, None)
@@ -429,6 +488,8 @@ class SurfaceStatsCollector(object):
             return None
         match = re.search('^Result: Parcel\((\w+)', ret)
         if match:
+            if match.group().find('Error') != -1:
+                return None
             cur_surface = int(match.group(1), 16)
             return {'page_flip_count': cur_surface, 'timestamp': timestamp}
         return None
@@ -496,3 +557,8 @@ class FPSMonitor(Monitor):
 
     def get_fps_collector(self):
         return self.fpscollector
+
+    def get_fps(self):
+        global collect_fps
+        global collect_jank
+        return collect_fps, collect_jank

@@ -72,7 +72,7 @@ class CPU(object):
         ileCpu = float(toks[4])
         sysCpu = self.getTotalCpuStat() - ileCpu
         return sysCpu
-    
+
     def getAndroidCpuRate(self, noLog=False):
         """get the Android cpu rate of a process"""
         try:
@@ -94,7 +94,7 @@ class CPU(object):
             if len(d.getPid(self.deviceId, self.pkgName)) == 0:
                 logger.error('[CPU] {} : No process found'.format(self.pkgName))
             else:
-                logger.exception(e)   
+                logger.exception(e)
         return appCpuRate, sysCpuRate
 
     def getiOSCpuRate(self, noLog=False):
@@ -138,7 +138,7 @@ class Memory(object):
             if len(d.getPid(self.deviceId, self.pkgName)) == 0:
                 logger.error('[Memory] {} : No process found'.format(self.pkgName))
             else:
-                logger.exception(e)    
+                logger.exception(e)
         return totalPass, nativePass, dalvikPass
 
     def getiOSMem(self):
@@ -152,7 +152,7 @@ class Memory(object):
     def getProcessMem(self, noLog=False):
         """Get the app memory"""
         totalPass, nativePass, dalvikPass = self.getAndroidMem() if self.platform == Platform.Android else self.getiOSMem()
-        if noLog is False:    
+        if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'mem_total.log'), apm_time, totalPass)
             if self.platform == Platform.Android:
@@ -164,7 +164,7 @@ class Battery(object):
     def __init__(self, deviceId, platform=Platform.Android):
         self.deviceId = deviceId
         self.platform = platform
-    
+
     def getBattery(self, noLog=False):
         if self.platform == Platform.Android:
             level, temperature = self.getAndroidBattery(noLog)
@@ -172,7 +172,7 @@ class Battery(object):
         else:
             temperature, current, voltage, power = self.getiOSBattery(noLog)
             return temperature, current, voltage, power
-        
+
     def getAndroidBattery(self, noLog=False):
         """Get android battery info, unit:%"""
         # Switch mobile phone battery to non-charging state
@@ -189,7 +189,7 @@ class Battery(object):
              f.add_log(os.path.join(f.report_dir,'battery_level.log'), apm_time, level)
              f.add_log(os.path.join(f.report_dir,'battery_tem.log'), apm_time, temperature)
         return level, temperature
-    
+
     def getiOSBattery(self, noLog=False):
         """Get ios battery info, unit:%"""
         d  = tidevice.Device(udid=self.deviceId)
@@ -242,9 +242,9 @@ class Network(object):
             if len(d.getPid(self.deviceId, self.pkgName)) == 0:
                 logger.error('[Network] {} : No process found'.format(self.pkgName))
             else:
-                logger.exception(e)    
+                logger.exception(e)
         return sendNum, recNum
-    
+
     def setAndroidNet(self, wifi=True):
         try:
             net = 'wlan0' if wifi else 'rmnet0'
@@ -258,7 +258,7 @@ class Network(object):
             if len(d.getPid(self.deviceId, self.pkgName)) == 0:
                 logger.error('[Network] {} : No process found'.format(self.pkgName))
             else:
-                logger.exception(e)    
+                logger.exception(e)
         return sendNum, recNum
 
 
@@ -280,6 +280,19 @@ class Network(object):
         return sendNum, recNum
 
 class FPS(object):
+    AndroidFPS = None
+
+    @classmethod
+    def getObject(cls, *args, **kwargs):
+        if kwargs['platform'] == Platform.Android:
+            if cls.AndroidFPS is None:
+                cls.AndroidFPS = FPS(*args, **kwargs)
+            return cls.AndroidFPS
+        return FPS(*args, **kwargs)
+
+    @classmethod
+    def clear(cls):
+        cls.AndroidFPS = None
 
     def __init__(self, pkgName, deviceId, platform=Platform.Android, surfaceview=True):
         self.pkgName = pkgName
@@ -287,14 +300,18 @@ class FPS(object):
         self.platform = platform
         self.surfaceview = surfaceview
         self.apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+        self.monitors = None
 
     def getAndroidFps(self, noLog=False):
         """get Android Fps, unit:HZ"""
         try:
-            monitors = FPSMonitor(device_id=self.deviceId, package_name=self.pkgName, frequency=1,
+            if self.monitors is None:
+                self.monitors = FPSMonitor(device_id=self.deviceId, package_name=self.pkgName, frequency=1,
                                   surfaceview=self.surfaceview, start_time=TimeUtils.getCurrentTimeUnderline())
-            monitors.start()
-            fps, jank = monitors.stop()
+                self.monitors.start()
+
+            # fps, jank = monitors.stop()
+            fps, jank = self.monitors.get_fps()
             if noLog is False:
                 apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
                 f.add_log(os.path.join(f.report_dir,'fps.log'), apm_time, fps)
@@ -304,7 +321,7 @@ class FPS(object):
             if len(d.getPid(self.deviceId, self.pkgName)) == 0:
                 logger.error('[FPS] {} : No process found'.format(self.pkgName))
             else:
-                logger.exception(e)        
+                logger.exception(e)
         return fps, jank
 
     def getiOSFps(self, noLog=False):
@@ -332,7 +349,7 @@ class GPU(object):
         if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'gpu.log'), apm_time, gpu)
-        return gpu   
+        return gpu
 
 class iosAPM(object):
 
@@ -446,7 +463,7 @@ class APM(object):
             if time.time() > self.end_time:
                 break
         return result
-    
+
     def collectGpu(self):
         _gpu = GPU(self.pkgName)
         result = {}
@@ -459,7 +476,7 @@ class APM(object):
             if time.time() > self.end_time:
                 break
         return result
-    
+
     def setPerfs(self):
         match(self.platform):
             case Platform.Android:
@@ -490,7 +507,7 @@ class APM(object):
                 summary_dict['jank_charts'] = f.getFpsLog(Platform.Android, scene)['jank']
                 f.make_android_html(scene=scene, summary=summary_dict)
             case Platform.iOS:
-                scene = f.make_report(app=self.pkgName, devices=self.deviceId, 
+                scene = f.make_report(app=self.pkgName, devices=self.deviceId,
                                       video=0, platform=self.platform, model='normal')
                 summary = f._setiOSPerfs(scene)
                 summary_dict = {}
@@ -513,7 +530,7 @@ class APM(object):
                 summary_dict['gpu_charts'] = f.getGpuLog(Platform.iOS, scene)
                 f.make_ios_html(scene=scene, summary=summary_dict)
             case _:
-                raise Exception('platfrom is invalid') 
+                raise Exception('platfrom is invalid')
 
     def collectAll(self):
         try:
@@ -530,7 +547,7 @@ class APM(object):
                 pool.apply_async(Scrcpy.start_record, (self.deviceId))
             pool.close()
             pool.join()
-            self.setPerfs()     
+            self.setPerfs()
         except KeyboardInterrupt:
             Scrcpy.stop_record()
             self.setPerfs()
