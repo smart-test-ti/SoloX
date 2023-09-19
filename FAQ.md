@@ -32,7 +32,6 @@
 
 * 支持SurfaceView和gfxinfo（界面关闭surfaceview开关切换）两种方式，可以都切换尝试是否收集到数据；如果使用gpfinfo方式需要到手机设置：开发者 - GPU渲染模式 - adb shell dumpsys gfxinfo。
 * 界面相对静止的fps预期就是0，请检查页面是否滑动和动态。
-* 游戏类APP不支持，照理说SurfaceView的方式是可以收集的，但是用adb读取的数据基本没有。怀疑是要用原生api才能准确获取。
 
 ## 6️⃣ 为什么"python -m solox"会运行失败 ？
 

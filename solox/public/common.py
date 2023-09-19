@@ -548,43 +548,56 @@ class File:
             size /= multiple
             if size < multiple:
                 return '{0:.2f} {1}'.format(size, suffix)
+    
+    
 
     def _setAndroidPerfs(self, scene):
         """Aggregate APM data for Android"""
 
         cpuAppData = self.readLog(scene=scene, filename=f'cpu_app.log')[1]
-        cpuAppRate = f'{round(sum(cpuAppData) / len(cpuAppData), 2)}%'
-
         cpuSystemData = self.readLog(scene=scene, filename=f'cpu_sys.log')[1]
-        cpuSystemRate = f'{round(sum(cpuSystemData) / len(cpuSystemData), 2)}%'
+        if cpuAppData.__len__() > 0 and cpuSystemData.__len__() > 0:
+            cpuAppRate = f'{round(sum(cpuAppData) / len(cpuAppData), 2)}%'
+            cpuSystemRate = f'{round(sum(cpuSystemData) / len(cpuSystemData), 2)}%'
+        else:
+            cpuAppRate, cpuSystemRate = 0, 0    
 
         batteryLevelData = self.readLog(scene=scene, filename=f'battery_level.log')[1]
-        batteryLevel = f'{batteryLevelData[-1]}%'
-
         batteryTemlData = self.readLog(scene=scene, filename=f'battery_tem.log')[1]
-        batteryTeml = f'{batteryTemlData[-1]}°C'
+        if batteryLevelData.__len__() > 0 and batteryTemlData.__len__() > 0:
+            batteryLevel = f'{batteryLevelData[-1]}%'
+            batteryTeml = f'{batteryTemlData[-1]}°C'
+        else:
+            batteryLevel, batteryTeml = 0, 0   
+    
 
         totalPassData = self.readLog(scene=scene, filename=f'mem_total.log')[1]
-        totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
-
         nativePassData = self.readLog(scene=scene, filename=f'mem_native.log')[1]
-        nativePassAvg = f'{round(sum(nativePassData) / len(nativePassData), 2)}MB'
-
         dalvikPassData = self.readLog(scene=scene, filename=f'mem_dalvik.log')[1]
-        dalvikPassAvg = f'{round(sum(dalvikPassData) / len(dalvikPassData), 2)}MB'
+        if totalPassData.__len__() > 0:
+            totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
+            nativePassAvg = f'{round(sum(nativePassData) / len(nativePassData), 2)}MB'
+            dalvikPassAvg = f'{round(sum(dalvikPassData) / len(dalvikPassData), 2)}MB'
+        else:
+            totalPassAvg, nativePassAvg, dalvikPassAvg = 0, 0, 0     
 
         fpsData = self.readLog(scene=scene, filename=f'fps.log')[1]
-        fpsAvg = f'{int(sum(fpsData) / len(fpsData))}HZ/s'
-
         jankData = self.readLog(scene=scene, filename=f'jank.log')[1]
-        jankAvg = f'{int(sum(jankData))}'
-       
-        f_pre = open(os.path.join(self.report_dir,scene,'pre_net.json'))
-        f_end = open(os.path.join(self.report_dir,scene,'end_net.json'))
-        json_pre = json.loads(f_pre.read())
-        json_end = json.loads(f_end.read())
-        send = json_end['send'] - json_pre['send']
-        recv = json_end['recv'] - json_pre['recv']
+        if fpsData.__len__() > 0:
+            fpsAvg = f'{int(sum(fpsData) / len(fpsData))}HZ/s'
+            jankAvg = f'{int(sum(jankData))}'
+        else:
+            fpsAvg, jankAvg = 0, 0    
+
+        if os.path.exists(os.path.join(self.report_dir,scene,'end_net.json')):
+            f_pre = open(os.path.join(self.report_dir,scene,'pre_net.json'))
+            f_end = open(os.path.join(self.report_dir,scene,'end_net.json'))
+            json_pre = json.loads(f_pre.read())
+            json_end = json.loads(f_end.read())
+            send = json_end['send'] - json_pre['send']
+            recv = json_end['recv'] - json_pre['recv']
+        else:
+            send, recv = 0, 0    
         flowSend = f'{round(float(send / 1024), 2)}MB'
         flowRecv = f'{round(float(recv / 1024), 2)}MB'
         apm_dict = {}
@@ -604,38 +617,51 @@ class File:
 
     def _setiOSPerfs(self, scene):
         """Aggregate APM data for iOS"""
-        cpuAppData = self.readLog(scene=scene, filename='cpu_app.log')[1]
-        cpuAppRate = f'{round(sum(cpuAppData) / len(cpuAppData), 2)}%'
-
-        cpuSystemData = self.readLog(scene=scene, filename='cpu_sys.log')[1]
-        cpuSystemRate = f'{round(sum(cpuSystemData) / len(cpuSystemData), 2)}%'
+        cpuAppData = self.readLog(scene=scene, filename=f'cpu_app.log')[1]
+        cpuSystemData = self.readLog(scene=scene, filename=f'cpu_sys.log')[1]
+        if cpuAppData.__len__() > 0 and cpuSystemData.__len__() > 0:
+            cpuAppRate = f'{round(sum(cpuAppData) / len(cpuAppData), 2)}%'
+            cpuSystemRate = f'{round(sum(cpuSystemData) / len(cpuSystemData), 2)}%'
+        else:
+            cpuAppRate, cpuSystemRate = 0, 0
 
         totalPassData = self.readLog(scene=scene, filename='mem_total.log')[1]
-        totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
+        if totalPassData.__len__() > 0:
+            totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
+        else:
+            totalPassAvg = 0
 
         fpsData = self.readLog(scene=scene, filename='fps.log')[1]
-        fpsAvg = f'{int(sum(fpsData) / len(fpsData))}HZ/s'
+        if fpsData.__len__() > 0:
+            fpsAvg = f'{int(sum(fpsData) / len(fpsData))}HZ/s'
+        else:
+            fpsAvg = 0
 
         flowSendData = self.readLog(scene=scene, filename='upflow.log')[1]
-        flowSend = f'{round(float(sum(flowSendData) / 1024), 2)}MB'
-
         flowRecvData = self.readLog(scene=scene, filename='downflow.log')[1]
-        flowRecv = f'{round(float(sum(flowRecvData) / 1024), 2)}MB'
+        if flowSendData.__len__() > 0:
+            flowSend = f'{round(float(sum(flowSendData) / 1024), 2)}MB'
+            flowRecv = f'{round(float(sum(flowRecvData) / 1024), 2)}MB'
+        else:
+            flowSend, flowRecv = 0, 0    
 
         batteryTemlData = self.readLog(scene=scene, filename='battery_tem.log')[1]
-        batteryTeml = batteryTemlData[-1]
-
         batteryCurrentData = self.readLog(scene=scene, filename='battery_current.log')[1]
-        batteryCurrent = sum(batteryCurrentData)
-
         batteryVoltageData = self.readLog(scene=scene, filename='battery_voltage.log')[1]
-        batteryVoltage = sum(batteryVoltageData)
-
         batteryPowerData = self.readLog(scene=scene, filename='battery_power.log')[1]
-        batteryPower = sum(batteryPowerData)
+        if batteryTemlData.__len__() > 0:
+            batteryTeml = batteryTemlData[-1]
+            batteryCurrent = sum(batteryCurrentData)
+            batteryVoltage = sum(batteryVoltageData)
+            batteryPower = sum(batteryPowerData)
+        else:
+            batteryTeml,  batteryCurrent , batteryVoltage, batteryPower = 0, 0, 0, 0 
 
         gpuData = self.readLog(scene=scene, filename='gpu.log')[1]
-        gpu = round(sum(gpuData) / len(gpuData), 2)
+        if gpuData.__len__() > 0:
+            gpu = round(sum(gpuData) / len(gpuData), 2)
+        else:
+            gpu = 0    
 
         apm_dict = {}
         apm_dict['cpuAppRate'] = cpuAppRate
@@ -705,7 +731,9 @@ class Method:
         try:
             result = value
         except ZeroDivisionError :
-            result = default    
+            result = default
+        except IndexError:
+            result = default        
         except Exception:
             result = default            
         return result
