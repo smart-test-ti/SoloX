@@ -385,14 +385,18 @@ class File:
             return 'int'
         else:
             return 'int'
+    
+    def open_file(self, path, mode):
+        with open(path, mode) as f:
+            for line in f:
+                yield line
 
     def readLog(self, scene, filename):
         """Read apmlog file data"""
-        log_data_list = []
-        target_data_list = []
+        log_data_list = list()
+        target_data_list = list()
         if os.path.exists(os.path.join(self.report_dir,scene,filename)):
-            f = open(os.path.join(self.report_dir,scene,filename), "r")
-            lines = f.readlines()
+            lines = self.open_file(os.path.join(self.report_dir,scene,filename), "r")
             for line in lines:
                 if isinstance(line.split('=')[1].strip(), int):
                     log_data_list.append({

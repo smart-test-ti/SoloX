@@ -730,12 +730,6 @@
                 target:'cpu',
                 platform:platform
             },
-            beforeSend: function () {
-                SwalLoading('Loading','')
-            },
-            complete: function () {
-                swal.close();
-            },
             success: function (data) {
                 cpu_chart.updateSeries([{
                     name: 'app',
@@ -760,12 +754,6 @@
                     scene:'{{ scene }}',
                     target:'battery',
                     platform:platform
-                },
-                beforeSend: function () {
-                    SwalLoading('Loading','')
-                },
-                complete: function () {
-                    swal.close();
                 },
                 success: function (data) {
                     if(platform == 'Android'){
@@ -809,12 +797,6 @@
                     target:'fps',
                     platform:platform
                 },
-                beforeSend: function () {
-                    SwalLoading('Loading','')
-                },
-                complete: function () {
-                    swal.close();
-                },
                 success: function (data) {
                     jank_chart.updateSeries([{
                         name: 'jank',
@@ -839,12 +821,6 @@
                     target:'gpu',
                     platform:platform
                 },
-                beforeSend: function () {
-                    SwalLoading('Loading','')
-                },
-                complete: function () {
-                    swal.close();
-                },
                 success: function (data) {
                     gpu_chart.updateSeries([{
                         name: 'gpu',
@@ -867,12 +843,6 @@
                 scene:'{{ scene }}',
                 target:'fps',
                 platform:platform
-            },
-            beforeSend: function () {
-                SwalLoading('Loading','')
-            },
-            complete: function () {
-                swal.close();
             },
             success: function (data) {
                 fps_chart.updateSeries([{
@@ -936,12 +906,6 @@
                 scene:'{{ scene }}',
                 target:'flow',
                 platform:platform
-            },
-            beforeSend: function () {
-                SwalLoading('Loading','')
-            },
-            complete: function () {
-                swal.close();
             },
             success: function (data) {
                 network_chart.updateSeries([{
