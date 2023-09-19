@@ -43,6 +43,7 @@ def setCookie():
 def initialize():
     """initialize apm env"""
     try:
+        FPS.clear()
         f.clear_file()
         result = {'status': 1, 'msg': 'initialize env success'}
     except Exception as e:
@@ -63,8 +64,8 @@ def deviceids():
                 if len(deviceids) > 0:
                     pkgnames = d.getPkgname(deviceids[0])
                     device_detail = d.getDdeviceDetail(deviceId=deviceids[0], platform=platform)
-                    result = {'status': 1, 
-                              'deviceids': deviceids, 
+                    result = {'status': 1,
+                              'deviceids': deviceids,
                               'devices': devices,
                               'pkgnames': pkgnames,
                               'device_detail': device_detail}
@@ -75,15 +76,15 @@ def deviceids():
                 if len(deviceinfos) > 0:
                     pkgnames = d.getPkgnameByiOS(deviceinfos[0])
                     device_detail = d.getDdeviceDetail(deviceId=deviceinfos[0], platform=platform)
-                    result = {'status': 1, 
-                              'deviceids': deviceinfos, 
+                    result = {'status': 1,
+                              'deviceids': deviceinfos,
                               'devices': deviceinfos,
-                              'pkgnames': pkgnames, 
+                              'pkgnames': pkgnames,
                               'device_detail': device_detail}
                 else:
                     result = {'status': 0, 'msg': 'no devices'}
             case _:
-                result = {'status': 0, 'msg': f'no this platform = {platform}'}        
+                result = {'status': 0, 'msg': f'no this platform = {platform}'}
     except Exception as e:
         logger.exception(e)
         result = {'status': 0, 'msg': 'devices connect error!'}
@@ -103,7 +104,7 @@ def packageNames():
         case _:
             result = {'status': 0, 'msg': 'platform is undefined'}
             return result
-    result = {'status': 1, 'pkgnames': pkgnames} if len(pkgnames) > 0 else  {'status': 0, 'msg': 'no pkgnames'} 
+    result = {'status': 1, 'pkgnames': pkgnames} if len(pkgnames) > 0 else  {'status': 0, 'msg': 'no pkgnames'}
     return result
 
 
@@ -118,11 +119,11 @@ def getPackagePids():
         if len(pids) > 0:
             result = {'status': 1, 'pids': pids}
         else:
-            result = {'status': 0, 'msg': 'No process found, please start the app first.'} 
+            result = {'status': 0, 'msg': 'No process found, please start the app first.'}
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg': 'No process found, please start the app first.'} 
-    return result        
+        result = {'status': 0, 'msg': 'No process found, please start the app first.'}
+    return result
 
 @api.route('/package/activity', methods=['post', 'get'])
 def getPackageActivity():
@@ -131,10 +132,10 @@ def getPackageActivity():
     try:
         deviceId = d.getIdbyDevice(device, platform)
         activity = d.getCurrentActivity(deviceId)
-        result = {'status': 1, 'activity': activity} 
+        result = {'status': 1, 'activity': activity}
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg': 'no activity found'} 
+        result = {'status': 0, 'msg': 'no activity found'}
     return result
 
 
@@ -146,10 +147,10 @@ def getStartupTimeByAndroid():
     try:
         deviceId = d.getIdbyDevice(device, platform)
         time = d.getStartupTimeByAndroid(activity, deviceId)
-        result = {'status': 1, 'time': time} 
+        result = {'status': 1, 'time': time}
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg': 'no result found'} 
+        result = {'status': 0, 'msg': 'no result found'}
     return result
 
 @api.route('/package/start/time/ios', methods=['post', 'get'])
@@ -157,10 +158,10 @@ def getStartupTimeByiOS():
     pkgname = method._request(request, 'pkgname')
     try:
         time = d.getStartupTimeByiOS(pkgname)
-        result = {'status': 1, 'time': time} 
+        result = {'status': 1, 'time': time}
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg': 'no result found'} 
+        result = {'status': 0, 'msg': 'no result found'}
     return result
 
 @api.route('/apm/cpu', methods=['post', 'get'])
@@ -192,10 +193,10 @@ def getCpuRate():
                 pid = None
                 deviceId = d.getIdbyDevice(device, platform)
                 if process and platform == Platform.Android :
-                    pid = process.split(':')[0] 
+                    pid = process.split(':')[0]
                 cpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 appCpuRate, systemCpuRate = cpu.getCpuRate()
-                result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}        
+                result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
     except Exception as e:
         logger.error('get cpu failed')
         logger.exception(e)
@@ -232,10 +233,10 @@ def getMEM():
                 pid = None
                 deviceId = d.getIdbyDevice(device, platform)
                 if process and platform == Platform.Android :
-                    pid = process.split(':')[0] 
+                    pid = process.split(':')[0]
                 mem = Memory(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 totalPass, nativePass, dalvikPass = mem.getProcessMem()
-                result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}        
+                result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
     except Exception as e:
         logger.error('get memory data failed')
         logger.exception(e)
@@ -256,7 +257,7 @@ def setNetWorkData():
         deviceId = d.getIdbyDevice(device, platform)
         pid = None
         if process and platform == Platform.Android :
-            pid = process.split(':')[0] 
+            pid = process.split(':')[0]
         network = Network(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
         data = network.setAndroidNet(wifi=wifi)
         f.record_net(type, data[0], data[1])
@@ -264,7 +265,7 @@ def setNetWorkData():
     except Exception as e:
         logger.exception(e)
         result = {'status': 0, 'msg':'set network data failed'}
-    return result        
+    return result
 
 @api.route('/apm/network', methods=['post', 'get'])
 def getNetWorkData():
@@ -297,14 +298,14 @@ def getNetWorkData():
                 pid = None
                 deviceId = d.getIdbyDevice(device, platform)
                 if process and platform == Platform.Android :
-                    pid = process.split(':')[0] 
+                    pid = process.split(':')[0]
                 network = Network(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
                 data = network.getNetWorkData(wifi=wifi,noLog=False)
-                result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}    
+                result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
     except Exception as e:
         logger.error('get network data failed')
         logger.exception(e)
-        result = {'status': 1, 'upflow': 0, 'downflow': 0, 'first': 0, 'second': 0}    
+        result = {'status': 1, 'upflow': 0, 'downflow': 0, 'first': 0, 'second': 0}
     return result
 
 
@@ -336,9 +337,9 @@ def getFps():
                 result = {'status': 1, 'first': first, 'second': second}
             case _:
                 deviceId = d.getIdbyDevice(device, platform)
-                fps_monitor = FPS(pkgName=pkgname, deviceId=deviceId, surfaceview=surfaceview, platform=platform)
+                fps_monitor = FPS.getObject(pkgName=pkgname, deviceId=deviceId, surfaceview=surfaceview, platform=platform)
                 fps, jank = fps_monitor.getFPS()
-                result = {'status': 1, 'fps': fps, 'jank': jank}       
+                result = {'status': 1, 'fps': fps, 'jank': jank}
     except Exception as e:
         logger.error('get fps failed')
         logger.exception(e)
@@ -359,11 +360,11 @@ def getBattery():
             result = {'status': 1, 'level': final[0], 'temperature': final[1]}
         else:
             result = {
-                'status': 1, 
-                'temperature': final[0], 
-                'current': final[1], 
-                'voltage': final[2], 
-                'power': final[3]}    
+                'status': 1,
+                'temperature': final[0],
+                'current': final[1],
+                'voltage': final[2],
+                'power': final[3]}
     except Exception as e:
         logger.exception(e)
         result = {'status': 1, 'level': 0, 'temperature': 0, 'current':0, 'voltage':0 , 'power':0}
@@ -448,7 +449,7 @@ def exportReport():
         result = {'status': 1, 'msg':'success', 'path': path}
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg':str(e)}    
+        result = {'status': 0, 'msg':str(e)}
     return result
 
 @api.route('/apm/export/html/android', methods=['post', 'get'])
@@ -488,7 +489,7 @@ def exportAndroidHtml():
         result = {'status': 1, 'msg':'success', 'path':path}
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg':str(e)}    
+        result = {'status': 0, 'msg':str(e)}
     return result
 
 @api.route('/apm/export/html/ios', methods=['post', 'get'])
@@ -528,8 +529,8 @@ def exportiOSHtml():
         result = {'status': 1, 'msg':'success', 'path':path}
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg':str(e)}    
-    return result    
+        result = {'status': 0, 'msg':str(e)}
+    return result
 
 @api.route('/apm/log', methods=['post', 'get'])
 def getLogData():
@@ -574,9 +575,9 @@ def getLogCompareData():
             case 'net_send':
                 result = f.getFlowSendLogCompare(platform, scene1, scene2)
             case 'net_recv':
-                result = f.getFlowRecvLogCompare(platform, scene1, scene2)                     
+                result = f.getFlowRecvLogCompare(platform, scene1, scene2)
             case _:
-                result = {'status': 0, 'msg': 'no target found'}        
+                result = {'status': 0, 'msg': 'no target found'}
     except Exception as e:
         logger.exception(e)
         result = {'status': 0, 'msg': str(e)}
@@ -650,7 +651,7 @@ def apmCollect():
                     final = gpu.getGPU()
                     result = {'status': 1, 'gpu': final}
                 else:
-                    result = {'status': 0, 'msg': 'not support android'}    
+                    result = {'status': 0, 'msg': 'not support android'}
             case _:
                 result = {'status': 0, 'msg': 'no this target'}
     except Exception as e:
@@ -671,19 +672,19 @@ def installFile():
         if install.uploadFile(file_path, file):
             install_status = install.installAPK(file_path)
         else:
-            result = {'status': 0, 'msg': 'install file failed'} 
-            return result   
+            result = {'status': 0, 'msg': 'install file failed'}
+            return result
     else:
         file_path = os.path.join(currentPath, '{}.ipa'.format(unixtime))
         if install.uploadFile(file_path, file):
             install_status = install.installIPA(file_path)
         else:
-            result = {'status': 0, 'msg': 'install file failed'}   
-            return result 
+            result = {'status': 0, 'msg': 'install file failed'}
+            return result
     if install_status[0]:
         result = {'status': 1, 'msg': 'install sucess'}
     else:
-        result = {'status': 0, 'msg': install_status[1]}                 
+        result = {'status': 0, 'msg': install_status[1]}
     return result
 
 @api.route('/apm/install/link', methods=['post', 'get'])
@@ -699,8 +700,8 @@ def installLink():
         if d_status:
             install_status = install.installAPK(os.path.join(currentPath, '{}.apk'.format(unixtime)))
         else:
-            result = {'status': 0, 'msg': 'download link failed'}    
-            return result   
+            result = {'status': 0, 'msg': 'download link failed'}
+            return result
     else:
         d_status = install.downloadLink(filelink=link, path=currentPath, name='{}.ipa'.format(unixtime))
         if d_status:
@@ -711,7 +712,7 @@ def installLink():
     if install_status[0]:
         result = {'status': 1, 'msg': 'install sucess'}
     else:
-        result = {'status': 0, 'msg': install_status[1]}                 
+        result = {'status': 0, 'msg': install_status[1]}
     return result
 
 @api.route('/apm/record/start', methods=['post', 'get'])
@@ -727,7 +728,7 @@ def start_record():
             result = {'status': 0, 'msg': 'record screen failed'}
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg': 'record screen failed'}          
+        result = {'status': 0, 'msg': 'record screen failed'}
     return result
 
 @api.route('/apm/record/cast', methods=['post', 'get'])
@@ -743,8 +744,8 @@ def cast_screen():
             result = {'status': 0, 'msg': 'cast screen failed'}
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg': 'cast screen failed'}          
-    return result  
+        result = {'status': 0, 'msg': 'cast screen failed'}
+    return result
 
 @api.route('/apm/record/play', methods=['post', 'get'])
 def play_record():
@@ -752,8 +753,8 @@ def play_record():
     video = os.path.join(f.get_repordir(), scene, 'record.mkv')
     try:
         Scrcpy.play_video(video)
-        result = {'status': 1, 'msg': 'success'}  
+        result = {'status': 1, 'msg': 'success'}
     except Exception as e:
         logger.exception(e)
-        result = {'status': 0, 'msg': 'play video failed'}  
-    return result    
+        result = {'status': 0, 'msg': 'play video failed'}
+    return result
