@@ -101,8 +101,6 @@ class Devices:
         except Exception as e:
             processList = []
             logger.exception(e)
-        if not processList:
-            processList = self.getPidAdvance(deviceId, pkgName)
         return processList
 
     def getPidAdvance(self, deviceId, pkgName):

@@ -547,7 +547,7 @@ class FPSMonitor(Monitor):
         global collect_fps
         global collect_jank
         self.fpscollector.stop()
-        return collect_fps, collect_jank
+        return int(collect_fps), int(collect_jank)
 
     def save(self):
         pass
@@ -561,4 +561,4 @@ class FPSMonitor(Monitor):
     def get_fps(self):
         global collect_fps
         global collect_jank
-        return collect_fps, collect_jank
+        return int(collect_fps), int(collect_jank)
