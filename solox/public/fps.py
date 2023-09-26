@@ -282,9 +282,6 @@ class SurfaceStatsCollector(object):
                 if delta_inter > 0:
                     time.sleep(delta_inter)
             except:
-                logger.error("an exception hanpend in fps _calculator_thread ,reason unkown!")
-                s = traceback.format_exc()
-                logger.debug(s)
                 if self.fps_queue:
                     self.fps_queue.task_done()
 

@@ -46,11 +46,14 @@ class CPU(object):
         """get the total cpu usage at a certain time"""
         cmd = 'cat /proc/stat |{} ^cpu'.format(d.filterType())
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
-        r = re.compile(r'(?<!cpu)\d+')
-        toks = r.findall(result)
         totalCpu = 0
-        for i in range(1, 9):
-            totalCpu += float(toks[i])
+        lines = result.split('\n')
+        for line in lines:
+            toks = line.split()
+            if toks[1] in ['', ' ']:
+                toks.pop(1)
+            for i in range(1, 7):
+                totalCpu += float(toks[i])
         return float(totalCpu)
 
     def getCpuCores(self):
@@ -67,24 +70,38 @@ class CPU(object):
         """get the total cpu usage at a certain time"""
         cmd = 'cat /proc/stat |{} ^cpu'.format(d.filterType())
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
-        r = re.compile(r'(?<!cpu)\d+')
+        r = re.compile(r'(?<!cpu\d+)')
         toks = r.findall(result)
-        ileCpu = float(toks[4])
-        sysCpu = self.getTotalCpuStat() - ileCpu
+        idleCpu = float(toks[4])
+        logger.info(idleCpu)
+        sysCpu = self.getTotalCpuStat() - idleCpu
         return sysCpu
+    
+    def getIdleCpuStat(self):
+        """get the total cpu usage at a certain time"""
+        cmd = 'cat /proc/stat |{} ^cpu'.format(d.filterType())
+        result = adb.shell(cmd=cmd, deviceId=self.deviceId)
+        ileCpu = 0
+        lines = result.split('\n')
+        for line in lines:
+            toks = line.split()
+            if toks[1] in ['', ' ']:
+                toks.pop(1)
+            ileCpu += float(toks[4])
+        return ileCpu
 
     def getAndroidCpuRate(self, noLog=False):
         """get the Android cpu rate of a process"""
         try:
             processCpuTime_1 = self.getprocessCpuStat()
             totalCpuTime_1 = self.getTotalCpuStat()
-            sysCpuTime_1 = self.getSysCpuStat()
+            idleCputime_1 = self.getIdleCpuStat()
             time.sleep(0.5)
             processCpuTime_2 = self.getprocessCpuStat()
             totalCpuTime_2 = self.getTotalCpuStat()
-            sysCpuTime_2 = self.getSysCpuStat()
+            idleCputime_2 = self.getIdleCpuStat()
             appCpuRate = round(float((processCpuTime_2 - processCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
-            sysCpuRate = round(float((sysCpuTime_2 - sysCpuTime_1) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
+            sysCpuRate = round(float(((totalCpuTime_2 - idleCputime_2) - (totalCpuTime_1 - idleCputime_1)) / (totalCpuTime_2 - totalCpuTime_1) * 100), 2)
             if noLog is False:
                 apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
                 f.add_log(os.path.join(f.report_dir,'cpu_app.log'), apm_time, appCpuRate)
