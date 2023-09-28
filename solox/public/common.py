@@ -80,11 +80,15 @@ class Devices:
         else:
             deviceId = deviceinfo
         return deviceId
+    
+    def getSdkVersion(self, deviceId):
+        version = adb.shell(cmd='getprop ro.build.version.sdk', deviceId=deviceId)
+        return version
 
     def getPid(self, deviceId, pkgName):
         """Get the pid corresponding to the Android package name"""
         try:
-            sdkversion = adb.shell(cmd='getprop ro.build.version.sdk', deviceId=deviceId)
+            sdkversion = self.getSdkVersion(deviceId)
             if sdkversion and int(sdkversion) < 26:
                 result = os.popen(f"{self.adb} -s {deviceId} shell ps | {self.filterType()} {pkgName}").readlines()
                 processList = ['{}:{}'.format(process.split()[1],process.split()[8]) for process in result]
@@ -131,11 +135,16 @@ class Devices:
                 flag = False
         return flag
 
-    def getPkgname(self, devicesId):
+    def getPkgname(self, deviceId):
         """Get all package names of Android devices"""
-        pkginfo = os.popen(f"{self.adb} -s {devicesId} shell pm list package")
+        pkginfo = os.popen(f"{self.adb} -s {deviceId} shell pm list packages --user 0")
         pkglist = [p.lstrip('package').lstrip(":").strip() for p in pkginfo]
-        return pkglist
+        if pkglist.__len__() > 0:
+            return pkglist
+        else:
+            pkginfo = os.popen(f"{self.adb} -s {deviceId} shell pm list packages")
+            pkglist = [p.lstrip('package').lstrip(":").strip() for p in pkginfo]
+            return pkglist
 
     def getDeviceInfoByiOS(self):
         """Get a list of all successfully connected iOS devices"""

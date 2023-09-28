@@ -28,10 +28,10 @@ class CPU_PK:
         return processCpu
 
 
-    def getTotalCpuStat(self):
+    def getTotalCpuStat(self, deviceId):
         """get the total cpu usage at a certain time"""
         cmd = 'cat /proc/stat |{} ^cpu'.format(d.filterType())
-        result = adb.shell(cmd=cmd, deviceId=self.deviceId)
+        result = adb.shell(cmd=cmd, deviceId=deviceId)
         totalCpu = 0
         lines = result.split('\n')
         for line in lines:
