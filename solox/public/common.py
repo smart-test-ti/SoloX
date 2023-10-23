@@ -61,8 +61,11 @@ class Devices:
 
     def getDevicesName(self, deviceId):
         """Get the device name of the Android corresponding device ID"""
-        devices_name = os.popen(f'{self.adb} -s {deviceId} shell getprop ro.product.model').readlines()
-        return devices_name[0].strip()
+        try:
+            devices_name = os.popen(f'{self.adb} -s {deviceId} shell getprop ro.product.model').readlines()[0].strip()
+        except Exception:
+            devices_name = os.popen(f'{self.adb} -s {deviceId} shell getprop ro.product.model').buffer.readlines()[0].decode("utf-8").strip()
+        return devices_name
 
     def getDevices(self):
         """Get all Android devices"""
