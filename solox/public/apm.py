@@ -10,6 +10,8 @@ from solox.public.iosperf._perf import DataType, Performance
 from solox.public.adb import adb
 from solox.public.common import Devices, File, Method, Platform, Scrcpy
 from solox.public.fps import FPSMonitor, TimeUtils
+from solox.public.fps_api import FPSMonitor_API, TimeUtils_API
+
 
 d = Devices()
 f = File()
@@ -340,7 +342,26 @@ class FPS(object):
             else:
                 logger.exception(e)
         return fps, jank
-
+    
+    def getAndroidFpsApi(self, noLog=False):
+        """get Android Fps, unit:HZ"""
+        try:
+            monitors = FPSMonitor_API(device_id=self.deviceId, package_name=self.pkgName, frequency=1,
+                                  surfaceview=self.surfaceview, start_time=TimeUtils_API.getCurrentTimeUnderline())
+            monitors.start()
+            fps, jank = monitors.stop()
+            if noLog is False:
+                apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+                f.add_log(os.path.join(f.report_dir,'fps.log'), apm_time, fps)
+                f.add_log(os.path.join(f.report_dir,'jank.log'), apm_time, jank)
+        except Exception as e:
+            fps, jank = 0
+            if len(d.getPid(self.deviceId, self.pkgName)) == 0:
+                logger.error('[FPS] {} : No process found'.format(self.pkgName))
+            else:
+                logger.exception(e)        
+        return fps, jank
+    
     def getiOSFps(self, noLog=False):
         """get iOS Fps"""
         apm = iosAPM(self.pkgName, self.deviceId)
@@ -353,6 +374,11 @@ class FPS(object):
     def getFPS(self, noLog=False):
         """get fps、jank"""
         fps, jank = self.getAndroidFps(noLog) if self.platform == Platform.Android else self.getiOSFps(noLog)
+        return fps, jank
+    
+    def getFPS_API(self, noLog=False):
+        """get fps、jank"""
+        fps, jank = self.getAndroidFpsApi(noLog) if self.platform == Platform.Android else self.getiOSFps(noLog)
         return fps, jank
 
 class GPU(object):
@@ -474,7 +500,7 @@ class APM(object):
         _fps = FPS(self.pkgName, self.deviceId, self.platform, self.surfaceview)
         result = {}
         while True:
-            fps, jank = _fps.getFPS(noLog=self.noLog)
+            fps, jank = _fps.getFPS_API(noLog=self.noLog)
             result = {'fps': fps, 'jank': jank}
             logger.info(f'fps: {result}')
             if time.time() > self.end_time:
@@ -486,7 +512,7 @@ class APM(object):
         result = {}
         while True:
             if self.platform == Platform.Android:
-                raise Exception('not support android')
+                break
             gpu = _gpu.getGPU(noLog=self.noLog)
             result = {'gpu': gpu}
             logger.info(f'gpu: {result}')
