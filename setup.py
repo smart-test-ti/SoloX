@@ -16,6 +16,7 @@ setuptools.setup(
                       'opencv-python'],
     version=__version__,
     long_description=long_description,
+    python_requires='>=3.10',
     long_description_content_type="text/markdown",
     description="SoloX - Real-time collection tool for Android/iOS performance data.",
     packages=setuptools.find_namespace_packages(include=["solox", "solox.*"], ),
