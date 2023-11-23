@@ -54,7 +54,7 @@ class CPU(object):
             toks = line.split()
             if toks[1] in ['', ' ']:
                 toks.pop(1)
-            for i in range(1, 7):
+            for i in range(1, 8):
                 totalCpu += float(toks[i])
         return float(totalCpu)
 
