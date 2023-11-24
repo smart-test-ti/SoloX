@@ -67,32 +67,39 @@ python -m solox --host={ip} --port={port}
 
 ```python
 
-from solox.public.apm import APM
+# solox version : >= 2.8.1
+from solox.public.apm import AppPerformanceMonitor
 from solox.public.common import Devices
 
 d = Devices()
 pids = d.getPid(deviceId='ca6bd5a5', pkgName='com.bilibili.app.in') # for android
 
-apm = APM(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', 
+apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', 
           surfaceview=True, noLog=True, pid=None)
-# apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
-# surfaceview： False = gfxinfo (手机开发者 - GPU渲染模式 - adb shell dumpsys gfxinfo)
-# noLog : False (为false时才会存储测试数据到log文件中)
+# apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
+# surfaceview： False = gfxinfo (开发者 - GPU渲染模式 - adb shell dumpsys gfxinfo)
+# noLog : False (保存测试数据到log文件中)
 
-# ************* 收集单个性能指标 ************* #
+# ************* Collect a performance parameter ************* #
 cpu = apm.collectCpu() # %
 memory = apm.collectMemory() # MB
 flow = apm.collectFlow(wifi=True) # KB
 fps = apm.collectFps() # HZ
 battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV power:w
-gpu = apm.collectGpu() # % only supports ios
+gpu = apm.collectGpu() # % 只支持ios
 
-# ************* 收集全部的性能指标 ************* #
-apm = APM(pkgName='com.bilibili.app.i',platform='Android', deviceId='ca6bd5a5', 
-          surfaceview=True, noLog=False, pid=None, duration=20, record=False) # duration : 秒 （持续执行时间） record: 是否录屏（只支持安卓）
-# apm = APM(pkgName='com.bilibili.app.in.ios', platform='iOS',  deviceId='xxxx',noLog=False, duration=20)  
+# ************* Collect all performance parameter ************* #
+ 
 if __name__ == '__main__':
-     apm.collectAll() # 会生成HTML报告
+  apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', surfaceview=True, noLog=False, pid=None, record=False)
+  # apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS',  deviceId='xxxx', noLog=False, record=False)
+  # duration : 持续执行时间（秒）   record: 是否录制
+  apm.collectAll() # will generate HTML report
+
+# 在另外的python脚本中终止solox服务可以停止测试
+from solox.public.apm import initPerformanceService  
+
+initPerformanceService.stop() # stop solox
 ```
 
 ## 🏴󠁣󠁩󠁣󠁭󠁿使用API收集

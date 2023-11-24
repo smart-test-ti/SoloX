@@ -67,16 +67,16 @@ python -m solox --host={ip} --port={port}
 ## 🏴󠁣󠁩󠁣󠁭󠁿Collect in python
 
 ```python
-
-from solox.public.apm import APM
+# solox version : >= 2.8.1
+from solox.public.apm import AppPerformanceMonitor
 from solox.public.common import Devices
 
 d = Devices()
 pids = d.getPid(deviceId='ca6bd5a5', pkgName='com.bilibili.app.in') # for android
 
-apm = APM(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', 
+apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', 
           surfaceview=True, noLog=True, pid=None)
-# apm = APM(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
+# apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
 # surfaceview： False = gfxinfo (Developer - GPU rendering mode - adb shell dumpsys gfxinfo)
 # noLog : False (Save test data to log file)
 
@@ -89,12 +89,17 @@ battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV p
 gpu = apm.collectGpu() # % only supports ios
 
 # ************* Collect all performance parameter ************* #
-apm = APM(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', 
-          surfaceview=True, noLog=False, pid=None, duration=20, record=False) 
-          # duration : second   record: record android screen
-# apm = APM(pkgName='com.bilibili.app.in', platform='iOS',  deviceId='xxxx', noLog=False, duration=20, record=False)
+ 
 if __name__ == '__main__':
-     apm.collectAll() # will generate HTML report
+  apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', surfaceview=True, noLog=False, pid=None, record=False)
+  # apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS',  deviceId='xxxx', noLog=False, record=False)
+  # duration : second   record: record android screen
+  apm.collectAll() # will generate HTML report
+
+# in other python file
+from solox.public.apm import initPerformanceService  
+
+initPerformanceService.stop() # stop solox
 ```
 
 ## 🏴󠁣󠁩󠁣󠁭󠁿Collect in API
