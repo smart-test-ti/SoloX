@@ -93,7 +93,7 @@ gpu = apm.collectGpu() # % only supports ios
 if __name__ == '__main__':
   apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', surfaceview=True, noLog=False, pid=None, record=False)
   # apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS',  deviceId='xxxx', noLog=False, record=False)
-  # duration : second   record: record android screen
+  #record: record android screen
   apm.collectAll() # will generate HTML report
 
 # in other python file

@@ -93,7 +93,7 @@ gpu = apm.collectGpu() # % 只支持ios
 if __name__ == '__main__':
   apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', surfaceview=True, noLog=False, pid=None, record=False)
   # apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS',  deviceId='xxxx', noLog=False, record=False)
-  # duration : 持续执行时间（秒）   record: 是否录制
+  # record: 是否录制
   apm.collectAll() # will generate HTML report
 
 # 在另外的python脚本中终止solox服务可以停止测试

@@ -439,7 +439,9 @@ class initPerformanceService(object):
         config_json = json.loads(open(file=cls.CONIFG_PATH, mode='r').read())
         config_json['run_switch'] = 'off'
         with open(cls.CONIFG_PATH, "w") as file:
-            json.dump(config_json, file)        
+            json.dump(config_json, file) 
+        logger.info('stop solox success')    
+        return True           
 
 class AppPerformanceMonitor(initPerformanceService):
     """for python api"""
@@ -462,8 +464,6 @@ class AppPerformanceMonitor(initPerformanceService):
             appCpuRate, systemCpuRate = _cpu.getCpuRate(noLog=self.noLog)
             result = {'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
             logger.info(f'cpu: {result}')
-            if time.time() > self.end_time:
-                break
         return result
 
     def collectMemory(self):
@@ -598,10 +598,4 @@ class AppPerformanceMonitor(initPerformanceService):
             Scrcpy.stop_record()
             logger.exception(e)
         finally:
-            logger.info('End of testing')
-
-
-if __name__ == '__main__':
-    apm = AppPerformanceMonitor(pkgName='com.tencent.qqmusic',platform='Android', deviceId='BRNUT21B15044184', 
-          surfaceview=True, noLog=False, pid=None, record=False)
-    apm.collectAll()            
+            logger.info('End of testing')         
