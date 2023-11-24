@@ -267,7 +267,14 @@ class Network(object):
             net = 'wlan0' if wifi else 'rmnet0'
             cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
             output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
-            m = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)
+            if not wifi and not output_pre:
+                for phone_net in ['rmnet_data0', 'rmnet_ipa0', 'ccmni0']:
+                    cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
+                    output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
+                    if output_pre:
+                        net = phone_net
+                        break
+            m = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)    
             sendNum = round(float(float(m.group(2)) / 1024), 2)
             recNum = round(float(float(m.group(1)) / 1024), 2)
         except Exception as e:

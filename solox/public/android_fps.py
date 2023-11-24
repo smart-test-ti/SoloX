@@ -499,8 +499,6 @@ class FPSMonitor(Monitor):
         self.device = device_id
         self.timeout = timeout
         self.surfaceview = surfaceview
-        if not package_name:
-            package_name = self.device.adb.get_foreground_process()
         self.package = package_name
         self.fpscollector = SurfaceStatsCollector(self.device, self.frequency, package_name, fps_queue,
                                                   self.jank_threshold, self.surfaceview, self.use_legacy)
