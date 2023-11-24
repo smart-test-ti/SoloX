@@ -636,7 +636,7 @@ def apmCollect():
                 result = {'status': 1, 'upflow': data[0], 'downflow': data[1]}
             case Target.FPS:
                 fps_monitor = FPS(pkgName=pkgname, deviceId=deviceid, platform=platform)
-                fps, jank = fps_monitor.getFPS(noLog=True)
+                fps, jank = fps_monitor.getFPS_API(noLog=True)
                 result = {'status': 1, 'fps': fps, 'jank': jank}
             case Target.Battery:
                 battery_monitor = Battery(deviceId=deviceid)
