@@ -4,7 +4,7 @@ import os
 import time
 from solox.public.adb import adb
 from solox.public.common import Devices, File
-from solox.public.fps import FPSMonitor, TimeUtils
+from solox.public.android_fps import FPSMonitor, TimeUtils
 
 d = Devices()
 f = File()
