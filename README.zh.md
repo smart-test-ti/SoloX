@@ -74,8 +74,7 @@ from solox.public.common import Devices
 d = Devices()
 pids = d.getPid(deviceId='ca6bd5a5', pkgName='com.bilibili.app.in') # for android
 
-apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', 
-          surfaceview=True, noLog=True, pid=None)
+apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', surfaceview=True, noLog=False, pid=None, record=False, collect_all=False)
 # apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
 # surfaceview： False = gfxinfo (开发者 - GPU渲染模式 - adb shell dumpsys gfxinfo)
 # noLog : False (保存测试数据到log文件中)
@@ -91,8 +90,8 @@ gpu = apm.collectGpu() # % 只支持ios
 # ************* Collect all performance parameter ************* #
  
 if __name__ == '__main__':
-  apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', surfaceview=True, noLog=False, pid=None, record=False)
-  # apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS',  deviceId='xxxx', noLog=False, record=False)
+  apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', surfaceview=True, noLog=False, pid=None, record=False, collect_all=True)
+  # apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS',  deviceId='xxxx', noLog=False, record=False, collect_all=True)
   # record: 是否录制
   apm.collectAll() # will generate HTML report
 

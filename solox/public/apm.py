@@ -447,7 +447,7 @@ class AppPerformanceMonitor(initPerformanceService):
     """for python api"""
 
     def __init__(self, pkgName=None, platform=Platform.Android, deviceId=None,
-                 surfaceview=True, noLog=True, pid=None, record=False):
+                 surfaceview=True, noLog=True, pid=None, record=False, collect_all=False):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
@@ -455,6 +455,7 @@ class AppPerformanceMonitor(initPerformanceService):
         self.noLog = noLog
         self.pid = pid
         self.record = record
+        self.collect_all = collect_all
         d.devicesCheck(platform=self.platform, deviceid=self.deviceId, pkgname=self.pkgName)
 
     def collectCpu(self):
@@ -464,6 +465,8 @@ class AppPerformanceMonitor(initPerformanceService):
             appCpuRate, systemCpuRate = _cpu.getCpuRate(noLog=self.noLog)
             result = {'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
             logger.info(f'cpu: {result}')
+            if self.collect_all is False:
+                break
         return result
 
     def collectMemory(self):
@@ -473,6 +476,8 @@ class AppPerformanceMonitor(initPerformanceService):
             total, native, dalvik = _memory.getProcessMem(noLog=self.noLog)
             result = {'total': total, 'native': native, 'dalvik': dalvik}
             logger.info(f'memory: {result}')
+            if self.collect_all is False:
+                break
         return result
 
     def collectBattery(self):
@@ -485,6 +490,8 @@ class AppPerformanceMonitor(initPerformanceService):
             else:
                 result = {'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}
             logger.info(f'battery: {result}')
+            if self.collect_all is False:
+                break
         return result
 
     def collectFlow(self, wifi=True):
@@ -497,6 +504,8 @@ class AppPerformanceMonitor(initPerformanceService):
             upFlow, downFlow = _flow.getNetWorkData(wifi=wifi,noLog=self.noLog)
             result = {'send': upFlow, 'recv': downFlow}
             logger.info(f'network: {result}')
+            if self.collect_all is False:
+                break
         return result
 
     def collectFps(self):
@@ -506,6 +515,8 @@ class AppPerformanceMonitor(initPerformanceService):
             fps, jank = _fps.getFPS(noLog=self.noLog)
             result = {'fps': fps, 'jank': jank}
             logger.info(f'fps: {result}')
+            if self.collect_all is False:
+                break
         return result
 
     def collectGpu(self):
@@ -517,6 +528,8 @@ class AppPerformanceMonitor(initPerformanceService):
             gpu = _gpu.getGPU(noLog=self.noLog)
             result = {'gpu': gpu}
             logger.info(f'gpu: {result}')
+            if self.collect_all is False:
+                break
         return result
 
     def setPerfs(self):
