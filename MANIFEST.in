@@ -1,4 +1,4 @@
-recursive-include solox/public *.html *.js *.css *.png *.py
+recursive-include solox/public *.html *.js *.css *.png *.py .json
 recursive-include solox/report *.html *.js *.css *.png *.py *.json *.log
 recursive-include solox/static *.html *.js *.css *.png *.py
 recursive-include solox/templates *.html *.js *.css *.png *.py

@@ -2,6 +2,7 @@ import datetime
 import re
 import time
 import os
+import json
 from logzero import logger
 import tidevice
 import multiprocessing
@@ -244,6 +245,13 @@ class Network(object):
             net = 'wlan0' if wifi else 'rmnet0'
             cmd = 'cat /proc/{}/net/dev |{} {}'.format(self.pid, d.filterType(), net)
             output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
+            if not wifi and not output_pre:
+                for phone_net in ['rmnet_data0', 'rmnet_ipa0', 'ccmni0']:
+                    cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
+                    output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
+                    if output_pre:
+                        net = phone_net
+                        break
             m_pre = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)
             sendNum_pre = round(float(float(m_pre.group(2)) / 1024), 2)
             recNum_pre = round(float(float(m_pre.group(1)) / 1024), 2)
@@ -408,26 +416,49 @@ class iosAPM(object):
             perf_value = perf.start(self.pkgName, callback=self.callback)
         return perf_value
 
-class APM(object):
+
+class initPerformanceService(object):
+    CONFIG_DIR = os.path.dirname(os.path.realpath(__file__))
+    CONIFG_PATH = os.path.join(CONFIG_DIR, 'config.json')
+
+    @classmethod
+    def get_status(cls):
+        config_json = open(file=cls.CONIFG_PATH, mode='r').read()
+        run_switch = json.loads(config_json).get('run_switch')
+        return run_switch
+    
+    @classmethod
+    def start(cls):
+        config_json = json.loads(open(file=cls.CONIFG_PATH, mode='r').read())
+        config_json['run_switch'] = 'on'
+        with open(cls.CONIFG_PATH, "w") as file:
+            json.dump(config_json, file)
+
+    @classmethod
+    def stop(cls):
+        config_json = json.loads(open(file=cls.CONIFG_PATH, mode='r').read())
+        config_json['run_switch'] = 'off'
+        with open(cls.CONIFG_PATH, "w") as file:
+            json.dump(config_json, file)        
+
+class AppPerformanceMonitor(initPerformanceService):
     """for python api"""
 
-    def __init__(self, pkgName, platform=Platform.Android, deviceId=None,
-                 surfaceview=True, noLog=True, pid=None, duration=0, record=False):
+    def __init__(self, pkgName=None, platform=Platform.Android, deviceId=None,
+                 surfaceview=True, noLog=True, pid=None, record=False):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
         self.surfaceview = surfaceview
         self.noLog = noLog
         self.pid = pid
-        self.duration = duration
         self.record = record
-        self.end_time = time.time() + self.duration
         d.devicesCheck(platform=self.platform, deviceid=self.deviceId, pkgname=self.pkgName)
 
     def collectCpu(self):
         _cpu = CPU(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         result = {}
-        while True:
+        while self.get_status() == 'on':
             appCpuRate, systemCpuRate = _cpu.getCpuRate(noLog=self.noLog)
             result = {'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
             logger.info(f'cpu: {result}')
@@ -438,26 +469,22 @@ class APM(object):
     def collectMemory(self):
         _memory = Memory(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         result = {}
-        while True:
+        while self.get_status() == 'on':
             total, native, dalvik = _memory.getProcessMem(noLog=self.noLog)
             result = {'total': total, 'native': native, 'dalvik': dalvik}
             logger.info(f'memory: {result}')
-            if time.time() > self.end_time:
-                break
         return result
 
     def collectBattery(self):
         _battery = Battery(self.deviceId, self.platform)
         result = {}
-        while True:
+        while self.get_status() == 'on':
             final = _battery.getBattery(noLog=self.noLog)
             if self.platform == Platform.Android:
                 result = {'level': final[0], 'temperature': final[1]}
             else:
                 result = {'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}
             logger.info(f'battery: {result}')
-            if time.time() > self.end_time:
-                break
         return result
 
     def collectFlow(self, wifi=True):
@@ -466,36 +493,30 @@ class APM(object):
             data = _flow.setAndroidNet(wifi=wifi)
             f.record_net('pre', data[0], data[1])
         result = {}
-        while True:
+        while self.get_status() == 'on':
             upFlow, downFlow = _flow.getNetWorkData(wifi=wifi,noLog=self.noLog)
             result = {'send': upFlow, 'recv': downFlow}
             logger.info(f'network: {result}')
-            if time.time() > self.end_time:
-                break
         return result
 
     def collectFps(self):
         _fps = FPS(self.pkgName, self.deviceId, self.platform, self.surfaceview)
         result = {}
-        while True:
+        while self.get_status() == 'on':
             fps, jank = _fps.getFPS(noLog=self.noLog)
             result = {'fps': fps, 'jank': jank}
             logger.info(f'fps: {result}')
-            if time.time() > self.end_time:
-                break
         return result
 
     def collectGpu(self):
         _gpu = GPU(self.pkgName)
         result = {}
-        while True:
+        while self.get_status() == 'on':
             if self.platform == Platform.Android:
                 break
             gpu = _gpu.getGPU(noLog=self.noLog)
             result = {'gpu': gpu}
             logger.info(f'gpu: {result}')
-            if time.time() > self.end_time:
-                break
         return result
 
     def setPerfs(self):
@@ -555,6 +576,7 @@ class APM(object):
 
     def collectAll(self):
         try:
+            self.start()
             f.clear_file()
             process_num = 7 if self.record else 6
             pool = multiprocessing.Pool(processes=process_num)
@@ -577,3 +599,9 @@ class APM(object):
             logger.exception(e)
         finally:
             logger.info('End of testing')
+
+
+if __name__ == '__main__':
+    apm = AppPerformanceMonitor(pkgName='com.tencent.qqmusic',platform='Android', deviceId='BRNUT21B15044184', 
+          surfaceview=True, noLog=False, pid=None, record=False)
+    apm.collectAll()            
