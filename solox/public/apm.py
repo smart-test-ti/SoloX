@@ -457,6 +457,7 @@ class AppPerformanceMonitor(initPerformanceService):
         self.record = record
         self.collect_all = collect_all
         d.devicesCheck(platform=self.platform, deviceid=self.deviceId, pkgname=self.pkgName)
+        self.start()
 
     def collectCpu(self):
         _cpu = CPU(self.pkgName, self.deviceId, self.platform, pid=self.pid)
@@ -589,7 +590,6 @@ class AppPerformanceMonitor(initPerformanceService):
 
     def collectAll(self):
         try:
-            self.start()
             f.clear_file()
             process_num = 7 if self.record else 6
             pool = multiprocessing.Pool(processes=process_num)
