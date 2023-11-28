@@ -367,6 +367,7 @@ SoloX - Application Performance Monitoring
                 }
             });
         });
+        versionCheck()
   });
 
     $('#debug-connect').click(function () {
@@ -461,6 +462,24 @@ SoloX - Application Performance Monitoring
             cache: false,
             success: function (data) {
                 console.log(data)
+            }
+        });
+    }
+
+    function versionCheck(){
+        $.ajax({
+            url: Host + "/solox/version",
+            type: "GET",
+            async: true,
+            cache: false,
+            success: function (data) {
+                console.log(data)
+                if(data['lastest_version'] != data['current_version']){
+                    SwalFire('info', 'New Version Found', 'Lastest Version: '+data['lastest_version']+' . Please execute [pip install -U solox].', 60000);
+                }
+            },
+            error: function(error){
+                console.log(error)
             }
         });
     }

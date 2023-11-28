@@ -1,9 +1,12 @@
 import os
 import shutil
 import time
+import requests
+import json
 from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
+from solox import __version__
 from solox.public.apm import CPU, Memory, Network, FPS, Battery, GPU, Target
 from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
 from solox.public.common import Devices, File, Method, Install, Platform, Scrcpy
@@ -38,6 +41,16 @@ def setCookie():
     resp.set_cookie('host_switch', host_switch)
     return resp
 
+@api.route('/solox/version', methods=['post', 'get'])
+def version():
+    try:
+        pypi = json.loads(requests.get('https://pypi.org/pypi/solox/json').text)
+        version = pypi['info']['version']
+        result = {'status': 1, 'lastest_version': version, 'current_version': __version__}
+    except Exception as e:
+        logger.exception(e)
+        result = {'status': 0, 'msg': str(e)}
+    return result    
 
 @api.route('/apm/initialize', methods=['post', 'get'])
 def initialize():

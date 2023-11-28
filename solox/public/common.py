@@ -110,26 +110,6 @@ class Devices:
             logger.exception(e)
         return processList
 
-    def getPidAdvance(self, deviceId, pkgName):
-        try:
-            pid_infos = os.popen(f"{self.adb} -s {deviceId} shell ps | {self.filterType()} {pkgName}").read()
-            pid_infos = pid_infos.strip()  # 个别手机会出现单独一行的空格
-            logger.info(pid_infos)
-            real_pid = None
-            pid_infos = pid_infos.splitlines()
-            for pid in pid_infos:
-                pid = pid.strip()
-                if pid.split()[-1] == pkgName:
-                    real_pid = pid.split()[1]
-            if not real_pid and pid_infos:
-                real_pid = pid_infos[0].split()[1]
-            logger.info("测试包获取到的pid是{}".format(real_pid))
-            return [real_pid]
-        except IndexError as e:
-            logger.error("获取到的pid信息是{}".format(pid_infos))
-            logger.exception(e)
-            return []
-
     def checkPkgname(self, pkgname):
         flag = True
         replace_list = ['com.google']

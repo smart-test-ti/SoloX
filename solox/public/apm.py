@@ -429,14 +429,14 @@ class initPerformanceService(object):
     
     @classmethod
     def start(cls):
-        config_json = json.loads(open(file=cls.CONIFG_PATH, mode='r').read())
+        config_json = dict()
         config_json['run_switch'] = 'on'
         with open(cls.CONIFG_PATH, "w") as file:
             json.dump(config_json, file)
 
     @classmethod
     def stop(cls):
-        config_json = json.loads(open(file=cls.CONIFG_PATH, mode='r').read())
+        config_json = dict()
         config_json['run_switch'] = 'off'
         with open(cls.CONIFG_PATH, "w") as file:
             json.dump(config_json, file) 
@@ -447,7 +447,8 @@ class AppPerformanceMonitor(initPerformanceService):
     """for python api"""
 
     def __init__(self, pkgName=None, platform=Platform.Android, deviceId=None,
-                 surfaceview=True, noLog=True, pid=None, record=False, collect_all=False):
+                 surfaceview=True, noLog=True, pid=None, record=False, collect_all=False,
+                 duration=0):
         self.pkgName = pkgName
         self.deviceId = deviceId
         self.platform = platform
@@ -456,6 +457,8 @@ class AppPerformanceMonitor(initPerformanceService):
         self.pid = pid
         self.record = record
         self.collect_all = collect_all
+        self.duration = duration
+        self.end_time = time.time() + self.duration
         d.devicesCheck(platform=self.platform, deviceid=self.deviceId, pkgname=self.pkgName)
         self.start()
 
@@ -468,6 +471,8 @@ class AppPerformanceMonitor(initPerformanceService):
             logger.info(f'cpu: {result}')
             if self.collect_all is False:
                 break
+            if self.duration > 0 and time.time() > self.end_time:
+                break
         return result
 
     def collectMemory(self):
@@ -478,6 +483,8 @@ class AppPerformanceMonitor(initPerformanceService):
             result = {'total': total, 'native': native, 'dalvik': dalvik}
             logger.info(f'memory: {result}')
             if self.collect_all is False:
+                break
+            if self.duration > 0 and time.time() > self.end_time:
                 break
         return result
 
@@ -493,19 +500,23 @@ class AppPerformanceMonitor(initPerformanceService):
             logger.info(f'battery: {result}')
             if self.collect_all is False:
                 break
+            if self.duration > 0 and time.time() > self.end_time:
+                break
         return result
 
-    def collectFlow(self, wifi=True):
-        _flow = Network(self.pkgName, self.deviceId, self.platform, pid=self.pid)
+    def collectNetwork(self, wifi=True):
+        _network = Network(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         if self.noLog is False:
-            data = _flow.setAndroidNet(wifi=wifi)
+            data = _network.setAndroidNet(wifi=wifi)
             f.record_net('pre', data[0], data[1])
         result = {}
         while self.get_status() == 'on':
-            upFlow, downFlow = _flow.getNetWorkData(wifi=wifi,noLog=self.noLog)
+            upFlow, downFlow = _network.getNetWorkData(wifi=wifi,noLog=self.noLog)
             result = {'send': upFlow, 'recv': downFlow}
             logger.info(f'network: {result}')
             if self.collect_all is False:
+                break
+            if self.duration > 0 and time.time() > self.end_time:
                 break
         return result
 
@@ -517,6 +528,8 @@ class AppPerformanceMonitor(initPerformanceService):
             result = {'fps': fps, 'jank': jank}
             logger.info(f'fps: {result}')
             if self.collect_all is False:
+                break
+            if self.duration > 0 and time.time() > self.end_time:
                 break
         return result
 
@@ -530,6 +543,8 @@ class AppPerformanceMonitor(initPerformanceService):
             result = {'gpu': gpu}
             logger.info(f'gpu: {result}')
             if self.collect_all is False:
+                break
+            if self.duration > 0 and time.time() > self.end_time:
                 break
         return result
 
@@ -597,7 +612,7 @@ class AppPerformanceMonitor(initPerformanceService):
             pool.apply_async(self.collectMemory)
             pool.apply_async(self.collectBattery)
             pool.apply_async(self.collectFps)
-            pool.apply_async(self.collectFlow)
+            pool.apply_async(self.collectNetwork)
             pool.apply_async(self.collectGpu)
             if self.record:
                 pool.apply_async(Scrcpy.start_record, (self.deviceId))

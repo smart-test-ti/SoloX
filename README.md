@@ -67,14 +67,15 @@ python -m solox --host={ip} --port={port}
 ## 🏴󠁣󠁩󠁣󠁭󠁿Collect in python
 
 ```python
-# solox version : >= 2.8.1
+# solox version : >= 2.8.5
 from solox.public.apm import AppPerformanceMonitor
 from solox.public.common import Devices
 
 d = Devices()
-pids = d.getPid(deviceId='ca6bd5a5', pkgName='com.bilibili.app.in') # for android
+processList = d.getPid(deviceId='ca6bd5a5', pkgName='com.bilibili.app.in') # for android
+print(processList) # ['{pid}:{packagename}',...]
 
-apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', surfaceview=True, noLog=False, pid=None, record=False, collect_all=False)
+apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', surfaceview=True, noLog=False, pid=None, record=False, collect_all=False, duration=0)
 # apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS') only supports one device
 # surfaceview： False = gfxinfo (Developer - GPU rendering mode - adb shell dumpsys gfxinfo)
 # noLog : False (Save test data to log file)
@@ -82,7 +83,7 @@ apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', de
 # ************* Collect a performance parameter ************* #
 cpu = apm.collectCpu() # %
 memory = apm.collectMemory() # MB
-flow = apm.collectFlow(wifi=True) # KB
+network = apm.collectNetwork(wifi=True) # KB
 fps = apm.collectFps() # HZ
 battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV power:w
 gpu = apm.collectGpu() # % only supports ios
@@ -90,8 +91,9 @@ gpu = apm.collectGpu() # % only supports ios
 # ************* Collect all performance parameter ************* #
  
 if __name__ == '__main__':
-  apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', surfaceview=True, noLog=False, pid=None, record=False, collect_all=True)
-  # apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS',  deviceId='xxxx', noLog=False, record=False, collect_all=True)
+  apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', surfaceview=True, noLog=False, pid=None, record=False, collect_all=True, duration=0)
+  # apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS',  deviceId='xxxx', noLog=False, record=False, collect_all=True, duration=0)
+  #duration: running time (second)
   #record: record android screen
   apm.collectAll() # will generate HTML report
 
