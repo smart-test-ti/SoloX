@@ -506,7 +506,7 @@ class AppPerformanceMonitor(initPerformanceService):
 
     def collectNetwork(self, wifi=True):
         _network = Network(self.pkgName, self.deviceId, self.platform, pid=self.pid)
-        if self.noLog is False:
+        if self.noLog is False and self.platform == Platform.Android:
             data = _network.setAndroidNet(wifi=wifi)
             f.record_net('pre', data[0], data[1])
         result = {}
