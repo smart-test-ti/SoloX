@@ -288,7 +288,12 @@ def append_data(wg: WaitGroup, stop_event: threading.Event,
             if _type.value == 'network':
                 return data['downFlow'], data['upFlow']
             elif _type.value == 'cpu':
-                return data['value'], data['sys_value']
+                app_cpu = data['value']
+                sys_cpu = data['sys_value']
+                if data['count'] > 0:
+                    app_cpu /= data['count']
+                    sys_cpu /= data['count']
+                return app_cpu, sys_cpu
             else:
                 return data['value']
         # print(_type, data)
