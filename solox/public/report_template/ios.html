@@ -102,11 +102,11 @@
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-auto">
-                                                <span class="bg-green text-white avatar">A.C</span>
+                                                <span class="bg-green text-white avatar">BAT</span>
                                             </div>
                                             <div class="col">
                                                 <div class="font-weight-medium">Temperature</div>
-                                                <div class="text-muted">Avg: {{ tem }}</div>
+                                                <div class="text-muted">Final: {{ tem }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -117,11 +117,11 @@
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-auto">
-                                                <span class="bg-green text-white avatar">A.C</span>
+                                                <span class="bg-green text-white avatar">BAT</span>
                                             </div>
                                             <div class="col">
                                                 <div class="font-weight-medium">Current</div>
-                                                <div class="text-muted">Avg: {{ current }}</div>
+                                                <div class="text-muted">Avg: {{ current }}mA</div>
                                             </div>
                                         </div>
                                     </div>
@@ -132,11 +132,11 @@
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-auto">
-                                                <span class="bg-green text-white avatar">A.C</span>
+                                                <span class="bg-green text-white avatar">BAT</span>
                                             </div>
                                             <div class="col">
                                                 <div class="font-weight-medium">Voltage</div>
-                                                <div class="text-muted">Avg: {{ voltage }}</div>
+                                                <div class="text-muted">Avg: {{ voltage }}mW</div>
                                             </div>
                                         </div>
                                     </div>
@@ -147,11 +147,11 @@
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-auto">
-                                                <span class="bg-green text-white avatar">A.C</span>
+                                                <span class="bg-green text-white avatar">BAT</span>
                                             </div>
                                             <div class="col">
                                                 <div class="font-weight-medium">Power</div>
-                                                <div class="text-muted">Avg: {{ power }}</div>
+                                                <div class="text-muted">Avg: {{ power }}mV</div>
                                             </div>
                                         </div>
                                     </div>
@@ -436,8 +436,8 @@
     }])
 
     var gpu_chart = new ApexCharts(document.querySelector("#chart-gpu"), options('line'));
-    jank_chart.render();
-    jank_chart.updateSeries([{
+    gpu_chart.render();
+    gpu_chart.updateSeries([{
         name: 'gpu',
         data: {{ gpu_charts.gpu }}
     }])

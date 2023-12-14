@@ -646,10 +646,10 @@ class File:
         batteryVoltageData = self.readLog(scene=scene, filename='battery_voltage.log')[1]
         batteryPowerData = self.readLog(scene=scene, filename='battery_power.log')[1]
         if batteryTemlData.__len__() > 0:
-            batteryTeml = batteryTemlData[-1]
-            batteryCurrent = sum(batteryCurrentData)
-            batteryVoltage = sum(batteryVoltageData)
-            batteryPower = sum(batteryPowerData)
+            batteryTeml = int(batteryTemlData[-1])
+            batteryCurrent = int(sum(batteryCurrentData) / len(batteryCurrentData))
+            batteryVoltage = int(sum(batteryVoltageData) / len(batteryVoltageData))
+            batteryPower = int(sum(batteryPowerData) / len(batteryPowerData))
         else:
             batteryTeml,  batteryCurrent , batteryVoltage, batteryPower = 0, 0, 0, 0 
 

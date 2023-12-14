@@ -534,7 +534,7 @@ class AppPerformanceMonitor(initPerformanceService):
         return result
 
     def collectGpu(self):
-        _gpu = GPU(self.pkgName)
+        _gpu = GPU(self.pkgName, self.deviceId)
         result = {}
         while self.get_status() == 'on':
             if self.platform == Platform.Android:
