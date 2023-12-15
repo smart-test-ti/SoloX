@@ -6,11 +6,11 @@ import json
 from logzero import logger
 import tidevice
 import multiprocessing
-import solox.public._iosPerf as iosP
-from solox.public.iosperf._perf import DataType, Performance
-from solox.public.adb import adb
-from solox.public.common import Devices, File, Method, Platform, Scrcpy
-from solox.public.android_fps import FPSMonitor, TimeUtils
+import public._iosPerf as iosP
+from public.iosperf._perf import DataType, Performance
+from public.adb import adb
+from public.common import Devices, File, Method, Platform, Scrcpy
+from public.android_fps import FPSMonitor, TimeUtils
 
 d = Devices()
 f = File()
@@ -145,38 +145,87 @@ class Memory(object):
         try:
             cmd = 'dumpsys meminfo {}'.format(self.pid)
             output = adb.shell(cmd=cmd, deviceId=self.deviceId)
-            m_total = re.search(r'TOTAL\s*(\d+)', output)
-            m_native = re.search(r'Native Heap\s*(\d+)', output)
-            m_dalvik = re.search(r'Dalvik Heap\s*(\d+)', output)
+            m_total = re.search(r'TOTAL:\s*(\d+)', output)
+            m_swap = re.search(r'TOTAL SWAP PSS:\s*(\d+)', output)
             totalPass = round(float(float(m_total.group(1))) / 1024, 2)
-            nativePass = round(float(float(m_native.group(1))) / 1024, 2)
-            dalvikPass = round(float(float(m_dalvik.group(1))) / 1024, 2)
+            swapPass = round(float(float(m_swap.group(1))) / 1024, 2)
         except Exception as e:
-            totalPass, nativePass, dalvikPass = 0, 0, 0
+            totalPass, swapPass= 0, 0
             if len(d.getPid(self.deviceId, self.pkgName)) == 0:
                 logger.error('[Memory] {} : No process found'.format(self.pkgName))
             else:
                 logger.exception(e)
-        return totalPass, nativePass, dalvikPass
+        return totalPass, swapPass
+    
+    def getAndroidMemoryDetail(self, noLog=False):
+        """Get the Android detail memory ,unit:MB"""
+        try:
+            cmd = 'dumpsys meminfo {}'.format(self.pid)
+            output = adb.shell(cmd=cmd, deviceId=self.deviceId)
+            m_java = re.search(r'Java Heap:\s*(\d+)', output)
+            m_native = re.search(r'Native Heap:\s*(\d+)', output)
+            m_code = re.search(r'Code:\s*(\d+)', output)
+            m_stack = re.search(r'Stack:\s*(\d+)', output)
+            m_graphics = re.search(r'Graphics:\s*(\d+)', output)
+            m_private = re.search(r'Private Other:\s*(\d+)', output)
+            m_system = re.search(r'System:\s*(\d+)', output)
+            java_heap = round(float(float(m_java.group(1))) / 1024, 2)
+            native_heap = round(float(float(m_native.group(1))) / 1024, 2)
+            code_pss = round(float(float(m_code.group(1))) / 1024, 2)
+            stack_pss = round(float(float(m_stack.group(1))) / 1024, 2)
+            graphics_pss = round(float(float(m_graphics.group(1))) / 1024, 2)
+            private_pss = round(float(float(m_private.group(1))) / 1024, 2)
+            system_pss = round(float(float(m_system.group(1))) / 1024, 2)
+            memory_dict = dict(
+                java_heap=java_heap,
+                native_heap=native_heap,
+                code_pss=code_pss,
+                stack_pss=stack_pss,
+                graphics_pss=graphics_pss,
+                private_pss=private_pss,
+                system_pss=system_pss
+            )
+            if noLog is False:
+                apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+                f.add_log(os.path.join(f.report_dir,'mem_java_heap.log'), apm_time, memory_dict.get('java_heap'))
+                f.add_log(os.path.join(f.report_dir,'mem_native_heap.log'), apm_time, memory_dict.get('native_heap'))
+                f.add_log(os.path.join(f.report_dir,'mem_code_pss.log'), apm_time, memory_dict.get('code_pss'))
+                f.add_log(os.path.join(f.report_dir,'mem_stack_pss.log'), apm_time, memory_dict.get('stack_pss'))
+                f.add_log(os.path.join(f.report_dir,'mem_graphics_pss.log'), apm_time, memory_dict.get('graphics_pss'))
+                f.add_log(os.path.join(f.report_dir,'mem_private_pss.log'), apm_time, memory_dict.get('private_pss'))
+                f.add_log(os.path.join(f.report_dir,'mem_system_pss.log'), apm_time, memory_dict.get('system_pss'))
+        except Exception as e:
+            memory_dict = dict(
+                java_heap=0,
+                native_heap=0,
+                code_pss=0,
+                stack_pss=0,
+                graphics_pss=0,
+                private_pss=0,
+                system_pss=0
+            )
+            if len(d.getPid(self.deviceId, self.pkgName)) == 0:
+                logger.error('[Memory Detail] {} : No process found'.format(self.pkgName))
+            else:
+                logger.exception(e)
+        return memory_dict
 
     def getiOSMem(self):
         """Get the iOS memory"""
         apm = iosAPM(self.pkgName, self.deviceId)
         totalPass = round(float(apm.getPerformance(apm.memory)), 2)
-        nativePass = 0
-        dalvikPass = 0
-        return totalPass, nativePass, dalvikPass
+        swapPass = 0
+        return totalPass, swapPass
 
     def getProcessMem(self, noLog=False):
         """Get the app memory"""
-        totalPass, nativePass, dalvikPass = self.getAndroidMem() if self.platform == Platform.Android else self.getiOSMem()
+        totalPass, swapPass = self.getAndroidMem() if self.platform == Platform.Android else self.getiOSMem()
         if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'mem_total.log'), apm_time, totalPass)
             if self.platform == Platform.Android:
-                f.add_log(os.path.join(f.report_dir,'mem_native.log'), apm_time, nativePass)
-                f.add_log(os.path.join(f.report_dir,'mem_dalvik.log'), apm_time, dalvikPass)
-        return totalPass, nativePass, dalvikPass
+                f.add_log(os.path.join(f.report_dir,'mem_swap.log'), apm_time, swapPass)
+        return totalPass, swapPass
 
 class Battery(object):
     def __init__(self, deviceId, platform=Platform.Android):
@@ -479,8 +528,8 @@ class AppPerformanceMonitor(initPerformanceService):
         _memory = Memory(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         result = {}
         while self.get_status() == 'on':
-            total, native, dalvik = _memory.getProcessMem(noLog=self.noLog)
-            result = {'total': total, 'native': native, 'dalvik': dalvik}
+            total, swap = _memory.getProcessMem(noLog=self.noLog)
+            result = {'total': total, 'swap': swap}
             logger.info(f'memory: {result}')
             if self.collect_all is False:
                 break
@@ -562,8 +611,7 @@ class AppPerformanceMonitor(initPerformanceService):
                 summary_dict['cpu_app'] = summary['cpuAppRate']
                 summary_dict['cpu_sys'] = summary['cpuSystemRate']
                 summary_dict['mem_total'] = summary['totalPassAvg']
-                summary_dict['mem_native'] = summary['nativePassAvg']
-                summary_dict['mem_dalvik'] = summary['dalvikPassAvg']
+                summary_dict['mem_swap'] = summary['swapPassAvg']
                 summary_dict['fps'] = summary['fps']
                 summary_dict['jank'] = summary['jank']
                 summary_dict['level'] = summary['batteryLevel']

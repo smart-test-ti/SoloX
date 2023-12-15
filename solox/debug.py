@@ -102,20 +102,11 @@ def open_url(host: str, port: int):
 
 
 def start(host: str, port: int):
+    logger.info('Running on http://{}:{}/?platform=Android&lan=en (Press CTRL+C to quit)'.format(host, port))
     socketio.run(app, host=host, debug=False, port=port)
 
 def main(host=ip(), port=50003):
-    try:
-        pool = multiprocessing.Pool(processes=2)
-        pool.apply_async(start, (host, port))
-        pool.apply_async(open_url, (host, port))
-        pool.close()
-        pool.join()
-    except KeyboardInterrupt:
-        logger.info('stop solox success')
-        sys.exit()
-    except Exception as e:
-        logger.exception(e)            
+    start(host, port)      
 
 
 if __name__ == '__main__':

@@ -18,7 +18,7 @@ from functools import wraps
 from jinja2 import Environment, FileSystemLoader
 from tidevice._device import Device
 from tidevice import Usbmux
-from solox.public.adb import adb
+from public.adb import adb
 
 
 class Platform:
@@ -272,8 +272,8 @@ class File:
         template = env.get_template('android.html')
         with open(os.path.join(self.report_dir, scene, 'report.html'),'w+') as fout:
             html_content = template.render(cpu_app=summary['cpu_app'],cpu_sys=summary['cpu_sys'],
-                                           mem_total=summary['mem_total'],mem_native=summary['mem_native'],
-                                           mem_dalvik=summary['mem_dalvik'],fps=summary['fps'],
+                                           mem_total=summary['mem_total'],mem_swap=summary['mem_swap'],
+                                           fps=summary['fps'],
                                            jank=summary['jank'],level=summary['level'],
                                            tem=summary['tem'],net_send=summary['net_send'],
                                            net_recv=summary['net_recv'],cpu_charts=summary['cpu_charts'],
@@ -435,14 +435,24 @@ class File:
         targetDic = {}
         targetDic['memTotalData'] = self.readLog(scene=scene, filename='mem_total.log')[0]
         if platform == Platform.Android:
-            targetDic['memNativeData']  = self.readLog(scene=scene, filename='mem_native.log')[0]
-            targetDic['memDalvikData']  = self.readLog(scene=scene, filename='mem_dalvik.log')[0]
+            targetDic['memSwapData']  = self.readLog(scene=scene, filename='mem_swap.log')[0]
             result = {'status': 1, 
                       'memTotalData': targetDic['memTotalData'], 
-                      'memNativeData': targetDic['memNativeData'],
-                      'memDalvikData': targetDic['memDalvikData']}
+                      'memSwapData': targetDic['memSwapData']}
         else:
             result = {'status': 1, 'memTotalData': targetDic['memTotalData']}
+        return result
+    
+    def getMemDetailLog(self, platform, scene):
+        targetDic = {}
+        targetDic['java_heap'] = self.readLog(scene=scene, filename='mem_java_heap.log')[0]
+        targetDic['native_heap'] = self.readLog(scene=scene, filename='mem_native_heap.log')[0]
+        targetDic['code_pss'] = self.readLog(scene=scene, filename='mem_code_pss.log')[0]
+        targetDic['stack_pss'] = self.readLog(scene=scene, filename='mem_stack_pss.log')[0]
+        targetDic['graphics_pss'] = self.readLog(scene=scene, filename='mem_graphics_pss.log')[0]
+        targetDic['private_pss'] = self.readLog(scene=scene, filename='mem_private_pss.log')[0]
+        targetDic['system_pss'] = self.readLog(scene=scene, filename='mem_system_pss.log')[0]
+        result = {'status': 1, 'memory_detail': targetDic}
         return result
     
     def getMemLogCompare(self, platform, scene1, scene2):
@@ -568,14 +578,13 @@ class File:
     
 
         totalPassData = self.readLog(scene=scene, filename=f'mem_total.log')[1]
-        nativePassData = self.readLog(scene=scene, filename=f'mem_native.log')[1]
-        dalvikPassData = self.readLog(scene=scene, filename=f'mem_dalvik.log')[1]
+        
         if totalPassData.__len__() > 0:
+            swapPassData = self.readLog(scene=scene, filename=f'mem_swap.log')[1]
             totalPassAvg = f'{round(sum(totalPassData) / len(totalPassData), 2)}MB'
-            nativePassAvg = f'{round(sum(nativePassData) / len(nativePassData), 2)}MB'
-            dalvikPassAvg = f'{round(sum(dalvikPassData) / len(dalvikPassData), 2)}MB'
+            swapPassAvg = f'{round(sum(swapPassData) / len(swapPassData), 2)}MB'
         else:
-            totalPassAvg, nativePassAvg, dalvikPassAvg = 0, 0, 0     
+            totalPassAvg, swapPassAvg = 0, 0    
 
         fpsData = self.readLog(scene=scene, filename=f'fps.log')[1]
         jankData = self.readLog(scene=scene, filename=f'jank.log')[1]
@@ -596,18 +605,19 @@ class File:
             send, recv = 0, 0    
         flowSend = f'{round(float(send / 1024), 2)}MB'
         flowRecv = f'{round(float(recv / 1024), 2)}MB'
-        apm_dict = {}
+        mem_detail_flag = os.path.exists(os.path.join(self.report_dir,scene,'mem_java_heap.log'))
+        apm_dict = dict()
         apm_dict['cpuAppRate'] = cpuAppRate
         apm_dict['cpuSystemRate'] = cpuSystemRate
         apm_dict['totalPassAvg'] = totalPassAvg
-        apm_dict['nativePassAvg'] = nativePassAvg
-        apm_dict['dalvikPassAvg'] = dalvikPassAvg
+        apm_dict['swapPassAvg'] = swapPassAvg
         apm_dict['fps'] = fpsAvg
         apm_dict['jank'] = jankAvg
         apm_dict['flow_send'] = flowSend
         apm_dict['flow_recv'] = flowRecv
         apm_dict['batteryLevel'] = batteryLevel
         apm_dict['batteryTeml'] = batteryTeml
+        apm_dict['mem_detail_flag'] = mem_detail_flag
         
         return apm_dict
 
@@ -659,7 +669,7 @@ class File:
         else:
             gpu = 0    
 
-        apm_dict = {}
+        apm_dict = dict()
         apm_dict['cpuAppRate'] = cpuAppRate
         apm_dict['cpuSystemRate'] = cpuSystemRate
         apm_dict['totalPassAvg'] = totalPassAvg

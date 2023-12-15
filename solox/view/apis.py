@@ -7,9 +7,9 @@ from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
 from solox import __version__
-from solox.public.apm import CPU, Memory, Network, FPS, Battery, GPU, Target
-from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
-from solox.public.common import Devices, File, Method, Install, Platform, Scrcpy
+from public.apm import CPU, Memory, Network, FPS, Battery, GPU, Target
+from public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
+from public.common import Devices, File, Method, Install, Platform, Scrcpy
 
 d = Devices()
 f = File()
@@ -56,7 +56,6 @@ def version():
 def initialize():
     """initialize apm env"""
     try:
-        FPS.clear()
         f.clear_file()
         result = {'status': 1, 'msg': 'initialize env success'}
     except Exception as e:
@@ -218,7 +217,7 @@ def getCpuRate():
 
 
 @api.route('/apm/mem', methods=['post', 'get'])
-def getMEM():
+def getMemory():
     """get memery data"""
     model = method._request(request, 'model')
     platform = method._request(request, 'platform')
@@ -248,12 +247,31 @@ def getMEM():
                 if process and platform == Platform.Android :
                     pid = process.split(':')[0]
                 mem = Memory(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
-                totalPass, nativePass, dalvikPass = mem.getProcessMem()
-                result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
+                totalPass, swapPass = mem.getProcessMem()
+                result = {'status': 1, 'totalPass': totalPass, 'swapPass': swapPass}
     except Exception as e:
         logger.error('get memory data failed')
         logger.exception(e)
         result = {'status': 1, 'totalPass': 0, 'nativePass': 0, 'dalvikPass': 0, 'first': 0, 'second': 0}
+    return result
+
+@api.route('/apm/mem/detail', methods=['post', 'get'])
+def getMemoryDetail():
+    """get memery detail data"""
+    platform = method._request(request, 'platform')
+    pkgname = method._request(request, 'pkgname')
+    device = method._request(request, 'device')
+    process = method._request(request, 'process')
+    try:
+        deviceId = d.getIdbyDevice(device, platform)
+        pid = process.split(':')[0]
+        memory = Memory(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
+        memory_detail = memory.getAndroidMemoryDetail()
+        result = {'status': 1, 'memory_detail': memory_detail}
+    except Exception as e:
+        logger.error('get memory detail data failed')
+        logger.exception(e)
+        result = {'status': 1, 'memory_detail': memory_detail}
     return result
 
 @api.route('/apm/set/network', methods=['post', 'get'])
@@ -471,8 +489,7 @@ def exportAndroidHtml():
     cpu_app = method._request(request, 'cpu_app')
     cpu_sys = method._request(request, 'cpu_sys')
     mem_total = method._request(request, 'mem_total')
-    mem_native = method._request(request, 'mem_native')
-    mem_dalvik = method._request(request, 'mem_dalvik')
+    mem_swap = method._request(request, 'mem_swap')
     fps = method._request(request, 'fps')
     jank = method._request(request, 'jank')
     level = method._request(request, 'level')
@@ -484,8 +501,7 @@ def exportAndroidHtml():
         summary_dict['cpu_app'] = cpu_app
         summary_dict['cpu_sys'] = cpu_sys
         summary_dict['mem_total'] = mem_total
-        summary_dict['mem_native'] = mem_native
-        summary_dict['mem_dalvik'] = mem_dalvik
+        summary_dict['mem_swap'] = mem_swap
         summary_dict['fps'] = fps
         summary_dict['jank'] = jank
         summary_dict['level'] = level
@@ -555,6 +571,7 @@ def getLogData():
         fucDic = {
             'cpu': f.getCpuLog(platform, scene),
             'mem': f.getMemLog(platform, scene),
+            'mem_detail': f.getMemDetailLog(platform, scene),
             'battery': f.getBatteryLog(platform, scene),
             'flow': f.getFlowLog(platform, scene),
             'fps': f.getFpsLog(platform, scene),

@@ -51,7 +51,7 @@
                     <tr>
                         <td class="text-center subheader" style="width: 20%;">Scene</td>
                         <td class="text-center subheader" style="width: 20%;">APP</td>
-                        <td class="text-center subheader" style="width: 20%;">System</td> 
+                        <td class="text-center subheader" style="width: 20%;">Total</td> 
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene1 }}</td>
@@ -69,24 +69,21 @@
                         <td class="text-center subheader" style="width: 20%;">Scene</td>
                         <td class="text-center subheader" style="width: 20%;">Total</td>
                         {% if platform == 'Android' %}
-                        <td class="text-center subheader" style="width: 20%;">Native</td>
-                        <td class="text-center subheader" style="width: 20%;">Dalivik</td> 
+                        <td class="text-center subheader" style="width: 20%;">Swap</td>
                         {% endif %}
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene1 }}</td>
                         <td class="text-center">{{ apm_data1.totalPassAvg }}</td>
                         {% if platform == 'Android' %}
-                        <td class="text-center">{{ apm_data1.nativePassAvg }}</td>
-                        <td class="text-center">{{ apm_data1.dalvikPassAvg }}</td>
+                        <td class="text-center">{{ apm_data1.swapPassAvg }}</td>
                         {% endif %} 
                     </tr>
                     <tr>
                         <td class="text-center">{{ scene2 }}</td>
                         <td class="text-center">{{ apm_data2.totalPassAvg }}</td>
                         {% if platform == 'Android' %}
-                        <td class="text-center">{{ apm_data2.nativePassAvg }}</td>
-                        <td class="text-center">{{ apm_data2.dalvikPassAvg }}</td>
+                        <td class="text-center">{{ apm_data2.swapPassAvg }}</td>
                         {% endif %}   
                     </tr>
                     <tr>

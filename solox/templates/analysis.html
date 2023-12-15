@@ -86,7 +86,7 @@
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                System
+                                Total
                             </div>
                             <div class="text-muted">
                                 Avg：{{ apm_data.cpuSystemRate }}
@@ -129,31 +129,10 @@
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Native
+                                Swap
                             </div>
                             <div class="text-muted">
-                                Avg：{{ apm_data.nativePassAvg }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-lg-2">
-            <div class="card card-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <span class="bg-yellow text-white avatar">
-                                MEM
-                            </span>
-                        </div>
-                        <div class="col">
-                            <div class="font-weight-medium">
-                                Dalvik
-                            </div>
-                            <div class="text-muted">
-                                Avg：{{ apm_data.dalvikPassAvg }}
+                                Avg：{{ apm_data.swapPassAvg }}
                             </div>
                         </div>
                     </div>
@@ -348,7 +327,7 @@
                                 Send
                             </div>
                             <div class="text-muted">
-                                All：{{ apm_data.flow_send }}
+                                All: {{ apm_data.flow_send }}
                             </div>
                         </div>
                     </div>
@@ -366,10 +345,10 @@
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Recv
+                                Recieve
                             </div>
                             <div class="text-muted">
-                                All：{{ apm_data.flow_recv }}
+                                All: {{ apm_data.flow_recv }}
                             </div>
                         </div>
                     </div>
@@ -404,7 +383,7 @@
 <div class="col-12">
     <div class="card cpu-card">
         <div class="card-header">
-            <div class='card-title'>CPU（%）</div>
+            <div class='card-title'>CPU Usage (%)</div>
             <div class="card-actions btn-actions">
                 <a class="btn-action cursor-pointer" id="cpu_loading">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
@@ -420,7 +399,7 @@
     </div>
     <div class="card mem-card mt-3">
         <div class="card-header">
-            <div class='card-title'>Memory（MB）</div>
+            <div class='card-title'>Memory Usage (MB)</div>
             <div class="card-actions btn-actions">
                 <a class="btn-action cursor-pointer" id="mem_loading">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
@@ -434,9 +413,27 @@
             <div id="chart-mem"></div>
         </div>
     </div>
+    {% if platform == 'Android' and  apm_data.mem_detail_flag == True %}
+    <div class="card mem-detail-card mt-3">
+        <div class="card-header">
+            <div class='card-title'>Memory Detail (MB)</div>
+            <div class="card-actions btn-actions">
+                <a class="btn-action cursor-pointer" id="mem_detail_loading">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                </a>
+                <a class="btn-action cursor-pointer" id="mem_detail_png" onclick="screenshot('mem-detail-card','mem_detail.png')">
+                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="chart-mem-detail"></div>
+        </div>
+    </div>
+    {% endif %}
     <div class="card fps-card mt-3">
         <div class="card-header">
-            <div class='card-title'>FPS（HZ）</div>
+            <div class='card-title'>FPS (HZ)</div>
             <div class="card-actions btn-actions">
                 <a class="btn-action cursor-pointer" id="fps_loading">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
@@ -486,7 +483,7 @@
     </div>
     <div class="card networkdata-card mt-3">
         <div class="card-header">
-            <div class='card-title'>Network Data（KB）</div>
+            <div class='card-title'>Network Usage (KB)</div>
             <div class="card-actions btn-actions">
                 <a class="btn-action cursor-pointer" id="networkdata_loading">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
@@ -503,7 +500,7 @@
     {% if platform == 'iOS' %}
     <div class="card gpu-card mt-3">
         <div class="card-header">
-            <div class='card-title'>GPU（%）</div>
+            <div class='card-title'>GPU Usage (%)</div>
             <div class="card-actions btn-actions">
                 <a class="btn-action cursor-pointer" id="gpu_loading">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
@@ -577,6 +574,7 @@
         $('#fps_loading').click();
         if(platform == 'Android'){
             $('#jank_loading').click();
+            $('#mem_detail_loading').click();
         }
         if(platform == 'iOS'){
             $('#gpu_loading').click();
@@ -618,8 +616,7 @@
                 cpu_app:'{{ apm_data.cpuAppRate }}',
                 cpu_sys:'{{ apm_data.cpuSystemRate }}',
                 mem_total:'{{ apm_data.totalPassAvg }}',
-                mem_native:'{{ apm_data.nativePassAvg }}',
-                mem_dalvik:'{{ apm_data.dalvikPassAvg }}',
+                mem_swap:'{{ apm_data.swapPassAvg }}',
                 fps:'{{ apm_data.fps }}',
                 jank:'{{ apm_data.jank }}',
                 level:'{{ apm_data.batteryLevel }}',
@@ -735,7 +732,7 @@
                     name: 'app',
                     data: data['cpuAppData']
                 },{
-                    name: 'sys',
+                    name: 'total',
                     data: data['cpuSysData']
                 }])
             }
@@ -878,11 +875,8 @@
                         name: 'total',
                         data: data['memTotalData']
                     },{
-                        name: 'native',
-                        data: data['memNativeData']
-                    },{
-                        name: 'dalvik',
-                        data: data['memDalvikData']
+                        name: 'swap',
+                        data: data['memSwapData']
                     }])
                 }else{
                     mem_chart.updateSeries([{
@@ -893,6 +887,55 @@
             }
         });
     });
+
+    if(platform == 'Android' && '{{ apm_data.mem_detail_flag }}'  == 'True'){
+        var mem_detail_chart = new ApexCharts(document.querySelector("#chart-mem-detail"), options('line'));
+        mem_detail_chart.render();
+        $('#mem_detail_loading').click(function () {
+            $.ajax({
+                url: '/apm/log',
+                type: "GET",
+                async: true,
+                cache: false,
+                data:{
+                    scene:'{{ scene }}',
+                    target:'mem_detail',
+                    platform:platform
+                },
+                beforeSend: function () {
+                    SwalLoading('Loading','')
+                },
+                complete: function () {
+                    swal.close();
+                },
+                success: function (data) {
+                    console.log(data)
+                    mem_detail_chart.updateSeries([{
+                        name: 'java',
+                        data: data['memory_detail']['java_heap']
+                    },{
+                        name: 'native',
+                        data: data['memory_detail']['native_heap']
+                    },{
+                        name: 'code',
+                        data: data['memory_detail']['code_pss']
+                    },{
+                        name: 'stack',
+                        data: data['memory_detail']['stack_pss']
+                    },{
+                        name: 'graphics',
+                        data: data['memory_detail']['graphics_pss']
+                    },{
+                        name: 'private',
+                        data: data['memory_detail']['private_pss']
+                    },{
+                        name: 'system',
+                        data: data['memory_detail']['system_pss']
+                    },])
+                }
+            });
+        });
+    }
 
     var network_chart = new ApexCharts(document.querySelector("#chart-networkdata"), options('line',false));
     network_chart.render();
@@ -912,7 +955,7 @@
                     name: 'send',
                     data: data['upFlow']
                 },{
-                    name: 'recv',
+                    name: 'recieve',
                     data: data['downFlow']
                 }])
             }

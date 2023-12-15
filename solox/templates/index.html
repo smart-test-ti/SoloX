@@ -152,7 +152,7 @@ SoloX - Application Performance Monitoring
                                 {% if platform == 'Android' %}
                                 <span class="ms-auto">
                                     <label class="form-check form-check-single form-switch">
-                                        <input id="net-switch" class="form-check-input cursor-pointer" type="checkbox" checked name="net-switch" style="margin-right: 5px"> Wifi
+                                        <input id="net-switch" class="form-check-input cursor-pointer" type="checkbox" checked name="net-switch" style="margin-right: 5px"> WIFI
                                     </label>
                                 </span>
                                 {% endif %}
@@ -169,6 +169,9 @@ SoloX - Application Performance Monitoring
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="battery_checkbox" type="checkbox" name="battery" checked> {% if lan == 'cn' %} 电池 {% else %} Battery {% endif %}</label>
                             {% if platform == 'iOS' %}
                             <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="gpu_checkbox" type="checkbox" checked name="gpu"> GPU</label>
+                            {% endif %}
+                            {% if platform == 'Android' %}
+                            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="mem_detail_checkbox" type="checkbox"  name="mem_detail"> Memory Detail</label>
                             {% endif %}
                         </div>
                         <div class="tab-pane" id="tabs-device-info">
@@ -243,6 +246,7 @@ SoloX - Application Performance Monitoring
         <div id="cpu" class="mb-3 cpu" style="min-width:400px;height:310px"></div>
         {% if platform == 'Android' %}
         <div id="mem_android"  class="mb-3 mem" style="min-width:400px;height:310px"></div>
+        <div id="mem_detail"   class="mb-3 mem_detail" style="min-width:400px;height:310px;display: none;"></div>
         <div id="fps" class="mb-3 fps" style="min-width:400px;height:300px"></div>
         <div id="battery_android" class="mb-3 battery" style="min-width:400px;height:310px"></div>
         {% else %}
@@ -703,15 +707,12 @@ SoloX - Application Performance Monitoring
                         try {
                             if(platform == 'Android'){
                                 var seriesTotal = mem_chart.series[0];
-                                var seriesNative = mem_chart.series[1];
-                                var seriesDalvik = mem_chart.series[2];
+                                var seriesSwap = mem_chart.series[1];
                                 var x = (new Date()).getTime(),
                                     y_total = data['totalPass'],
-                                    y_native = data['nativePass'],
-                                    y_dalvik = data['dalvikPass'];
+                                    y_swap = data['swapPass'];
                                 seriesTotal.addPoint([x, y_total], true, true);
-                                seriesNative.addPoint([x, y_native], true, true);
-                                seriesDalvik.addPoint([x, y_dalvik], true, true);
+                                seriesSwap.addPoint([x, y_swap], true, true);
                             }else{
                                 var series = mem_chart.series[0];
                                 var x = (new Date()).getTime(),
@@ -719,6 +720,67 @@ SoloX - Application Performance Monitoring
                                 series.addPoint([x, y], true, true);
                             }
                             timerQ = setTimeout(getMemPss(pkgname,device), 1000);
+
+                        }catch (e) {}
+                    }else{
+                        SwalFire('error','Something error',data['msg'],2000);
+                    }
+                }
+            },
+            error: function(error){
+                SwalFire('error','Server Error','Please press [ctrl+shift+i] and provide the browser\'s error message',5000);
+                console.log(error);
+            }
+        });
+    }
+
+    function getMemDetailPss(pkgname,device)  {
+        var process = $('.select-pid').val();
+        $.ajax({
+            url: Host + "/apm/mem/detail",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                pkgname:pkgname,
+                device:device,
+                process:process
+            },
+            beforeSend: function () {
+               window.clearTimeout(timerQ);
+            },
+            success: function (data) {
+                console.log(data)
+                if(stop == false){
+                    if(data['status'] == 1){
+                        try {
+                            var seriesJava = mem_detail_chart.series[0];
+                            var seriesNative = mem_detail_chart.series[1];
+                            var seriesCode = mem_detail_chart.series[2];
+                            var seriesStack = mem_detail_chart.series[3];
+                            var seriesGraphics = mem_detail_chart.series[4];
+                            var seriesPrivate = mem_detail_chart.series[5];
+                            var seriesSystem = mem_detail_chart.series[6];
+
+                            var x = (new Date()).getTime(),
+                                y_java = data['memory_detail']['java_heap'],
+                                y_native = data['memory_detail']['native_heap'];
+                                y_code = data['memory_detail']['code_pss'];
+                                y_stack = data['memory_detail']['stack_pss'];
+                                y_graphics = data['memory_detail']['graphics_pss'];
+                                y_private = data['memory_detail']['private_pss'];
+                                y_system = data['memory_detail']['system_pss'];
+                            
+                            seriesJava.addPoint([x, y_java], true, true);
+                            seriesNative.addPoint([x, y_native], true, true);
+                            seriesCode.addPoint([x, y_code], true, true);
+                            seriesStack.addPoint([x, y_stack], true, true);
+                            seriesGraphics.addPoint([x, y_graphics], true, true);
+                            seriesPrivate.addPoint([x, y_private], true, true);
+                            seriesSystem.addPoint([x, y_system], true, true);
+                            
+                            timerQ = setTimeout(getMemDetailPss(pkgname,device), 1000);
 
                         }catch (e) {}
                     }else{
@@ -904,7 +966,7 @@ SoloX - Application Performance Monitoring
             return data;
         }())
     },{
-        name : 'recv',
+        name : 'recieve',
         pointInterval: 120 * 1000,
         data : (function () {
             var data = [], time = (new Date()).getTime(), i;
@@ -932,7 +994,7 @@ SoloX - Application Performance Monitoring
             return data;
         }())
     },{
-        name : 'system',
+        name : 'total',
         pointInterval: 120 * 1000,
         data : (function () {
             var data = [], time = (new Date()).getTime(), i;
@@ -960,6 +1022,34 @@ SoloX - Application Performance Monitoring
             return data;
         }())
     },{
+        name : 'swap',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
+
+    var seriesMemDetail = [{
+        name : 'java',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
         name : 'native',
         pointInterval: 120 * 1000,
         data : (function () {
@@ -973,7 +1063,59 @@ SoloX - Application Performance Monitoring
             return data;
         }())
     },{
-        name : 'dalvik',
+        name : 'code',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'stack',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'graphics',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'private',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'system',
         pointInterval: 120 * 1000,
         data : (function () {
             var data = [], time = (new Date()).getTime(), i;
@@ -1187,6 +1329,10 @@ SoloX - Application Performance Monitoring
                 seriesFinal = seriesMem;
                 legend = true;
                 break;
+            case 'mem_detail':
+                seriesFinal = seriesMemDetail;
+                legend = true;
+                break;    
             case 'battery_android':
                 seriesFinal = seriesBettery;
                 legend = true;
@@ -1247,6 +1393,13 @@ SoloX - Application Performance Monitoring
         return mem_chart
     }
 
+    function memDetailInitialize(){
+        if(platform == 'Android'){
+            let mem_detail_chart = chartsInitialize('mem_detail','Memory Usage (MB)');
+            return mem_detail_chart
+        }
+    }
+
     function networkInitialize(){
         let network_chart = chartsInitialize('network','Network Usage (KB)');
         return network_chart
@@ -1273,6 +1426,7 @@ SoloX - Application Performance Monitoring
 
     var cpu_chart = cpuInitialize();
     var mem_chart = memInitialize();
+    var mem_detail_chart = memDetailInitialize();
     var network_chart = networkInitialize();
     var fps_chart = fpsInitialize();
     var battery_chart = batteryInitialize();
@@ -1314,6 +1468,10 @@ SoloX - Application Performance Monitoring
                 seriesFinal = seriesMem;
                 legend = true;
                 break;
+            case 'mem_detail':
+                seriesFinal = seriesMemDetail;
+                legend = true;
+                break;    
             case 'battery_android':
                 seriesFinal = seriesBettery;
                 legend = true;
@@ -1397,6 +1555,14 @@ SoloX - Application Performance Monitoring
             memInitialize();
             let type = platform == 'Android' ? 'mem_android' : 'mem_ios';
             mem_chart = collectPers(device,pkgname,type,'Memory Usage (MB)',getMemPss(pkgname,device));
+        }
+    }
+
+    function collectMemDetail(device,pkgname){
+        var mem_detail_checkbox = $('#mem_detail_checkbox').is(':checked');
+        if(mem_detail_checkbox){
+            memDetailInitialize();
+            mem_detail_chart = collectPers(device,pkgname,'mem_detail','Memory Detail (MB)',getMemDetailPss(pkgname,device));
         }
     }
 
@@ -1511,14 +1677,14 @@ SoloX - Application Performance Monitoring
                 if(lan == 'cn'){
                     SwalLoading('保存数据','正在保存数据生成报告, 请不要离开页面.')
                 }else{
-                    SwalLoading('Save data','Saving data to generate report, please do not leave.')
+                    SwalLoading('Saving Data','Saving data to generate report, please do not leave.')
                 }
             },
             success: function (data) {
                 if(data['status']==1){
                     window.location.href = '/report?lan='+lan
                 }else{
-                    SwalFire('error','Execution error',data['msg'],2000)
+                    SwalFire('error','Execution Error',data['msg'],2000)
                 }
             }
         });
@@ -1542,6 +1708,10 @@ SoloX - Application Performance Monitoring
             }
             collectCpu(device,pkgname);
             collectMem(device,pkgname);
+            
+            if(platform == 'Android'){
+                collectMemDetail(device,pkgname)
+            }
             collectNetwork(device,pkgname);
             collectFps(device,pkgname);
             collectBattery(device);
@@ -1556,7 +1726,7 @@ SoloX - Application Performance Monitoring
             if(lan == 'cn'){
                 SwalFire('error','执行错误','没有选择APP或者设备',2000);
             }else{
-                SwalFire('error','Execution error','No device or package name selected',2000);
+                SwalFire('error','Execution Error','No device or package name selected',2000);
             }
             $('#run-apm').show();
             $('#stop-apm').hide();
@@ -1580,7 +1750,7 @@ SoloX - Application Performance Monitoring
                 }
             });
         }else{
-            SwalFire('error','Execution error','No device selected',2000)
+            SwalFire('error','Execution Error','No device selected',2000)
         }
     };
 
@@ -1627,7 +1797,7 @@ SoloX - Application Performance Monitoring
                     if(data['status']==1){
                         $('#activity').val(data['activity']);
                     }else{
-                        SwalFire('error','Execution error',data['msg'],2000)
+                        SwalFire('error','Execution Error',data['msg'],2000)
                     }
                 },
                 complete: function(){
@@ -1635,7 +1805,7 @@ SoloX - Application Performance Monitoring
                 }
             });
         }else{
-            SwalFire('error','Execution error','No devices found',2000)
+            SwalFire('error','Execution Error','No devices found',2000)
         }
     }
 
@@ -1661,7 +1831,7 @@ SoloX - Application Performance Monitoring
                         console.log(data['time'])
                         $('#startup-time-content').text(data['time']);
                     }else{
-                        SwalFire('error','Execution error',data['msg'],2000)
+                        SwalFire('error','Execution Error',data['msg'],2000)
                     }
                 },
                 complete: function(){
@@ -1669,7 +1839,7 @@ SoloX - Application Performance Monitoring
                 }
             });
         }else{
-            SwalFire('error','Execution error','No devices or activity found',2000)
+            SwalFire('error','Execution Error','No devices or activity found',2000)
         }
     }
 
@@ -1692,7 +1862,7 @@ SoloX - Application Performance Monitoring
                         console.log(data['time'])
                         $('#startup-time-content').text(data['time']);
                     }else{
-                        SwalFire('error','Execution error',data['msg'],2000)
+                        SwalFire('error','Execution Error',data['msg'],2000)
                     }
                 },
                 complete: function(){
@@ -1700,7 +1870,7 @@ SoloX - Application Performance Monitoring
                 }
             });
         }else{
-            SwalFire('error','Execution error','No package found',2000)
+            SwalFire('error','Execution Error','No package found',2000)
         }
     }
 

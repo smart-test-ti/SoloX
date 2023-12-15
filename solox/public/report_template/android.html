@@ -45,7 +45,7 @@
                                                 <span class="bg-dark text-white avatar">CPU</span>
                                             </div>
                                             <div class="col">
-                                                <div class="font-weight-medium">System</div>
+                                                <div class="font-weight-medium">Total</div>
                                                 <div class="text-muted">Avg: {{ cpu_sys }}</div>
                                             </div>
                                         </div>
@@ -75,23 +75,8 @@
                                                 <span class="bg-yellow text-white avatar">MEM</span>
                                             </div>
                                             <div class="col">
-                                                <div class="font-weight-medium">Native</div>
-                                                <div class="text-muted">Avg: {{ mem_native }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-lg-2">
-                                <div class="card card-sm">
-                                    <div class="card-body">
-                                        <div class="row align-items-center">
-                                            <div class="col-auto">
-                                                <span class="bg-yellow text-white avatar">MEM</span>
-                                            </div>
-                                            <div class="col">
-                                                <div class="font-weight-medium">Dalvik</div>
-                                                <div class="text-muted">Avg: {{ mem_dalvik }}</div>
+                                                <div class="font-weight-medium">Swap</div>
+                                                <div class="text-muted">Avg: {{ mem_swap }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -132,7 +117,7 @@
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-auto">
-                                                <span class="bg-green text-white avatar">A.C</span>
+                                                <span class="bg-green text-white avatar">BAT</span>
                                             </div>
                                             <div class="col">
                                                 <div class="font-weight-medium">Level</div>
@@ -147,7 +132,7 @@
                                     <div class="card-body">
                                         <div class="row align-items-center">
                                             <div class="col-auto">
-                                                <span class="bg-green text-white avatar">A.C</span>
+                                                <span class="bg-green text-white avatar">BAT</span>
                                             </div>
                                             <div class="col">
                                                 <div class="font-weight-medium">Temperature</div>
@@ -180,7 +165,7 @@
                                                 <span class="bg-blue text-white avatar">NET</span>
                                             </div>
                                             <div class="col">
-                                                <div class="font-weight-medium">Recv</div>
+                                                <div class="font-weight-medium">Recieve</div>
                                                 <div class="text-muted">All: {{ net_recv }}</div>
                                             </div>
                                         </div>
@@ -406,7 +391,7 @@
         name: 'app',
         data: {{ cpu_charts.cpuAppData }}
     },{
-        name: 'sys',
+        name: 'total',
         data: {{ cpu_charts.cpuSysData }}
     }])
 
@@ -416,11 +401,8 @@
         name: 'total',
         data: {{ mem_charts.memTotalData }}
     },{
-        name: 'native',
-        data: {{ mem_charts.memNativeData }}
-    },{
-        name: 'dalvik',
-        data: {{ mem_charts.memDalvikData }}
+        name: 'swap',
+        data: {{ mem_charts.memSwapData }}
     }])
 
     var network_chart = new ApexCharts(document.querySelector("#chart-net"), options('line',false));
@@ -429,7 +411,7 @@
         name: 'send',
         data: {{ net_charts.upFlow }}
     },{
-        name: 'recv',
+        name: 'recieve',
         data: {{ net_charts.downFlow }}
     }])
 
