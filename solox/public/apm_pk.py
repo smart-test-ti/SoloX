@@ -87,7 +87,7 @@ class MEM_PK:
         self.deviceId1 = deviceId1
         self.deviceId2 = deviceId2
 
-    def getAndroidMem(self, pkgName, deviceId):
+    def getAndroidMemory(self, pkgName, deviceId):
         """Get the Android memory ,unit:MB"""
         pid = d.getPid(pkgName=pkgName, deviceId=deviceId)[0].split(':')[0]
         cmd = 'dumpsys meminfo {}'.format(pid)
@@ -96,14 +96,14 @@ class MEM_PK:
         totalPass = round(float(float(m_total.group(1))) / 1024, 2)
         return totalPass
 
-    def getProcessMem(self):
+    def getProcessMemory(self):
         """Get the app memory"""
         if len(self.pkgNameList) == 1:
-            totalPass1 = self.getAndroidMem(self.pkgNameList[0], self.deviceId1)
-            totalPass2 = self.getAndroidMem(self.pkgNameList[0], self.deviceId2)
+            totalPass1 = self.getAndroidMemory(self.pkgNameList[0], self.deviceId1)
+            totalPass2 = self.getAndroidMemory(self.pkgNameList[0], self.deviceId2)
         else:
-            totalPass1 = self.getAndroidMem(self.pkgNameList[0], self.deviceId1)
-            totalPass2 = self.getAndroidMem(self.pkgNameList[1], self.deviceId2)
+            totalPass1 = self.getAndroidMemory(self.pkgNameList[0], self.deviceId1)
+            totalPass2 = self.getAndroidMemory(self.pkgNameList[1], self.deviceId2)
         apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
         f.add_log(os.path.join(f.report_dir, 'mem1.log'), apm_time, totalPass1)
         f.add_log(os.path.join(f.report_dir, 'mem1.log'), apm_time, totalPass2)

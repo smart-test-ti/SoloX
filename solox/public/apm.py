@@ -140,7 +140,7 @@ class Memory(object):
         if self.pid is None and self.platform == Platform.Android:
             self.pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)[0].split(':')[0]
 
-    def getAndroidMem(self):
+    def getAndroidMemory(self):
         """Get the Android memory ,unit:MB"""
         try:
             cmd = 'dumpsys meminfo {}'.format(self.pid)
@@ -210,16 +210,16 @@ class Memory(object):
                 logger.exception(e)
         return memory_dict
 
-    def getiOSMem(self):
+    def getiOSMemory(self):
         """Get the iOS memory"""
         apm = iosAPM(self.pkgName, self.deviceId)
         totalPass = round(float(apm.getPerformance(apm.memory)), 2)
         swapPass = 0
         return totalPass, swapPass
 
-    def getProcessMem(self, noLog=False):
+    def getProcessMemory(self, noLog=False):
         """Get the app memory"""
-        totalPass, swapPass = self.getAndroidMem() if self.platform == Platform.Android else self.getiOSMem()
+        totalPass, swapPass = self.getAndroidMemory() if self.platform == Platform.Android else self.getiOSMemory()
         if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'mem_total.log'), apm_time, totalPass)
@@ -528,7 +528,7 @@ class AppPerformanceMonitor(initPerformanceService):
         _memory = Memory(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         result = {}
         while self.get_status() == 'on':
-            total, swap = _memory.getProcessMem(noLog=self.noLog)
+            total, swap = _memory.getProcessMemory(noLog=self.noLog)
             result = {'total': total, 'swap': swap}
             logger.info(f'memory: {result}')
             if self.collect_all is False:

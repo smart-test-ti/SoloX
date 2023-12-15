@@ -385,11 +385,15 @@
         <div class="card-header">
             <div class='card-title'>CPU Usage (%)</div>
             <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="cpu_loading">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                <a class="btn" id="cpu_loading">
+                    <span class="spinner-border spinner-border-sm me-2" id="cpu_spinner" role="status" style="display: none;"></span>
+                    <svg id="cpu_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                    Refresh
                 </a>
-                <a class="btn-action cursor-pointer" id="cpu_png" onclick="screenshot('cpu-card','cpu.png')">
+                
+                <a class="btn" id="cpu_png" style="margin-left: 10px;" onclick="screenshot('cpu-card','cpu.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                    ScreenShot
                 </a>
             </div>
         </div>
@@ -401,11 +405,15 @@
         <div class="card-header">
             <div class='card-title'>Memory Usage (MB)</div>
             <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="mem_loading">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                <a class="btn" id="mem_loading">
+                    <span class="spinner-border spinner-border-sm me-2" id="mem_spinner" role="status" style="display: none;"></span>
+                    <svg id="mem_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                    Refresh
                 </a>
-                <a class="btn-action cursor-pointer" id="mem_png" onclick="screenshot('mem-card','mem.png')">
+                
+                <a class="btn" id="mem_png" style="margin-left: 10px;" onclick="screenshot('mem-card','mem.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                    ScreenShot
                 </a>
             </div>
         </div>
@@ -418,11 +426,15 @@
         <div class="card-header">
             <div class='card-title'>Memory Detail (MB)</div>
             <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="mem_detail_loading">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                <a class="btn" id="mem_detail_loading">
+                    <span class="spinner-border spinner-border-sm me-2" id="mem_detail_spinner" role="status" style="display: none;"></span>
+                    <svg id="mem_detail_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                    Refresh
                 </a>
-                <a class="btn-action cursor-pointer" id="mem_detail_png" onclick="screenshot('mem-detail-card','mem_detail.png')">
+                
+                <a class="btn" id="mem_detail_png" style="margin-left: 10px;" onclick="screenshot('mem-detail-card','mem_detail.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                    ScreenShot
                 </a>
             </div>
         </div>
@@ -435,11 +447,14 @@
         <div class="card-header">
             <div class='card-title'>FPS (HZ)</div>
             <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="fps_loading">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                </a>
-                <a class="btn-action cursor-pointer" id="fps_png" onclick="screenshot('fps-card','fps.png')">
+                <a class="btn" id="fps_loading">
+                    <span class="spinner-border spinner-border-sm me-2" id="fps_spinner" role="status" style="display: none;"></span>
+                    <svg id="fps_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                    Refresh
+                </a>       
+                <a class="btn" id="fps_png" style="margin-left: 10px;" onclick="screenshot('fps-card','fps.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                    ScreenShot
                 </a>
             </div>
         </div>
@@ -452,11 +467,14 @@
         <div class="card-header">
             <div class='card-title'>JANK</div>
             <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="jank_loading">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                </a>
-                <a class="btn-action cursor-pointer" id="jank_png" onclick="screenshot('jank-card','jank.png')">
+                <a class="btn" id="jank_loading">
+                    <span class="spinner-border spinner-border-sm me-2" id="jank_spinner" role="status" style="display: none;"></span>
+                    <svg id="jank_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                    Refresh
+                </a>       
+                <a class="btn" id="jank_png" style="margin-left: 10px;" onclick="screenshot('jank-card','jank.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                    ScreenShot
                 </a>
             </div>
         </div>
@@ -469,11 +487,14 @@
         <div class="card-header">
             <div class='card-title'>Battery</div>
             <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="battery_loading">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                </a>
-                <a class="btn-action cursor-pointer" id="battery_png" onclick="screenshot('battery-card','battery.png')">
+                <a class="btn" id="battery_loading">
+                    <span class="spinner-border spinner-border-sm me-2" id="battery_spinner" role="status" style="display: none;"></span>
+                    <svg id="battery_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                    Refresh
+                </a>       
+                <a class="btn" id="battery_png" style="margin-left: 10px;" onclick="screenshot('battery-card','battery.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                    ScreenShot
                 </a>
             </div>
         </div>
@@ -485,11 +506,14 @@
         <div class="card-header">
             <div class='card-title'>Network Usage (KB)</div>
             <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="networkdata_loading">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                </a>
-                <a class="btn-action cursor-pointer" id="networkdata_png" onclick="screenshot('networkdata-card','networkdata.png')">
+                <a class="btn" id="networkdata_loading">
+                    <span class="spinner-border spinner-border-sm me-2" id="networkdata_spinner" role="status" style="display: none;"></span>
+                    <svg id="networkdata_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                    Refresh
+                </a>       
+                <a class="btn" id="networkdata_png" style="margin-left: 10px;" onclick="screenshot('networkdata-card','networkdata.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                    ScreenShot
                 </a>
             </div>
         </div>
@@ -502,11 +526,14 @@
         <div class="card-header">
             <div class='card-title'>GPU Usage (%)</div>
             <div class="card-actions btn-actions">
-                <a class="btn-action cursor-pointer" id="gpu_loading">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                </a>
-                <a class="btn-action cursor-pointer" id="gpu_png" onclick="screenshot('gpu-card','gpu.png')">
+                <a class="btn" id="gpu_loading">
+                    <span class="spinner-border spinner-border-sm me-2" id="gpu_spinner" role="status" style="display: none;"></span>
+                    <svg id="gpu_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                    Refresh
+                </a>       
+                <a class="btn" id="gpu_png" style="margin-left: 10px;" onclick="screenshot('gpu-card','gpu.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                    ScreenShot
                 </a>
             </div>
         </div>
@@ -727,6 +754,14 @@
                 target:'cpu',
                 platform:platform
             },
+            beforeSend: function () {
+                $('#cpu_spinner').show()
+                $('#cpu_refresh_logo').hide()
+            },
+            complete: function () {
+                $('#cpu_spinner').hide()
+                $('#cpu_refresh_logo').show()
+            },
             success: function (data) {
                 cpu_chart.updateSeries([{
                     name: 'app',
@@ -751,6 +786,14 @@
                     scene:'{{ scene }}',
                     target:'battery',
                     platform:platform
+                },
+                beforeSend: function () {
+                    $('#battery_spinner').show()
+                    $('#battery_refresh_logo').hide()
+                },
+                complete: function () {
+                    $('#battery_spinner').hide()
+                    $('#battery_refresh_logo').show()
                 },
                 success: function (data) {
                     if(platform == 'Android'){
@@ -794,6 +837,14 @@
                     target:'fps',
                     platform:platform
                 },
+                beforeSend: function () {
+                    $('#jank_spinner').show()
+                    $('#jank_refresh_logo').hide()
+                },
+                complete: function () {
+                    $('#jank_spinner').hide()
+                    $('#jank_refresh_logo').show()
+                },
                 success: function (data) {
                     jank_chart.updateSeries([{
                         name: 'jank',
@@ -818,6 +869,14 @@
                     target:'gpu',
                     platform:platform
                 },
+                beforeSend: function () {
+                    $('#gpu_spinner').show()
+                    $('#gpu_refresh_logo').hide()
+                },
+                complete: function () {
+                    $('#gpu_spinner').hide()
+                    $('#gpu_refresh_logo').show()
+                },
                 success: function (data) {
                     gpu_chart.updateSeries([{
                         name: 'gpu',
@@ -840,6 +899,14 @@
                 scene:'{{ scene }}',
                 target:'fps',
                 platform:platform
+            },
+            beforeSend: function () {
+                $('#fps_spinner').show()
+                $('#fps_refresh_logo').hide()
+            },
+            complete: function () {
+                $('#fps_spinner').hide()
+                $('#fps_refresh_logo').show()
             },
             success: function (data) {
                 fps_chart.updateSeries([{
@@ -864,10 +931,12 @@
                 platform:platform
             },
             beforeSend: function () {
-                SwalLoading('Loading','')
+                $('#mem_spinner').show()
+                $('#mem_refresh_logo').hide()
             },
             complete: function () {
-                swal.close();
+                $('#mem_spinner').hide()
+                $('#mem_refresh_logo').show()
             },
             success: function (data) {
                 if(platform == 'Android'){
@@ -903,10 +972,12 @@
                     platform:platform
                 },
                 beforeSend: function () {
-                    SwalLoading('Loading','')
+                    $('#mem_detail_spinner').show()
+                    $('#mem_detail_refresh_logo').hide()
                 },
                 complete: function () {
-                    swal.close();
+                    $('#mem_detail_spinner').hide()
+                    $('#mem_detail_refresh_logo').show()
                 },
                 success: function (data) {
                     console.log(data)
@@ -949,6 +1020,14 @@
                 scene:'{{ scene }}',
                 target:'flow',
                 platform:platform
+            },
+            beforeSend: function () {
+                $('#networkdata_spinner').show()
+                $('#networkdata_refresh_logo').hide()
+            },
+            complete: function () {
+                $('#networkdata_spinner').hide()
+                $('#networkdata_refresh_logo').show()
             },
             success: function (data) {
                 network_chart.updateSeries([{

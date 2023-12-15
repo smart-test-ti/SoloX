@@ -231,14 +231,14 @@ def getMemory():
                 deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
                 deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
                 mem = MEM_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
-                first, second = mem.getProcessMem()
+                first, second = mem.getProcessMemory()
                 result = {'status': 1, 'first': first, 'second': second}
             case '2-app':
                 pkgNameList = pkgname.split(',')
                 deviceId1 = d.getIdbyDevice(device.split(',')[0], 'Android')
                 deviceId2 = d.getIdbyDevice(device.split(',')[1], 'Android')
                 mem = MEM_PK(pkgNameList=pkgNameList, deviceId1=deviceId1, deviceId2=deviceId2)
-                first, second = mem.getProcessMem()
+                first, second = mem.getProcessMemory()
                 result = {'status': 1, 'first': first, 'second': second}
             case _:
                 process = method._request(request, 'process')
@@ -247,7 +247,7 @@ def getMemory():
                 if process and platform == Platform.Android :
                     pid = process.split(':')[0]
                 mem = Memory(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
-                totalPass, swapPass = mem.getProcessMem()
+                totalPass, swapPass = mem.getProcessMemory()
                 result = {'status': 1, 'totalPass': totalPass, 'swapPass': swapPass}
     except Exception as e:
         logger.error('get memory data failed')
@@ -658,7 +658,7 @@ def apmCollect():
                 result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
             case Target.Memory:
                 mem = Memory(pkgName=pkgname, deviceId=deviceid, platform=platform)
-                totalPass, nativePass, dalvikPass = mem.getProcessMem(noLog=True)
+                totalPass, nativePass, dalvikPass = mem.getProcessMemory(noLog=True)
                 result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
             case Target.Network:
                 network = Network(pkgName=pkgname, deviceId=deviceid, platform=platform)
