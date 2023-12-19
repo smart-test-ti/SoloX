@@ -4,11 +4,9 @@
 
 <p align="center">
 <a href="#">
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1643364757640-b4529458-ec8d-42cc-a2d8-c0ce60fdf50f.png" alt="SoloX" width="150">
+<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1643364757640-b4529458-ec8d-42cc-a2d8-c0ce60fdf50f.png" alt="SoloX" width="130">
 </a>
 <br>
-<br>
-
 </p>
 <p align="center">
 <a href="https://pypi.org/project/solox/" target="__blank"><img src="https://img.shields.io/pypi/v/solox" alt="solox preview"></a>
@@ -22,7 +20,7 @@ SoloX - Android/iOS性能数据的实时采集工具。
 
 我们致力于解决低效、繁琐的测试执行问题，我们的目标是在【Simple Test In SoloX】
 
-![preview](https://github.com/smart-test-ti/SoloX/assets/24454096/79964f92-de3a-435f-b6ab-3d39ac8da425)
+![10 37 192 142_50003__platform=Android lan=en](https://github.com/smart-test-ti/SoloX/assets/24454096/5b33183c-dcf3-48b7-8c91-dfe20bff3d5c)
 
 ## 📦环境
 
