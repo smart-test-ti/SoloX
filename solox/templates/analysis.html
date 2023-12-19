@@ -86,7 +86,7 @@
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Total
+                                {% if lan == 'cn' %} 整机 {% else %} Total {% endif %}
                             </div>
                             <div class="text-muted">
                                 Avg：{{ apm_data.cpuSystemRate }}
@@ -102,12 +102,12 @@
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-yellow text-white avatar">
-                                MEM
+                                {% if lan == 'cn' %} 内存 {% else %} MEM {% endif %}
                             </span>
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Total
+                                {% if lan == 'cn' %} 物理内存 {% else %} Total {% endif %}
                             </div>
                             <div class="text-muted">
                                 Avg：{{ apm_data.totalPassAvg }}
@@ -124,12 +124,12 @@
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-yellow text-white avatar">
-                                MEM
+                                {% if lan == 'cn' %} 内存 {% else %} MEM {% endif %}
                             </span>
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Swap
+                                {% if lan == 'cn' %} 交换内存 {% else %} Swap {% endif %}
                             </div>
                             <div class="text-muted">
                                 Avg：{{ apm_data.swapPassAvg }}
@@ -151,7 +151,7 @@
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                FPS
+                                {% if lan == 'cn' %} 流畅度 {% else %} FPS {% endif %}
                             </div>
                             <div class="text-muted">
                                 Avg：{{ apm_data.fps }}
@@ -173,7 +173,7 @@
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Jank
+                                {% if lan == 'cn' %} 卡顿 {% else %} Jank {% endif %}
                             </div>
                             <div class="text-muted">
                                 All：{{ apm_data.jank }}
@@ -183,6 +183,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
         {% if platform == 'Android' %}
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
@@ -190,12 +191,12 @@
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-green text-white avatar">
-                                BAT
+                                {% if lan == 'cn' %} 电池 {% else %} BAT {% endif %}
                             </span>
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Level
+                                {% if lan == 'cn' %} 电量 {% else %} Level {% endif %}
                             </div>
                             <div class="text-muted">
                                 Final: {{ apm_data.batteryLevel }}
@@ -211,12 +212,12 @@
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-green text-white avatar">
-                                BAT
+                                {% if lan == 'cn' %} 电池 {% else %} BAT {% endif %}
                             </span>
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Temperature
+                                {% if lan == 'cn' %} 温度 {% else %} Temperature {% endif %}
                             </div>
                             <div class="text-muted">
                                 Final: {{ apm_data.batteryTeml }}
@@ -233,12 +234,12 @@
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-green text-white avatar">
-                                BAT
+                                {% if lan == 'cn' %} 电池 {% else %} BAT {% endif %}
                             </span>
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Temperature
+                                {% if lan == 'cn' %} 温度 {% else %} Temperature {% endif %}
                             </div>
                             <div class="text-muted">
                                 Final: {{ apm_data.batteryTeml }}
@@ -254,12 +255,12 @@
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-green text-white avatar">
-                                BAT
+                                {% if lan == 'cn' %} 电池 {% else %} BAT {% endif %}
                             </span>
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Current
+                                 {% if lan == 'cn' %} 电流 {% else %} Current {% endif %}
                             </div>
                             <div class="text-muted">
                                 Avg: {{ apm_data.batteryCurrent }}mA
@@ -275,12 +276,12 @@
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-green text-white avatar">
-                                BAT
+                                {% if lan == 'cn' %} 电池 {% else %} BAT {% endif %}
                             </span>
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Voltage
+                                {% if lan == 'cn' %} 电压 {% else %} Voltage {% endif %}
                             </div>
                             <div class="text-muted">
                                 Avg: {{ apm_data.batteryVoltage }}mW
@@ -296,12 +297,12 @@
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-green text-white avatar">
-                                BAT
+                                {% if lan == 'cn' %} 电池 {% else %} BAT {% endif %}
                             </span>
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Power
+                                {% if lan == 'cn' %} 功耗 {% else %} Power {% endif %}
                             </div>
                             <div class="text-muted">
                                 Avg: {{ apm_data.batteryPower }}mV
@@ -312,19 +313,18 @@
             </div>
         </div>
         {% endif %}
-        {% endif %}
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-blue text-white avatar">
-                                NET
+                                {% if lan == 'cn' %} 流量 {% else %} NET {% endif %}
                             </span>
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Send
+                                {% if lan == 'cn' %} 上行 {% else %} Send {% endif %}
                             </div>
                             <div class="text-muted">
                                 All: {{ apm_data.flow_send }}
@@ -340,12 +340,12 @@
                     <div class="row align-items-center">
                         <div class="col-auto">
                             <span class="bg-blue text-white avatar">
-                                NET
+                                {% if lan == 'cn' %} 流量 {% else %} NET {% endif %}
                             </span>
                         </div>
                         <div class="col">
                             <div class="font-weight-medium">
-                                Recieve
+                                {% if lan == 'cn' %} 下行 {% else %} Recieve {% endif %}
                             </div>
                             <div class="text-muted">
                                 All: {{ apm_data.flow_recv }}
@@ -370,7 +370,7 @@
                                 GPU
                             </div>
                             <div class="text-muted">
-                                Avg: {{ apm_data.gpu }}
+                                Avg: {{ apm_data.gpu }}%
                             </div>
                         </div>
                     </div>
@@ -388,12 +388,12 @@
                 <a class="btn" id="cpu_loading">
                     <span class="spinner-border spinner-border-sm me-2" id="cpu_spinner" role="status" style="display: none;"></span>
                     <svg id="cpu_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                    Refresh
+                    {% if lan == 'cn' %} 刷新 {% else %} Refresh {% endif %}
                 </a>
                 
                 <a class="btn" id="cpu_png" style="margin-left: 10px;" onclick="screenshot('cpu-card','cpu.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
-                    ScreenShot
+                    {% if lan == 'cn' %} 截图 {% else %} ScreenShot {% endif %}
                 </a>
             </div>
         </div>
@@ -408,12 +408,12 @@
                 <a class="btn" id="mem_loading">
                     <span class="spinner-border spinner-border-sm me-2" id="mem_spinner" role="status" style="display: none;"></span>
                     <svg id="mem_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                    Refresh
+                    {% if lan == 'cn' %} 刷新 {% else %} Refresh {% endif %}
                 </a>
                 
                 <a class="btn" id="mem_png" style="margin-left: 10px;" onclick="screenshot('mem-card','mem.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
-                    ScreenShot
+                    {% if lan == 'cn' %} 截图 {% else %} ScreenShot {% endif %}
                 </a>
             </div>
         </div>
@@ -429,12 +429,11 @@
                 <a class="btn" id="mem_detail_loading">
                     <span class="spinner-border spinner-border-sm me-2" id="mem_detail_spinner" role="status" style="display: none;"></span>
                     <svg id="mem_detail_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                    Refresh
+                    {% if lan == 'cn' %} 刷新 {% else %} Refresh {% endif %}
                 </a>
-                
                 <a class="btn" id="mem_detail_png" style="margin-left: 10px;" onclick="screenshot('mem-detail-card','mem_detail.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
-                    ScreenShot
+                    {% if lan == 'cn' %} 截图 {% else %} ScreenShot {% endif %}
                 </a>
             </div>
         </div>
@@ -450,11 +449,11 @@
                 <a class="btn" id="fps_loading">
                     <span class="spinner-border spinner-border-sm me-2" id="fps_spinner" role="status" style="display: none;"></span>
                     <svg id="fps_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                    Refresh
+                    {% if lan == 'cn' %} 刷新 {% else %} Refresh {% endif %}
                 </a>       
                 <a class="btn" id="fps_png" style="margin-left: 10px;" onclick="screenshot('fps-card','fps.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
-                    ScreenShot
+                    {% if lan == 'cn' %} 截图 {% else %} ScreenShot {% endif %}
                 </a>
             </div>
         </div>
@@ -470,11 +469,11 @@
                 <a class="btn" id="jank_loading">
                     <span class="spinner-border spinner-border-sm me-2" id="jank_spinner" role="status" style="display: none;"></span>
                     <svg id="jank_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                    Refresh
+                    {% if lan == 'cn' %} 刷新 {% else %} Refresh {% endif %}
                 </a>       
                 <a class="btn" id="jank_png" style="margin-left: 10px;" onclick="screenshot('jank-card','jank.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
-                    ScreenShot
+                    {% if lan == 'cn' %} 截图 {% else %} ScreenShot {% endif %}
                 </a>
             </div>
         </div>
@@ -490,11 +489,11 @@
                 <a class="btn" id="battery_loading">
                     <span class="spinner-border spinner-border-sm me-2" id="battery_spinner" role="status" style="display: none;"></span>
                     <svg id="battery_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                    Refresh
+                    {% if lan == 'cn' %} 刷新 {% else %} Refresh {% endif %}
                 </a>       
                 <a class="btn" id="battery_png" style="margin-left: 10px;" onclick="screenshot('battery-card','battery.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
-                    ScreenShot
+                    {% if lan == 'cn' %} 截图 {% else %} ScreenShot {% endif %}
                 </a>
             </div>
         </div>
@@ -509,11 +508,11 @@
                 <a class="btn" id="networkdata_loading">
                     <span class="spinner-border spinner-border-sm me-2" id="networkdata_spinner" role="status" style="display: none;"></span>
                     <svg id="networkdata_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                    Refresh
+                    {% if lan == 'cn' %} 刷新 {% else %} Refresh {% endif %}
                 </a>       
                 <a class="btn" id="networkdata_png" style="margin-left: 10px;" onclick="screenshot('networkdata-card','networkdata.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
-                    ScreenShot
+                    {% if lan == 'cn' %} 截图 {% else %} ScreenShot {% endif %}
                 </a>
             </div>
         </div>
@@ -529,11 +528,11 @@
                 <a class="btn" id="gpu_loading">
                     <span class="spinner-border spinner-border-sm me-2" id="gpu_spinner" role="status" style="display: none;"></span>
                     <svg id="gpu_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
-                    Refresh
+                    {% if lan == 'cn' %} 刷新 {% else %} Refresh {% endif %}
                 </a>       
                 <a class="btn" id="gpu_png" style="margin-left: 10px;" onclick="screenshot('gpu-card','gpu.png')">
                     <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
-                    ScreenShot
+                    {% if lan == 'cn' %} 截图 {% else %} ScreenShot {% endif %}
                 </a>
             </div>
         </div>

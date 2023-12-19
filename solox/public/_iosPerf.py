@@ -11,8 +11,8 @@ import typing
 from collections import defaultdict, namedtuple
 from typing import Any, Iterator, Optional, Tuple, Union
 import weakref
-from public.iosperf._device import BaseDevice
-from public.iosperf._proto import *
+from solox.public.iosperf._device import BaseDevice
+from solox.public.iosperf._proto import *
 
 
 class DataType(str, enum.Enum):

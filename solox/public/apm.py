@@ -6,11 +6,11 @@ import json
 from logzero import logger
 import tidevice
 import multiprocessing
-import public._iosPerf as iosP
-from public.iosperf._perf import DataType, Performance
-from public.adb import adb
-from public.common import Devices, File, Method, Platform, Scrcpy
-from public.android_fps import FPSMonitor, TimeUtils
+import solox.public._iosPerf as iosP
+from solox.public.iosperf._perf import DataType, Performance
+from solox.public.adb import adb
+from solox.public.common import Devices, File, Method, Platform, Scrcpy
+from solox.public.android_fps import FPSMonitor, TimeUtils
 
 d = Devices()
 f = File()
@@ -464,7 +464,6 @@ class iosAPM(object):
             perf = iosP.Performance(tidevice.Device(udid=self.deviceId), [perfTpe])
             perf_value = perf.start(self.pkgName, callback=self.callback)
         return perf_value
-
 
 class initPerformanceService(object):
     CONFIG_DIR = os.path.dirname(os.path.realpath(__file__))
