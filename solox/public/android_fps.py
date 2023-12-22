@@ -434,7 +434,7 @@ class SurfaceStatsCollector(object):
             # with this value.
             
             print(results)
-            for line in results[1:]:
+            for line in results[2:]:
                 fields = line.split()
                 if len(fields) != 3:
                     continue
