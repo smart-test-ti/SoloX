@@ -146,6 +146,7 @@ class Memory(object):
         try:
             cmd = 'dumpsys meminfo {}'.format(self.pid)
             output = adb.shell(cmd=cmd, deviceId=self.deviceId)
+            logger.info(f'memory info: {output}')
             m_total = re.search(r'TOTAL:\s*(\d+)', output)
             m_swap = re.search(r'TOTAL SWAP PSS:\s*(\d+)', output)
             totalPass = round(float(float(m_total.group(1))) / 1024, 2)

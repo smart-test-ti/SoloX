@@ -413,7 +413,7 @@ class SurfaceStatsCollector(object):
             results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency \\"%s\\"' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
-            if len(results) <= 1:
+            if len(results) <= 1 or int(results[-1].split()[0]) >0:
                 self.focus_window = self.get_surfaceview_activity()
                 results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency \\"%s\\"' % self.focus_window, deviceId=self.device)
