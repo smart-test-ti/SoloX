@@ -418,6 +418,7 @@ class SurfaceStatsCollector(object):
                 results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency \\"%s\\"' % self.focus_window, deviceId=self.device)
                 results = results.replace("\r\n", "\n").splitlines()
+            print(self.focus_window)
             if not len(results):
                 return (None, None)
             if not results[0].isdigit():
