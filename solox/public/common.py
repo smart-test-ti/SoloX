@@ -18,7 +18,7 @@ from functools import wraps
 from jinja2 import Environment, FileSystemLoader
 from tidevice._device import Device
 from tidevice import Usbmux
-from solox.public.adb import adb
+from public.adb import adb
 
 
 class Platform:
@@ -273,13 +273,12 @@ class File:
         with open(os.path.join(self.report_dir, scene, 'report.html'),'w+') as fout:
             html_content = template.render(cpu_app=summary['cpu_app'],cpu_sys=summary['cpu_sys'],
                                            mem_total=summary['mem_total'],mem_swap=summary['mem_swap'],
-                                           fps=summary['fps'],
-                                           jank=summary['jank'],level=summary['level'],
+                                           fps=summary['fps'],jank=summary['jank'],level=summary['level'],
                                            tem=summary['tem'],net_send=summary['net_send'],
                                            net_recv=summary['net_recv'],cpu_charts=summary['cpu_charts'],
                                            mem_charts=summary['mem_charts'],net_charts=summary['net_charts'],
                                            battery_charts=summary['battery_charts'],fps_charts=summary['fps_charts'],
-                                           jank_charts=summary['jank_charts'])
+                                           jank_charts=summary['jank_charts'],mem_detail_charts=summary['mem_detail_charts'])
             
             fout.write(html_content)
         html_path = os.path.join(self.report_dir, scene, 'report.html')    

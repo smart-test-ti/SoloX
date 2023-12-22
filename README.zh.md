@@ -82,7 +82,8 @@ apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', de
 # ************* 收集单个性能参数 ************* #
 cpu = apm.collectCpu() # %
 memory = apm.collectMemory() # MB
-network = apm.collectNetwork(wifi=True) # KB
+memory_detail = apm.collectMemoryDetail() # MB
+network = apm.collectNetwork(wifi=True) # KB , wifi=False时是收集移动网络，手机要切换数据流量
 fps = apm.collectFps() # HZ
 battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV power:w
 gpu = apm.collectGpu() # % 只支持ios
@@ -93,7 +94,7 @@ if __name__ == '__main__':  #必须要在__name__ == '__main__'里面执行
   apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', deviceId='ca6bd5a5', surfaceview=True, 
                               noLog=False, pid=None, record=False, collect_all=True, duration=0)
   # apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS',  deviceId='xxxx', noLog=False, record=False, collect_all=True, duration=0)
-  #duration: 执行时长（秒），只有>0的时候才生效
+  #duration: 执行时长（秒），只有>0的时候才生效，=0时会持续执行
   #record: 是否录制
   apm.collectAll() # 结束会生成测试报告
 
@@ -108,7 +109,7 @@ initPerformanceService.stop()
 ### 后台启动服务
 
 ```
-# solox version >= 2.1.5
+# solox version >= 2.8.7
 
 macOS/Linux: nohup python3 -m solox &
 Windows: start /min python3 -m solox &
@@ -120,7 +121,7 @@ Windows: start /min python3 -m solox &
 Android: http://{ip}:{port}/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&target=cpu
 iOS: http://{ip}:{port}/apm/collect?platform=iOS&pkgname=com.bilibili.app.in&target=cpu
 
-target in ['cpu','memory','network','fps','battery','gpu']
+target in ['cpu','memory','memory_detail','network','fps','battery','gpu']
 ```
 
 ## 🔥功能

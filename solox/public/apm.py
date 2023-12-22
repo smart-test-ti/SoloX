@@ -6,11 +6,11 @@ import json
 from logzero import logger
 import tidevice
 import multiprocessing
-import solox.public._iosPerf as iosP
-from solox.public.iosperf._perf import DataType, Performance
-from solox.public.adb import adb
-from solox.public.common import Devices, File, Method, Platform, Scrcpy
-from solox.public.android_fps import FPSMonitor, TimeUtils
+import public._iosPerf as iosP
+from public.iosperf._perf import DataType, Performance
+from public.adb import adb
+from public.common import Devices, File, Method, Platform, Scrcpy
+from public.android_fps import FPSMonitor, TimeUtils
 
 d = Devices()
 f = File()
@@ -19,6 +19,7 @@ m = Method()
 class Target:
     CPU = 'cpu'
     Memory = 'memory'
+    MemoryDetail = 'memory_detail'
     Battery = 'battery'
     Network = 'network'
     FPS = 'fps'
@@ -535,7 +536,21 @@ class AppPerformanceMonitor(initPerformanceService):
             if self.duration > 0 and time.time() > self.end_time:
                 break
         return result
-
+    
+    def collectMemoryDetail(self):
+        _memory = Memory(self.pkgName, self.deviceId, self.platform, pid=self.pid)
+        result = {}
+        while self.get_status() == 'on':
+            if self.platform == Platform.iOS:
+                break
+            result = _memory.getAndroidMemoryDetail(noLog=self.noLog)
+            logger.info(f'memory detail: {result}')
+            if self.collect_all is False:
+                break
+            if self.duration > 0 and time.time() > self.end_time:
+                break
+        return result
+    
     def collectBattery(self):
         _battery = Battery(self.deviceId, self.platform)
         result = {}
@@ -619,6 +634,7 @@ class AppPerformanceMonitor(initPerformanceService):
                 summary_dict['net_recv'] = summary['flow_recv']
                 summary_dict['cpu_charts'] = f.getCpuLog(Platform.Android, scene)
                 summary_dict['mem_charts'] = f.getMemLog(Platform.Android, scene)
+                summary_dict['mem_detail_charts'] = f.getMemDetailLog(Platform.Android, scene)
                 summary_dict['net_charts'] = f.getFlowLog(Platform.Android, scene)
                 summary_dict['battery_charts'] = f.getBatteryLog(Platform.Android, scene)
                 summary_dict['fps_charts'] = f.getFpsLog(Platform.Android, scene)['fps']
@@ -653,10 +669,11 @@ class AppPerformanceMonitor(initPerformanceService):
     def collectAll(self):
         try:
             f.clear_file()
-            process_num = 7 if self.record else 6
+            process_num = 8 if self.record else 7
             pool = multiprocessing.Pool(processes=process_num)
             pool.apply_async(self.collectCpu)
             pool.apply_async(self.collectMemory)
+            pool.apply_async(self.collectMemoryDetail)
             pool.apply_async(self.collectBattery)
             pool.apply_async(self.collectFps)
             pool.apply_async(self.collectNetwork)

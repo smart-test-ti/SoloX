@@ -6,8 +6,8 @@ import threading
 import time
 import traceback
 from logzero import logger
-from solox.public.adb import adb
-from solox.public.common import Devices
+from public.adb import adb
+from public.common import Devices
 
 d = Devices()
 
@@ -92,7 +92,7 @@ class SurfaceStatsCollector(object):
                 if activity_line.find(' ')  != -1:      
                     activity_name = activity_line.split(' ')[2]
                 else:
-                    activity_name = activity_line.replace('SurfaceView','').replace('[','').replace(']','')    
+                    activity_name = activity_line.replace('SurfaceView','').replace('[','').replace(']','').replace('-','').strip()    
             else:
                 activity_name = dumpsys_result_list[len(dumpsys_result_list) - 1]
                 if not activity_name.__contains__(self.package_name):
@@ -413,6 +413,12 @@ class SurfaceStatsCollector(object):
             results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency \\"%s\\"' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
+            if len(results) == 1:
+                self.focus_window = self.get_surfaceview_activity()
+                results = adb.shell(
+                cmd='dumpsys SurfaceFlinger --latency \\"%s\\"' % self.focus_window, deviceId=self.device)
+                results = results.replace("\r\n", "\n").splitlines()
+
             if not len(results):
                 return (None, None)
             if not results[0].isdigit():

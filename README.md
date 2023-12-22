@@ -82,6 +82,7 @@ apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', de
 # ************* Collect a performance parameter ************* #
 cpu = apm.collectCpu() # %
 memory = apm.collectMemory() # MB
+memory_detail = apm.collectMemoryDetail() # MB
 network = apm.collectNetwork(wifi=True) # KB
 fps = apm.collectFps() # HZ
 battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV power:w
@@ -120,7 +121,7 @@ Windows: start /min python3 -m solox &
 Android: http://{ip}:{port}/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&target=cpu
 iOS: http://{ip}:{port}/apm/collect?platform=iOS&pkgname=com.bilibili.app.in&target=cpu
 
-target in ['cpu','memory','network','fps','battery','gpu']
+target in ['cpu','memory','memory_detail','network','fps','battery','gpu']
 ```
 
 ## 🔥Features

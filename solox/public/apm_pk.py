@@ -2,9 +2,9 @@ import datetime
 import re
 import os
 import time
-from solox.public.adb import adb
-from solox.public.common import Devices, File
-from solox.public.android_fps import FPSMonitor, TimeUtils
+from public.adb import adb
+from public.common import Devices, File
+from public.android_fps import FPSMonitor, TimeUtils
 
 d = Devices()
 f = File()
@@ -106,7 +106,7 @@ class MEM_PK:
             totalPass2 = self.getAndroidMemory(self.pkgNameList[1], self.deviceId2)
         apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
         f.add_log(os.path.join(f.report_dir, 'mem1.log'), apm_time, totalPass1)
-        f.add_log(os.path.join(f.report_dir, 'mem1.log'), apm_time, totalPass2)
+        f.add_log(os.path.join(f.report_dir, 'mem2.log'), apm_time, totalPass2)
 
         return totalPass1, totalPass2
 

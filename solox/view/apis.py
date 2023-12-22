@@ -7,9 +7,9 @@ from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
 from solox import __version__
-from solox.public.apm import CPU, Memory, Network, FPS, Battery, GPU, Target
-from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
-from solox.public.common import Devices, File, Method, Install, Platform, Scrcpy
+from public.apm import CPU, Memory, Network, FPS, Battery, GPU, Target
+from public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
+from public.common import Devices, File, Method, Install, Platform, Scrcpy
 
 d = Devices()
 f = File()
@@ -510,6 +510,7 @@ def exportAndroidHtml():
         summary_dict['net_recv'] = net_recv
         summary_dict['cpu_charts'] = f.getCpuLog(Platform.Android, scene)
         summary_dict['mem_charts'] = f.getMemLog(Platform.Android, scene)
+        summary_dict['mem_detail_charts'] = f.getMemDetailLog(Platform.Android, scene)
         summary_dict['net_charts'] = f.getFlowLog(Platform.Android, scene)
         summary_dict['battery_charts'] = f.getBatteryLog(Platform.Android, scene)
         summary_dict['fps_charts'] = f.getFpsLog(Platform.Android, scene)['fps']
@@ -658,8 +659,15 @@ def apmCollect():
                 result = {'status': 1, 'appCpuRate': appCpuRate, 'systemCpuRate': systemCpuRate}
             case Target.Memory:
                 mem = Memory(pkgName=pkgname, deviceId=deviceid, platform=platform)
-                totalPass, nativePass, dalvikPass = mem.getProcessMemory(noLog=True)
-                result = {'status': 1, 'totalPass': totalPass, 'nativePass': nativePass, 'dalvikPass': dalvikPass}
+                totalPass, swapPass = mem.getProcessMemory(noLog=True)
+                result = {'status': 1, 'totalPass': totalPass, 'swapPass': swapPass}
+            case Target.MemoryDetail:
+                if platform == Platform.Android:
+                    mem = Memory(pkgName=pkgname, deviceId=deviceid, platform=platform)
+                    data = mem.getAndroidMemoryDetail(noLog=True)
+                    result = {'status': 1, 'data': data} 
+                else:
+                    result = {'status': 0, 'msg': 'not support ios'}       
             case Target.Network:
                 network = Network(pkgName=pkgname, deviceId=deviceid, platform=platform)
                 data = network.getNetWorkData(wifi=True, noLog=True)
