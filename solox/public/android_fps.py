@@ -413,12 +413,11 @@ class SurfaceStatsCollector(object):
             results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency \\"%s\\"' % self.focus_window, deviceId=self.device)
             results = results.replace("\r\n", "\n").splitlines()
-            if len(results) == 1:
+            if len(results) <= 1:
                 self.focus_window = self.get_surfaceview_activity()
                 results = adb.shell(
                 cmd='dumpsys SurfaceFlinger --latency \\"%s\\"' % self.focus_window, deviceId=self.device)
                 results = results.replace("\r\n", "\n").splitlines()
-
             if not len(results):
                 return (None, None)
             if not results[0].isdigit():
@@ -432,11 +431,13 @@ class SurfaceStatsCollector(object):
             # latency data, SurfaceFlinger gives the frame a timestamp of INT64_MAX.
             # Since we only care about completed frames, we will ignore any timestamps
             # with this value.
-
+            
+            print(results)
             for line in results[1:]:
                 fields = line.split()
                 if len(fields) != 3:
                     continue
+                print(fields)
                 timestamp = [int(fields[0]), int(fields[1]), int(fields[2])]
                 if timestamp[1] == pending_fence_timestamp:
                     continue
