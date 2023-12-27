@@ -6,11 +6,11 @@ import json
 from logzero import logger
 import tidevice
 import multiprocessing
-import public._iosPerf as iosP
-from public.iosperf._perf import DataType, Performance
-from public.adb import adb
-from public.common import Devices, File, Method, Platform, Scrcpy
-from public.android_fps import FPSMonitor, TimeUtils
+import solox.public._iosPerf as iosP
+from solox.public.iosperf._perf import DataType, Performance
+from solox.public.adb import adb
+from solox.public.common import Devices, File, Method, Platform, Scrcpy
+from solox.public.android_fps import FPSMonitor, TimeUtils
 
 d = Devices()
 f = File()
@@ -146,11 +146,12 @@ class Memory(object):
         try:
             cmd = 'dumpsys meminfo {}'.format(self.pid)
             output = adb.shell(cmd=cmd, deviceId=self.deviceId)
-            logger.info(f'memory info: {output}')
-            m_total = re.search(r'TOTAL:\s*(\d+)', output)
+            m_total = re.search(r'TOTAL\s*(\d+)', output)
             if not m_total:
                 m_total = re.search(r'TOTAL PSS:\s*(\d+)', output)
             m_swap = re.search(r'TOTAL SWAP PSS:\s*(\d+)', output)
+            if not m_swap:
+                m_swap = re.search(r'TOTAL SWAP (KB):\s*(\d+)', output)
             totalPass = round(float(float(m_total.group(1))) / 1024, 2)
             swapPass = round(float(float(m_swap.group(1))) / 1024, 2)
         except Exception as e:

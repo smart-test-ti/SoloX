@@ -277,8 +277,7 @@ SoloX - Application Performance Monitoring
         <div id="network" class="Network-Data mb-3" style="min-width:400px;height:310px"></div>
     </div>
 </div>
-</div>
-<div class="offcanvas offcanvas-bottom layout-boxed" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" style="height: 85%;margin-left: 5%;margin-right: 5%;">
+<div class="offcanvas offcanvas-bottom layout-boxed" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" style="height: 90%">
     <div class="offcanvas-header">
       <h2 class="offcanvas-title" id="offcanvasBottomLabel">Error Log</h2>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -305,8 +304,7 @@ SoloX - Application Performance Monitoring
         <div class="mt-2" id="logcat-content" style="color: rgba(214, 39, 8, 0.849);"></div>
     </div>
   </div>
-</div>
-<div class="offcanvas offcanvas-bottom layout-boxed" tabindex="-1" id="offcanvas-startup-time" aria-labelledby="offcanvasBottomLabel" style="height: 85%;margin-left: 5%;margin-right: 5%;">
+<div class="offcanvas offcanvas-bottom layout-boxed" tabindex="-1" id="offcanvas-startup-time" aria-labelledby="offcanvasBottomLabel" style="height: 90%">
     <div class="offcanvas-header">
       <h2 class="offcanvas-title" id="offcanvasBottomLabel">Start-up Time</h2>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -346,7 +344,6 @@ SoloX - Application Performance Monitoring
         <pre class="mt-2" id="startup-time-content"></pre>
     </div>
   </div>
-</div>
 <div class="modal modal-blur fade" style="margin-top: 20px;margin-right: 20px;" id="modal-scrollable" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog  modal-full-width modal-dialog-centered modal-dialog-scrollable" role="document">
       <div class="modal-content">
@@ -360,7 +357,6 @@ SoloX - Application Performance Monitoring
         </div>
       </div>
     </div>
-  </div>
 {% endblock %}
 
 {% block js %}
@@ -1433,7 +1429,7 @@ SoloX - Application Performance Monitoring
 
     function fpsInitialize(){
         if(platform === 'Android'){
-            let title = 'FPS and Jank';
+            let title = 'FPS(HZ) & Jank(Times)';
             let fps_chart = chartsInitialize('fps',title);
             return fps_chart
         }else{
@@ -1602,7 +1598,7 @@ SoloX - Application Performance Monitoring
         if(fps_checkbox){
             fpsInitialize();
             if(platform == 'Android'){
-                let title = 'FPS and Jank';
+                let title = 'FPS(HZ) & Jank(Times)';
                 fps_chart = collectPers(device,pkgname,'fps',title,getFps(pkgname,device,fps_switch));
             }else{
                 let title = 'FPS（HZ）';

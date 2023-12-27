@@ -7,9 +7,9 @@ from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
 from solox import __version__
-from public.apm import CPU, Memory, Network, FPS, Battery, GPU, Target
-from public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
-from public.common import Devices, File, Method, Install, Platform, Scrcpy
+from solox.public.apm import CPU, Memory, Network, FPS, Battery, GPU, Target
+from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
+from solox.public.common import Devices, File, Method, Install, Platform, Scrcpy
 
 d = Devices()
 f = File()
@@ -62,7 +62,6 @@ def initialize():
         logger.exception(e)
         result = {'status': 0, 'msg': str(e)}
     return result
-
 
 @api.route('/device/ids', methods=['post', 'get'])
 def deviceids():
@@ -119,7 +118,6 @@ def packageNames():
     result = {'status': 1, 'pkgnames': pkgnames} if len(pkgnames) > 0 else  {'status': 0, 'msg': 'no pkgnames'}
     return result
 
-
 @api.route('/package/pids', methods=['post', 'get'])
 def getPackagePids():
     platform = method._request(request, 'platform')
@@ -149,7 +147,6 @@ def getPackageActivity():
         logger.exception(e)
         result = {'status': 0, 'msg': 'no activity found'}
     return result
-
 
 @api.route('/package/start/time/android', methods=['post', 'get'])
 def getStartupTimeByAndroid():
@@ -214,7 +211,6 @@ def getCpuRate():
         logger.exception(e)
         result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate': 0, 'first': 0, 'second': 0}
     return result
-
 
 @api.route('/apm/mem', methods=['post', 'get'])
 def getMemory():
@@ -339,7 +335,6 @@ def getNetWorkData():
         result = {'status': 1, 'upflow': 0, 'downflow': 0, 'first': 0, 'second': 0}
     return result
 
-
 @api.route('/apm/fps', methods=['post', 'get'])
 def getFps():
     """get fps data"""
@@ -376,7 +371,6 @@ def getFps():
         logger.exception(e)
         result = {'status': 1, 'fps': 0, 'jank': 0, 'first': 0, 'second': 0}
     return result
-
 
 @api.route('/apm/battery', methods=['post', 'get'])
 def getBattery():
@@ -415,7 +409,6 @@ def getGpu():
         result = {'status': 1, 'gpu': 0}
     return result
 
-
 @api.route('/apm/create/report', methods=['post', 'get'])
 def makeReport():
     """Create test report records"""
@@ -449,7 +442,6 @@ def makeReport():
         logger.exception(e)
         result = {'status': 0, 'msg': str(e)}
     return result
-
 
 @api.route('/apm/edit/report', methods=['post', 'get'])
 def editReport():
@@ -629,7 +621,6 @@ def getpkLogData():
         result = {'status': 0, 'msg': str(e)}
     return result
 
-
 @api.route('/apm/remove/report', methods=['post', 'get'])
 def removeReport():
     """Remove test report record"""
@@ -642,7 +633,6 @@ def removeReport():
         logger.exception(e)
         result = {'status': 0, 'msg': str(e)}
     return result
-
 
 @api.route('/apm/collect', methods=['post', 'get'])
 def apmCollect():
