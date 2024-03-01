@@ -6,11 +6,11 @@ import json
 from logzero import logger
 import tidevice
 import multiprocessing
-import solox.public._iosPerf as iosP
-from solox.public.iosperf._perf import DataType, Performance
-from solox.public.adb import adb
-from solox.public.common import Devices, File, Method, Platform, Scrcpy
-from solox.public.android_fps import FPSMonitor, TimeUtils
+import public._iosPerf as iosP
+from public.iosperf._perf import DataType, Performance
+from public.adb import adb
+from public.common import Devices, File, Method, Platform, Scrcpy
+from public.android_fps import FPSMonitor, TimeUtils
 
 d = Devices()
 f = File()
@@ -151,7 +151,7 @@ class Memory(object):
                 m_total = re.search(r'TOTAL PSS:\s*(\d+)', output)
             m_swap = re.search(r'TOTAL SWAP PSS:\s*(\d+)', output)
             if not m_swap:
-                m_swap = re.search(r'TOTAL SWAP (KB):\s*(\d+)', output)
+                m_swap = re.search(r'TOTAL SWAP \(KB\):\s*(\d+)', output)
             totalPass = round(float(float(m_total.group(1))) / 1024, 2)
             swapPass = round(float(float(m_swap.group(1))) / 1024, 2)
         except Exception as e:
@@ -434,6 +434,53 @@ class GPU(object):
             f.add_log(os.path.join(f.report_dir,'gpu.log'), apm_time, gpu)
         return gpu
 
+class Disk(object):
+    def __init__(self, deviceId):
+        self.deviceId = deviceId
+
+    def setInitialDisk(self):
+        disk_info = adb.shell(cmd='df', deviceId=self.deviceId)
+        with open(os.path.join(f.report_dir,'initail_disk.log'), 'a+', encoding="utf-8") as file:
+                file.write(disk_info)
+
+    def setCurrentDisk(self):
+        disk_info = adb.shell(cmd='df', deviceId=self.deviceId)
+        with open(os.path.join(f.report_dir,'current_disk.log'), 'a+', encoding="utf-8") as file:
+                file.write(disk_info)
+
+    def getInitDisk(self):
+        disk_infos = f.open_file(os.path.join(f.report_dir,'initail_disk.log'), "r").pop(0)
+        disk_list = list()
+        for line in disk_infos:
+            disk_value_list = line.split()
+            disk_dict = dict(
+                filesystem = disk_value_list[0],
+                blocks = disk_value_list[1],
+                used = disk_value_list[2],
+                available = disk_value_list[3],
+                use_percent = disk_value_list[4],
+                mounted = disk_value_list[5]
+            )
+            disk_list.append(disk_dict)
+        return disk_list    
+
+    def getCurrentDisk(self):
+        disk_infos = f.open_file(os.path.join(f.report_dir,'current_disk.log'), "r")
+        disk_infos.pop(0)
+        disk_list = list()
+        for line in disk_infos:
+            disk_value_list = line.split()
+            disk_dict = dict(
+                filesystem = disk_value_list[0],
+                blocks = disk_value_list[1],
+                used = disk_value_list[2],
+                available = disk_value_list[3],
+                use_percent = disk_value_list[4],
+                mounted = disk_value_list[5]
+            )
+            disk_list.append(disk_dict)
+        return disk_list
+    
 class iosAPM(object):
 
     def __init__(self, pkgName, deviceId):
@@ -514,7 +561,7 @@ class AppPerformanceMonitor(initPerformanceService):
         self.end_time = time.time() + self.duration
         d.devicesCheck(platform=self.platform, deviceid=self.deviceId, pkgname=self.pkgName)
         self.start()
-
+    
     def collectCpu(self):
         _cpu = CPU(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         result = {}

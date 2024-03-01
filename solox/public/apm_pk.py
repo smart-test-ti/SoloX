@@ -2,9 +2,9 @@ import datetime
 import re
 import os
 import time
-from solox.public.adb import adb
-from solox.public.common import Devices, File
-from solox.public.android_fps import FPSMonitor, TimeUtils
+from public.adb import adb
+from public.common import Devices, File
+from public.android_fps import FPSMonitor, TimeUtils
 
 d = Devices()
 f = File()

@@ -7,9 +7,9 @@ from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
 from solox import __version__
-from solox.public.apm import CPU, Memory, Network, FPS, Battery, GPU, Target
-from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
-from solox.public.common import Devices, File, Method, Install, Platform, Scrcpy
+from public.apm import CPU, Memory, Network, FPS, Battery, GPU, Disk, Target
+from public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
+from public.common import Devices, File, Method, Install, Platform, Scrcpy
 
 d = Devices()
 f = File()
@@ -409,6 +409,21 @@ def getGpu():
         result = {'status': 1, 'gpu': 0}
     return result
 
+@api.route('/apm/set/disk', methods=['post', 'get'])
+def setDiskData():
+    """set disk data"""
+    platform = method._request(request, 'platform')
+    device = method._request(request, 'device')
+    try:
+        deviceId = d.getIdbyDevice(device, platform)
+        disk = Disk(deviceId=deviceId)
+        disk.setInitialDisk()
+        result = {'status': 1, 'msg':'set disk data success'}
+    except Exception as e:
+        logger.exception(e)
+        result = {'status': 0, 'msg':'set disk data failed'}
+    return result 
+
 @api.route('/apm/create/report', methods=['post', 'get'])
 def makeReport():
     """Create test report records"""
@@ -429,9 +444,16 @@ def makeReport():
             pid = None
             if process and platform == Platform.Android :
                 pid = process.split(':')[0]
+            
+            # set current natwork
             network = Network(pkgName=app, deviceId=deviceId, platform=platform, pid=pid)
             data = network.setAndroidNet(wifi=wifi)
             f.record_net('end', data[0], data[1])
+            
+            # set current disk
+            disk = Disk(deviceId=deviceId)
+            disk.setCurrentDisk()
+
             record = False if record_switch == 'false' else True
             if record:
                 video = 1
@@ -489,7 +511,7 @@ def exportAndroidHtml():
     net_send = method._request(request, 'net_send')
     net_recv = method._request(request, 'net_recv')
     try:
-        summary_dict = {}
+        summary_dict = dict()
         summary_dict['cpu_app'] = cpu_app
         summary_dict['cpu_sys'] = cpu_sys
         summary_dict['mem_total'] = mem_total
@@ -529,7 +551,7 @@ def exportiOSHtml():
     net_send = method._request(request, 'net_send')
     net_recv = method._request(request, 'net_recv')
     try:
-        summary_dict = {}
+        summary_dict = dict()
         summary_dict['cpu_app'] = cpu_app
         summary_dict['cpu_sys'] = cpu_sys
         summary_dict['mem_total'] = mem_total

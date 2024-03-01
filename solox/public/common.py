@@ -18,7 +18,7 @@ from functools import wraps
 from jinja2 import Environment, FileSystemLoader
 from tidevice._device import Device
 from tidevice import Usbmux
-from solox.public.adb import adb
+from public.adb import adb
 
 
 class Platform:
@@ -203,7 +203,7 @@ class Devices:
             activity = str(result).split(' ')[-1].replace('}','') 
             return activity
         else:
-            raise Exception('no activity found')
+            raise Exception('No activity found')
 
     def getStartupTimeByAndroid(self, activity, deviceId):
         result = adb.shell(cmd='am start -W {}'.format(activity), deviceId=deviceId)
@@ -241,7 +241,6 @@ class File:
                              'battery_voltage', 'battery_power','upflow','downflow','fps','gpu']
         log_file_list = android_log_file_list if platform == 'Android' else ios_log_file_list
         wb = xlwt.Workbook(encoding = 'utf-8')
-       
         k = 1
         for name in log_file_list:
             ws1 = wb.add_sheet(name)
@@ -329,7 +328,7 @@ class File:
                 file.write(f'{log_time}={str(value)}' + '\n')
     
     def record_net(self, type, send , recv):
-        net_dict = {}
+        net_dict = dict()
         match(type):
             case 'pre':
                 net_dict['send'] = send
@@ -404,34 +403,34 @@ class File:
         return log_data_list, target_data_list
         
     def getCpuLog(self, platform, scene):
-        targetDic = {}
+        targetDic = dict()
         targetDic['cpuAppData'] = self.readLog(scene=scene, filename='cpu_app.log')[0]
         targetDic['cpuSysData'] = self.readLog(scene=scene, filename='cpu_sys.log')[0]
         result = {'status': 1, 'cpuAppData': targetDic['cpuAppData'], 'cpuSysData': targetDic['cpuSysData']}
         return result
     
     def getCpuLogCompare(self, platform, scene1, scene2):
-        targetDic = {}
+        targetDic = dict()
         targetDic['scene1'] = self.readLog(scene=scene1, filename='cpu_app.log')[0]
         targetDic['scene2'] = self.readLog(scene=scene2, filename='cpu_app.log')[0]
         result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
     
     def getGpuLog(self, platform, scene):
-        targetDic = {}
+        targetDic = dict()
         targetDic['gpu'] = self.readLog(scene=scene, filename='gpu.log')[0]
         result = {'status': 1, 'gpu': targetDic['gpu']}
         return result
     
     def getGpuLogCompare(self, platform, scene1, scene2):
-        targetDic = {}
+        targetDic = dict()
         targetDic['scene1'] = self.readLog(scene=scene1, filename='gpu.log')[0]
         targetDic['scene2'] = self.readLog(scene=scene2, filename='gpu.log')[0]
         result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
     
     def getMemLog(self, platform, scene):
-        targetDic = {}
+        targetDic = dict()
         targetDic['memTotalData'] = self.readLog(scene=scene, filename='mem_total.log')[0]
         if platform == Platform.Android:
             targetDic['memSwapData']  = self.readLog(scene=scene, filename='mem_swap.log')[0]
@@ -443,7 +442,7 @@ class File:
         return result
     
     def getMemDetailLog(self, platform, scene):
-        targetDic = {}
+        targetDic = dict()
         targetDic['java_heap'] = self.readLog(scene=scene, filename='mem_java_heap.log')[0]
         targetDic['native_heap'] = self.readLog(scene=scene, filename='mem_native_heap.log')[0]
         targetDic['code_pss'] = self.readLog(scene=scene, filename='mem_code_pss.log')[0]
@@ -455,14 +454,14 @@ class File:
         return result
     
     def getMemLogCompare(self, platform, scene1, scene2):
-        targetDic = {}
+        targetDic = dict()
         targetDic['scene1'] = self.readLog(scene=scene1, filename='mem_total.log')[0]
         targetDic['scene2'] = self.readLog(scene=scene2, filename='mem_total.log')[0]
         result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
     
     def getBatteryLog(self, platform, scene):
-        targetDic = {}
+        targetDic = dict()
         if platform == Platform.Android:
             targetDic['batteryLevel'] = self.readLog(scene=scene, filename='battery_level.log')[0]
             targetDic['batteryTem'] = self.readLog(scene=scene, filename='battery_tem.log')[0]
@@ -482,7 +481,7 @@ class File:
         return result
     
     def getBatteryLogCompare(self, platform, scene1, scene2):
-        targetDic = {}
+        targetDic = dict()
         if platform == Platform.Android:
             targetDic['scene1'] = self.readLog(scene=scene1, filename='battery_level.log')[0]
             targetDic['scene2'] = self.readLog(scene=scene2, filename='battery_level.log')[0]
@@ -494,28 +493,28 @@ class File:
         return result
     
     def getFlowLog(self, platform, scene):
-        targetDic = {}
+        targetDic = dict()
         targetDic['upFlow'] = self.readLog(scene=scene, filename='upflow.log')[0]
         targetDic['downFlow'] = self.readLog(scene=scene, filename='downflow.log')[0]
         result = {'status': 1, 'upFlow': targetDic['upFlow'], 'downFlow': targetDic['downFlow']}
         return result
     
     def getFlowSendLogCompare(self, platform, scene1, scene2):
-        targetDic = {}
+        targetDic = dict()
         targetDic['scene1'] = self.readLog(scene=scene1, filename='upflow.log')[0]
         targetDic['scene2'] = self.readLog(scene=scene2, filename='upflow.log')[0]
         result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
     
     def getFlowRecvLogCompare(self, platform, scene1, scene2):
-        targetDic = {}
+        targetDic = dict()
         targetDic['scene1'] = self.readLog(scene=scene1, filename='downflow.log')[0]
         targetDic['scene2'] = self.readLog(scene=scene2, filename='downflow.log')[0]
         result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
     
     def getFpsLog(self, platform, scene):
-        targetDic = {}
+        targetDic = dict()
         targetDic['fps'] = self.readLog(scene=scene, filename='fps.log')[0]
         if platform == Platform.Android:
             targetDic['jank'] = self.readLog(scene=scene, filename='jank.log')[0]
@@ -523,9 +522,42 @@ class File:
         else:
             result = {'status': 1, 'fps': targetDic['fps']}     
         return result
+    
+    def getDiskLog(self, scene):
+        initail_disk_list = list()
+        current_disk_list = list()
+        if os.path.exists(os.path.join(self.report_dir,scene,'initail_disk.log')):
+            lines = self.open_file(os.path.join(self.report_dir,scene,'initail_disk.log'), "r")
+            for line in lines:
+                if 'Filesystem' not in line and line.strip() != '':
+                    disk_value_list = line.split()
+                    disk_dict = dict(
+                        filesystem = disk_value_list[0],
+                        blocks = disk_value_list[1],
+                        used = disk_value_list[2],
+                        available = disk_value_list[3],
+                        use_percent = disk_value_list[4],
+                        mounted = disk_value_list[5]
+                    )
+                    initail_disk_list.append(disk_dict)
+        if os.path.exists(os.path.join(self.report_dir,scene,'current_disk.log')):
+            lines = self.open_file(os.path.join(self.report_dir,scene,'current_disk.log'), "r")
+            for line in lines:
+                if 'Filesystem' not in line and line.strip() != '':
+                    disk_value_list = line.split()
+                    disk_dict = dict(
+                        filesystem = disk_value_list[0],
+                        blocks = disk_value_list[1],
+                        used = disk_value_list[2],
+                        available = disk_value_list[3],
+                        use_percent = disk_value_list[4],
+                        mounted = disk_value_list[5]
+                    )
+                    current_disk_list.append(disk_dict)
+        return initail_disk_list, current_disk_list
 
     def getFpsLogCompare(self, platform, scene1, scene2):
-        targetDic = {}
+        targetDic = dict()
         targetDic['scene1'] = self.readLog(scene=scene1, filename='fps.log')[0]
         targetDic['scene2'] = self.readLog(scene=scene2, filename='fps.log')[0]
         result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
@@ -708,7 +740,7 @@ class File:
         networkData2 = self.readLog(scene=scene, filename='network2.log')[1]
         network2 = f'{round(float(sum(networkData2) / 1024), 2)}MB'
         
-        apm_dict = {}
+        apm_dict = dict()
         apm_dict['cpuAppRate1'] = cpuAppRate1
         apm_dict['cpuAppRate2'] = cpuAppRate2
         apm_dict['totalPassAvg1'] = totalPassAvg1
@@ -764,7 +796,6 @@ class Method:
         except IndexError:
             return default
 
-
 class Install:
 
     def uploadFile(self, file_path, file_obj):
@@ -806,7 +837,7 @@ class Install:
             return False, result
 
     def installIPA(self, path):
-        result = Devices.execCmd('tidevice install {}'.format(path))
+        result = os.system('tidevice install {}'.format(path))
         if result == 0:
             os.remove(path)
             return True, result

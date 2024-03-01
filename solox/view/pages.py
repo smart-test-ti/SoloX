@@ -4,7 +4,7 @@ from flask import Blueprint
 from flask import render_template
 from flask import request
 from logzero import logger
-from solox.public.common import Devices,File,Method
+from public.common import Devices,File,Method
 
 page = Blueprint("page", __name__)
 d = Devices()
@@ -85,6 +85,9 @@ def analysis():
             try:
                 if platform == 'Android':
                     apm_data = f._setAndroidPerfs(scene)
+                    disk = f.getDiskLog(scene)
+                    initial_disk  = disk[0]
+                    current_disk  = disk[1]
                 else:
                     apm_data = f._setiOSPerfs(scene)    
             except ZeroDivisionError:

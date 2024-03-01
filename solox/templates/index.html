@@ -810,6 +810,28 @@ SoloX - Application Performance Monitoring
         });
     }
 
+    function setDisk(device){
+        $.ajax({
+            url: Host + "/apm/set/disk",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                device:device
+            },
+            success: function (data) {
+                if(data['status'] != 1){
+                    SwalFire('error','Something error',data['msg'],2000);
+                }
+            },
+            error: function(error){
+                SwalFire('error','Server Error','Please press [ctrl+shift+i] and provide the browser\'s error message',5000);
+                console.log(error);
+            }
+        });
+    }
+
     function setNetWork(type,device,pkgname,net_switch){
         var process = '';
         if(platform == 'Android'){
@@ -1715,6 +1737,7 @@ SoloX - Application Performance Monitoring
         if(device && pkgname){
             var net_switch = $('#net-switch').is(':checked');
             if(platform == 'Android'){
+                setDisk(device)
                 setNetWork('pre',device,pkgname,net_switch)
                 var record_switch = $('#record-switch').is(':checked');
                 if(record_switch){

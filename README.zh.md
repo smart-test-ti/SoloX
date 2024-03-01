@@ -16,9 +16,9 @@
 
 ## 🔎简介
 
-SoloX - Android/iOS性能数据的实时采集工具。
+SoloX是一个可以实时收集Android/iOS性能数据的web工具。
 
-我们致力于解决低效、繁琐的测试执行问题，我们的目标是在【Simple Test In SoloX】
+快速定位分析性能问题，提升应用的性能和品质。无需ROOT/越狱，即插即用。
 
 ![10 37 192 142_50003__platform=Android lan=en](https://github.com/smart-test-ti/SoloX/assets/24454096/5b33183c-dcf3-48b7-8c91-dfe20bff3d5c)
 
@@ -149,3 +149,9 @@ target in ['cpu','memory','memory_detail','network','fps','battery','gpu']
 
 - https://github.com/alibaba/taobao-iphone-device
 - https://github.com/Genymobile/scrcpy
+
+## 联系
+
+关注公众号，直接发私信，作者看到就回复
+
+<img src="https://github.com/smart-test-ti/.github/assets/24454096/fadb328d-c136-460a-b30d-a98d9036d882" alt="SmartTest" width="300">

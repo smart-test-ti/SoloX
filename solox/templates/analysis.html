@@ -380,7 +380,25 @@
         {% endif %}
     </div>
 </div>
-<div class="col-12">
+{% if platform == 'Android' %}
+<div class="form-selectgroup mb-3">
+    <label class="form-selectgroup-item">
+        <input type="radio" name="icons" value="home" class="form-selectgroup-input" checked onclick="chartsClick()">
+        <span class="form-selectgroup-label">
+            <svg t="1709092052830" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="25403" width="200" height="200"><path d="M512 256a42.666667 42.666667 0 0 0-42.666667 42.666667v426.666666a42.666667 42.666667 0 0 0 85.333334 0V298.666667a42.666667 42.666667 0 0 0-42.666667-42.666667z m-213.333333 256a42.666667 42.666667 0 0 0-42.666667 42.666667v170.666666a42.666667 42.666667 0 0 0 85.333333 0v-170.666666a42.666667 42.666667 0 0 0-42.666666-42.666667z m426.666666-85.333333a42.666667 42.666667 0 0 0-42.666666 42.666666v256a42.666667 42.666667 0 0 0 85.333333 0v-256a42.666667 42.666667 0 0 0-42.666667-42.666666z m85.333334-341.333334H213.333333a128 128 0 0 0-128 128v597.333334a128 128 0 0 0 128 128h597.333334a128 128 0 0 0 128-128V213.333333a128 128 0 0 0-128-128z m42.666666 725.333334a42.666667 42.666667 0 0 1-42.666666 42.666666H213.333333a42.666667 42.666667 0 0 1-42.666666-42.666666V213.333333a42.666667 42.666667 0 0 1 42.666666-42.666666h597.333334a42.666667 42.666667 0 0 1 42.666666 42.666666z" fill="#0070FF" p-id="25404"></path></svg>
+            {% if lan == 'cn' %} 图表 {% else %} Charts {% endif %}
+        </span>
+    </label>
+    <label class="form-selectgroup-item">
+        <input type="radio" name="icons" value="user" class="form-selectgroup-input" onclick="diskClick()">
+        <span class="form-selectgroup-label">
+            <svg t="1709092139564" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="34466" width="200" height="200"><path d="M0 0h1024v1024H0z" fill="#FFFFFF" fill-opacity=".01" p-id="34467"></path><path d="M938.666667 618.666667H85.333333V896h853.333334v-277.333333z" fill="#2F88FF" p-id="34468"></path><path d="M981.333333 938.666667H42.666667v-362.666667h938.666666V938.666667zM128 853.333333h768v-192H128V853.333333z" fill="#333333" p-id="34469"></path><path d="M757.333333 810.666667a53.333333 53.333333 0 1 0 0-106.666667 53.333333 53.333333 0 0 0 0 106.666667z" fill="#FFFFFF" p-id="34470"></path><path d="M127.104 627.413333l-83.541333-17.493333L158.165333 64h708.949334l113.322666 546.005333-83.541333 17.322667L797.696 149.333333H227.456L127.104 627.413333z" fill="#333333" p-id="34471"></path></svg>
+            {% if lan == 'cn' %} 磁盘使用情况 {% else %} Disk Usage {% endif %}
+        </span>
+    </label>
+</div>
+{% endif %}
+<div class="col-12"  id="card-chart">
     <div class="card cpu-card">
         <div class="card-header">
             <div class='card-title'>{% if lan == 'cn' %} CPU使用率 (%) {% else %} CPU Usage (%) {% endif %}</div>
@@ -527,6 +545,90 @@
     </div>
     {% endif %}
 </div>
+
+<!-- Disk Usage -->
+<div class="card card-disk initial-disk" id="disk_inital_value_table">
+    <div class="card-header">
+        <h3 class="card-title">
+            <svg t="1709257126539" style="margin-right: 10px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="20406" width="200" height="200"><path d="M885.3 957.3H140.7c-42.2 0-76.5-34.3-76.5-76.5V136.3c0-42.2 34.3-76.5 76.5-76.5h744.6c42.2 0 76.5 34.3 76.5 76.5v744.6c-0.1 42.1-34.3 76.4-76.5 76.4z m-744.6-851c-16.5 0-29.9 13.4-29.9 29.9v744.6c0 16.5 13.4 29.9 29.9 29.9h744.6c16.5 0 29.9-13.4 29.9-29.9V136.3c0-16.5-13.4-29.9-29.9-29.9H140.7z" fill="#2A68C9" p-id="20407"></path><path d="M938.5 315.8h-851V91.1c0-4.4 3.6-8 8-8h835c4.4 0 8 3.6 8 8v224.7z" fill="#2A68C9" p-id="20408"></path><path d="M961.7 339H64.3V136.3c0-42.2 34.3-76.5 76.5-76.5h744.6c42.2 0 76.5 34.3 76.5 76.5V339z m-850.9-46.5h804.4V136.3c0-16.5-13.4-29.9-29.9-29.9H140.7c-16.5 0-29.9 13.4-29.9 29.9v156.2z m827.7 352.3h-851c-12.9 0-23.3-10.4-23.3-23.3 0-12.8 10.4-23.3 23.3-23.3h851c12.9 0 23.3 10.4 23.3 23.3-0.1 12.9-10.5 23.3-23.3 23.3z" fill="#2A68C9" p-id="20409"></path><path d="M363.4 957.3c-12.9 0-23.3-10.4-23.3-23.3V315.8c0-12.8 10.4-23.3 23.3-23.3s23.3 10.4 23.3 23.3V934c0 12.9-10.4 23.3-23.3 23.3z m299.2 0c-12.9 0-23.3-10.4-23.3-23.3V315.8c0-12.8 10.4-23.3 23.3-23.3s23.3 10.4 23.3 23.3V934c0 12.9-10.5 23.3-23.3 23.3z" fill="#2A68C9" p-id="20410"></path></svg>
+            {% if lan == 'cn' %} 初始值 {% else %} Initial Value {% endif %}
+        </h3>
+        <div class="card-actions btn-actions">      
+            <a class="btn" id="initial_disk_png" style="margin-left: 10px;" onclick="screenshot('initial-disk','initial_disk.png')">
+                <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                {% if lan == 'cn' %} 截图 {% else %} ScreenShot {% endif %}
+            </a>
+        </div>
+    </div>
+    <div class="table-responsive" style="font-size: 15px;">
+        <table id="file_table" class="table card-table table-vcenter text-nowrap datatable">
+            <thead>
+            <tr>        
+                <th style="font-size: 13px;">Filesystem</th>
+                <th style="font-size: 13px;">Size(KB)</th>
+                <th style="font-size: 13px;">Used(KB)</th>
+                <th style="font-size: 13px;">Avail(KB)</th>
+                <th style="font-size: 13px;">Use(%)</th>
+                <th style="font-size: 13px;">Mounted on</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for disk in initial_disk %}
+            <tr>
+                <td>{{ disk.filesystem }}</td>
+                <td>{{ disk.blocks }}</td>
+                <td>{{ disk.used }}</td>
+                <td>{{ disk.available }}</td>
+                <td>{{ disk.use_percent }}</td>
+                <td>{{ disk.mounted }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="card mt-3 card-disk current-disk" id="disk_current_value_table">
+    <div class="card-header">
+        <h3 class="card-title">
+            <svg t="1709257126539" style="margin-right: 10px;" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="20406" width="200" height="200"><path d="M885.3 957.3H140.7c-42.2 0-76.5-34.3-76.5-76.5V136.3c0-42.2 34.3-76.5 76.5-76.5h744.6c42.2 0 76.5 34.3 76.5 76.5v744.6c-0.1 42.1-34.3 76.4-76.5 76.4z m-744.6-851c-16.5 0-29.9 13.4-29.9 29.9v744.6c0 16.5 13.4 29.9 29.9 29.9h744.6c16.5 0 29.9-13.4 29.9-29.9V136.3c0-16.5-13.4-29.9-29.9-29.9H140.7z" fill="#2A68C9" p-id="20407"></path><path d="M938.5 315.8h-851V91.1c0-4.4 3.6-8 8-8h835c4.4 0 8 3.6 8 8v224.7z" fill="#2A68C9" p-id="20408"></path><path d="M961.7 339H64.3V136.3c0-42.2 34.3-76.5 76.5-76.5h744.6c42.2 0 76.5 34.3 76.5 76.5V339z m-850.9-46.5h804.4V136.3c0-16.5-13.4-29.9-29.9-29.9H140.7c-16.5 0-29.9 13.4-29.9 29.9v156.2z m827.7 352.3h-851c-12.9 0-23.3-10.4-23.3-23.3 0-12.8 10.4-23.3 23.3-23.3h851c12.9 0 23.3 10.4 23.3 23.3-0.1 12.9-10.5 23.3-23.3 23.3z" fill="#2A68C9" p-id="20409"></path><path d="M363.4 957.3c-12.9 0-23.3-10.4-23.3-23.3V315.8c0-12.8 10.4-23.3 23.3-23.3s23.3 10.4 23.3 23.3V934c0 12.9-10.4 23.3-23.3 23.3z m299.2 0c-12.9 0-23.3-10.4-23.3-23.3V315.8c0-12.8 10.4-23.3 23.3-23.3s23.3 10.4 23.3 23.3V934c0 12.9-10.5 23.3-23.3 23.3z" fill="#2A68C9" p-id="20410"></path></svg>
+            {% if lan == 'cn' %} 当前值 {% else %} Current Value {% endif %}
+        </h3>
+        <div class="card-actions btn-actions">      
+            <a class="btn" id="initial_disk_png" style="margin-left: 10px;" onclick="screenshot('current-disk','current_disk.png')">
+                <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                {% if lan == 'cn' %} 截图 {% else %} ScreenShot {% endif %}
+            </a>
+        </div>
+    </div>
+    <div class="table-responsive" style="font-size: 15px;">
+        <table id="file_table" class="table card-table table-vcenter text-nowrap datatable">
+            <thead>
+            <tr>        
+                <th style="font-size: 13px;">Filesystem</th>
+                <th style="font-size: 13px;">Size(KB)</th>
+                <th style="font-size: 13px;">Used(KB)</th>
+                <th style="font-size: 13px;">Avail(KB)</th>
+                <th style="font-size: 13px;">Use(%)</th>
+                <th style="font-size: 13px;">Mounted on</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for disk in current_disk %}
+            <tr>
+                <td>{{ disk.filesystem }}</td>
+                <td>{{ disk.blocks }}</td>
+                <td>{{ disk.used }}</td>
+                <td>{{ disk.available }}</td>
+                <td>{{ disk.use_percent }}</td>
+                <td>{{ disk.mounted }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <div class="modal modal-blur fade" id="modal-compare" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -580,6 +682,7 @@
 <script>
 
     $(document).ready(function() {
+        chartsClick()
         initCpuCharts()
         initMemoryCharts()
         initFpsCharts()
@@ -593,6 +696,17 @@
         }
     });
     
+    function chartsClick(){
+        var chart_cards = document.getElementById('card-chart')
+        chart_cards.style.display = 'block'
+        $('.card-disk').hide()
+    }
+
+    function diskClick(){
+        $('#card-chart').hide()
+        $('.card-disk').show()
+    }
+
     function compare(){
         let lan = '{{ lan }}';
         let platform = '{{ platform }}';
