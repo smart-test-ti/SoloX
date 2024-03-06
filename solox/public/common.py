@@ -18,7 +18,7 @@ from functools import wraps
 from jinja2 import Environment, FileSystemLoader
 from tidevice._device import Device
 from tidevice import Usbmux
-from public.adb import adb
+from solox.public.adb import adb
 
 
 class Platform:

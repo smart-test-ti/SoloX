@@ -7,9 +7,9 @@ from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
 from solox import __version__
-from public.apm import CPU, Memory, Network, FPS, Battery, GPU, Disk, Target
-from public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
-from public.common import Devices, File, Method, Install, Platform, Scrcpy
+from solox.public.apm import CPU, Memory, Network, FPS, Battery, GPU, Disk, Target
+from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
+from solox.public.common import Devices, File, Method, Install, Platform, Scrcpy
 
 d = Devices()
 f = File()

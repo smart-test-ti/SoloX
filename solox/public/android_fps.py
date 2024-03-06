@@ -6,8 +6,8 @@ import threading
 import time
 import traceback
 from logzero import logger
-from public.adb import adb
-from public.common import Devices
+from solox.public.adb import adb
+from solox.public.common import Devices
 
 d = Devices()
 

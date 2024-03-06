@@ -19,7 +19,7 @@
 
 SoloX - Real-time collection tool for Android/iOS performance data.
 
-We are committed to solving inefficient, cumbersome test execution, and our goal is Simple Test In SoloX!
+Quickly locate and analyze performance issues to improve application performance and quality. No need for ROOT/jailbreak, plug and play.
 
 ![10 37 192 142_50003__platform=Android lan=en](https://github.com/smart-test-ti/SoloX/assets/24454096/5b33183c-dcf3-48b7-8c91-dfe20bff3d5c)
 
@@ -153,6 +153,7 @@ change to
 from view.apis import api
 
 ```
+
 * run [python ./solox/debug.py]
 
 ```python
