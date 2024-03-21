@@ -99,7 +99,10 @@ def open_url(host: str, port: int):
         f = Figlet(font="slant", width=300)
         print(f.renderText("SOLOX {}".format(__version__)))
         flag = status(host, port)
-    webbrowser.open('http://{}:{}/?platform=Android&lan=en'.format(host, port), new=2)
+    try:    
+        webbrowser.open('http://{}:{}/?platform=Android&lan=en'.format(host, port), new=2)
+    except Exception as e:
+        logger.exception(e)    
     logger.info('Running on http://{}:{}/?platform=Android&lan=en (Press CTRL+C to quit)'.format(host, port))
 
 
