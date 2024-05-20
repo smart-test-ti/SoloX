@@ -400,13 +400,30 @@ def getGpu():
     """get gpu data"""
     pkgname = method._request(request, 'pkgname')
     device = method._request(request, 'device')
+    platform = method._request(request, 'platform')
     try:
-        gpu = GPU(pkgName=pkgname, deviceId=device)
-        final = gpu.getGPU()
-        result = {'status': 1, 'gpu': final}
+        deviceId = d.getIdbyDevice(device, platform)
+        gpu = GPU(pkgName=pkgname, deviceId=deviceId, platform=platform)
+        value = gpu.getGPU()
+        result = {'status': 1, 'gpu': value}
     except Exception as e:
         logger.exception(e)
         result = {'status': 1, 'gpu': 0}
+    return result
+
+@api.route('/apm/disk', methods=['post', 'get'])
+def getDisk():
+    """get disk data"""
+    device = method._request(request, 'device')
+    platform = method._request(request, 'platform')
+    try:
+        deviceId = d.getIdbyDevice(device, platform)
+        disk = Disk(deviceId=deviceId, platform=platform)
+        value = disk.getDisk()
+        result = {'status': 1, 'used': value['used'], 'free':value['free']}
+    except Exception as e:
+        logger.exception(e)
+        result = {'status': 1, 'used': 0, 'free':0}
     return result
 
 @api.route('/apm/set/disk', methods=['post', 'get'])
@@ -510,8 +527,13 @@ def exportAndroidHtml():
     temperature = method._request(request, 'temperature')
     net_send = method._request(request, 'net_send')
     net_recv = method._request(request, 'net_recv')
+    gpu = method._request(request, 'gpu')
     try:
         summary_dict = dict()
+        summary_dict['app'] = f.readJson(scene).get('app')
+        summary_dict['platform'] = f.readJson(scene).get('platform')
+        summary_dict['devices'] = f.readJson(scene).get('devices')
+        summary_dict['ctime'] = f.readJson(scene).get('ctime')
         summary_dict['cpu_app'] = cpu_app
         summary_dict['cpu_sys'] = cpu_sys
         summary_dict['mem_total'] = mem_total
@@ -522,6 +544,7 @@ def exportAndroidHtml():
         summary_dict['tem'] = temperature
         summary_dict['net_send'] = net_send
         summary_dict['net_recv'] = net_recv
+        summary_dict['gpu'] = gpu
         summary_dict['cpu_charts'] = f.getCpuLog(Platform.Android, scene)
         summary_dict['mem_charts'] = f.getMemLog(Platform.Android, scene)
         summary_dict['mem_detail_charts'] = f.getMemDetailLog(Platform.Android, scene)
@@ -529,6 +552,7 @@ def exportAndroidHtml():
         summary_dict['battery_charts'] = f.getBatteryLog(Platform.Android, scene)
         summary_dict['fps_charts'] = f.getFpsLog(Platform.Android, scene)['fps']
         summary_dict['jank_charts'] = f.getFpsLog(Platform.Android, scene)['jank']
+        summary_dict['gpu_charts'] = f.getGpuLog(Platform.Android, scene)
         path = f.make_android_html(scene, summary_dict)
         result = {'status': 1, 'msg':'success', 'path':path}
     except Exception as e:
@@ -552,6 +576,10 @@ def exportiOSHtml():
     net_recv = method._request(request, 'net_recv')
     try:
         summary_dict = dict()
+        summary_dict['app'] = f.readJson(scene).get('app')
+        summary_dict['platform'] = f.readJson(scene).get('platform')
+        summary_dict['devices'] = f.readJson(scene).get('devices')
+        summary_dict['ctime'] = f.readJson(scene).get('ctime')
         summary_dict['cpu_app'] = cpu_app
         summary_dict['cpu_sys'] = cpu_sys
         summary_dict['mem_total'] = mem_total
@@ -590,7 +618,8 @@ def getLogData():
             'battery': f.getBatteryLog(platform, scene),
             'flow': f.getFlowLog(platform, scene),
             'fps': f.getFpsLog(platform, scene),
-            'gpu': f.getGpuLog(platform, scene)
+            'gpu': f.getGpuLog(platform, scene),
+            'disk': f.getDiskLog(platform, scene)
         }
         result = fucDic[target]
     except Exception as e:
@@ -696,12 +725,9 @@ def apmCollect():
                 else:
                     result = {'status': 1, 'temperature': final[0], 'current': final[1], 'voltage': final[2], 'power': final[3]}
             case Target.GPU:
-                if platform == Platform.iOS:
-                    gpu = GPU(pkgname=pkgname)
-                    final = gpu.getGPU()
-                    result = {'status': 1, 'gpu': final}
-                else:
-                    result = {'status': 0, 'msg': 'not support android'}
+                gpu = GPU(pkgname=pkgname)
+                final = gpu.getGPU()
+                result = {'status': 1, 'gpu': final}
             case _:
                 result = {'status': 0, 'msg': 'no this target'}
     except Exception as e:

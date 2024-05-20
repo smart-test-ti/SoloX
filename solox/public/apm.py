@@ -24,6 +24,7 @@ class Target:
     Network = 'network'
     FPS = 'fps'
     GPU = 'gpu'
+    DISK = 'disk'
 
 class CPU(object):
 
@@ -50,6 +51,7 @@ class CPU(object):
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         totalCpu = 0
         lines = result.split('\n')
+        lines.pop(0)
         for line in lines:
             toks = line.split()
             if toks[1] in ['', ' ']:
@@ -57,16 +59,6 @@ class CPU(object):
             for i in range(1, 8):
                 totalCpu += float(toks[i])
         return float(totalCpu)
-
-    def getCpuCores(self):
-        """get Android cpu cores"""
-        cmd = 'cat /sys/devices/system/cpu/online'
-        result = adb.shell(cmd=cmd, deviceId=self.deviceId)
-        try:
-            nums = int(result.split('-')[1]) + 1
-        except:
-            nums = 1
-        return nums
 
     def getSysCpuStat(self):
         """get the total cpu usage at a certain time"""
@@ -85,6 +77,7 @@ class CPU(object):
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
         ileCpu = 0
         lines = result.split('\n')
+        lines.pop(0)
         for line in lines:
             toks = line.split()
             if toks[1] in ['', ' ']:
@@ -98,7 +91,7 @@ class CPU(object):
             processCpuTime_1 = self.getprocessCpuStat()
             totalCpuTime_1 = self.getTotalCpuStat()
             idleCputime_1 = self.getIdleCpuStat()
-            time.sleep(0.5)
+            time.sleep(1)
             processCpuTime_2 = self.getprocessCpuStat()
             totalCpuTime_2 = self.getTotalCpuStat()
             idleCputime_2 = self.getIdleCpuStat()
@@ -131,6 +124,10 @@ class CPU(object):
         """Get the cpu rate of a process, unit:%"""
         appCpuRate, systemCpuRate = self.getAndroidCpuRate(noLog) if self.platform == Platform.Android else self.getiOSCpuRate(noLog)
         return appCpuRate, systemCpuRate
+    
+    def getCpuTemperature(self, noLog=False):
+        cmd = 'cat /sys/class/thermal/thermal_zone*/temp' #    cat /sys/class/thermal/thermal_zone*/temp 
+        result = adb.shell(cmd=cmd, deviceId=self.deviceId)
 
 class Memory(object):
     def __init__(self, pkgName, deviceId, platform=Platform.Android, pid=None):
@@ -266,7 +263,7 @@ class Battery(object):
         """Get ios battery info, unit:%"""
         d  = tidevice.Device(udid=self.deviceId)
         ioDict =  d.get_io_power()
-        tem = m._setValue(ioDict['Diagnostics']['IORegistry']['Temperature'])
+        tem = m._setValue(ioDict['Diagnostics']['IORegistry']['Temperature'] / 100)
         current = m._setValue(abs(ioDict['Diagnostics']['IORegistry']['InstantAmperage']))
         voltage = m._setValue(ioDict['Diagnostics']['IORegistry']['Voltage'])
         power = current * voltage / 1000
@@ -294,18 +291,17 @@ class Network(object):
             self.pid = d.getPid(pkgName=self.pkgName, deviceId=self.deviceId)[0].split(':')[0]
 
     def getAndroidNet(self, wifi=True):
-        """Get Android send/recv data, unit:KB wlan0/rmnet0"""
+        """Get Android send/recv data, unit:KB wlan0/rmnet_ipa0"""
         try:
-            net = 'wlan0' if wifi else 'rmnet0'
+            if wifi is True:
+                net = 'wlan0'
+                adb.shell(cmd='svc wifi enable', deviceId=self.deviceId)
+            else:
+                net = 'rmnet_ipa0'
+                adb.shell(cmd='svc wifi disable', deviceId=self.deviceId)
+                adb.shell(cmd='svc data enable', deviceId=self.deviceId)
             cmd = 'cat /proc/{}/net/dev |{} {}'.format(self.pid, d.filterType(), net)
             output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
-            if not wifi and not output_pre:
-                for phone_net in ['rmnet_data0', 'rmnet_ipa0', 'ccmni0']:
-                    cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
-                    output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
-                    if output_pre:
-                        net = phone_net
-                        break
             m_pre = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)
             sendNum_pre = round(float(float(m_pre.group(2)) / 1024), 2)
             recNum_pre = round(float(float(m_pre.group(1)) / 1024), 2)
@@ -326,16 +322,15 @@ class Network(object):
 
     def setAndroidNet(self, wifi=True):
         try:
-            net = 'wlan0' if wifi else 'rmnet0'
+            if wifi is True:
+                net = 'wlan0'
+                adb.shell(cmd='svc wifi enable', deviceId=self.deviceId)
+            else:
+                net = 'rmnet_ipa0'
+                adb.shell(cmd='svc wifi disable', deviceId=self.deviceId)
+                adb.shell(cmd='svc data enable', deviceId=self.deviceId)
             cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
             output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
-            if not wifi and not output_pre:
-                for phone_net in ['rmnet_data0', 'rmnet_ipa0', 'ccmni0']:
-                    cmd = f'cat /proc/{self.pid}/net/dev |{d.filterType()} {net}'
-                    output_pre = adb.shell(cmd=cmd, deviceId=self.deviceId)
-                    if output_pre:
-                        net = phone_net
-                        break
             m = re.search(r'{}:\s*(\d+)\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*\d+\s*(\d+)'.format(net), output_pre)    
             sendNum = round(float(float(m.group(2)) / 1024), 2)
             recNum = round(float(float(m.group(1)) / 1024), 2)
@@ -422,21 +417,33 @@ class FPS(object):
         return fps, jank
 
 class GPU(object):
-    def __init__(self, pkgName, deviceId):
+    def __init__(self, pkgName, deviceId, platform=Platform.Android):
         self.pkgName = pkgName
         self.deviceId = deviceId
+        self.platform = platform
 
-    def getGPU(self, noLog=False):
+    def getAndroidGpuRate(self):
+        cmd = 'cat /sys/class/kgsl/kgsl-3d0/gpubusy'
+        result = adb.shell(cmd=cmd, deviceId=self.deviceId)
+        gpu = round(float(int(result.split(' ')[0]) / int(result.split(' ')[1])) * 100, 2)
+        return gpu
+
+    def getiOSGpuRate(self):
         apm = iosAPM(self.pkgName, self.deviceId)
         gpu = apm.getPerformance(apm.gpu)
+        return gpu    
+
+    def getGPU(self, noLog=False):
+        gpu = self.getAndroidGpuRate() if self.platform == Platform.Android else self.getiOSGpuRate()
         if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
             f.add_log(os.path.join(f.report_dir,'gpu.log'), apm_time, gpu)
         return gpu
 
 class Disk(object):
-    def __init__(self, deviceId):
+    def __init__(self, deviceId, platform=Platform.Android):
         self.deviceId = deviceId
+        self.platform = platform
 
     def setInitialDisk(self):
         disk_info = adb.shell(cmd='df', deviceId=self.deviceId)
@@ -447,39 +454,38 @@ class Disk(object):
         disk_info = adb.shell(cmd='df', deviceId=self.deviceId)
         with open(os.path.join(f.report_dir,'current_disk.log'), 'a+', encoding="utf-8") as file:
                 file.write(disk_info)
-
-    def getInitDisk(self):
-        disk_infos = f.open_file(os.path.join(f.report_dir,'initail_disk.log'), "r").pop(0)
-        disk_list = list()
-        for line in disk_infos:
+    
+    def getAndroidDisk(self):
+        disk_info = adb.shell(cmd='df', deviceId=self.deviceId)
+        disk_lines = disk_info.splitlines()
+        disk_lines.pop(0)
+        size_list = list()
+        used_list = list()
+        free_list = list()
+        for line in disk_lines:
             disk_value_list = line.split()
-            disk_dict = dict(
-                filesystem = disk_value_list[0],
-                blocks = disk_value_list[1],
-                used = disk_value_list[2],
-                available = disk_value_list[3],
-                use_percent = disk_value_list[4],
-                mounted = disk_value_list[5]
-            )
-            disk_list.append(disk_dict)
-        return disk_list    
+            size_list.append(int(disk_value_list[1]))
+            used_list.append(int(disk_value_list[2]))
+            free_list.append(int(disk_value_list[3]))
+        sum_size = sum(size_list)    
+        sum_used = sum(used_list)
+        sum_free = sum(free_list)
+        disk_dict = {'disk_size':sum_size, 'used':sum_used, 'free': sum_free}
+        return disk_dict
 
-    def getCurrentDisk(self):
-        disk_infos = f.open_file(os.path.join(f.report_dir,'current_disk.log'), "r")
-        disk_infos.pop(0)
-        disk_list = list()
-        for line in disk_infos:
-            disk_value_list = line.split()
-            disk_dict = dict(
-                filesystem = disk_value_list[0],
-                blocks = disk_value_list[1],
-                used = disk_value_list[2],
-                available = disk_value_list[3],
-                use_percent = disk_value_list[4],
-                mounted = disk_value_list[5]
-            )
-            disk_list.append(disk_dict)
-        return disk_list
+    def getiOSDisk(self):
+        ios_device = tidevice.Device(udid=self.deviceId)
+        disk_dict  = ios_device.storage_info()
+        return disk_dict
+    
+    def getDisk(self, noLog=False):
+        disk = self.getAndroidDisk() if self.platform == Platform.Android else self.getiOSDisk()
+        if noLog is False:
+            apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+            f.add_log(os.path.join(f.report_dir,'disk_used.log'), apm_time, disk.get('used'))
+            f.add_log(os.path.join(f.report_dir,'disk_free.log'), apm_time, disk.get('free'))
+        return disk    
+
     
 class iosAPM(object):
 
@@ -648,11 +654,9 @@ class AppPerformanceMonitor(initPerformanceService):
         return result
 
     def collectGpu(self):
-        _gpu = GPU(self.pkgName, self.deviceId)
+        _gpu = GPU(self.pkgName, self.deviceId, self.platform)
         result = {}
         while self.get_status() == 'on':
-            if self.platform == Platform.Android:
-                break
             gpu = _gpu.getGPU(noLog=self.noLog)
             result = {'gpu': gpu}
             logger.info(f'gpu: {result}')
@@ -662,7 +666,7 @@ class AppPerformanceMonitor(initPerformanceService):
                 break
         return result
 
-    def setPerfs(self):
+    def setPerfs(self, report_path=None):
         match(self.platform):
             case Platform.Android:
                 adb.shell(cmd='dumpsys battery reset', deviceId=self.deviceId)
@@ -673,6 +677,10 @@ class AppPerformanceMonitor(initPerformanceService):
                                       video=0, platform=self.platform, model='normal')
                 summary = f._setAndroidPerfs(scene)
                 summary_dict = {}
+                summary_dict['app'] = summary['app']
+                summary_dict['platform'] = summary['platform']
+                summary_dict['devices'] = summary['devices']
+                summary_dict['ctime'] = summary['ctime']
                 summary_dict['cpu_app'] = summary['cpuAppRate']
                 summary_dict['cpu_sys'] = summary['cpuSystemRate']
                 summary_dict['mem_total'] = summary['totalPassAvg']
@@ -683,6 +691,7 @@ class AppPerformanceMonitor(initPerformanceService):
                 summary_dict['tem'] = summary['batteryTeml']
                 summary_dict['net_send'] = summary['flow_send']
                 summary_dict['net_recv'] = summary['flow_recv']
+                summary_dict['gpu'] = summary['gpu']
                 summary_dict['cpu_charts'] = f.getCpuLog(Platform.Android, scene)
                 summary_dict['mem_charts'] = f.getMemLog(Platform.Android, scene)
                 summary_dict['mem_detail_charts'] = f.getMemDetailLog(Platform.Android, scene)
@@ -690,12 +699,17 @@ class AppPerformanceMonitor(initPerformanceService):
                 summary_dict['battery_charts'] = f.getBatteryLog(Platform.Android, scene)
                 summary_dict['fps_charts'] = f.getFpsLog(Platform.Android, scene)['fps']
                 summary_dict['jank_charts'] = f.getFpsLog(Platform.Android, scene)['jank']
-                f.make_android_html(scene=scene, summary=summary_dict)
+                summary_dict['gpu_charts'] = f.getGpuLog(Platform.Android, scene)
+                f.make_android_html(scene=scene, summary=summary_dict, report_path=report_path)
             case Platform.iOS:
                 scene = f.make_report(app=self.pkgName, devices=self.deviceId,
                                       video=0, platform=self.platform, model='normal')
                 summary = f._setiOSPerfs(scene)
                 summary_dict = {}
+                summary_dict['app'] = summary['app']
+                summary_dict['platform'] = summary['platform']
+                summary_dict['devices'] = summary['devices']
+                summary_dict['ctime'] = summary['ctime']
                 summary_dict['cpu_app'] = summary['cpuAppRate']
                 summary_dict['cpu_sys'] = summary['cpuSystemRate']
                 summary_dict['mem_total'] = summary['totalPassAvg']
@@ -713,11 +727,11 @@ class AppPerformanceMonitor(initPerformanceService):
                 summary_dict['battery_charts'] = f.getBatteryLog(Platform.iOS, scene)
                 summary_dict['fps_charts'] = f.getFpsLog(Platform.iOS, scene)
                 summary_dict['gpu_charts'] = f.getGpuLog(Platform.iOS, scene)
-                f.make_ios_html(scene=scene, summary=summary_dict)
+                f.make_ios_html(scene=scene, summary=summary_dict, report_path=report_path)
             case _:
                 raise Exception('platfrom is invalid')
 
-    def collectAll(self):
+    def collectAll(self, report_path=None):
         try:
             f.clear_file()
             process_num = 8 if self.record else 7
@@ -733,10 +747,10 @@ class AppPerformanceMonitor(initPerformanceService):
                 pool.apply_async(Scrcpy.start_record, (self.deviceId))
             pool.close()
             pool.join()
-            self.setPerfs()
+            self.setPerfs(report_path=report_path)
         except KeyboardInterrupt:
             Scrcpy.stop_record()
-            self.setPerfs()
+            self.setPerfs(report_path=report_path)
         except Exception as e:
             Scrcpy.stop_record()
             logger.exception(e)

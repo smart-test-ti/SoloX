@@ -68,7 +68,7 @@
                                 APP
                             </div>
                             <div class="text-muted">
-                                Avg：{{ apm_data.cpuAppRate }}
+                                Avg: {{ apm_data.cpuAppRate }}
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                                 {% if lan == 'cn' %} 整机 {% else %} Total {% endif %}
                             </div>
                             <div class="text-muted">
-                                Avg：{{ apm_data.cpuSystemRate }}
+                                Avg: {{ apm_data.cpuSystemRate }}
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                                 {% if lan == 'cn' %} 物理内存 {% else %} Total {% endif %}
                             </div>
                             <div class="text-muted">
-                                Avg：{{ apm_data.totalPassAvg }}
+                                Avg: {{ apm_data.totalPassAvg }}
                             </div>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                                 {% if lan == 'cn' %} 交换内存 {% else %} Swap {% endif %}
                             </div>
                             <div class="text-muted">
-                                Avg：{{ apm_data.swapPassAvg }}
+                                Avg: {{ apm_data.swapPassAvg }}
                             </div>
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                                 {% if lan == 'cn' %} 流畅度 {% else %} FPS {% endif %}
                             </div>
                             <div class="text-muted">
-                                Avg：{{ apm_data.fps }}
+                                Avg: {{ apm_data.fps }}
                             </div>
                         </div>
                     </div>
@@ -176,7 +176,7 @@
                                 {% if lan == 'cn' %} 卡顿 {% else %} Jank {% endif %}
                             </div>
                             <div class="text-muted">
-                                All：{{ apm_data.jank }}
+                                All: {{ apm_data.jank }}
                             </div>
                         </div>
                     </div>
@@ -242,7 +242,7 @@
                                 {% if lan == 'cn' %} 温度 {% else %} Temperature {% endif %}
                             </div>
                             <div class="text-muted">
-                                Final: {{ apm_data.batteryTeml }}
+                                Final: {{ apm_data.batteryTeml }}°C
                             </div>
                         </div>
                     </div>
@@ -327,7 +327,7 @@
                                 {% if lan == 'cn' %} 上行 {% else %} Send {% endif %}
                             </div>
                             <div class="text-muted">
-                                All: {{ apm_data.flow_send }}
+                                <label style="color: red;"><strong>+</strong></label>{{ apm_data.flow_send }}
                             </div>
                         </div>
                     </div>
@@ -348,14 +348,13 @@
                                 {% if lan == 'cn' %} 下行 {% else %} Recieve {% endif %}
                             </div>
                             <div class="text-muted">
-                                All: {{ apm_data.flow_recv }}
+                                <label style="color: red;"><strong>+</strong></label>{{ apm_data.flow_recv }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        {% if platform == 'iOS' %}
         <div class="col-sm-6 col-lg-2">
             <div class="card card-sm">
                 <div class="card-body">
@@ -377,7 +376,6 @@
                 </div>
             </div>
         </div>
-        {% endif %}
     </div>
 </div>
 {% if platform == 'Android' %}
@@ -393,7 +391,7 @@
         <input type="radio" name="icons" value="user" class="form-selectgroup-input" onclick="diskClick()">
         <span class="form-selectgroup-label">
             <svg t="1709092139564" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="34466" width="200" height="200"><path d="M0 0h1024v1024H0z" fill="#FFFFFF" fill-opacity=".01" p-id="34467"></path><path d="M938.666667 618.666667H85.333333V896h853.333334v-277.333333z" fill="#2F88FF" p-id="34468"></path><path d="M981.333333 938.666667H42.666667v-362.666667h938.666666V938.666667zM128 853.333333h768v-192H128V853.333333z" fill="#333333" p-id="34469"></path><path d="M757.333333 810.666667a53.333333 53.333333 0 1 0 0-106.666667 53.333333 53.333333 0 0 0 0 106.666667z" fill="#FFFFFF" p-id="34470"></path><path d="M127.104 627.413333l-83.541333-17.493333L158.165333 64h708.949334l113.322666 546.005333-83.541333 17.322667L797.696 149.333333H227.456L127.104 627.413333z" fill="#333333" p-id="34471"></path></svg>
-            {% if lan == 'cn' %} 磁盘使用情况 {% else %} Disk Usage {% endif %}
+            {% if lan == 'cn' %} 磁盘使用分析 {% else %} Disk Analysis {% endif %}
         </span>
     </label>
 </div>
@@ -523,7 +521,6 @@
             <div id="chart-networkdata"></div>
         </div>
     </div>
-    {% if platform == 'iOS' %}
     <div class="card gpu-card mt-3">
         <div class="card-header">
             <div class='card-title'>{% if lan == 'cn' %} GPU使用率 (%) {% else %} GPU Usage (%) {% endif %}</div>
@@ -543,10 +540,86 @@
             <div id="chart-gpu"></div>
         </div>
     </div>
+    {% if apm_data.disk_flag == True %}
+    <div class="card disk-card mt-3">
+        <div class="card-header">
+            <div class='card-title'>{% if lan == 'cn' %} 磁盘使用 (MB) {% else %} Disk Usage (KB) {% endif %}</div>
+            <div class="card-actions btn-actions">
+                <a class="btn" onclick="initDiskCharts()">
+                    <span class="spinner-border spinner-border-sm me-2" id="disk_spinner" role="status" style="display: none;"></span>
+                    <svg id="disk_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                    {% if lan == 'cn' %} 刷新 {% else %} Refresh {% endif %}
+                </a>
+                <a class="btn" id="disk_png" style="margin-left: 10px;" onclick="screenshot('disk-card','disk.png')">
+                    <svg t="1646303797379" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5790" width="2000" height="2000"><path d="M897.856 842.56c14.464-6.72 18.624-20.48 9.28-30.848l-241.216-263.296a25.792 25.792 0 0 0-7.68-5.888c-14.016-7.296-33.6-5.184-43.776 4.8l-241.152 233.088-103.808-70.528a30.912 30.912 0 0 0-3.52-1.92c-14.08-7.36-33.664-4.992-43.776 4.864l-101.056 97.728a18.368 18.368 0 0 0-6.08 13.952c0.512 12.288 14.848 22.016 32.128 21.696h732.8a40.768 40.768 0 0 0 17.856-3.648zM259.84 399.68a78.464 78.464 0 0 0 117.504 67.84 78.272 78.272 0 0 0 0-135.744A78.208 78.208 0 0 0 259.84 399.68" p-id="5791"></path><path d="M864.832 872.256H159.232a83.84 83.84 0 0 1-83.776-83.776V235.52a83.84 83.84 0 0 1 83.776-83.776h705.536a83.84 83.84 0 0 1 83.776 83.776v552.96a83.84 83.84 0 0 1-83.712 83.776zM159.232 183.744a51.84 51.84 0 0 0-51.776 51.776v552.96a51.84 51.84 0 0 0 51.776 51.776h705.536a51.84 51.84 0 0 0 51.776-51.776V235.52a51.84 51.84 0 0 0-51.776-51.776H159.232z" p-id="5792"></path></svg>
+                    {% if lan == 'cn' %} 截图 {% else %} ScreenShot {% endif %}
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="chart-disk"></div>
+        </div>
+    </div>
     {% endif %}
 </div>
 
 <!-- Disk Usage -->
+<div class="row row-deck row-cards card-disk mb-3">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+              <p class="mb-3">Using Storage (Initial Value)</p>
+              <!-- <div class="progress progress-separated mb-3">
+                <div class="progress-bar bg-red" role="progressbar" style="width: 44%" aria-label="used"></div>
+                <div class="progress-bar bg-success" role="progressbar" style="width: 56%" aria-label="free"></div>
+              </div> -->
+              <div class="row">
+                <div class="col-auto d-flex align-items-center pe-2">
+                  <span class="legend me-2 bg-primary"></span>
+                  <span>Size</span>
+                  <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary">{{ sum_init_disk.sum_size }}G</span>
+                </div>
+                <div class="col-auto d-flex align-items-center px-2">
+                  <span class="legend me-2 bg-red"></span>
+                  <span>Used</span>
+                  <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary">{{ sum_init_disk.sum_used }}MB</span>
+                </div>
+                <div class="col-auto d-flex align-items-center px-2">
+                  <span class="legend me-2 bg-success"></span>
+                  <span>Free</span>
+                  <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary">{{ sum_init_disk.sum_free }}MB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+              <p class="mb-3">Using Storage (Current Value)</p>
+              <div class="row">
+                <div class="col-auto d-flex align-items-center pe-2">
+                  <span class="legend me-2 bg-primary"></span>
+                  <span>Size</span>
+                  <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary">{{ sum_current_disk.sum_size }}G</span>
+                </div>
+                <div class="col-auto d-flex align-items-center px-2">
+                  <span class="legend me-2 bg-red"></span>
+                  <span>Used</span>
+                  <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary">{{ sum_current_disk.sum_used }}MB</span>
+                </div>
+                <div class="col-auto d-flex align-items-center px-2">
+                  <span class="legend me-2 bg-success"></span>
+                  <span>Free</span>
+                  <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary">{{ sum_current_disk.sum_free }}MB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
+</div>
+
+
 <div class="card card-disk initial-disk" id="disk_inital_value_table">
     <div class="card-header">
         <h3 class="card-title">
@@ -587,7 +660,6 @@
         </table>
     </div>
 </div>
-
 <div class="card mt-3 card-disk current-disk" id="disk_current_value_table">
     <div class="card-header">
         <h3 class="card-title">
@@ -688,11 +760,12 @@
         initFpsCharts()
         initBatteryCharts()
         initNetworkCharts()
-        if(platform == 'Android'){
-            initMemoryDetailCharts()
+        initGpuCharts()
+        if('{{ apm_data.mem_detail_flag }}' == 'True' ){
+            initMemoryDetailCharts()()
         }
-        if(platform == 'iOS'){
-            initGpuCharts()
+        if('{{ apm_data.disk_flag }}' == 'True' ){
+            initDiskCharts()
         }
     });
     
@@ -746,7 +819,8 @@
                 level:'{{ apm_data.batteryLevel }}',
                 temperature:'{{ apm_data.batteryTeml }}',
                 net_send:'{{ apm_data.flow_send }}',
-                net_recv:'{{ apm_data.flow_recv }}'
+                net_recv:'{{ apm_data.flow_recv }}',
+                gpu:'{{ apm_data.gpu }}',
             },
             beforeSend: function () {
                 SwalLoading('Save Html','Saving html.')
@@ -1107,6 +1181,39 @@
                 },{
                     name: 'recieve',
                     data: data['downFlow']
+                }])
+            }
+        });
+    }
+
+    function initDiskCharts(){
+        var disk_chart = new ApexCharts(document.querySelector("#chart-disk"), options('line',false));
+        disk_chart.render();
+        $.ajax({
+            url: '/apm/log',
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                scene:'{{ scene }}',
+                target:'disk',
+                platform:platform
+            },
+            beforeSend: function () {
+                $('#disk_spinner').show()
+                $('#disk_refresh_logo').hide()
+            },
+            complete: function () {
+                $('#disk_spinner').hide()
+                $('#disk_refresh_logo').show()
+            },
+            success: function (data) {
+                disk_chart.updateSeries([{
+                    name: 'used',
+                    data: data['used']
+                },{
+                    name: 'free',
+                    data: data['free']
                 }])
             }
         });

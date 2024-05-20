@@ -95,7 +95,7 @@ def status(host: str, port: int):
 def open_url(host: str, port: int):
     flag = True
     while flag:
-        logger.info('start solox server ...')
+        logger.info('start solox service')
         f = Figlet(font="slant", width=300)
         print(f.renderText("SOLOX {}".format(__version__)))
         flag = status(host, port)

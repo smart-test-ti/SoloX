@@ -87,6 +87,16 @@ class Devices:
     def getSdkVersion(self, deviceId):
         version = adb.shell(cmd='getprop ro.build.version.sdk', deviceId=deviceId)
         return version
+    
+    def getCpuCores(self, deviceId):
+        """get Android cpu cores"""
+        cmd = 'cat /sys/devices/system/cpu/online'
+        result = adb.shell(cmd=cmd, deviceId=deviceId)
+        try:
+            nums = int(result.split('-')[1]) + 1
+        except:
+            nums = 1
+        return nums
 
     def getPid(self, deviceId, pkgName):
         """Get the pid corresponding to the Android package name"""
@@ -186,6 +196,8 @@ class Devices:
                 cmd = f'ip addr show wlan0 | {self.filterType()} link/ether'
                 wifiadr_content = adb.shell(cmd=cmd, deviceId=deviceId)                
                 result['wifiadr'] = Method._index(wifiadr_content.split(), 1, '')
+                result['cpu_cores'] = self.getCpuCores(deviceId)
+                result['physical_size'] = adb.shell(cmd='wm size', deviceId=deviceId).replace('Physical size:','').strip()
             case Platform.iOS:
                 ios_device = Device(udid=deviceId)
                 result['brand'] = ios_device.get_value("DeviceClass", no_session=True)
@@ -193,10 +205,22 @@ class Devices:
                 result['version'] = ios_device.get_value("ProductVersion", no_session=True)
                 result['serialno'] = deviceId
                 result['wifiadr'] = ios_device.get_value("WiFiAddress", no_session=True)
+                result['cpu_cores'] = ''
+                result['physical_size'] = self.getPhysicalSzieOfiOS(deviceId)
             case _:
                 raise Exception('{} is undefined'.format(platform)) 
         return result
-
+    
+    def getPhysicalSzieOfiOS(self, deviceId):
+        ios_device = Device(udid=deviceId)
+        try:
+            screen_info = ios_device.screen_info()
+            PhysicalSzie = '{}x{}'.format(screen_info.get('width'), screen_info.get('height'))
+        except Exception as e:
+            PhysicalSzie = ''  
+            logger.exception(e)  
+        return PhysicalSzie
+    
     def getCurrentActivity(self, deviceId):
         result = adb.shell(cmd='dumpsys window | {} mCurrentFocus'.format(self.filterType()), deviceId=deviceId)
         if result.__contains__('mCurrentFocus'):
@@ -235,8 +259,8 @@ class File:
 
     def export_excel(self, platform, scene):
         logger.info('Exporting excel ...')
-        android_log_file_list = ['cpu_app','cpu_sys','mem_total','mem_native','mem_dalvik',
-                                 'battery_level', 'battery_tem','upflow','downflow','fps']
+        android_log_file_list = ['cpu_app','cpu_sys','mem_total','mem_swap',
+                                 'battery_level', 'battery_tem','upflow','downflow','fps','gpu']
         ios_log_file_list = ['cpu_app','cpu_sys', 'mem_total', 'battery_tem', 'battery_current', 
                              'battery_voltage', 'battery_power','upflow','downflow','fps','gpu']
         log_file_list = android_log_file_list if platform == 'Android' else ios_log_file_list
@@ -263,35 +287,47 @@ class File:
         logger.info('Exporting excel success : {}'.format(xls_path))
         return xls_path   
     
-    def make_android_html(self, scene, summary : dict):
+    def make_android_html(self, scene, summary : dict, report_path=None):
         logger.info('Generating HTML ...')
         STATICPATH = os.path.dirname(os.path.realpath(__file__))
         file_loader = FileSystemLoader(os.path.join(STATICPATH, 'report_template'))
         env = Environment(loader=file_loader)
         template = env.get_template('android.html')
-        with open(os.path.join(self.report_dir, scene, 'report.html'),'w+') as fout:
-            html_content = template.render(cpu_app=summary['cpu_app'],cpu_sys=summary['cpu_sys'],
+        if report_path:
+            html_path = report_path
+        else:
+            html_path = os.path.join(self.report_dir, scene, 'report.html')   
+        with open(html_path,'w+') as fout:
+            html_content = template.render(devices=summary['devices'],app=summary['app'],
+                                           platform=summary['platform'],ctime=summary['ctime'],
+                                           cpu_app=summary['cpu_app'],cpu_sys=summary['cpu_sys'],
                                            mem_total=summary['mem_total'],mem_swap=summary['mem_swap'],
                                            fps=summary['fps'],jank=summary['jank'],level=summary['level'],
                                            tem=summary['tem'],net_send=summary['net_send'],
                                            net_recv=summary['net_recv'],cpu_charts=summary['cpu_charts'],
                                            mem_charts=summary['mem_charts'],net_charts=summary['net_charts'],
                                            battery_charts=summary['battery_charts'],fps_charts=summary['fps_charts'],
-                                           jank_charts=summary['jank_charts'],mem_detail_charts=summary['mem_detail_charts'])
+                                           jank_charts=summary['jank_charts'],mem_detail_charts=summary['mem_detail_charts'],
+                                           gpu=summary['gpu'], gpu_charts=summary['gpu_charts'])
             
             fout.write(html_content)
-        html_path = os.path.join(self.report_dir, scene, 'report.html')    
         logger.info('Generating HTML success : {}'.format(html_path))  
         return html_path
     
-    def make_ios_html(self, scene, summary : dict):
+    def make_ios_html(self, scene, summary : dict, report_path=None):
         logger.info('Generating HTML ...')
         STATICPATH = os.path.dirname(os.path.realpath(__file__))
         file_loader = FileSystemLoader(os.path.join(STATICPATH, 'report_template'))
         env = Environment(loader=file_loader)
         template = env.get_template('ios.html')
-        with open(os.path.join(self.report_dir, scene, 'report.html'),'w+') as fout:
-            html_content = template.render(cpu_app=summary['cpu_app'],cpu_sys=summary['cpu_sys'],gpu=summary['gpu'],
+        if report_path:
+            html_path = report_path
+        else:
+            html_path = os.path.join(self.report_dir, scene, 'report.html')
+        with open(html_path,'w+') as fout:
+            html_content = template.render(devices=summary['devices'],app=summary['app'],
+                                           platform=summary['platform'],ctime=summary['ctime'],
+                                           cpu_app=summary['cpu_app'],cpu_sys=summary['cpu_sys'],gpu=summary['gpu'],
                                            mem_total=summary['mem_total'],fps=summary['fps'],
                                            tem=summary['tem'],current=summary['current'],
                                            voltage=summary['voltage'],power=summary['power'],
@@ -300,7 +336,6 @@ class File:
                                            net_charts=summary['net_charts'],battery_charts=summary['battery_charts'],
                                            fps_charts=summary['fps_charts'],gpu_charts=summary['gpu_charts'])            
             fout.write(html_content)
-        html_path = os.path.join(self.report_dir, scene, 'report.html')    
         logger.info('Generating HTML success : {}'.format(html_path))  
         return html_path
   
@@ -380,6 +415,12 @@ class File:
         with open(path, mode) as f:
             for line in f:
                 yield line
+    
+    def readJson(self, scene):
+        path = os.path.join(self.report_dir,scene,'result.json')
+        result_json = open(file=path, mode='r').read()
+        result_dict = json.loads(result_json)
+        return result_dict
 
     def readLog(self, scene, filename):
         """Read apmlog file data"""
@@ -523,10 +564,22 @@ class File:
             result = {'status': 1, 'fps': targetDic['fps']}     
         return result
     
-    def getDiskLog(self, scene):
+    def getDiskLog(self, platform, scene):
+        targetDic = dict()
+        targetDic['used'] = self.readLog(scene=scene, filename='disk_used.log')[0]
+        targetDic['free'] = self.readLog(scene=scene, filename='disk_free.log')[0]
+        result = {'status': 1, 'used': targetDic['used'], 'free':targetDic['free']}
+        return result
+
+    def analysisDisk(self, scene):
         initail_disk_list = list()
         current_disk_list = list()
+        sum_init_disk = dict()
+        sum_current_disk = dict()
         if os.path.exists(os.path.join(self.report_dir,scene,'initail_disk.log')):
+            size_list = list()
+            used_list = list()
+            free_list = list()
             lines = self.open_file(os.path.join(self.report_dir,scene,'initail_disk.log'), "r")
             for line in lines:
                 if 'Filesystem' not in line and line.strip() != '':
@@ -540,7 +593,17 @@ class File:
                         mounted = disk_value_list[5]
                     )
                     initail_disk_list.append(disk_dict)
+                    size_list.append(int(disk_value_list[1]))
+                    used_list.append(int(disk_value_list[2]))
+                    free_list.append(int(disk_value_list[3]))
+            sum_init_disk['sum_size'] = int(sum(size_list) / 1024 / 1024)
+            sum_init_disk['sum_used'] = int(sum(used_list) / 1024)
+            sum_init_disk['sum_free'] = int(sum(free_list) / 1024)
+               
         if os.path.exists(os.path.join(self.report_dir,scene,'current_disk.log')):
+            size_list = list()
+            used_list = list()
+            free_list = list()
             lines = self.open_file(os.path.join(self.report_dir,scene,'current_disk.log'), "r")
             for line in lines:
                 if 'Filesystem' not in line and line.strip() != '':
@@ -554,7 +617,14 @@ class File:
                         mounted = disk_value_list[5]
                     )
                     current_disk_list.append(disk_dict)
-        return initail_disk_list, current_disk_list
+                    size_list.append(int(disk_value_list[1]))
+                    used_list.append(int(disk_value_list[2]))
+                    free_list.append(int(disk_value_list[3]))
+            sum_current_disk['sum_size'] = int(sum(size_list) / 1024 / 1024)
+            sum_current_disk['sum_used'] = int(sum(used_list) / 1024)
+            sum_current_disk['sum_free'] = int(sum(free_list) / 1024)       
+                 
+        return initail_disk_list, current_disk_list, sum_init_disk, sum_current_disk
 
     def getFpsLogCompare(self, platform, scene1, scene2):
         targetDic = dict()
@@ -590,6 +660,11 @@ class File:
 
     def _setAndroidPerfs(self, scene):
         """Aggregate APM data for Android"""
+        
+        app = self.readJson(scene=scene).get('app')
+        devices = self.readJson(scene=scene).get('devices')
+        platform = self.readJson(scene=scene).get('platform')
+        ctime = self.readJson(scene=scene).get('ctime')
 
         cpuAppData = self.readLog(scene=scene, filename=f'cpu_app.log')[1]
         cpuSystemData = self.readLog(scene=scene, filename=f'cpu_sys.log')[1]
@@ -636,8 +711,20 @@ class File:
             send, recv = 0, 0    
         flowSend = f'{round(float(send / 1024), 2)}MB'
         flowRecv = f'{round(float(recv / 1024), 2)}MB'
+
+        gpuData = self.readLog(scene=scene, filename='gpu.log')[1]
+        if gpuData.__len__() > 0:
+            gpu = round(sum(gpuData) / len(gpuData), 2)
+        else:
+            gpu = 0
+
         mem_detail_flag = os.path.exists(os.path.join(self.report_dir,scene,'mem_java_heap.log'))
+        disk_flag = os.path.exists(os.path.join(self.report_dir,scene,'disk_free.log'))
         apm_dict = dict()
+        apm_dict['app'] = app
+        apm_dict['devices'] = devices
+        apm_dict['platform'] = platform
+        apm_dict['ctime'] = ctime
         apm_dict['cpuAppRate'] = cpuAppRate
         apm_dict['cpuSystemRate'] = cpuSystemRate
         apm_dict['totalPassAvg'] = totalPassAvg
@@ -649,11 +736,18 @@ class File:
         apm_dict['batteryLevel'] = batteryLevel
         apm_dict['batteryTeml'] = batteryTeml
         apm_dict['mem_detail_flag'] = mem_detail_flag
-        
+        apm_dict['disk_flag'] = disk_flag
+        apm_dict['gpu'] = gpu
         return apm_dict
 
     def _setiOSPerfs(self, scene):
         """Aggregate APM data for iOS"""
+        
+        app = self.readJson(scene=scene).get('app')
+        devices = self.readJson(scene=scene).get('devices')
+        platform = self.readJson(scene=scene).get('platform')
+        ctime = self.readJson(scene=scene).get('ctime')
+
         cpuAppData = self.readLog(scene=scene, filename=f'cpu_app.log')[1]
         cpuSystemData = self.readLog(scene=scene, filename=f'cpu_sys.log')[1]
         if cpuAppData.__len__() > 0 and cpuSystemData.__len__() > 0:
@@ -699,8 +793,12 @@ class File:
             gpu = round(sum(gpuData) / len(gpuData), 2)
         else:
             gpu = 0    
-
+        disk_flag = os.path.exists(os.path.join(self.report_dir,scene,'disk_free.log'))
         apm_dict = dict()
+        apm_dict['app'] = app
+        apm_dict['devices'] = devices
+        apm_dict['platform'] = platform
+        apm_dict['ctime'] = ctime
         apm_dict['cpuAppRate'] = cpuAppRate
         apm_dict['cpuSystemRate'] = cpuSystemRate
         apm_dict['totalPassAvg'] = totalPassAvg
@@ -715,7 +813,7 @@ class File:
         apm_dict['batteryVoltage'] = batteryVoltage
         apm_dict['batteryPower'] = batteryPower
         apm_dict['gpu'] = gpu
-        
+        apm_dict['disk_flag'] = disk_flag
         return apm_dict
 
     def _setpkPerfs(self, scene):
@@ -848,8 +946,8 @@ class Scrcpy:
 
     STATICPATH = os.path.dirname(os.path.realpath(__file__))
     DEFAULT_SCRCPY_PATH = {
-        "64": os.path.join(STATICPATH, "scrcpy", "scrcpy-win64-v2.1.1", "scrcpy.exe"),
-        "32": os.path.join(STATICPATH, "scrcpy", "scrcpy-win32-v2.1.1", "scrcpy.exe"),
+        "64": os.path.join(STATICPATH, "scrcpy", "scrcpy-win64-v2.4", "scrcpy.exe"),
+        "32": os.path.join(STATICPATH, "scrcpy", "scrcpy-win32-v2.4", "scrcpy.exe"),
         "default":"scrcpy"
     }
     

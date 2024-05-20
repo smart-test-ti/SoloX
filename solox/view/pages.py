@@ -85,9 +85,11 @@ def analysis():
             try:
                 if platform == 'Android':
                     apm_data = f._setAndroidPerfs(scene)
-                    disk = f.getDiskLog(scene)
+                    disk = f.analysisDisk(scene)
                     initial_disk  = disk[0]
                     current_disk  = disk[1]
+                    sum_init_disk = disk[2]
+                    sum_current_disk = disk[3]
                 else:
                     apm_data = f._setiOSPerfs(scene)    
             except ZeroDivisionError:

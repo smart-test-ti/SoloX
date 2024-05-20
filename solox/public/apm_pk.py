@@ -34,6 +34,7 @@ class CPU_PK:
         result = adb.shell(cmd=cmd, deviceId=deviceId)
         totalCpu = 0
         lines = result.split('\n')
+        lines.pop(0)
         for line in lines:
             toks = line.split()
             if toks[1] in ['', ' ']:

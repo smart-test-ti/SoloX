@@ -4,7 +4,7 @@
 
 <p align="center">
 <a href="#">
-<img src="https://cdn.nlark.com/yuque/0/2022/png/153412/1643364757640-b4529458-ec8d-42cc-a2d8-c0ce60fdf50f.png" alt="SoloX" width="130">
+<img src="https://cdn.nlark.com/yuque/0/2024/png/153412/1715927541315-fb4f7662-d8bb-4d3e-a712-13a3c3073ac8.png?x-oss-process=image%2Fformat%2Cwebp" alt="SoloX" width="130">
 </a>
 <br>
 </p>
@@ -28,16 +28,14 @@ Quickly locate and analyze performance issues to improve application performance
 - Install Python 3.10 + [**Download**](https://www.python.org/downloads/)
 - Install adb and configure environment variables (SoloX's  adb may not necessarily fit your computer) [**Download**](https://developer.android.com/studio/releases/platform-tools)
 
-💡 Python 3.6 ~ 3.9 , please download a version of solox lower than 2.5.4.
-
-💡 If Windows users need to test ios, install and start Itunes. [**Documentation**](https://github.com/alibaba/taobao-iphone-device)
+💡 If Windows users need to test ios, install and start Itunes. [**Documentation**](https://github.com/alibaba/taobao-iphone-device)  (Not support iOS17)
 
 ## 📥Installation
 
 ### default
 
 ```shell
-pip install -U solox    (pip install solox=={version})
+pip install -U solox    (pip install solox==version)
 ```
 
 ### mirrors
@@ -59,10 +57,10 @@ python -m solox
 ### customize
 
 ```shell
-python -m solox --host={ip} --port={port}
+python -m solox --host=ip --port=port
 ```
 
-## 🏴󠁣󠁩󠁣󠁭󠁿Collect in python
+## 🏴󠁣󠁩󠁣󠁭󠁿Python API
 
 ```python
 # solox version : >= 2.8.5
@@ -86,7 +84,7 @@ memory_detail = apm.collectMemoryDetail() # MB
 network = apm.collectNetwork(wifi=True) # KB
 fps = apm.collectFps() # HZ
 battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV power:w
-gpu = apm.collectGpu() # % only supports ios
+gpu = apm.collectGpu() # %
 
 # ************* Collect all performance parameter ************* #
  
@@ -96,7 +94,7 @@ if __name__ == '__main__':
   # apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in', platform='iOS',  deviceId='xxxx', noLog=False, record=False, collect_all=True, duration=0)
   #duration: running time (second)
   #record: record android screen
-  apm.collectAll() # will generate HTML report
+  apm.collectAll(report_path=None) # report_path='/test/report.html'
 
 # in other python file
 from solox.public.apm import initPerformanceService  
@@ -104,7 +102,7 @@ from solox.public.apm import initPerformanceService
 initPerformanceService.stop() # stop solox
 ```
 
-## 🏴󠁣󠁩󠁣󠁭󠁿Collect in API
+## 🏴󠁣󠁩󠁣󠁭󠁿Service API
 
 ### Start the service in the background
 
@@ -115,7 +113,7 @@ macOS/Linux: nohup python3 -m solox &
 Windows: start /min python3 -m solox &
 ```
 
-### Request apm data from api
+### Request performance data from api
 
 ```shell
 Android: http://{ip}:{port}/apm/collect?platform=Android&deviceid=ca6bd5a5&pkgname=com.bilibili.app.in&target=cpu
