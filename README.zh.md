@@ -4,7 +4,7 @@
 
 <p align="center">
 <a href="#">
-<img src="https://cdn.nlark.com/yuque/0/2024/png/153412/1715927541315-fb4f7662-d8bb-4d3e-a712-13a3c3073ac8.png?x-oss-process=image%2Fformat%2Cwebp" alt="SoloX" width="130">
+<img src="https://cdn.nlark.com/yuque/0/2024/png/153412/1715927541315-fb4f7662-d8bb-4d3e-a712-13a3c3073ac8.png?x-oss-process=image%2Fformat%2Cwebp" alt="SoloX" width="100">
 </a>
 <br>
 </p>
@@ -62,8 +62,7 @@ python -m solox --host={ip} --port={port}
 ## 🏴󠁣󠁩󠁣󠁭󠁿使用python收集
 
 ```python
-an 
-# solox version : >= 2.8.5
+# solox version : >= 2.9.0
 from solox.public.apm import AppPerformanceMonitor
 from solox.public.common import Devices
 
@@ -81,7 +80,7 @@ apm = AppPerformanceMonitor(pkgName='com.bilibili.app.in',platform='Android', de
 cpu = apm.collectCpu() # %
 memory = apm.collectMemory() # MB
 memory_detail = apm.collectMemoryDetail() # MB
-network = apm.collectNetwork(wifi=True) # KB , wifi=False时是收集移动网络，手机要切换数据流量
+network = apm.collectNetwork(wifi=True) # KB , wifi=False时是收集移动数据流量，手机会自动关闭wifi切换到移动网络
 fps = apm.collectFps() # HZ
 battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV power:w
 gpu = apm.collectGpu() # % 安卓只支持高通芯片的手机

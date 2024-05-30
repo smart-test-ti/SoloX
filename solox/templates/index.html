@@ -160,7 +160,7 @@ SoloX - Application Performance Monitoring
                                 {% if platform == 'Android' %}
                                 <span class="ms-auto">
                                     <label class="form-check form-check-single form-switch">
-                                        <input id="net-switch" class="form-check-input cursor-pointer" type="checkbox" checked name="net-switch" style="margin-right: 5px"> WIFI
+                                        <input id="net-switch" class="form-check-input cursor-pointer" type="checkbox" checked name="net-switch" style="margin-right: 5px"> WLAN
                                     </label>
                                 </span>
                                 {% endif %}
@@ -266,20 +266,21 @@ SoloX - Application Performance Monitoring
         </div>
     </div>
     <div class="apm-data mt-1" style="width: 75%;">
-        <div id="cpu" class="mb-3 cpu" style="min-width:400px;height:310px"></div>
+        <div id="cpu" class="mb-3 cpu" style="min-width:400px;height:300px"></div>
         {% if platform == 'Android' %}
-        <div id="mem_android"  class="mb-3 mem" style="min-width:400px;height:310px"></div>
-        <div id="mem_detail"   class="mb-3 mem_detail" style="min-width:400px;height:310px;display: none;"></div>
+        <!-- <div id="cpu_core" class="mb-3 cpu_core" style="min-width:400px;height:300px; display: none;"></div> -->
+        <div id="mem_android"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
+        <div id="mem_detail"   class="mb-3 mem_detail" style="min-width:400px;height:300px;display: none;"></div>
         <div id="fps" class="mb-3 fps" style="min-width:400px;height:300px"></div>
-        <div id="battery_android" class="mb-3 battery" style="min-width:400px;height:310px"></div>
+        <div id="battery_android" class="mb-3 battery" style="min-width:400px;height:300px"></div>
         {% else %}
-        <div id="mem_ios"  class="mb-3 mem" style="min-width:400px;height:310px"></div>
-        <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:310px"></div>
-        <div id="battery_ios" class="mb-3 battery" style="min-width:400px;height:310px"></div>
+        <div id="mem_ios"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
+        <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:300px"></div>
+        <div id="battery_ios" class="mb-3 battery" style="min-width:400px;height:300px"></div>
         {% endif %}
-        <div id="network" class="network mb-3" style="min-width:400px;height:310px"></div>
-        <div id="gpu" class="mb-3 gpu" style="min-width:400px;height:310px"></div>
-        <div id="disk" class="disk mb-3" style="min-width:400px;height:310px;display: none;"></div>
+        <div id="network" class="network mb-3" style="min-width:400px;height:300px"></div>
+        <div id="gpu" class="mb-3 gpu" style="min-width:400px;height:300px"></div>
+        <div id="disk" class="disk mb-3" style="min-width:400px;height:300px;display: none;"></div>
     </div>
 </div>
 <div class="offcanvas offcanvas-bottom layout-boxed" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel" style="height: 90%">
@@ -400,10 +401,26 @@ SoloX - Application Performance Monitoring
 
     var stop = false; // 任务状态
 
+    // var cores_num = cpucoreNum();
+
     function ruteCheck(){
         if(['Android','iOS'].indexOf(platform) === -1 || platform && ['cn','en'].indexOf(lan) === -1 && lan){
             this.location.href = '/?platform=Android&lan=en';
         }
+    }
+
+    function cpucoreNum(){
+        var num ;
+        $.ajax({
+            url: Host + "/device/cpucore",
+            type: "GET",
+            async: false,
+            cache: false,
+            success: function (data) {
+                num =  data['num']
+            }
+        });
+        return num
     }
 
     $(document).ready(function() {
@@ -431,7 +448,7 @@ SoloX - Application Performance Monitoring
 
     $('.select-device').change(function() {
         $.ajax({
-            url: Host + "/device/packagenames",
+            url: Host + "/device/package",
             type: "GET",
             async: true,
             cache: false,
@@ -541,7 +558,7 @@ SoloX - Application Performance Monitoring
 
     function initializeEnv(){
         $.ajax({
-            url: Host + "/device/ids?platform="+platform,
+            url: Host + "/device/info?platform="+platform,
             type: "GET",
             async: true,
             cache: false,
@@ -1035,6 +1052,26 @@ SoloX - Application Performance Monitoring
             }
         });
     }
+    
+    function initCpuCoresSeries(){
+        var cores_array = new Array()
+        try{
+            console.log(cores_num)
+            if(cores_num > 0){
+                var array = Array.from({ length: cores_num }, (_, i) => i)
+                array.forEach(element => {
+                    cores_array.push('cpu'+element.toString())
+                })
+            }else{
+                cores_array = ['cpu0','cpu1','cpu2','cpu3','cpu4','cpu5','cpu6','cpu7']
+            }
+        }
+        catch{
+            cores_array = ['cpu0','cpu1','cpu2','cpu3','cpu4','cpu5','cpu6','cpu7']
+        }
+        console.log(cores_array)
+        return cores_array
+    }
 
     var rangeSelector =  {
         buttons: [{
@@ -1068,6 +1105,27 @@ SoloX - Application Performance Monitoring
             return data;
         }())
     }];
+
+    // var seriesCpuCore = new Array()
+
+    // initCpuCoresSeries().forEach(element => {
+    //     seriesCpuCore.push({
+    //         name : element,
+    //         pointInterval: 120 * 1000,
+    //         data : (function () {
+    //             var data = [], time = (new Date()).getTime(), i;
+    //             for (i = -999; i <= 0; i += 1) {
+    //                 data.push([
+    //                     time + i * 1000,
+    //                     Math.round(0)
+    //                 ]);
+    //             }
+    //             return data;
+    //         }())
+    //     })
+    // })
+
+    // console.log(seriesCpuCore)
 
     var seriesNet = [{
         name : 'send',
@@ -1420,6 +1478,9 @@ SoloX - Application Performance Monitoring
             case 'downflow':
                 value = parseInt($('#down_warning_value').val());
                 break;
+            case 'gpu':
+                value = parseInt($('#gpu_warning_value').val());
+                break;    
         }
         var plotLines = [];
 
@@ -1470,11 +1531,21 @@ SoloX - Application Performance Monitoring
                 legend = true;
                 yAxis = yAxis_plot;
                 break;
+            case 'cpu_core':
+                seriesFinal = seriesCpuCore;
+                legend = true;
+                yAxis = yAxis_plot;
+                break;    
             case 'disk':
                 seriesFinal = seriesDisk;
                 legend = true;
                 yAxis = yAxis_plot;
-                break;    
+                break;
+            case 'gpu':
+                seriesFinal = series;
+                legend = true;
+                yAxis = yAxis_plot;
+                break;        
             case 'mem_android':
                 seriesFinal = seriesMem;
                 legend = true;
@@ -1531,6 +1602,12 @@ SoloX - Application Performance Monitoring
         return cpu_chart
     }
 
+    // function cpucoreInitialize(){
+    //     let type = 'cpu_core';
+    //     let cpucore_chart = chartsInitialize(type,'CPU Core Usage (%)');
+    //     return cpucore_chart
+    // }
+
     function batteryInitialize(){
         let type = platform == 'Android' ? 'battery_android' : 'battery_ios';
         let battery_chart = chartsInitialize(type,'Battery');
@@ -1578,6 +1655,7 @@ SoloX - Application Performance Monitoring
     }
 
     var cpu_chart = cpuInitialize();
+    // var cpucore_chart = cpucoreInitialize()
     var mem_chart = memInitialize();
     var mem_detail_chart = memDetailInitialize();
     var network_chart = networkInitialize();
@@ -1619,6 +1697,11 @@ SoloX - Application Performance Monitoring
                 yAxis = yAxis_plot;
                 legend = true;
                 break;
+            case 'cpu_core':
+                seriesFinal = seriesCpuCore;
+                yAxis = yAxis_plot;
+                legend = true;
+                break;    
             case 'disk':
                 seriesFinal = seriesDisk;
                 yAxis = yAxis_plot;

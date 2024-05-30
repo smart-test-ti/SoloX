@@ -543,7 +543,7 @@
     {% if apm_data.disk_flag == True %}
     <div class="card disk-card mt-3">
         <div class="card-header">
-            <div class='card-title'>{% if lan == 'cn' %} 磁盘使用 (MB) {% else %} Disk Usage (KB) {% endif %}</div>
+            <div class='card-title'>{% if lan == 'cn' %} 磁盘 (KB) {% else %} Disk Usage (KB) {% endif %}</div>
             <div class="card-actions btn-actions">
                 <a class="btn" onclick="initDiskCharts()">
                     <span class="spinner-border spinner-border-sm me-2" id="disk_spinner" role="status" style="display: none;"></span>
@@ -562,7 +562,7 @@
     </div>
     {% endif %}
 </div>
-
+{% if platform == 'Android'%}
 <!-- Disk Usage -->
 <div class="row row-deck row-cards card-disk mb-3">
     <div class="col-lg-6">
@@ -700,7 +700,7 @@
         </table>
     </div>
 </div>
-
+{% endif %}
 <div class="modal modal-blur fade" id="modal-compare" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
         <div class="modal-content">

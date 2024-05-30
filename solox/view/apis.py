@@ -25,6 +25,7 @@ def setCookie():
     netdataRecvWarning = request.args.get('netdataRecvWarning')
     netdataSendWarning = request.args.get('netdataSendWarning')
     betteryWarning = request.args.get('betteryWarning')
+    gpuWarning = request.args.get('gpuWarning')
     duration = request.args.get('duration')
     solox_host = request.args.get('solox_host')
     host_switch = request.args.get('host_switch')
@@ -36,6 +37,7 @@ def setCookie():
     resp.set_cookie('netdataRecvWarning', netdataRecvWarning)
     resp.set_cookie('netdataSendWarning', netdataSendWarning)
     resp.set_cookie('betteryWarning', betteryWarning)
+    resp.set_cookie('gpuWarning', gpuWarning)
     resp.set_cookie('duration', duration)
     resp.set_cookie('solox_host', solox_host)
     resp.set_cookie('host_switch', host_switch)
@@ -63,8 +65,8 @@ def initialize():
         result = {'status': 0, 'msg': str(e)}
     return result
 
-@api.route('/device/ids', methods=['post', 'get'])
-def deviceids():
+@api.route('/device/info', methods=['post', 'get'])
+def deviceinfo():
     """get devices info"""
     platform = method._request(request, 'platform')
     try:
@@ -101,7 +103,18 @@ def deviceids():
         result = {'status': 0, 'msg': 'devices connect error!'}
     return result
 
-@api.route('/device/packagenames', methods=['post', 'get'])
+@api.route('/device/cpucore', methods=['post', 'get'])
+def cpucore():
+    try:
+        deviceId = d.getDeviceIds()[0]
+        num = d.getCpuCores(deviceId)
+        result = {'status': 1, 'num': num}
+    except Exception as e:
+        result = {'status': 1, 'num': 0}    
+    return result
+
+
+@api.route('/device/package', methods=['post', 'get'])
 def packageNames():
     """get devices packageNames"""
     platform = method._request(request, 'platform')

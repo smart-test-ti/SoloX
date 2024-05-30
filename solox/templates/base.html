@@ -54,14 +54,14 @@
             <div class="nav-item dropdown d-none d-md-flex me-3">
                 <a  href="/?platform=Android&lan={{ lan }}" class="btn  btn-pill w-100" >
                     <svg t="1684145849174" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12372" width="50" height="50"><path d="M512 64C264.576 64 64 264.576 64 512s200.576 448 448 448 448-200.576 448-448S759.424 64 512 64z" fill="#94BFFF" p-id="12373"></path><path d="M498.56 519.666a10.668 10.668 0 0 1 0-15.332c21.718-21.126 84.97-82.904 148.374-147.128 14.336-14.516 19.86-35.152 7.744-51.408-4.972-6.654-11.584-14.192-20.352-22.284-11.926-11.014-23.296-18.38-32.768-23.28-15.51-8.02-33.686-3.928-47.766 6.24-110.25 79.572-185.43 165.484-221.802 211.612-15.98 20.29-15.98 47.538 0 67.828 36.372 46.128 111.552 132.04 221.802 211.614 14.08 10.166 32.256 14.256 47.766 6.238 9.472-4.9 20.842-12.266 32.768-23.28 8.768-8.092 15.38-15.63 20.352-22.284 12.116-16.256 6.592-36.892-7.744-51.406-63.404-64.226-126.656-126.004-148.374-147.13z" fill="#1677FF" p-id="12374"></path></svg>
-                    {% if lan == 'cn' %} 普通模式 {% else %} Normal Model {% endif %}
+                    {% if lan == 'cn' %} 普通模式 {% else %} Normal Mode {% endif %}
                 </a>
             </div>
             {% else %}
             <div class="nav-item dropdown d-none d-md-flex me-3">
                 <a href="/pk?model=2-devices&lan={{ lan }}" class="btn  btn-pill w-100" >
                     <svg t="1661854041585" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10784" width="2000" height="2000"><path d="M17.408 862.208a450.56 129.024 0 1 0 901.12 0 450.56 129.024 0 1 0-901.12 0Z" fill="#EEF2FF" p-id="10785"></path><path d="M509.952 880.64H75.776c-17.408 0-30.72-13.312-30.72-30.72V293.888c0-64.512 52.224-116.736 116.736-116.736h522.24c35.84 0 64.512 28.672 64.512 64.512v400.384C748.544 774.144 642.048 880.64 509.952 880.64z" fill="#70D4FF" p-id="10786"></path><path d="M764.928 880.64H212.992c-17.408 0-30.72-13.312-30.72-30.72V60.416h755.712c35.84 0 64.512 28.672 64.512 64.512v517.12C1002.496 774.144 896 880.64 764.928 880.64z" fill="#4E8EFF" p-id="10787"></path><path d="M555.008 403.456c0 20.48-7.168 35.84-22.528 48.128-14.336 11.264-30.72 16.384-51.2 16.384h-28.672v48.128c0 9.216 2.048 15.36 6.144 19.456 4.096 4.096 11.264 5.12 21.504 5.12V563.2H373.76v-22.528c15.36 0 23.552-8.192 23.552-24.576V389.12c0-16.384-8.192-24.576-23.552-24.576v-22.528h109.568c19.456 0 35.84 5.12 49.152 15.36 14.336 12.288 22.528 27.648 22.528 46.08z m-59.392 2.048c0-26.624-11.264-39.936-34.816-39.936h-9.216v80.896h11.264c13.312 0 22.528-3.072 26.624-10.24 4.096-7.168 6.144-17.408 6.144-30.72zM800.768 563.2h-60.416c-8.192-7.168-15.36-15.36-21.504-22.528l-57.344-74.752v50.176c0 16.384 9.216 24.576 26.624 24.576V563.2H584.704v-22.528c16.384 0 23.552-8.192 23.552-24.576V389.12c0-16.384-8.192-24.576-24.576-24.576v-22.528h105.472v22.528c-17.408 0-26.624 8.192-26.624 24.576v50.176l39.936-37.888c13.312-12.288 19.456-21.504 19.456-27.648 0-5.12-5.12-8.192-15.36-8.192v-22.528h81.92v22.528c-9.216 0-15.36 1.024-20.48 4.096-3.072 2.048-8.192 6.144-15.36 13.312L705.536 430.08l70.656 94.208c7.168 9.216 15.36 15.36 25.6 16.384V563.2z" fill="#FFFFFF" p-id="10788"></path></svg>
-                    {% if lan == 'cn' %} 比对模式 {% else %} PK Model {% endif %}
+                    {% if lan == 'cn' %} 比对模式 {% else %} PK Mode {% endif %}
                 </a>
             </div>
             {% endif %}
@@ -210,6 +210,10 @@
                             <div class="mb-3">
                                 <label class="form-label">{% if lan == 'cn' %} 下行流量告警值 {% else %} Recv network data warning value {% endif %}</label>
                                 <input id="downflow_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.netdataRecvWarning }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">{% if lan == 'cn' %} GPU告警值 {% else %} GPU warning value {% endif %}</label>
+                                <input id="gpu_warning_value" type="text" class="form-control"  placeholder="Input placeholder" value="{{ settings.gpuWarning }}">
                             </div>
                         </div>
                     </div>
@@ -385,6 +389,7 @@
                 netdataRecvWarning:parseInt($('#down_warning_value').val()),
                 netdataSendWarning:parseInt($('#upflow_warning_value').val()),
                 betteryWarning:parseInt($('#battery_warning_value').val()),
+                gpuWarning:parseInt($('#gpu_warning_value').val()),
                 duration:parseInt($('#duration').val()),
                 solox_host: $('#host').val(),
                 host_switch:host_switch

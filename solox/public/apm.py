@@ -59,31 +59,56 @@ class CPU(object):
             for i in range(1, 8):
                 totalCpu += float(toks[i])
         return float(totalCpu)
-
-    def getSysCpuStat(self):
-        """get the total cpu usage at a certain time"""
-        cmd = 'cat /proc/stat |{} ^cpu'.format(d.filterType())
-        result = adb.shell(cmd=cmd, deviceId=self.deviceId)
-        r = re.compile(r'(?<!cpu\d+)')
-        toks = r.findall(result)
-        idleCpu = float(toks[4])
-        logger.info(idleCpu)
-        sysCpu = self.getTotalCpuStat() - idleCpu
-        return sysCpu
     
-    def getIdleCpuStat(self):
-        """get the total cpu usage at a certain time"""
+    def getCpuCoreStat(self):
+        """get the core cpu usage at a certain time"""
         cmd = 'cat /proc/stat |{} ^cpu'.format(d.filterType())
         result = adb.shell(cmd=cmd, deviceId=self.deviceId)
-        ileCpu = 0
+        coreCpu = 0
+        coreCpuList = []
         lines = result.split('\n')
         lines.pop(0)
         for line in lines:
             toks = line.split()
             if toks[1] in ['', ' ']:
                 toks.pop(1)
-            ileCpu += float(toks[4])
-        return ileCpu
+            for i in range(1, 8):
+                coreCpu += float(toks[i])
+            coreCpuList.append(coreCpu)
+            coreCpu = 0
+        print(coreCpuList)        
+        return coreCpuList
+    
+    def getCoreIdleCpuStat(self):
+        """get the core idel cpu usage at a certain time"""
+        cmd = 'cat /proc/stat |{} ^cpu'.format(d.filterType())
+        result = adb.shell(cmd=cmd, deviceId=self.deviceId)
+        idleCpuList = []
+        idleCpu = 0
+        lines = result.split('\n')
+        lines.pop(0)
+        for line in lines:
+            toks = line.split()
+            if toks[1] in ['', ' ']:
+                toks.pop(1)
+            idleCpu += float(toks[4])
+            idleCpuList.append(idleCpu)
+            idleCpu = 0
+        return idleCpuList
+    
+    def getIdleCpuStat(self):
+        """get the total cpu usage at a certain time"""
+        cmd = 'cat /proc/stat |{} ^cpu'.format(d.filterType())
+        result = adb.shell(cmd=cmd, deviceId=self.deviceId)
+        idleCpu = 0
+        lines = result.split('\n')
+        lines.pop(0)
+        for line in lines:
+            toks = line.split()
+            if toks[1] in ['', ' ']:
+                toks.pop(1)
+            idleCpu += float(toks[4])
+        return idleCpu
 
     def getAndroidCpuRate(self, noLog=False):
         """get the Android cpu rate of a process"""
