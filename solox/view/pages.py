@@ -91,7 +91,7 @@ def analysis():
                     sum_init_disk = disk[2]
                     sum_current_disk = disk[3]
                 else:
-                    apm_data = f._setiOSPerfs(scene)    
+                    apm_data = f._setiOSPerfs(scene)
             except ZeroDivisionError:
                 pass    
             except Exception as e:

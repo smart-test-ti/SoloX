@@ -720,6 +720,8 @@ class File:
 
         mem_detail_flag = os.path.exists(os.path.join(self.report_dir,scene,'mem_java_heap.log'))
         disk_flag = os.path.exists(os.path.join(self.report_dir,scene,'disk_free.log'))
+        thermal_flag = os.path.exists(os.path.join(self.report_dir,scene,'init_thermal_temp.json'))
+
         apm_dict = dict()
         apm_dict['app'] = app
         apm_dict['devices'] = devices
@@ -738,6 +740,14 @@ class File:
         apm_dict['mem_detail_flag'] = mem_detail_flag
         apm_dict['disk_flag'] = disk_flag
         apm_dict['gpu'] = gpu
+        apm_dict['thermal_flag'] = thermal_flag
+
+        if thermal_flag:
+            init_thermal_temp = json.loads(open(os.path.join(self.report_dir,scene,'init_thermal_temp.json')).read())
+            current_thermal_temp = json.loads(open(os.path.join(self.report_dir,scene,'current_thermal_temp.json')).read())
+            apm_dict['init_thermal_temp'] = init_thermal_temp
+            apm_dict['current_thermal_temp'] = current_thermal_temp
+
         return apm_dict
 
     def _setiOSPerfs(self, scene):

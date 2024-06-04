@@ -7,7 +7,7 @@ from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
 from solox import __version__
-from solox.public.apm import CPU, Memory, Network, FPS, Battery, GPU, Disk, Target
+from solox.public.apm import CPU, Memory, Network, FPS, Battery, GPU, Disk,ThermalSensor, Target
 from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
 from solox.public.common import Devices, File, Method, Install, Platform, Scrcpy
 
@@ -454,6 +454,21 @@ def setDiskData():
         result = {'status': 0, 'msg':'set disk data failed'}
     return result 
 
+@api.route('/apm/set/thermal', methods=['post', 'get'])
+def setThermalData():
+    """set thermal data"""
+    platform = method._request(request, 'platform')
+    device = method._request(request, 'device')
+    try:
+        deviceId = d.getIdbyDevice(device, platform)
+        thermal = ThermalSensor(deviceId=deviceId)
+        thermal.setInitalThermalTemp()
+        result = {'status': 1, 'msg':'set thermal data success'}
+    except Exception as e:
+        logger.exception(e)
+        result = {'status': 0, 'msg':'set thermal data failed'}
+    return result
+
 @api.route('/apm/create/report', methods=['post', 'get'])
 def makeReport():
     """Create test report records"""
@@ -463,6 +478,7 @@ def makeReport():
     devices = method._request(request, 'devices')
     wifi_switch = method._request(request, 'wifi_switch')
     record_switch = method._request(request, 'record_switch')
+    thermal_switch = method._request(request, 'thermal_switch')
     process = method._request(request, 'process')
     try:
         video = 0
@@ -483,6 +499,12 @@ def makeReport():
             # set current disk
             disk = Disk(deviceId=deviceId)
             disk.setCurrentDisk()
+
+            # set current thermal
+            thermal_checked = False if thermal_switch == 'false' else True
+            if thermal_checked:
+                thermal = ThermalSensor(deviceId=deviceId)
+                thermal.setCurrentThermalTemp()
 
             record = False if record_switch == 'false' else True
             if record:

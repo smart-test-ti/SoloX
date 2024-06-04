@@ -136,7 +136,7 @@ class CPU(object):
 
     def getiOSCpuRate(self, noLog=False):
         """get the iOS cpu rate of a process, unit:%"""
-        apm = iosAPM(self.pkgName, self.deviceId)
+        apm = iosPerformance(self.pkgName, self.deviceId)
         appCpuRate = round(float(apm.getPerformance(apm.cpu)[0]), 2)
         sysCpuRate = round(float(apm.getPerformance(apm.cpu)[1]), 2)
         if noLog is False:
@@ -148,11 +148,7 @@ class CPU(object):
     def getCpuRate(self, noLog=False):
         """Get the cpu rate of a process, unit:%"""
         appCpuRate, systemCpuRate = self.getAndroidCpuRate(noLog) if self.platform == Platform.Android else self.getiOSCpuRate(noLog)
-        return appCpuRate, systemCpuRate
-    
-    def getCpuTemperature(self, noLog=False):
-        cmd = 'cat /sys/class/thermal/thermal_zone*/temp' #    cat /sys/class/thermal/thermal_zone*/temp 
-        result = adb.shell(cmd=cmd, deviceId=self.deviceId)
+        return appCpuRate, systemCpuRate    
 
 class Memory(object):
     def __init__(self, pkgName, deviceId, platform=Platform.Android, pid=None):
@@ -239,7 +235,7 @@ class Memory(object):
 
     def getiOSMemory(self):
         """Get the iOS memory"""
-        apm = iosAPM(self.pkgName, self.deviceId)
+        apm = iosPerformance(self.pkgName, self.deviceId)
         totalPass = round(float(apm.getPerformance(apm.memory)), 2)
         swapPass = 0
         return totalPass, swapPass
@@ -370,7 +366,7 @@ class Network(object):
 
     def getiOSNet(self):
         """Get iOS upflow and downflow data"""
-        apm = iosAPM(self.pkgName, self.deviceId)
+        apm = iosPerformance(self.pkgName, self.deviceId)
         apm_data = apm.getPerformance(apm.network)
         sendNum = round(float(apm_data[1]), 2)
         recNum = round(float(apm_data[0]), 2)
@@ -429,7 +425,7 @@ class FPS(object):
     
     def getiOSFps(self, noLog=False):
         """get iOS Fps"""
-        apm = iosAPM(self.pkgName, self.deviceId)
+        apm = iosPerformance(self.pkgName, self.deviceId)
         fps = int(apm.getPerformance(apm.fps))
         if noLog is False:
             apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
@@ -454,7 +450,7 @@ class GPU(object):
         return gpu
 
     def getiOSGpuRate(self):
-        apm = iosAPM(self.pkgName, self.deviceId)
+        apm = iosPerformance(self.pkgName, self.deviceId)
         gpu = apm.getPerformance(apm.gpu)
         return gpu    
 
@@ -511,8 +507,64 @@ class Disk(object):
             f.add_log(os.path.join(f.report_dir,'disk_free.log'), apm_time, disk.get('free'))
         return disk    
 
+class ThermalSensor(object):
+    def __init__(self, deviceId, platform=Platform.Android):
+        self.deviceId = deviceId
+        self.platform = platform
+
+    def setInitalThermalTemp(self):
+        temp_list = list()
+        typeLength = len(self.getThermalType())
+        if typeLength > 3:
+            for i in range(len(self.getThermalType())-1):
+                cmd = 'cat /sys/class/thermal/thermal_zone{}/temp'.format(i)
+                temp = adb.shell(cmd=cmd, deviceId=self.deviceId)
+                temp_dict = {
+                    'type':self.getThermalType()[i],
+                    'temp':temp
+                }
+                temp_list.append(temp_dict)
+            content = json.dumps(temp_list)
+            f.create_file(filename='init_thermal_temp.json', content=content)
     
-class iosAPM(object):
+    def setCurrentThermalTemp(self):
+        temp_list = list()
+        typeLength = len(self.getThermalType())
+        if typeLength > 3:
+            for i in range(len(self.getThermalType())-1):
+                cmd = 'cat /sys/class/thermal/thermal_zone{}/temp'.format(i)
+                temp = adb.shell(cmd=cmd, deviceId=self.deviceId)
+                temp_dict = {
+                    'type':self.getThermalType()[i],
+                    'temp':temp
+                }
+                temp_list.append(temp_dict)
+            content = json.dumps(temp_list)
+            f.create_file(filename='current_thermal_temp.json', content=content)
+
+    def getThermalType(self):
+        cmd = 'cat /sys/class/thermal/thermal_zone*/type'
+        result = adb.shell(cmd=cmd, deviceId=self.deviceId)
+        typeList = result.splitlines()
+        return typeList
+
+    def getThermalTemp(self):
+        temp_list = list()
+        typeLength = len(self.getThermalType())
+        if typeLength > 3:
+            for i in range(len(self.getThermalType())-1):
+                cmd = 'cat /sys/class/thermal/thermal_zone{}/temp'.format(i)
+                temp = adb.shell(cmd=cmd, deviceId=self.deviceId)
+                temp_dict = {
+                    'type':self.getThermalType()[i],
+                    'temp':temp
+                }
+                temp_list.append(temp_dict)
+            return temp_list 
+        else:
+            logger.exception('No permission')     
+
+class iosPerformance(object):
 
     def __init__(self, pkgName, deviceId):
         self.pkgName = pkgName
@@ -690,7 +742,13 @@ class AppPerformanceMonitor(initPerformanceService):
             if self.duration > 0 and time.time() > self.end_time:
                 break
         return result
-
+    
+    def collectThermal(self):
+         _thermal = ThermalSensor(self.deviceId, self.platform)
+         result = _thermal.getThermalTemp()
+         logger.info(f'thermal: {result}')
+         return result
+    
     def setPerfs(self, report_path=None):
         match(self.platform):
             case Platform.Android:

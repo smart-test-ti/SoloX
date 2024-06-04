@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from logzero import logger
 import platform
 import fire as fire
-# import argparse
 from solox import __version__
 
 def checkPyVer():
@@ -14,8 +13,6 @@ def checkPyVer():
     return True    
 
 if __name__ == '__main__':
-    # ap = argparse.ArgumentParser(
-    #     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     check = checkPyVer()
     if check:
         from solox.web import main
