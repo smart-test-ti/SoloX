@@ -113,7 +113,6 @@ def cpucore():
         result = {'status': 1, 'num': 0}    
     return result
 
-
 @api.route('/device/package', methods=['post', 'get'])
 def packageNames():
     """get devices packageNames"""
@@ -223,6 +222,33 @@ def getCpuRate():
         logger.error('get cpu failed')
         logger.exception(e)
         result = {'status': 1, 'appCpuRate': 0, 'systemCpuRate': 0, 'first': 0, 'second': 0}
+    return result
+
+@api.route('/apm/corecpu', methods=['post', 'get'])
+def getCoreCpuRate():
+    """get process cpu core rate"""
+    platform = method._request(request, 'platform')
+    pkgname = method._request(request, 'pkgname')
+    device = method._request(request, 'device')
+    cores = method._request(request, 'cores')
+    process = method._request(request, 'process')
+    try:
+        cores = int(cores)
+        pid = None
+        deviceId = d.getIdbyDevice(device, platform)
+        if process and platform == Platform.Android :
+            pid = process.split(':')[0]
+        corecpu = CPU(pkgName=pkgname, deviceId=deviceId, platform=platform, pid=pid)
+        coreCpuRate = corecpu.getCoreCpuRate(cores)
+        result = {'status': 1, 'coreCpuRate': coreCpuRate}
+    except Exception as e:
+        logger.error('get core cpu failed')
+        logger.exception(e)
+        coreCpuRate = list()
+        while cores > 0:
+            coreCpuRate.append(0)
+            cores = cores -1
+        result = {'status': 1, 'coreCpuRate': coreCpuRate}
     return result
 
 @api.route('/apm/mem', methods=['post', 'get'])
@@ -480,6 +506,7 @@ def makeReport():
     record_switch = method._request(request, 'record_switch')
     thermal_switch = method._request(request, 'thermal_switch')
     process = method._request(request, 'process')
+    cores = method._request(request, 'cores')
     try:
         video = 0
         if platform == Platform.Android and model == 'normal':
@@ -509,8 +536,8 @@ def makeReport():
             record = False if record_switch == 'false' else True
             if record:
                 video = 1
-                Scrcpy.stop_record()
-        f.make_report(app=app, devices=devices, video=video, platform=platform, model=model)
+                Scrcpy.stop_record()        
+        f.make_report(app=app, devices=devices, video=video, platform=platform, model=model, cores=cores)
         result = {'status': 1}
     except Exception as e:
         logger.exception(e)
@@ -654,7 +681,8 @@ def getLogData():
             'flow': f.getFlowLog(platform, scene),
             'fps': f.getFpsLog(platform, scene),
             'gpu': f.getGpuLog(platform, scene),
-            'disk': f.getDiskLog(platform, scene)
+            'disk': f.getDiskLog(platform, scene),
+            'cpu_core': f.getCpuCoreLog(platform, scene)
         }
         result = fucDic[target]
     except Exception as e:

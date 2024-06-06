@@ -76,7 +76,6 @@ class CPU(object):
                 coreCpu += float(toks[i])
             coreCpuList.append(coreCpu)
             coreCpu = 0
-        print(coreCpuList)        
         return coreCpuList
     
     def getCoreIdleCpuStat(self):
@@ -109,6 +108,29 @@ class CPU(object):
                 toks.pop(1)
             idleCpu += float(toks[4])
         return idleCpu
+    
+    def getCoreCpuRate(self, cores=0,noLog=False):
+        try:
+            processCpuTime_1 = self.getprocessCpuStat()
+            coreCpuTotalTime_List1 = self.getCpuCoreStat()
+            time.sleep(1)
+            processCpuTime_2 = self.getprocessCpuStat()
+            coreCpuTotalTime_List2 = self.getCpuCoreStat()
+            coreCpuRateList = list()
+            for i in range(len(coreCpuTotalTime_List1)):
+                coreCpuRate = round(float((processCpuTime_2 - processCpuTime_1) / (coreCpuTotalTime_List2[i] - coreCpuTotalTime_List1[i]) * 100), 2)
+                coreCpuRate /= cores
+                coreCpuRate = round(float(coreCpuRate), 2)
+                coreCpuRateList.append(coreCpuRate)
+                if noLog is False:
+                    apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
+                    f.add_log(os.path.join(f.report_dir,'cpu{}.log'.format(i)), apm_time, coreCpuRate)
+        except Exception as e:
+            if len(d.getPid(self.deviceId, self.pkgName)) == 0:
+                logger.error('[CPU Core] {} : No process found'.format(self.pkgName))
+            else:
+                logger.exception(e)
+        return coreCpuRateList    
 
     def getAndroidCpuRate(self, noLog=False):
         """get the Android cpu rate of a process"""
@@ -516,7 +538,7 @@ class ThermalSensor(object):
         temp_list = list()
         typeLength = len(self.getThermalType())
         if typeLength > 3:
-            for i in range(len(self.getThermalType())-1):
+            for i in range(len(self.getThermalType())):
                 cmd = 'cat /sys/class/thermal/thermal_zone{}/temp'.format(i)
                 temp = adb.shell(cmd=cmd, deviceId=self.deviceId)
                 temp_dict = {
@@ -531,7 +553,7 @@ class ThermalSensor(object):
         temp_list = list()
         typeLength = len(self.getThermalType())
         if typeLength > 3:
-            for i in range(len(self.getThermalType())-1):
+            for i in range(len(self.getThermalType())):
                 cmd = 'cat /sys/class/thermal/thermal_zone{}/temp'.format(i)
                 temp = adb.shell(cmd=cmd, deviceId=self.deviceId)
                 temp_dict = {
@@ -552,7 +574,7 @@ class ThermalSensor(object):
         temp_list = list()
         typeLength = len(self.getThermalType())
         if typeLength > 3:
-            for i in range(len(self.getThermalType())-1):
+            for i in range(len(self.getThermalType())):
                 cmd = 'cat /sys/class/thermal/thermal_zone{}/temp'.format(i)
                 temp = adb.shell(cmd=cmd, deviceId=self.deviceId)
                 temp_dict = {
@@ -657,7 +679,7 @@ class AppPerformanceMonitor(initPerformanceService):
             if self.duration > 0 and time.time() > self.end_time:
                 break
         return result
-
+    
     def collectMemory(self):
         _memory = Memory(self.pkgName, self.deviceId, self.platform, pid=self.pid)
         result = {}

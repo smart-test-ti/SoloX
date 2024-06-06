@@ -205,7 +205,7 @@ class Devices:
                 result['version'] = ios_device.get_value("ProductVersion", no_session=True)
                 result['serialno'] = deviceId
                 result['wifiadr'] = ios_device.get_value("WiFiAddress", no_session=True)
-                result['cpu_cores'] = ''
+                result['cpu_cores'] = 0
                 result['physical_size'] = self.getPhysicalSzieOfiOS(deviceId)
             case _:
                 raise Exception('{} is undefined'.format(platform)) 
@@ -378,7 +378,7 @@ class File:
             case _:
                 logger.error('record network data failed')
     
-    def make_report(self, app, devices, video, platform=Platform.Android, model='normal'):
+    def make_report(self, app, devices, video, platform=Platform.Android, model='normal', cores=0):
         logger.info('Generating test results ...')
         current_time = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
         result_dict = {
@@ -388,7 +388,8 @@ class File:
             "model": model,
             "devices": devices,
             "ctime": current_time,
-            "video": video
+            "video": video,
+            "cores":cores
         }
         content = json.dumps(result_dict)
         self.create_file(filename='result.json', content=content)
@@ -492,6 +493,15 @@ class File:
         targetDic['private_pss'] = self.readLog(scene=scene, filename='mem_private_pss.log')[0]
         targetDic['system_pss'] = self.readLog(scene=scene, filename='mem_system_pss.log')[0]
         result = {'status': 1, 'memory_detail': targetDic}
+        return result
+    
+    def getCpuCoreLog(self, platform, scene):
+        targetDic = dict()
+        cores =self.readJson(scene=scene).get('cores', 0)
+        if int(cores) > 0:
+            for i in range(int(cores)):
+                targetDic['cpu{}'.format(i)] = self.readLog(scene=scene, filename='cpu{}.log'.format(i))[0]
+        result = {'status': 1, 'cores':cores, 'cpu_core': targetDic}
         return result
     
     def getMemLogCompare(self, platform, scene1, scene2):
@@ -656,8 +666,6 @@ class File:
             if size < multiple:
                 return '{0:.2f} {1}'.format(size, suffix)
     
-    
-
     def _setAndroidPerfs(self, scene):
         """Aggregate APM data for Android"""
         
@@ -721,7 +729,7 @@ class File:
         mem_detail_flag = os.path.exists(os.path.join(self.report_dir,scene,'mem_java_heap.log'))
         disk_flag = os.path.exists(os.path.join(self.report_dir,scene,'disk_free.log'))
         thermal_flag = os.path.exists(os.path.join(self.report_dir,scene,'init_thermal_temp.json'))
-
+        cpu_core_flag = os.path.exists(os.path.join(self.report_dir,scene,'cpu0.log'))
         apm_dict = dict()
         apm_dict['app'] = app
         apm_dict['devices'] = devices
@@ -741,7 +749,8 @@ class File:
         apm_dict['disk_flag'] = disk_flag
         apm_dict['gpu'] = gpu
         apm_dict['thermal_flag'] = thermal_flag
-
+        apm_dict['cpu_core_flag'] = cpu_core_flag
+        
         if thermal_flag:
             init_thermal_temp = json.loads(open(os.path.join(self.report_dir,scene,'init_thermal_temp.json')).read())
             current_thermal_temp = json.loads(open(os.path.join(self.report_dir,scene,'current_thermal_temp.json')).read())
