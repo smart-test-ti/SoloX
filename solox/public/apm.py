@@ -679,6 +679,14 @@ class AppPerformanceMonitor(initPerformanceService):
             if self.duration > 0 and time.time() > self.end_time:
                 break
         return result
+
+    def collectCoreCpu(self):
+        _cpucore = CPU(self.pkgName, self.deviceId, self.platform, pid=self.pid)
+        cores = d.getCpuCores(self.deviceId)
+        value = _cpucore.getCoreCpuRate(cores=cores, noLog=self.noLog)
+        result = {'cpu{}'.format(value.index(element)):element for element in  value}
+        logger.info(f'cpu core: {result}')
+        return result    
     
     def collectMemory(self):
         _memory = Memory(self.pkgName, self.deviceId, self.platform, pid=self.pid)
@@ -770,6 +778,12 @@ class AppPerformanceMonitor(initPerformanceService):
          result = _thermal.getThermalTemp()
          logger.info(f'thermal: {result}')
          return result
+    
+    def collectDisk(self):
+        _disk = Disk(self.deviceId, self.platform)
+        result = _disk.getDisk()
+        logger.info(f'disk: {result}')
+        return result
     
     def setPerfs(self, report_path=None):
         match(self.platform):
