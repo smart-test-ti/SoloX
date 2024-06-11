@@ -103,7 +103,7 @@ def open_url(host: str, port: int):
 
 def start(host: str, port: int):
     logger.info('Running on http://{}:{}/?platform=Android&lan=en (Press CTRL+C to quit)'.format(host, port))
-    socketio.run(app, host=host, debug=False, port=port)
+    socketio.run(app, host=host, debug=True, port=port)
 
 def main(host=ip(), port=50003):
     start(host, port)      

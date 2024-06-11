@@ -610,15 +610,15 @@ class iosPerformance(object):
         else:
             self.perfs = value['value']
 
-    def getPerformance(self, perfTpe: DataType):
-        if perfTpe == DataType.NETWORK:
-            perf = Performance(tidevice.Device(udid=self.deviceId), [perfTpe])
+    def getPerformance(self, perfType: DataType):
+        if perfType == DataType.NETWORK:
+            perf = Performance(tidevice.Device(udid=self.deviceId), [perfType])
             perf.start(self.pkgName, callback=self.callback)
             time.sleep(3)
             perf.stop()
             perf_value = self.downflow, self.upflow
         else:
-            perf = iosP.Performance(tidevice.Device(udid=self.deviceId), [perfTpe])
+            perf = iosP.Performance(tidevice.Device(udid=self.deviceId), [perfType])
             perf_value = perf.start(self.pkgName, callback=self.callback)
         return perf_value
 

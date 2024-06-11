@@ -13,11 +13,13 @@ f = File()
 
 @page.app_errorhandler(404)
 def page_404(e):
+    settings = m._settings(request)
     return render_template('404.html', **locals()), 404
 
 
 @page.app_errorhandler(500)
 def page_500(e):
+    settings = m._settings(request)
     return render_template('500.html', **locals()), 500
 
 
