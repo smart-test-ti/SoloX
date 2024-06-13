@@ -7,7 +7,7 @@ from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
 from solox import __version__
-from solox.public.apm import CPU, Memory, Network, FPS, Battery, GPU, Disk,ThermalSensor, Target
+from solox.public.apm import CPU, Memory, Network, FPS, Battery, GPU, Energy, Disk,ThermalSensor, Target
 from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
 from solox.public.common import Devices, File, Method, Install, Platform, Scrcpy
 
@@ -448,6 +448,34 @@ def getGpu():
     except Exception as e:
         logger.exception(e)
         result = {'status': 1, 'gpu': 0}
+    return result
+
+@api.route('/apm/energy', methods=['post', 'get'])
+def getEnergy():
+    """get energy data"""
+    pkgname = method._request(request, 'pkgname')
+    device = method._request(request, 'device')
+    platform = method._request(request, 'platform')
+    try:
+        deviceId = d.getIdbyDevice(device, platform)
+        enery = Energy(deviceId=deviceId, packageName=pkgname)
+        value = enery.getEnergy()
+        result = {'status': 1, 'value': value}
+    except Exception as e:
+        logger.exception(e)
+        value = {
+            "energy.overhead": 0,
+            "energy.version": 0,
+            "energy.gpu.cost": 0,
+            "energy.cpu.cost": 0,
+            "energy.appstate.cost": 0,
+            "energy.thermalstate.cost": 0,
+            "energy.networking.cost": 0,
+            "energy.cost": 0,
+            "energy.display.cost": 0,
+            "energy.location.cost": 0,
+        }
+        result = {'status': 1, 'value': value}
     return result
 
 @api.route('/apm/disk', methods=['post', 'get'])

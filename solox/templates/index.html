@@ -271,6 +271,7 @@ SoloX - Application Performance Monitoring
         <div id="mem_ios"  class="mb-3 mem" style="min-width:400px;height:300px"></div>
         <div id="fps_ios" class="mb-3 fps" style="min-width:400px;height:300px"></div>
         <div id="battery_ios" class="mb-3 battery" style="min-width:400px;height:300px"></div>
+        <div id="energy" class="energy mb-3" style="min-width:400px;height:300px; display: none"></div>
         {% endif %}
         <div id="network" class="network mb-3" style="min-width:400px;height:300px"></div>
         <div id="gpu" class="mb-3 gpu" style="min-width:400px;height:300px"></div>
@@ -388,6 +389,12 @@ SoloX - Application Performance Monitoring
                 <svg t="1711433630085" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="84744" width="200" height="200"><path d="M172.261392 465.745702l-0.539234 376.625021 326.285617 180.627064v-375.786213L172.261392 465.745702z" fill="#4762AF" p-id="84745"></path><path d="M743.081477 435.363404l50.121532 15.817532-41.815149 39.734468-8.306383-55.552zM235.558754 438.021447l-25.469277 23.895149 21.776341 20.153191 3.692936-44.04834z" fill="#6982C8" p-id="84746"></path><path d="M521.750414 667.549957c-13.105021-7.271489-32.768-8.170213-43.890383-1.998978L178.966414 831.400851c-11.122383 6.171234-9.510128 17.081191 3.594893 24.352681l291.70383 161.857362c13.105021 7.271489 32.768 8.164766 43.890383 1.998978l298.893617-165.849872c11.122383-6.171234 9.510128-17.081191-3.594894-24.352681L521.750414 667.549957z" fill="#4762AF" p-id="84747"></path><path d="M532.720286 13.148596c0-11.035234-6.737702-16.122553-15.044085-11.362043L246.909903 157.107745c-8.300936 4.760511-15.044085 17.582298-15.044085 28.617532v596.098723c0 11.029787 6.743149 16.122553 15.044085 11.362043l270.766298-155.321192c8.306383-4.760511 15.044085-17.587745 15.044085-28.617532V13.148596z" fill="#C4CADD" p-id="84748"></path><path d="M526.717903 0.604596l14.542979 8.279149-15.937362 7.473021-6.955574-7.974128L526.717903 0.604596z" fill="#C4CADD" p-id="84749"></path><path d="M546.560626 21.090043c0-11.035234-6.743149-16.128-15.044085-11.36749L260.750243 165.043745c-8.300936 4.760511-15.044085 17.587745-15.044085 28.622978v596.093277c0 11.035234 6.743149 16.128 15.044085 11.362043l270.766298-155.315745c8.300936-4.765957 15.044085-17.587745 15.044085-28.622979V21.090043z" fill="#848BA6" p-id="84750"></path><path d="M602.842499 75.389277c0-11.035234-6.743149-16.128-15.044085-11.362043L317.032116 219.342979c-8.300936 4.765957-15.044085 17.587745-15.044085 28.622978v596.093277c0 11.035234 6.743149 16.128 15.044085 11.367489l270.766298-155.321191c8.300936-4.760511 15.044085-17.587745 15.044085-28.622979V75.389277z" fill="#C4CADD" p-id="84751"></path><path d="M596.840116 62.845277l14.542978 8.279149-15.937361 7.467574-6.955575-7.968681 8.349958-7.778042z" fill="#C4CADD" p-id="84752"></path><path d="M616.682839 83.325277c0-11.029787-6.743149-16.122553-15.044085-11.362043L330.872456 227.284426c-8.306383 4.760511-15.044085 17.587745-15.044085 28.617531v596.098724c0 11.035234 6.737702 16.128 15.044085 11.362042l270.766298-155.315744c8.300936-4.765957 15.044085-17.587745 15.044085-28.622979V83.325277z" fill="#848BA6" p-id="84753"></path><path d="M672.964711 137.629957c0-11.035234-6.743149-16.128-15.044085-11.362042L387.154329 281.58366c-8.306383 4.765957-15.044085 17.587745-15.044086 28.622978v596.093277c0 11.035234 6.737702 16.128 15.044086 11.367489l270.766297-155.321191c8.300936-4.760511 15.044085-17.587745 15.044085-28.622979V137.629957z" fill="#C4CADD" p-id="84754"></path><path d="M666.956882 125.080511l14.542978 8.284595-15.937361 7.467575-6.950128-7.974128 8.344511-7.778042z" fill="#C4CADD" p-id="84755"></path><path d="M686.799605 145.565957c0-11.029787-6.737702-16.122553-15.038638-11.362042L400.989222 289.525106c-8.300936 4.760511-15.038638 17.587745-15.038638 28.617532v596.098724c0 11.035234 6.737702 16.122553 15.038638 11.362042l270.771745-155.321191c8.300936-4.760511 15.038638-17.582298 15.038638-28.617532V145.565957z" fill="#848BA6" p-id="84756"></path><path d="M743.081477 199.870638c0-11.035234-6.737702-16.128-15.038638-11.367489L457.271094 343.82434c-8.300936 4.760511-15.038638 17.587745-15.038638 28.622979v596.093277c0 11.035234 6.737702 16.128 15.038638 11.362042l270.771745-155.315744c8.300936-4.765957 15.038638-17.587745 15.038638-28.622979V199.870638z" fill="#C4CADD" p-id="84757"></path><path d="M737.079094 187.321191l14.542979 8.284596-15.937362 7.467575-6.955574-7.974128 8.349957-7.778043z" fill="#C4CADD" p-id="84758"></path><path d="M756.921818 207.806638c0-11.035234-6.737702-16.122553-15.044085-11.362042L471.111435 351.765787c-8.300936 4.760511-15.044085 17.582298-15.044085 28.617532v596.098724c0 11.029787 6.743149 16.122553 15.044085 11.362042l270.766298-155.321191c8.306383-4.760511 15.044085-17.587745 15.044085-28.617532V207.806638z" fill="#848BA6" p-id="84759"></path><path d="M496.215775 642.592681l327.511149-178.088851 0.566468 379.40834-328.077617-69.011064v-132.308425z" fill="#4762AF" p-id="84760"></path><path d="M465.670073 636.43234l69.893447-2.897702v376.412596s-8.900085 7.690894-22.168511 11.645277c-4.33566 1.290894-9.150638 1.824681-14.254298 2.037106-9.984 0.408511-20.790468-4.057872-32.223319-10.092936l-1.247319-377.104341z" fill="#6982C8" p-id="84761"></path><path d="M466.732201 641.056681L225.286073 501.656511v80.498383l241.446128 139.40017v-80.498383zM466.732201 926.093617L225.286073 786.693447v83.412425l241.446128 139.400171v-83.412426z" fill="#4762AF" p-id="84762"></path><path d="M466.732201 705.16017l-19.477787-11.247659v269.361021l19.477787 11.247659v-269.361021z" fill="#4762AF" p-id="84763"></path><path d="M231.865818 422.432681v24.989957l-6.634213 3.829107c-9.733447 5.621106-8.513362 15.458043 2.728851 21.945191l250.264511 144.48749c11.242213 6.492596 28.274383 7.200681 38.00783 1.579574l255.722212-147.641191c9.733447-5.621106 8.513362-15.452596-2.728851-21.945192l-12.30434-7.102638v-26.662128l56.59234 34.347575c13.083234 7.554723 14.510298 18.998468 3.17549 25.540085l-297.570043 171.797787c-11.329362 6.541617-31.144851 5.719149-44.228085-1.830128L183.672456 477.630638c-13.083234-7.554723-14.504851-18.993021-3.175489-25.534638l51.368851-29.663319z" fill="#6982C8" p-id="84764"></path><path d="M535.361988 775.701787v182.805787l250.694809-127.656851-250.694809-55.148936zM302.124201 827.833191v-24.227404l-20.708766 12.27166 20.708766 11.955744z" fill="#4762AF" p-id="84765"></path><path d="M316.503775 795.620766l123.332085-73.166979 0.838809 56.16749-111.812085 64.561021-12.358809-7.04817v-40.513362zM387.007265 828.328851l53.623829-30.95966v110.902469l-53.623829-30.954213v-48.988596z" fill="#848BA6" p-id="84766"></path><path d="M245.967605 597.416851l-14.101787-7.03183v199.293277l13.84034 11.590808 0.261447-203.852255z" fill="#C4CADD" p-id="84767"></path><path d="M245.967605 597.416851l76.625702 43.835915-76.625702 44.244425v-88.08034zM245.967605 705.525106v29.254809l118.544341-69.021958-24.832-14.336-93.712341 54.103149z" fill="#848BA6" p-id="84768"></path><path d="M302.086073 629.716426v197.817191l14.417702 8.32817v-197.926127l-14.417702-8.219234zM372.23552 670.218894v198.17668l14.771745 8.529703v-198.443575l-14.771745-8.262808z" fill="#C4CBDC" p-id="84769"></path><path d="M220.471094 697.943149l12.233532 7.059064v62.551149c0 10.937191 6.612426 23.628255 14.760851 28.334298l178.453788 103.031829c8.142979 4.700596 14.755404-0.359489 14.755404-11.291234v-62.551149l12.233532 7.059064v71.876085c0 12.217191-7.391319 17.870979-16.492936 12.614809l-199.451234-115.150979c-9.101617-5.25617-16.492936-19.43966-16.492937-31.662298v-71.870638z" fill="#6982C8" p-id="84770"></path><path d="M452.908201 832.63183l-12.233532-7.064511v-95.923745c0-10.931745-6.612426-23.628255-14.755404-28.328851l-178.453788-103.031829c-8.148426-4.706043-14.760851 0.354043-14.760851 11.285787v95.929191l-12.233532-7.06451v-105.243234c0-12.222638 7.391319-17.876426 16.492937-12.620256l199.451234 115.150979c9.101617 5.25617 16.492936 19.445106 16.492936 31.662298v105.248681z" fill="#6982C8" p-id="84771"></path><path d="M549.360286 891.827745v-141.932936s-6.601532-30.08817 43.699745-50.301277l196.433702-113.408s10.446979-9.624511 23.306893-0.849702c12.859915 8.769362 28.601191 16.514723 28.601192 16.514723s-227.878128 133.61566-229.653787 132.59166c-1.781106-1.029447-19.684766 5.670128-19.684766 34.124255v166.067745l-32.250554-18.617192s-10.452426-9.23234-10.452425-24.189276z" fill="#273F73" p-id="84772"></path><path d="M847.671094 614.89566c0-10.893617-6.634213-15.904681-14.798978-11.193192l-229.681022 132.608c-8.170213 4.716936-14.798979 17.386213-14.798978 28.27983v157.864851c0 10.88817 6.628766 15.904681 14.798978 11.187745l229.681022-132.608c8.164766-4.711489 14.798979-17.386213 14.798978-28.274383v-157.864851z" fill="#677FC4" p-id="84773"></path><path d="M806.711094 667.609872c0-7.424-4.520851-10.839149-10.087489-7.625532l-146.965787 84.850383c-5.566638 3.213617-10.087489 11.846809-10.087489 19.270809s4.520851 10.844596 10.087489 7.625532l146.965787-84.850383c5.566638-3.213617 10.087489-11.846809 10.087489-19.270809zM806.711094 719.659574c0-7.424-4.520851-10.839149-10.087489-7.625531l-146.965787 84.850383c-5.566638 3.213617-10.087489 11.846809-10.087489 19.270808s4.520851 10.844596 10.087489 7.625532l146.965787-84.850383c5.566638-3.213617 10.087489-11.846809 10.087489-19.270809zM806.711094 769.955404c0-7.424-4.520851-10.839149-10.087489-7.625532l-146.965787 84.850383c-5.566638 3.213617-10.087489 11.852255-10.087489 19.276256s4.520851 10.839149 10.087489 7.625532l146.965787-84.850383c5.566638-3.213617 10.087489-11.852255 10.087489-19.276256z" fill="#71E0FF" p-id="84774"></path><path d="M535.814073 448.969532v54.762213l-19.788255 11.427404V438.337362l25.785191-14.886128c11.307574-6.530723 20.164085-8.676766 26.564085-6.449021 7.603745 2.701617 11.405617 10.131064 11.405617 22.28834 0 11.634383-3.251745 23.001872-9.749787 34.107915-6.498043 11.106043-14.86434 19.613957-25.098893 25.523745-1.203745 0.691745-3.170043 1.753872-5.898894 3.180936v-22.571575l3.164596-1.830127c11.53634-6.656 17.304511-15.561532 17.30451-26.705702 0-10.463319-5.670128-12.42417-17.010383-5.877107l-6.677787 3.850894zM608.877563 384.724426v76.827234l-19.788256 11.421957V396.15183l19.788256-11.427404zM653.427009 358.666894v21.89617a10.675745 10.675745 0 0 0-3.311659 1.067574c-1.497872 0.866043-2.777872 2.244085-3.850894 4.139575-1.073021 1.895489-1.612255 3.741957-1.612255 5.539404 0 1.541447 0.588255 3.153702 1.753872 4.842213l1.514213 2.16783c2.728851 3.899915 4.096 8.404426 4.096 13.508085 0 7.467574-2.304 15.114894-6.901106 22.947404-4.597106 7.832511-10.207319 13.660596-16.836086 17.489702-3.186383 1.841021-6.340085 2.816-9.455659 2.924936v-22.228425c1.884596 0.299574 3.556766 0.027234 5.016511-0.817022 1.721191-0.996766 3.159149-2.396596 4.313872-4.204936 1.154723-1.813787 1.732085-3.578553 1.732085-5.305191 0-1.127489-0.925957-3.050213-2.777872-5.76817-2.957617-4.297532-4.433702-9.450213-4.433702-15.452596 0-7.238809 2.233191-14.766298 6.699574-22.582468 4.466383-7.810723 9.804255-13.513532 16.013617-17.097532a24.870128 24.870128 0 0 1 8.039489-3.066553zM721.228882 319.86383l-17.549617 44.968851 17.451574 31.912851-22.228425 12.827234-15.060426-33.737532 17.059404-44.238979 20.32749-11.732425z m-37.969702 21.917957v76.827234l-19.793703 11.421958V353.209191l19.793703-11.427404z" fill="#17284A" p-id="84775"></path></svg> 
                 {% if lan == 'cn' %}<strong> 磁盘 </strong> {% else %}<strong>Disk</strong>  {% endif %}
             </label>
+            {% if platform == 'iOS' %}
+            <label class="dropdown-item cursor-pointer"><input class="form-check-input m-0 me-2 cursor-pointer" id="energy_checkbox" type="checkbox"  name="energy">
+                <svg t="1718160175906" class="icon me-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8233" width="256" height="256"><path d="M672 672m-240 0a240 240 0 1 0 480 0 240 240 0 1 0-480 0Z" fill="#FFEBEB" p-id="8234"></path><path d="M681.9 418.2l-121.9-0.8 17-148.5c1.7-14.8-5.9-29-18.7-34.6s-27.3-1-35.4 10.9L318 545.2c-6.7 10-7.8 23.4-2.7 34.5 5.1 11.1 15.6 18.1 27 18.1h113l-40.2 152c-3.9 14.9 2.2 30.9 14.8 38.2 4.5 2.6 9.5 4 14.3 4 8.7 0 17.2-4.1 23-12l237.7-307.6c7.5-9.8 9.3-23.4 4.3-35-5-11.7-15.6-19.2-27.3-19.2zM512.4 619.6l12-45.5c2.6-10 0.7-20.6-4.9-28.9-5.7-8.3-14.6-13.2-24.2-13.2h-93l100.6-147.5-6.9 61.6c-1 9.3 1.6 18.8 7.2 25.8 5.7 7.1 14 11.1 22.5 11.2l91.5 0.7-104.8 135.8z" fill="#F23B3B" p-id="8235"></path><path d="M951.3 496.4l-166.1-368c-5.7-10.1-16.4-16.4-28-16.4H266.8c-11.6 0-22.3 6.3-27.9 16.4l-166.1 368c-5.4 9.7-5.4 21.6 0 31.3l166.1 368c5.7 10.1 16.3 16.4 27.9 16.4h490.5c11.6 0 22.3-6.3 27.9-16.4l166.1-368c5.4-9.7 5.4-21.6 0-31.3z m-101 31.2l-116.8 280c-5.6 10.1-16.3 16.4-27.8 16.4H318.3c-11.6 0-22.3-6.3-27.9-16.4l-116.8-280c-5.4-9.7-5.4-21.6 0-31.3l116.8-280c5.7-10.1 16.3-16.4 27.9-16.4h387.3c11.6 0 22.3 6.3 27.9 16.4l116.8 280c5.4 9.7 5.4 21.6 0 31.3z" fill="#FF4C4C" p-id="8236"></path></svg>
+                {% if lan == 'cn' %}<strong> 功耗 </strong> {% else %}<strong>Energy</strong>  {% endif %}
+            </label>
+            {% endif %}
         </div>
       </div>
     </div>
@@ -470,7 +477,7 @@ SoloX - Application Performance Monitoring
             success: function (data) {
                 if(data['status'] != 1 ) {
                     if(lan == 'cn' ){
-                        SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 2000);
+                        SwalFire('error', '连接失败','请检查当前移动设备是否连接了PC端', 2000);
                     }else{
                         SwalFire('error', 'Connect failed !', 'No devices found', 2000);
                     } 
@@ -1124,6 +1131,62 @@ SoloX - Application Performance Monitoring
             }
         });
     }
+
+    function getEnergy(pkgname,device)  {
+        $.ajax({
+            url: Host + "/apm/energy",
+            type: "GET",
+            async: true,
+            cache: false,
+            data:{
+                platform:platform,
+                device:device,
+                pkgname:pkgname
+            },
+            beforeSend: function () {
+               window.clearTimeout(timerQ);
+            },
+            success: function (data) {
+                if(stop == false){
+                    if(data['status'] == 1){
+                        try {
+                            let seriesGpuCost = energy_chart.series[0];
+                            let seriesCpuCost = energy_chart.series[1];
+                            let seriesDisplayCost = energy_chart.series[2];
+                            let seriesLocationCost = energy_chart.series[3];
+                            let seriesNetworkCost = energy_chart.series[4];
+                            let seriesTotalCost = energy_chart.series[5];
+                            let seriesTotalOverhead = energy_chart.series[6];
+                            let x = (new Date()).getTime(),
+                                y_GpuCost = data['value']['energy.gpu.cost'];
+                                y_CpuCost = data['value']['energy.cpu.cost'];
+                                y_DisplayCost = data['value']['energy.display.cost'];
+                                y_LocationCost = data['value']['energy.location.cost'];
+                                y_NetworkCost = data['value']['energy.networking.cost'];
+                                y_TotalCost = data['value']['energy.cost'];
+                                y_TotalOverhead = data['value']['energy.overhead'];
+                            seriesGpuCost.addPoint([x, y_GpuCost], true, true);
+                            seriesCpuCost.addPoint([x, y_CpuCost], true, true);
+                            seriesDisplayCost.addPoint([x, y_DisplayCost], true, true);
+                            seriesLocationCost.addPoint([x, y_LocationCost], true, true);
+                            seriesNetworkCost.addPoint([x, y_NetworkCost], true, true);
+                            seriesTotalCost.addPoint([x, y_TotalCost], true, true);
+                            seriesTotalOverhead.addPoint([x, y_TotalOverhead], true, true);
+                            timerQ = setTimeout(getEnergy(pkgname,device), 2000);
+                        }catch (e) {
+                            console.log(e)
+                        }
+                    }else{
+                        SwalFire('error','Something error',data['msg'],2000);
+                    }
+                }
+            },
+            error: function(error){
+                SwalFire('error','Server Error','Please press [ctrl+shift+i] and provide the browser\'s error message',5000);
+                console.log(error);
+            }
+        });
+    }
     
     function initCpuCoresSeries(){
         var cores_array = new Array()
@@ -1528,6 +1591,99 @@ SoloX - Application Performance Monitoring
             return data;
         }())
     }];
+    
+    var seriesEnergy = [{
+        name : 'gpu',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'cpu',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'display',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'location',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'networking',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'total cost',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    },{
+        name : 'total overhead',
+        pointInterval: 120 * 1000,
+        data : (function () {
+            var data = [], time = (new Date()).getTime(), i;
+            for (i = -999; i <= 0; i += 1) {
+                data.push([
+                    time + i * 1000,
+                    Math.round(0)
+                ]);
+            }
+            return data;
+        }())
+    }];
 
     function setPlotLine(target) {
         var value = 0;
@@ -1635,7 +1791,12 @@ SoloX - Application Performance Monitoring
                 seriesFinal = seriesiOSBettery;
                 legend = true;
                 yAxis = yAxis_plot;
-                break;    
+                break;
+            case 'energy':
+                seriesFinal = seriesEnergy;
+                legend = true;
+                yAxis = yAxis_plot;
+                break;        
         }
 
         let apm_chart = Highcharts.stockChart(apmType, {
@@ -1727,6 +1888,13 @@ SoloX - Application Performance Monitoring
         }
     }
 
+    function energyInitialize(){
+        if(platform == 'iOS'){
+            let energy_chart = chartsInitialize('energy','Energy Usage');
+            return energy_chart
+        }
+    }
+
     var cpu_chart = cpuInitialize();
     var cpucore_chart = cpucoreInitialize()
     var mem_chart = memInitialize();
@@ -1736,7 +1904,7 @@ SoloX - Application Performance Monitoring
     var battery_chart = batteryInitialize();
     var gpu_chart = gpuInitialize()
     var disk_chart = diskInitialize()
-
+    var energy_chart = energyInitialize()
 
 
     function collectPers(device,pkgname=null,type,title,func){
@@ -1798,6 +1966,11 @@ SoloX - Application Performance Monitoring
                 legend = true;
                 yAxis = yAxis_plot;
                 break;
+            case 'energy':
+                seriesFinal = seriesEnergy;
+                legend = true;
+                yAxis = yAxis_plot;
+                break;    
             default:
                 seriesFinal = series;
                 break;
@@ -1922,6 +2095,14 @@ SoloX - Application Performance Monitoring
         if(disk_checkbox){
             diskInitialize();
             disk_chart = collectPers(device,null,'disk','Disk Usage (KB)',getDisk(device));
+        }
+    }
+
+    function collectEnergy(device,pkgname){
+        var energy_checkbox = $('#energy_checkbox').is(':checked');
+        if(energy_checkbox){
+            energyInitialize();
+            energy_chart = collectPers(device,pkgname,'energy','Energy Usage',getEnergy(pkgname,device));
         }
     }
 
@@ -2054,6 +2235,9 @@ SoloX - Application Performance Monitoring
                 collectMemDetail(device,pkgname)
                 collectCoreCpu(device,pkgname)
             }
+            if(platform == 'iOS'){
+                collectEnergy(device,pkgname)
+            }
             collectNetwork(device,pkgname);
             collectFps(device,pkgname);
             collectBattery(device);
@@ -2067,7 +2251,7 @@ SoloX - Application Performance Monitoring
             if(lan == 'cn'){
                 SwalFire('error','执行错误','没有选择APP或者设备',2000);
             }else{
-                SwalFire('error','Execution Error','No device or package name selected',2000);
+                SwalFire('error','Execution Error','No device or package selected',2000);
             }
             $('#run-apm').show();
             $('#stop-apm').hide();

@@ -3,8 +3,13 @@ import re
 import time
 import os
 import json
+import sys
 from logzero import logger
+from typing import Optional
 import tidevice
+from tidevice._types import ConnectionType
+from tidevice._usbmux import Usbmux
+from tidevice._device import Device
 import multiprocessing
 import solox.public._iosPerf as iosP
 from solox.public.iosperf._perf import DataType, Performance
@@ -15,6 +20,7 @@ from solox.public.android_fps import FPSMonitor, TimeUtils
 d = Devices()
 f = File()
 m = Method()
+um: Usbmux = None  # Usbmux
 
 class Target:
     CPU = 'cpu'
@@ -586,6 +592,49 @@ class ThermalSensor(object):
         else:
             logger.exception('No permission')     
 
+class Energy(object):
+    def __init__(self, deviceId, packageName):
+        self.deviceId = deviceId
+        self.packageName = packageName
+    
+    def _complete_udid(self, udid: Optional[str] = None) -> str:
+        infos = um.device_list()
+        # Find udid exactly match
+        for info in infos:
+            if info.udid == udid:
+                return udid
+        if udid:
+            sys.exit("Device for %s not detected" % udid)
+
+        if len(infos) == 1:
+            return infos[0].udid
+
+        # filter only usb connected devices
+        infos = [info for info in infos if info.conn_type == ConnectionType.USB]
+        if not udid:
+            if len(infos) >= 2:
+                sys.exit("More than 2 usb devices detected")
+            if len(infos) == 0:
+                sys.exit("No local device detected")
+            return infos[0].udid
+        raise RuntimeError("No matched device", udid)
+
+    def _udid2device(self, udid: Optional[str] = None) -> Device:
+        _udid = self._complete_udid(udid)
+        if _udid != udid:
+            logger.debug("AutoComplete udid %s", _udid)
+        del (udid)
+        return Device(_udid, um)
+
+    def getEnergy(self):
+        d = self._udid2device(self.deviceId)
+        ts = d.connect_instruments()
+        pid = ts.app_launch(self.packageName)
+        ts.start_energy_sampling(pid)
+        time.sleep(1.0)
+        ret = ts.get_process_energy_stats(pid)
+        return ret
+          
 class iosPerformance(object):
 
     def __init__(self, pkgName, deviceId):
