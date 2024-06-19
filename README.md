@@ -63,7 +63,7 @@ python -m solox --host=ip --port=port
 ## 🏴󠁣󠁩󠁣󠁭󠁿Python API
 
 ```python
-di# solox version : >= 2.8.5
+# solox version : >= 2.8.5
 from solox.public.apm import AppPerformanceMonitor
 from solox.public.common import Devices
 
