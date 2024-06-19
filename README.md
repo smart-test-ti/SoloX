@@ -63,7 +63,7 @@ python -m solox --host=ip --port=port
 ## 🏴󠁣󠁩󠁣󠁭󠁿Python API
 
 ```python
-# solox version : >= 2.8.5
+di# solox version : >= 2.8.5
 from solox.public.apm import AppPerformanceMonitor
 from solox.public.common import Devices
 
@@ -85,7 +85,8 @@ network = apm.collectNetwork(wifi=True) # KB
 fps = apm.collectFps() # HZ
 battery = apm.collectBattery() # level:% temperature:°C current:mA voltage:mV power:w
 gpu = apm.collectGpu() # %
-
+disk = apm.collectDisk()
+thermal = apm.collectThermal()
 # ************* Collect all performance parameter ************* #
  
 if __name__ == '__main__':
