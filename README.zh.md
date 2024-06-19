@@ -20,7 +20,7 @@ SoloX是一个可以实时收集Android/iOS性能数据的web工具。
 
 快速定位分析性能问题，提升应用的性能和品质。无需ROOT/越狱，即插即用。
 
-![10 37 192 142_50003__platform=Android lan=en](https://github.com/smart-test-ti/SoloX/assets/24454096/5b33183c-dcf3-48b7-8c91-dfe20bff3d5c)
+![10 161 9 178_50003__platform=Android lan=en (1)](https://github.com/smart-test-ti/SoloX/assets/24454096/603895cd-730f-434c-807f-22333d10e633)
 
 ## 📦环境
 
