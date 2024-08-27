@@ -46,7 +46,7 @@ def setCookie():
 @api.route('/solox/version', methods=['post', 'get'])
 def version():
     try:
-        pypi = json.loads(requests.get('https://pypi.org/pypi/solox/json').text)
+        pypi = json.loads(requests.get(url='https://pypi.org/pypi/solox/json',timeout=5).text)
         version = pypi['info']['version']
         result = {'status': 1, 'lastest_version': version, 'current_version': __version__}
     except Exception as e:
