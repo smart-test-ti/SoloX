@@ -20,6 +20,7 @@
 SoloX - Real-time collection tool for Android/iOS performance data.
 
 Quickly locate and analyze performance issues to improve application performance and quality. No need for ROOT/jailbreak, plug and play.
+
 ![10 161 9 178_50003__platform=Android lan=en (1)](https://github.com/smart-test-ti/SoloX/assets/24454096/61a0b801-23b4-4711-8215-51cd7bc9dc04)
 
 ## 📦Requirements

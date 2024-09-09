@@ -545,25 +545,25 @@
 
     function cpuInitialize(){
         //初始化cpu
-        let cpu_chart = chartsInitialize('cpu','CPU（%）');
+        let cpu_chart = chartsInitialize('cpu','CPU Usage (%)');
         return cpu_chart
     }
 
     function memInitialize(){
         //初始化mem
-        let mem_chart = chartsInitialize('mem','Memory（MB）');
+        let mem_chart = chartsInitialize('mem','Memory Usage (MB)');
         return mem_chart
     }
 
     function networkInitialize(){
         //初始化network
-        let network_chart = chartsInitialize('network','Network Data（KB)');
+        let network_chart = chartsInitialize('network','Network Data (KB)');
         return network_chart
     }
 
     function fpsInitialize(){
         //初始化fps
-        let fps_chart = chartsInitialize('fps','FPS（HZ）');
+        let fps_chart = chartsInitialize('fps','FPS (HZ)');
         return fps_chart
 
     }
@@ -644,22 +644,22 @@
 
     function collectCpu(device,pkgname){
         cpuInitialize();
-        cpu_chart = collectPers(device,pkgname,'cpu','CPU（%）',getCpuRate(pkgname,device));
+        cpu_chart = collectPers(device,pkgname,'cpu','CPU Usage (%)',getCpuRate(pkgname,device));
     }
 
     function collectMem(device,pkgname){
         memInitialize();
-        mem_chart = collectPers(device,pkgname,'mem','Memory（MB）',getMemPss(pkgname,device));
+        mem_chart = collectPers(device,pkgname,'mem','Memory Usage (MB)',getMemPss(pkgname,device));
     }
 
     function collectNetwork(device,pkgname){
         networkInitialize();
-        network_chart = collectPers(device,pkgname,'network','Network Data（KB）',getNetWork(pkgname,device));
+        network_chart = collectPers(device,pkgname,'network','Network Data (KB)',getNetWork(pkgname,device));
     }
 
     function collectFps(device,pkgname){
         fpsInitialize();
-        fps_chart = collectPers(device,pkgname,'fps','FPS（HZ）',getFps(pkgname,device));
+        fps_chart = collectPers(device,pkgname,'fps','FPS (HZ)',getFps(pkgname,device));
     }
 
     $('#run-apm').click(function () {

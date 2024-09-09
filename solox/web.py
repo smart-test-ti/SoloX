@@ -23,48 +23,48 @@ app = Flask(__name__, template_folder='templates', static_folder='static')
 app.register_blueprint(api)
 app.register_blueprint(page)
 
-socketio = SocketIO(app, cors_allowed_origins="*")
-thread = True
-thread_lock = Lock()
+# socketio = SocketIO(app, cors_allowed_origins="*")
+# thread = True
+# thread_lock = Lock()
 
 
-@socketio.on('connect', namespace='/logcat')
-def connect():
-    socketio.emit('start connect', {'data': 'Connected'}, namespace='/logcat')
-    logDir = os.path.join(os.getcwd(),'adblog')
-    if not os.path.exists(logDir):
-        os.mkdir(logDir)
-    global thread
-    thread = True
-    with thread_lock:
-        if thread:
-            thread = socketio.start_background_task(target=backgroundThread)
+# @socketio.on('connect', namespace='/logcat')
+# def connect():
+#     socketio.emit('start connect', {'data': 'Connected'}, namespace='/logcat')
+#     logDir = os.path.join(os.getcwd(),'adblog')
+#     if not os.path.exists(logDir):
+#         os.mkdir(logDir)
+#     global thread
+#     thread = True
+#     with thread_lock:
+#         if thread:
+#             thread = socketio.start_background_task(target=backgroundThread)
 
 
-def backgroundThread():
-    global thread
-    try:
-        current_time = time.strftime("%Y%m%d%H", time.localtime())
-        logPath = os.path.join(os.getcwd(),'adblog',f'{current_time}.log')
-        logcat = subprocess.Popen(f'adb logcat *:E > {logPath}', stdout=subprocess.PIPE,
-                                  shell=True)
-        with open(logPath, "r") as f:
-            while thread:
-                socketio.sleep(1)
-                for line in f.readlines():
-                    socketio.emit('message', {'data': line}, namespace='/logcat')
-        if logcat.poll() == 0:
-            thread = False
-    except Exception:
-        pass
+# def backgroundThread():
+#     global thread
+#     try:
+#         current_time = time.strftime("%Y%m%d%H", time.localtime())
+#         logPath = os.path.join(os.getcwd(),'adblog',f'{current_time}.log')
+#         logcat = subprocess.Popen(f'adb logcat *:E > {logPath}', stdout=subprocess.PIPE,
+#                                   shell=True)
+#         with open(logPath, "r") as f:
+#             while thread:
+#                 socketio.sleep(1)
+#                 for line in f.readlines():
+#                     socketio.emit('message', {'data': line}, namespace='/logcat')
+#         if logcat.poll() == 0:
+#             thread = False
+#     except Exception:
+#         pass
 
 
-@socketio.on('disconnect_request', namespace='/logcat')
-def disconnect():
-    global thread
-    logger.warning('Logcat client disconnected')
-    thread = False
-    disconnect()
+# @socketio.on('disconnect_request', namespace='/logcat')
+# def disconnect():
+#     global thread
+#     logger.warning('Logcat client disconnected')
+#     thread = False
+#     disconnect()
 
 def ip() -> str:
     try:
@@ -107,7 +107,7 @@ def open_url(host: str, port: int):
 
 
 def start(host: str, port: int):
-    socketio.run(app, host=host, debug=False, port=port)
+    app.run(host=host, port=port, debug=False)
 
 def main(host=ip(), port=50003):
     try:

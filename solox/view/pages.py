@@ -16,12 +16,10 @@ def page_404(e):
     settings = m._settings(request)
     return render_template('404.html', **locals()), 404
 
-
 @page.app_errorhandler(500)
 def page_500(e):
     settings = m._settings(request)
     return render_template('500.html', **locals()), 500
-
 
 @page.route('/')
 def index():
@@ -36,7 +34,6 @@ def pk():
     model = request.args.get('model')
     settings = m._settings(request)
     return render_template('pk.html', **locals())
-
 
 @page.route('/report')
 def report():
@@ -69,7 +66,6 @@ def report():
                 continue
     apm_data_len = len(apm_data)
     return render_template('report.html', **locals())
-
 
 @page.route('/analysis', methods=['post', 'get'])
 def analysis():
@@ -121,8 +117,6 @@ def analysis_pk():
             finally:
                 break
     return render_template('analysis_pk.html', **locals())
-
-
 
 @page.route('/compare_analysis', methods=['post', 'get'])
 def analysis_compare():

@@ -7,9 +7,9 @@ from flask import request, make_response
 from logzero import logger
 from flask import Blueprint
 from solox import __version__
-from solox.public.apm import CPU, Memory, Network, FPS, Battery, GPU, Energy, Disk,ThermalSensor, Target
-from solox.public.apm_pk import CPU_PK, MEM_PK, Flow_PK, FPS_PK
-from solox.public.common import Devices, File, Method, Install, Platform, Scrcpy
+from solox.public.apm import (CPU, Memory, Network, FPS, Battery, GPU, Energy, Disk,ThermalSensor, Target)
+from solox.public.apm_pk import (CPU_PK, MEM_PK, Flow_PK, FPS_PK)
+from solox.public.common import (Devices, File, Method, Install, Platform, Scrcpy)
 
 d = Devices()
 f = File()
@@ -46,7 +46,7 @@ def setCookie():
 @api.route('/solox/version', methods=['post', 'get'])
 def version():
     try:
-        pypi = json.loads(requests.get(url='https://pypi.org/pypi/solox/json',timeout=5).text)
+        pypi = json.loads(requests.get(url='https://pypi.org/pypi/solox/json',timeout=3).text)
         version = pypi['info']['version']
         result = {'status': 1, 'lastest_version': version, 'current_version': __version__}
     except Exception as e:

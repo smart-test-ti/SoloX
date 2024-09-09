@@ -285,11 +285,11 @@ SoloX - Application Performance Monitoring
     </div>
     <div class="offcanvas-body">
         <div class="btn-list logcat-btn-list">
-            <a id="run-logcat" class="btn btn-default" onclick="startLogcat()">
+            <a id="run-logcat" class="btn btn-default">
                 <svg t="1647757457022" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="21859" width="200" height="200"><path d="M511.4 512.1m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" fill="#006DFC" p-id="21860"></path><path d="M658.4 555.6L475.5 661.1c-33.4 19.3-75-4.8-75-43.3V406.6c0-38.5 41.7-62.6 75-43.3l182.9 105.6c33.3 19.3 33.3 67.4 0 86.7z" fill="#FFFFFF" p-id="21861"></path></svg>
                 {% if lan == 'cn' %} 开始 {% else %} Start {% endif %}
             </a>
-            <a id="stop-logcat"  class="btn btn-default" style="display: none" onclick="stopLogcat()">
+            <a id="stop-logcat"  class="btn btn-default" style="display: none">
                 <svg t="1638096947956" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="235254" width="200" height="200"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#EE827F" p-id="235255"></path><path d="M512 512m-443.191534 0a443.191534 443.191534 0 1 0 886.383068 0 443.191534 443.191534 0 1 0-886.383068 0Z" fill="#E64537" p-id="235256"></path><path d="M0 512C0 794.638448 229.180952 1023.8194 512 1023.8194V0C229.180952 0 0 229.180952 0 512z" fill="#FEFFFF" opacity=".1" p-id="235257"></path><path d="M477.866667 683.208466H375.647266c-1.083598 0-1.986596-0.902998-1.986596-1.986597V342.597531c0-1.083598 0.902998-1.986596 1.986596-1.986596h102.4c1.083598 0 1.986596 0.902998 1.986596 1.986596v338.443739c-0.1806 1.264198-1.083598 2.167196-2.167195 2.167196zM648.352734 683.208466h-102.4c-1.083598 0-1.986596-0.902998-1.986596-1.986597V342.597531c0-1.083598 0.902998-1.986596 1.986596-1.986596H648.352734c1.083598 0 1.986596 0.902998 1.986596 1.986596v338.443739c0 1.264198-0.902998 2.167196-1.986596 2.167196z" fill="#FFFFFF" p-id="235258"></path></svg>
                 {% if lan == 'cn' %} 停止 {% else %} Stop {% endif %}
             </a>
@@ -567,6 +567,7 @@ SoloX - Application Performance Monitoring
             type: "GET",
             async: true,
             cache: false,
+            timeout:10000,
             beforeSend: function () {
                 $('.select-device').empty();
                 $('.select-app').empty();
@@ -584,7 +585,7 @@ SoloX - Application Performance Monitoring
                 console.log(data);
                 if(data['status'] != 1 ) {
                     if(lan == 'cn' ){
-                        SwalFire('error', '连接失败','请检查当前移动设备的是否连接了PC端', 5000);
+                        SwalFire('error', '连接失败','请检查当前移动设备是否连接了PC端', 5000);
                     }else{
                         SwalFire('error', 'Connect failed !', 'No devices found', 5000);
                     } 
@@ -2257,12 +2258,12 @@ SoloX - Application Performance Monitoring
             $('#stop-apm').hide();
         }});
 
-    var status = false;
-    var socket
-    if(platform == 'Android'){
-        socket = io.connect('http://' + document.domain + ':' + location.port + '/logcat',{'forceNew':true });
+    // var status = false;
+    // var socket
+    // if(platform == 'Android'){
+    //     socket = io.connect('http://' + document.domain + ':' + location.port + '/logcat',{'forceNew':true });
         
-    }
+    // }
     function startLogcat() {
         let device = $('.select-device').val();
         if(device){

@@ -30,8 +30,9 @@
 
 ## 5️⃣ 为什么Android的FPS经常会为0 ？
 
-* 支持SurfaceView和gfxinfo（界面关闭surfaceview开关切换）两种方式，可以都切换尝试是否收集到数据；如果使用gpfinfo方式需要到手机设置：开发者 - GPU渲染模式 - adb shell dumpsys gfxinfo。
+* 支持SurfaceView和gfxinfo（界面关闭surfaceview开关切换）两种方式，可以都切换尝试是否收集到数据；如果使用gfxinfo方式需要到手机设置：开发者 - GPU渲染模式 - adb shell dumpsys gfxinfo。
 * 界面相对静止的fps预期就是0，请检查页面是否滑动和动态。
+* 游戏类的APP大部分机器不支持，多使用华为的机器。
 
 ## 6️⃣ 为什么"python -m solox"会运行失败 ？
 
@@ -89,10 +90,11 @@
 * 插拔usb重新连接，多次尝试。
 * 更换设备，tidevice还是有一定的兼容性。
 * 检查tidevice的版本，不能自己安装最新版本，只能用solox自带的，因为部分代码二次开发过。
+* 如果日志中提示是支持包下载失败，可以自行到（https://github.com/filsv/iOSDeviceSupport）这里下载放到这个路径 ~/.tidevice/device-support/
 
 ## 1️⃣7️⃣ 为什么Android不支持收集GPU数据？
 
-因为通过adb的方式访问gpu相关的数据文件，需要root权限才可以。
+目前只支持部分高通芯片的设备（小米、oppo、vivo多点）。
 
 ## 1️⃣8️⃣ 如何在收集过程种录制APP的屏幕？
 
@@ -110,4 +112,4 @@
 ## 2️⃣0️⃣ Android/iOS最高支持的系统版本？
 
 - Android: 6.0+
-- iOS: 12.0+
+- iOS: https://github.com/filsv/iOSDeviceSupport，这个路径有的都支持，因为是外网可能会下载失败，可以自行下载支持包放在本地~/.tidevice/device-support/
