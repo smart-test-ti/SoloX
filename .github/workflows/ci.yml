@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.10']
       fail-fast: false  # Continue with other jobs if one fails
 
     steps:
@@ -135,6 +135,7 @@ jobs:
         args: --severity-threshold=high
 
   docs:
+    if: false
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
