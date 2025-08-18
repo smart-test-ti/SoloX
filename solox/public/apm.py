@@ -912,7 +912,7 @@ class AppPerformanceMonitor(initPerformanceService):
             pool.apply_async(self.collectNetwork)
             pool.apply_async(self.collectGpu)
             if self.record:
-                pool.apply_async(Scrcpy.start_record, (self.deviceId))
+                pool.apply_async(Scrcpy.start_record, (self.deviceId,))
             pool.close()
             pool.join()
             self.setPerfs(report_path=report_path)
