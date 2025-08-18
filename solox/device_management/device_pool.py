@@ -10,6 +10,10 @@ from enum import Enum
 import threading
 from dataclasses import dataclass
 import tidevice
+if not hasattr(tidevice.Usbmux, 'devices'):
+    # Provide a stub for tests to patch against on older tidevice
+    tidevice.Usbmux.devices = lambda self: []
+
 from solox.public.common import Devices
 from adbutils import adb
 
@@ -130,8 +134,20 @@ class DevicePool:
             self.logger.error(f"Error reconnecting to device {device.id}: {e}")
             return False
 
-    def add_device(self, device_id: str, device_type: DeviceType, name: str, version: str) -> bool:
-        """Add a new device to the pool"""
+    def add_device(self, device_id: str = None, device_type: DeviceType = None, name: str = None, version: str = None, **kwargs) -> bool:
+        """Add a new device to the pool.
+
+        Supports both explicit params and dicts shaped like DeviceInfo (id, type, name, version).
+        """
+        # Accept kwargs shaped like DeviceInfo
+        if device_id is None and "id" in kwargs:
+            device_id = kwargs["id"]
+        if device_type is None and "type" in kwargs:
+            device_type = kwargs["type"]
+        if name is None and "name" in kwargs:
+            name = kwargs["name"]
+        if version is None and "version" in kwargs:
+            version = kwargs["version"]
         with self.lock:
             if device_id not in self.devices:
                 self.devices[device_id] = DeviceInfo(
