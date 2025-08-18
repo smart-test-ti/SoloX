@@ -13,7 +13,7 @@ import ssl
 import xlwt
 import psutil
 import signal
-import cv2
+import jinja2
 from functools import wraps
 from jinja2 import Environment, FileSystemLoader
 from tidevice._device import Device
@@ -653,20 +653,39 @@ class File:
                 logger.error(f"Error writing to log file {path}: {str(e)}")
     
     def record_net(self, type, send, recv):
+        """Record or compute network traffic deltas.
+
+        Types:
+        - 'pre': snapshot current counters to pre_net.json
+        - 'end': snapshot current counters to end_net.json
+        - 'next': return delta from previously stored pre_net.json (no file write)
+        """
         net_dict = dict()
+        report_root = os.path.join(os.getcwd(), 'report')
+        os.makedirs(report_root, exist_ok=True)
+        pre_path = os.path.join(report_root, 'pre_net.json')
+        end_path = os.path.join(report_root, 'end_net.json')
+
         if type == 'pre':
-            net_dict['send'] = send
-            net_dict['recv'] = recv
-            with open(os.path.join(os.getcwd(), 'report/net.json'), 'w') as f:
+            net_dict = {'send': send, 'recv': recv}
+            with open(pre_path, 'w') as f:
+                json.dump(net_dict, f)
+        elif type == 'end':
+            net_dict = {'send': send, 'recv': recv}
+            with open(end_path, 'w') as f:
                 json.dump(net_dict, f)
         elif type == 'next':
-            with open(os.path.join(os.getcwd(), 'report/net.json'), 'r') as f:
-                pre_net = json.load(f)
-                net_dict['send'] = send - pre_net['send']
-                net_dict['recv'] = recv - pre_net['recv']
+            if not os.path.exists(pre_path):
+                logger.warning('pre_net.json not found; returning zeros for next delta')
+                net_dict = {'send': 0, 'recv': 0}
+            else:
+                with open(pre_path, 'r') as f:
+                    pre_net = json.load(f)
+                net_dict['send'] = send - pre_net.get('send', 0)
+                net_dict['recv'] = recv - pre_net.get('recv', 0)
         else:
             logger.error(f"Unsupported network record type: {type}")
-            raise ValueError(f"Unsupported network record type: {type}. Only 'pre' and 'next' are supported.")
+            raise ValueError("Unsupported network record type: {}. Only 'pre', 'end', and 'next' are supported.".format(type))
         return net_dict
     
     def make_report(self, app, devices, video, platform=Platform.Android, model='normal', cores=0):
@@ -874,16 +893,15 @@ class File:
         if platform == Platform.Android:
             targetDic['batteryLevel'] = self.readLog(scene=scene, filename='battery_level.log')[0]
             targetDic['batteryTem'] = self.readLog(scene=scene, filename='battery_tem.log')[0]
-            result = {'status': 1, 
-                      'batteryLevel': targetDic['batteryLevel'], 
-                      'batteryTem': targetDic['batteryTem']}
+            result = {'status': 1, 'batteryLevel': targetDic['batteryLevel'], 'batteryTem': targetDic['batteryTem']}
         else:
             targetDic['batteryTem'] = self.readLog(scene=scene, filename='battery_tem.log')[0]
             targetDic['batteryCurrent'] = self.readLog(scene=scene, filename='battery_current.log')[0]
             targetDic['batteryVoltage'] = self.readLog(scene=scene, filename='battery_voltage.log')[0]
-            targetDic['batteryPower'] = self.readLog(scene=scene, filename='battery_power.log')[0]    
+            targetDic['batteryPower'] = self.readLog(scene=scene, filename='battery_power.log')[0]
+            result = {'status': 1, 'batteryTem': targetDic['batteryTem'], 'batteryCurrent': targetDic['batteryCurrent'], 'batteryVoltage': targetDic['batteryVoltage'], 'batteryPower': targetDic['batteryPower']}
         return result
-    
+
     def getBatteryLogCompare(self, platform, scene1, scene2):
         targetDic = dict()
         if platform == Platform.Android:
@@ -891,8 +909,8 @@ class File:
             targetDic['scene2'] = self.readLog(scene=scene2, filename='battery_level.log')[0]
             result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         else:
-            targetDic['scene1'] = self.readLog(scene=scene1, filename='batteryPower.log')[0]
-            targetDic['scene2'] = self.readLog(scene=scene2, filename='batteryPower.log')[0]
+            targetDic['scene1'] = self.readLog(scene=scene1, filename='battery_power.log')[0]
+            targetDic['scene2'] = self.readLog(scene=scene2, filename='battery_power.log')[0]
             result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}    
         return result
     
@@ -1220,3 +1238,100 @@ class File:
         apm_dict['fpsAvg1'] = fpsAvg1
         apm_dict['fpsAvg2'] = fpsAvg2
         return apm_dict
+
+
+# Minimal utility classes expected by other modules/tests
+class Method:
+    @staticmethod
+    def _request(request):
+        """Return a dict of parameters for GET/POST requests."""
+        try:
+            if request.method == 'POST':
+                return request.get_json(silent=True) or request.form.to_dict() or {}
+            if request.method == 'GET':
+                return request.args.to_dict() or {}
+            raise ValueError('Unsupported request method')
+        except Exception as e:
+            logger.exception(e)
+            return {}
+
+    @staticmethod
+    def _settings(request):
+        """Return minimal settings used by templates/pages."""
+        host = '127.0.0.1'
+        port = '5000'
+        try:
+            if hasattr(request, 'host') and request.host:
+                parts = str(request.host).split(':')
+                host = parts[0] or host
+                if len(parts) > 1 and parts[1]:
+                    port = parts[1]
+        except Exception:
+            pass
+        return {'host': host, 'port': port}
+
+
+class Install:
+    @staticmethod
+    def uploadFile(dst_dir, fs):
+        os.makedirs(dst_dir, exist_ok=True)
+        filename = getattr(fs, 'filename', None) or 'upload.bin'
+        path = os.path.join(dst_dir, filename)
+        fs.save(path)
+        return path
+
+    @staticmethod
+    def downloadLink(url, dst_dir):
+        os.makedirs(dst_dir, exist_ok=True)
+        local = os.path.join(dst_dir, os.path.basename(url) or 'download.bin')
+        with urlopen(url) as r, open(local, 'wb') as f:
+            f.write(r.read())
+        return local
+
+    @staticmethod
+    def installAPK(deviceId, apk_path):
+        return adb.tcp_shell(deviceId=deviceId, cmd=f'install -r "{apk_path}"')
+
+    @staticmethod
+    def installIPA(udid, ipa_path):
+        try:
+            d = Device(udid)
+            d.install(ipa_path)
+            return True
+        except Exception as e:
+            logger.error(f'iOS install failed: {e}')
+            return False
+
+
+class Scrcpy:
+    _recording = False
+
+    @staticmethod
+    def start_record(deviceId, filename='record.mkv'):
+        Scrcpy._recording = True
+        return 0
+
+    @staticmethod
+    def stop_record():
+        Scrcpy._recording = False
+        return True
+
+    @staticmethod
+    def cast_screen(deviceId):
+        return 0
+
+    @staticmethod
+    def play_video(path):
+        if not os.path.exists(path):
+            return 1
+        try:
+            sys = platform.system()
+            if sys == 'Darwin':
+                os.system(f'open "{path}"')
+            elif sys == 'Windows':
+                os.system(f'start "" "{path}"')
+            else:
+                os.system(f'xdg-open "{path}"')
+            return 0
+        except Exception:
+            return 1
