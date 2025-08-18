@@ -125,8 +125,8 @@ class DevicePool:
         """Attempt to reconnect to a device"""
         try:
             if device.type == DeviceType.ANDROID:
-                adb.connect(device.id)
-                return True
+                # Do not attempt implicit reconnect here; rely on actual device visibility
+                return False
             else:  # iOS device
                 # For iOS, we just check if it's visible to tidevice
                 return device.id in [d.udid for d in tidevice.Usbmux().devices()]
@@ -188,6 +188,8 @@ class DevicePool:
         """Wait for a specific device to become available"""
         start_time = time.time()
         while time.time() - start_time < timeout:
+            # Refresh device statuses based on current adb/tidevice visibility
+            self._update_device_statuses()
             device = self.get_device_info(device_id)
             if device and device.status == "connected":
                 return True
