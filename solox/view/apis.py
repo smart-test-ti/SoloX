@@ -700,19 +700,20 @@ def getLogData():
     scene = method._request(request, 'scene')
     target = method._request(request, 'target')
     platform = method._request(request, 'platform')
+    max_points = request.args.get('max_points') or request.form.get('max_points')
     try:
         fucDic = {
-            'cpu': f.getCpuLog(platform, scene),
-            'mem': f.getMemLog(platform, scene),
-            'mem_detail': f.getMemDetailLog(platform, scene),
-            'battery': f.getBatteryLog(platform, scene),
-            'flow': f.getFlowLog(platform, scene),
-            'fps': f.getFpsLog(platform, scene),
-            'gpu': f.getGpuLog(platform, scene),
-            'disk': f.getDiskLog(platform, scene),
-            'cpu_core': f.getCpuCoreLog(platform, scene)
+            'cpu': lambda: f.getCpuLog(platform, scene, max_points=max_points),
+            'mem': lambda: f.getMemLog(platform, scene, max_points=max_points),
+            'mem_detail': lambda: f.getMemDetailLog(platform, scene, max_points=max_points),
+            'battery': lambda: f.getBatteryLog(platform, scene, max_points=max_points),
+            'flow': lambda: f.getFlowLog(platform, scene, max_points=max_points),
+            'fps': lambda: f.getFpsLog(platform, scene, max_points=max_points),
+            'gpu': lambda: f.getGpuLog(platform, scene, max_points=max_points),
+            'disk': lambda: f.getDiskLog(platform, scene),
+            'cpu_core': lambda: f.getCpuCoreLog(platform, scene, max_points=max_points)
         }
-        result = fucDic[target]
+        result = fucDic[target]()
     except Exception as e:
         logger.exception(e)
         result = {'status': 0, 'msg': str(e)}

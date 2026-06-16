@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 {% block title %}SoloX - {% if lan == 'cn' %} 报告分析 {% else %} Analysis {% endif %}{% endblock %}
 
-{% block css %}{% endblock %}
+{% block css %}
+<style>
+    .lazy-chart {
+        min-height: 240px;
+    }
+</style>
+{% endblock %}
 
 {% block page_title %}
 <a class="active" style="color: #1e71df" href="/report?lan={{ lan }}">{% if lan == 'cn' %} 报告管理 {% else %} Report {% endif %}</a>
@@ -423,7 +429,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div id="chart-cpu"></div>
+            <div id="chart-cpu" class="lazy-chart"></div>
         </div>
     </div>
     <div class="card mem-card mt-3">
@@ -443,7 +449,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div id="chart-mem"></div>
+            <div id="chart-mem" class="lazy-chart"></div>
         </div>
     </div>
     {% if platform == 'Android' and  apm_data.mem_detail_flag == True %}
@@ -463,7 +469,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div id="chart-mem-detail"></div>
+            <div id="chart-mem-detail" class="lazy-chart"></div>
         </div>
     </div>
     {% endif %}
@@ -472,7 +478,7 @@
         <div class="card-header">
             <div class='card-title'>{% if lan == 'cn' %} CPU核心使用率 (%) {% else %} CPU Core Usage (%) {% endif %}</div>
             <div class="card-actions btn-actions">
-                <a class="btn" onclick="initMemoryDetailCharts()">
+                <a class="btn" onclick="initCpuCoreCharts()">
                     <span class="spinner-border spinner-border-sm me-2" id="cpu_core_spinner" role="status" style="display: none;"></span>
                     <svg id="cpu_core_refresh_logo" xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
                     {% if lan == 'cn' %} 刷新 {% else %} Refresh {% endif %}
@@ -484,7 +490,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div id="chart-cpu-core"></div>
+            <div id="chart-cpu-core" class="lazy-chart"></div>
         </div>
     </div>
     {% endif %}
@@ -510,7 +516,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div id="chart-fps"></div>
+            <div id="chart-fps" class="lazy-chart"></div>
         </div>
     </div>
     <div class="card battery-card mt-3">
@@ -529,7 +535,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div id="chart-battery"></div>
+            <div id="chart-battery" class="lazy-chart"></div>
         </div>
     </div>
     <div class="card networkdata-card mt-3">
@@ -548,7 +554,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div id="chart-networkdata"></div>
+            <div id="chart-networkdata" class="lazy-chart"></div>
         </div>
     </div>
     <div class="card gpu-card mt-3">
@@ -567,7 +573,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div id="chart-gpu"></div>
+            <div id="chart-gpu" class="lazy-chart"></div>
         </div>
     </div>
     {% if apm_data.disk_flag == True %}
@@ -587,7 +593,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div id="chart-disk"></div>
+            <div id="chart-disk" class="lazy-chart"></div>
         </div>
     </div>
     {% endif %}
@@ -858,23 +864,97 @@
 
     $(document).ready(function() {
         chartsClick()
-        initCpuCharts()
-        initMemoryCharts()
-        initFpsCharts()
-        initBatteryCharts()
-        initNetworkCharts()
-        initGpuCharts()
+        setupLazyCharts()
+    });
+
+    const SOLOX_REPORT_PLATFORM = '{{ platform }}';
+    const CHART_MAX_POINTS = 1200;
+    const chartInstances = {};
+    const loadedCharts = {};
+
+    function getChart(key, selector, chartOptions) {
+        if (!chartInstances[key]) {
+            chartInstances[key] = new ApexCharts(document.querySelector(selector), chartOptions);
+            chartInstances[key].render();
+        }
+        return chartInstances[key];
+    }
+
+    function loadChartOnce(key, loader, onLoaded) {
+        if (loadedCharts[key]) {
+            return;
+        }
+        loadedCharts[key] = 'loading';
+        const request = loader();
+        if (request && request.done) {
+            request.done(function(data) {
+                if (data && data.status === 0) {
+                    loadedCharts[key] = false;
+                    return;
+                }
+                loadedCharts[key] = true;
+                if (onLoaded) {
+                    onLoaded();
+                }
+            }).fail(function() {
+                loadedCharts[key] = false;
+            });
+        } else {
+            loadedCharts[key] = true;
+            if (onLoaded) {
+                onLoaded();
+            }
+        }
+    }
+
+    function setupLazyCharts() {
+        const chartLoaders = [
+            ['cpu', '.cpu-card', initCpuCharts],
+            ['mem', '.mem-card', initMemoryCharts],
+            ['fps', '.fps-card', initFpsCharts],
+            ['battery', '.battery-card', initBatteryCharts],
+            ['networkdata', '.networkdata-card', initNetworkCharts],
+            ['gpu', '.gpu-card', initGpuCharts]
+        ];
         if('{{ apm_data.mem_detail_flag }}' == 'True' ){
-            initMemoryDetailCharts()
+            chartLoaders.push(['mem_detail', '.mem-detail-card', initMemoryDetailCharts])
         }
         if('{{ apm_data.cpu_core_flag }}' == 'True' ){
-            console.log('test')
-            initCpuCoreCharts()
+            chartLoaders.push(['cpu_core', '.cpu-core-card', initCpuCoreCharts])
         }
         if('{{ apm_data.disk_flag }}' == 'True' ){
-            initDiskCharts()
+            chartLoaders.push(['disk', '.disk-card', initDiskCharts])
         }
-    });
+
+        if (!('IntersectionObserver' in window)) {
+            chartLoaders.forEach(function(item) {
+                loadChartOnce(item[0], item[2]);
+            });
+            return;
+        }
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    const key = entry.target.getAttribute('data-chart-key');
+                    const loader = chartLoaders.find(function(item) { return item[0] === key; });
+                    if (loader) {
+                        loadChartOnce(loader[0], loader[2], function() {
+                            observer.unobserve(entry.target);
+                        });
+                    }
+                }
+            });
+        }, { rootMargin: '300px 0px' });
+
+        chartLoaders.forEach(function(item) {
+            const card = document.querySelector(item[1]);
+            if (card) {
+                card.setAttribute('data-chart-key', item[0]);
+                observer.observe(card);
+            }
+        });
+    }
     
     function chartsClick(){
         var chart_cards = document.getElementById('card-chart')
@@ -1027,10 +1107,13 @@
         return options
     }
 
+    function isLogDataOk(data) {
+        return data && data.status !== 0;
+    }
+
     function initCpuCharts(){
-        var cpu_chart = new ApexCharts(document.querySelector("#chart-cpu"), options('line'));
-        cpu_chart.render();
-        $.ajax({
+        var cpu_chart = getChart('cpu', "#chart-cpu", options('line'));
+        return $.ajax({
             url: '/apm/log',
             type: "GET",
             async: true,
@@ -1038,7 +1121,8 @@
             data:{
                 scene:'{{ scene }}',
                 target:'cpu',
-                platform:platform
+                platform:SOLOX_REPORT_PLATFORM,
+                max_points: CHART_MAX_POINTS
             },
             beforeSend: function () {
                 $('#cpu_spinner').show()
@@ -1049,6 +1133,9 @@
                 $('#cpu_refresh_logo').show()
             },
             success: function (data) {
+                if (!isLogDataOk(data)) {
+                    return;
+                }
                 cpu_chart.updateSeries([{
                     name: 'app',
                     data: data['cpuAppData']
@@ -1061,9 +1148,8 @@
     }
 
     function initBatteryCharts(){
-        var battery_chart = new ApexCharts(document.querySelector("#chart-battery"), options('line'));
-        battery_chart.render();
-        $.ajax({
+        var battery_chart = getChart('battery', "#chart-battery", options('line'));
+        return $.ajax({
             url: '/apm/log',
             type: "GET",
             async: true,
@@ -1071,7 +1157,8 @@
             data:{
                 scene:'{{ scene }}',
                 target:'battery',
-                platform:platform
+                platform:SOLOX_REPORT_PLATFORM,
+                max_points: CHART_MAX_POINTS
             },
             beforeSend: function () {
                 $('#battery_spinner').show()
@@ -1082,7 +1169,10 @@
                 $('#battery_refresh_logo').show()
             },
             success: function (data) {
-                if(platform == 'Android'){
+                if (!isLogDataOk(data)) {
+                    return;
+                }
+                if(SOLOX_REPORT_PLATFORM == 'Android'){
                     battery_chart.updateSeries([{
                         name: 'level(%)',
                         data: data['batteryLevel']
@@ -1110,9 +1200,8 @@
     }
 
     function initFpsCharts(){
-        var fps_chart = new ApexCharts(document.querySelector("#chart-fps"), options('line'));
-        fps_chart.render();
-        $.ajax({
+        var fps_chart = getChart('fps', "#chart-fps", options('line'));
+        return $.ajax({
             url: '/apm/log',
             type: "GET",
             async: true,
@@ -1120,7 +1209,8 @@
             data:{
                 scene:'{{ scene }}',
                 target:'fps',
-                platform:platform
+                platform:SOLOX_REPORT_PLATFORM,
+                max_points: CHART_MAX_POINTS
             },
             beforeSend: function () {
                 $('#fps_spinner').show()
@@ -1131,7 +1221,10 @@
                 $('#fps_refresh_logo').show()
             },
             success: function (data) {
-                if(platform == 'Android'){
+                if (!isLogDataOk(data)) {
+                    return;
+                }
+                if(SOLOX_REPORT_PLATFORM == 'Android'){
                     fps_chart.updateSeries([{
                         name: 'fps',
                         data: data['fps']
@@ -1150,9 +1243,8 @@
     }
 
     function initGpuCharts(){
-        var gpu_chart = new ApexCharts(document.querySelector("#chart-gpu"), options('line'));
-        gpu_chart.render();
-        $.ajax({
+        var gpu_chart = getChart('gpu', "#chart-gpu", options('line'));
+        return $.ajax({
             url: '/apm/log',
             type: "GET",
             async: true,
@@ -1160,7 +1252,8 @@
             data:{
                 scene:'{{ scene }}',
                 target:'gpu',
-                platform:platform
+                platform:SOLOX_REPORT_PLATFORM,
+                max_points: CHART_MAX_POINTS
             },
             beforeSend: function () {
                 $('#gpu_spinner').show()
@@ -1171,6 +1264,9 @@
                 $('#gpu_refresh_logo').show()
             },
             success: function (data) {
+                if (!isLogDataOk(data)) {
+                    return;
+                }
                 gpu_chart.updateSeries([{
                     name: 'gpu',
                     data: data['gpu']
@@ -1180,9 +1276,8 @@
     }    
 
     function initMemoryCharts(){
-        var mem_chart = new ApexCharts(document.querySelector("#chart-mem"), options('line'));
-        mem_chart.render();
-        $.ajax({
+        var mem_chart = getChart('mem', "#chart-mem", options('line'));
+        return $.ajax({
             url: '/apm/log',
             type: "GET",
             async: true,
@@ -1190,7 +1285,8 @@
             data:{
                 scene:'{{ scene }}',
                 target:'mem',
-                platform:platform
+                platform:SOLOX_REPORT_PLATFORM,
+                max_points: CHART_MAX_POINTS
             },
             beforeSend: function () {
                 $('#mem_spinner').show()
@@ -1201,7 +1297,10 @@
                 $('#mem_refresh_logo').show()
             },
             success: function (data) {
-                if(platform == 'Android'){
+                if (!isLogDataOk(data)) {
+                    return;
+                }
+                if(SOLOX_REPORT_PLATFORM == 'Android'){
                     mem_chart.updateSeries([{
                         name: 'total',
                         data: data['memTotalData']
@@ -1220,9 +1319,8 @@
     }
     
     function initMemoryDetailCharts(){
-        var mem_detail_chart = new ApexCharts(document.querySelector("#chart-mem-detail"), options('line'));
-        mem_detail_chart.render();
-        $.ajax({
+        var mem_detail_chart = getChart('mem_detail', "#chart-mem-detail", options('line'));
+        return $.ajax({
                 url: '/apm/log',
                 type: "GET",
                 async: true,
@@ -1230,7 +1328,8 @@
                 data:{
                     scene:'{{ scene }}',
                     target:'mem_detail',
-                    platform:platform
+                    platform:SOLOX_REPORT_PLATFORM,
+                    max_points: CHART_MAX_POINTS
                 },
                 beforeSend: function () {
                     $('#mem_detail_spinner').show()
@@ -1241,6 +1340,9 @@
                     $('#mem_detail_refresh_logo').show()
                 },
                 success: function (data) {
+                    if (!isLogDataOk(data)) {
+                        return;
+                    }
                     console.log(data)
                     mem_detail_chart.updateSeries([{
                         name: 'java',
@@ -1269,9 +1371,8 @@
     }
 
     function initCpuCoreCharts(){
-        var cpu_core_chart = new ApexCharts(document.querySelector("#chart-cpu-core"), options('line'));
-        cpu_core_chart.render();
-        $.ajax({
+        var cpu_core_chart = getChart('cpu_core', "#chart-cpu-core", options('line'));
+        return $.ajax({
                 url: '/apm/log',
                 type: "GET",
                 async: true,
@@ -1279,7 +1380,8 @@
                 data:{
                     scene:'{{ scene }}',
                     target:'cpu_core',
-                    platform:platform
+                    platform:SOLOX_REPORT_PLATFORM,
+                    max_points: CHART_MAX_POINTS
                 },
                 beforeSend: function () {
                     $('#cpu_core_spinner').show()
@@ -1290,6 +1392,9 @@
                     $('#cpu_core_refresh_logo').show()
                 },
                 success: function (data) {
+                    if (!isLogDataOk(data)) {
+                        return;
+                    }
                     var array = data['cpu_core']
                     elementList = new Array()
 
@@ -1307,9 +1412,8 @@
     }
     
     function initNetworkCharts(){
-        var network_chart = new ApexCharts(document.querySelector("#chart-networkdata"), options('line',false));
-        network_chart.render();
-        $.ajax({
+        var network_chart = getChart('networkdata', "#chart-networkdata", options('line',false));
+        return $.ajax({
             url: '/apm/log',
             type: "GET",
             async: true,
@@ -1317,7 +1421,8 @@
             data:{
                 scene:'{{ scene }}',
                 target:'flow',
-                platform:platform
+                platform:SOLOX_REPORT_PLATFORM,
+                max_points: CHART_MAX_POINTS
             },
             beforeSend: function () {
                 $('#networkdata_spinner').show()
@@ -1328,6 +1433,9 @@
                 $('#networkdata_refresh_logo').show()
             },
             success: function (data) {
+                if (!isLogDataOk(data)) {
+                    return;
+                }
                 network_chart.updateSeries([{
                     name: 'send',
                     data: data['upFlow']
@@ -1340,9 +1448,8 @@
     }
 
     function initDiskCharts(){
-        var disk_chart = new ApexCharts(document.querySelector("#chart-disk"), options('line',false));
-        disk_chart.render();
-        $.ajax({
+        var disk_chart = getChart('disk', "#chart-disk", options('line',false));
+        return $.ajax({
             url: '/apm/log',
             type: "GET",
             async: true,
@@ -1350,7 +1457,7 @@
             data:{
                 scene:'{{ scene }}',
                 target:'disk',
-                platform:platform
+                platform:SOLOX_REPORT_PLATFORM
             },
             beforeSend: function () {
                 $('#disk_spinner').show()
@@ -1361,6 +1468,9 @@
                 $('#disk_refresh_logo').show()
             },
             success: function (data) {
+                if (!isLogDataOk(data)) {
+                    return;
+                }
                 disk_chart.updateSeries([{
                     name: 'used',
                     data: data['used']
