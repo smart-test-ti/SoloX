@@ -423,31 +423,59 @@ class File:
         result_dict = json.loads(result_json)
         return result_dict
 
-    def readLog(self, scene, filename):
+    def readLog(self, scene, filename, max_points=None):
         """Read apmlog file data"""
         log_data_list = list()
         target_data_list = list()
-        if os.path.exists(os.path.join(self.report_dir,scene,filename)):
-            lines = self.open_file(os.path.join(self.report_dir,scene,filename), "r")
-            for line in lines:
-                if isinstance(line.split('=')[1].strip(), int):
+        log_path = os.path.join(self.report_dir,scene,filename)
+        if os.path.exists(log_path):
+            selected_indexes = None
+            if max_points:
+                try:
+                    max_points = int(max_points)
+                except (TypeError, ValueError):
+                    max_points = 0
+                if max_points <= 0:
+                    max_points = 0
+                else:
+                    with open(log_path, "r", encoding="utf-8") as source:
+                        total_lines = sum(1 for _ in source)
+                    if total_lines > max_points:
+                        if max_points == 1:
+                            selected_indexes = {total_lines - 1}
+                        else:
+                            selected_indexes = {
+                                round(i * (total_lines - 1) / (max_points - 1))
+                                for i in range(max_points)
+                            }
+            lines = self.open_file(log_path, "r")
+            for index, line in enumerate(lines):
+                if selected_indexes is not None and index not in selected_indexes:
+                    continue
+                if max_points and len(log_data_list) >= max_points:
+                    break
+                target = line.split('=')
+                if len(target) < 2:
+                    continue
+                value = target[1].strip()
+                if value.isdigit():
                     log_data_list.append({
-                        "x": line.split('=')[0].strip(),
-                        "y": int(line.split('=')[1].strip())
+                        "x": target[0].strip(),
+                        "y": int(value)
                     })
-                    target_data_list.append(int(line.split('=')[1].strip()))
+                    target_data_list.append(int(value))
                 else:
                     log_data_list.append({
-                        "x": line.split('=')[0].strip(),
-                        "y": float(line.split('=')[1].strip())
+                        "x": target[0].strip(),
+                        "y": float(value)
                     })
-                    target_data_list.append(float(line.split('=')[1].strip()))
+                    target_data_list.append(float(value))
         return log_data_list, target_data_list
         
-    def getCpuLog(self, platform, scene):
+    def getCpuLog(self, platform, scene, max_points=None):
         targetDic = dict()
-        targetDic['cpuAppData'] = self.readLog(scene=scene, filename='cpu_app.log')[0]
-        targetDic['cpuSysData'] = self.readLog(scene=scene, filename='cpu_sys.log')[0]
+        targetDic['cpuAppData'] = self.readLog(scene=scene, filename='cpu_app.log', max_points=max_points)[0]
+        targetDic['cpuSysData'] = self.readLog(scene=scene, filename='cpu_sys.log', max_points=max_points)[0]
         result = {'status': 1, 'cpuAppData': targetDic['cpuAppData'], 'cpuSysData': targetDic['cpuSysData']}
         return result
     
@@ -458,9 +486,9 @@ class File:
         result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
     
-    def getGpuLog(self, platform, scene):
+    def getGpuLog(self, platform, scene, max_points=None):
         targetDic = dict()
-        targetDic['gpu'] = self.readLog(scene=scene, filename='gpu.log')[0]
+        targetDic['gpu'] = self.readLog(scene=scene, filename='gpu.log', max_points=max_points)[0]
         result = {'status': 1, 'gpu': targetDic['gpu']}
         return result
     
@@ -471,11 +499,11 @@ class File:
         result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
     
-    def getMemLog(self, platform, scene):
+    def getMemLog(self, platform, scene, max_points=None):
         targetDic = dict()
-        targetDic['memTotalData'] = self.readLog(scene=scene, filename='mem_total.log')[0]
+        targetDic['memTotalData'] = self.readLog(scene=scene, filename='mem_total.log', max_points=max_points)[0]
         if platform == Platform.Android:
-            targetDic['memSwapData']  = self.readLog(scene=scene, filename='mem_swap.log')[0]
+            targetDic['memSwapData']  = self.readLog(scene=scene, filename='mem_swap.log', max_points=max_points)[0]
             result = {'status': 1, 
                       'memTotalData': targetDic['memTotalData'], 
                       'memSwapData': targetDic['memSwapData']}
@@ -483,24 +511,24 @@ class File:
             result = {'status': 1, 'memTotalData': targetDic['memTotalData']}
         return result
     
-    def getMemDetailLog(self, platform, scene):
+    def getMemDetailLog(self, platform, scene, max_points=None):
         targetDic = dict()
-        targetDic['java_heap'] = self.readLog(scene=scene, filename='mem_java_heap.log')[0]
-        targetDic['native_heap'] = self.readLog(scene=scene, filename='mem_native_heap.log')[0]
-        targetDic['code_pss'] = self.readLog(scene=scene, filename='mem_code_pss.log')[0]
-        targetDic['stack_pss'] = self.readLog(scene=scene, filename='mem_stack_pss.log')[0]
-        targetDic['graphics_pss'] = self.readLog(scene=scene, filename='mem_graphics_pss.log')[0]
-        targetDic['private_pss'] = self.readLog(scene=scene, filename='mem_private_pss.log')[0]
-        targetDic['system_pss'] = self.readLog(scene=scene, filename='mem_system_pss.log')[0]
+        targetDic['java_heap'] = self.readLog(scene=scene, filename='mem_java_heap.log', max_points=max_points)[0]
+        targetDic['native_heap'] = self.readLog(scene=scene, filename='mem_native_heap.log', max_points=max_points)[0]
+        targetDic['code_pss'] = self.readLog(scene=scene, filename='mem_code_pss.log', max_points=max_points)[0]
+        targetDic['stack_pss'] = self.readLog(scene=scene, filename='mem_stack_pss.log', max_points=max_points)[0]
+        targetDic['graphics_pss'] = self.readLog(scene=scene, filename='mem_graphics_pss.log', max_points=max_points)[0]
+        targetDic['private_pss'] = self.readLog(scene=scene, filename='mem_private_pss.log', max_points=max_points)[0]
+        targetDic['system_pss'] = self.readLog(scene=scene, filename='mem_system_pss.log', max_points=max_points)[0]
         result = {'status': 1, 'memory_detail': targetDic}
         return result
     
-    def getCpuCoreLog(self, platform, scene):
+    def getCpuCoreLog(self, platform, scene, max_points=None):
         targetDic = dict()
         cores =self.readJson(scene=scene).get('cores', 0)
         if int(cores) > 0:
             for i in range(int(cores)):
-                targetDic['cpu{}'.format(i)] = self.readLog(scene=scene, filename='cpu{}.log'.format(i))[0]
+                targetDic['cpu{}'.format(i)] = self.readLog(scene=scene, filename='cpu{}.log'.format(i), max_points=max_points)[0]
         result = {'status': 1, 'cores':cores, 'cpu_core': targetDic}
         return result
     
@@ -511,19 +539,19 @@ class File:
         result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
     
-    def getBatteryLog(self, platform, scene):
+    def getBatteryLog(self, platform, scene, max_points=None):
         targetDic = dict()
         if platform == Platform.Android:
-            targetDic['batteryLevel'] = self.readLog(scene=scene, filename='battery_level.log')[0]
-            targetDic['batteryTem'] = self.readLog(scene=scene, filename='battery_tem.log')[0]
+            targetDic['batteryLevel'] = self.readLog(scene=scene, filename='battery_level.log', max_points=max_points)[0]
+            targetDic['batteryTem'] = self.readLog(scene=scene, filename='battery_tem.log', max_points=max_points)[0]
             result = {'status': 1, 
                       'batteryLevel': targetDic['batteryLevel'], 
                       'batteryTem': targetDic['batteryTem']}
         else:
-            targetDic['batteryTem'] = self.readLog(scene=scene, filename='battery_tem.log')[0]
-            targetDic['batteryCurrent'] = self.readLog(scene=scene, filename='battery_current.log')[0]
-            targetDic['batteryVoltage'] = self.readLog(scene=scene, filename='battery_voltage.log')[0]
-            targetDic['batteryPower'] = self.readLog(scene=scene, filename='battery_power.log')[0]
+            targetDic['batteryTem'] = self.readLog(scene=scene, filename='battery_tem.log', max_points=max_points)[0]
+            targetDic['batteryCurrent'] = self.readLog(scene=scene, filename='battery_current.log', max_points=max_points)[0]
+            targetDic['batteryVoltage'] = self.readLog(scene=scene, filename='battery_voltage.log', max_points=max_points)[0]
+            targetDic['batteryPower'] = self.readLog(scene=scene, filename='battery_power.log', max_points=max_points)[0]
             result = {'status': 1, 
                       'batteryTem': targetDic['batteryTem'], 
                       'batteryCurrent': targetDic['batteryCurrent'],
@@ -543,10 +571,10 @@ class File:
             result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}    
         return result
     
-    def getFlowLog(self, platform, scene):
+    def getFlowLog(self, platform, scene, max_points=None):
         targetDic = dict()
-        targetDic['upFlow'] = self.readLog(scene=scene, filename='upflow.log')[0]
-        targetDic['downFlow'] = self.readLog(scene=scene, filename='downflow.log')[0]
+        targetDic['upFlow'] = self.readLog(scene=scene, filename='upflow.log', max_points=max_points)[0]
+        targetDic['downFlow'] = self.readLog(scene=scene, filename='downflow.log', max_points=max_points)[0]
         result = {'status': 1, 'upFlow': targetDic['upFlow'], 'downFlow': targetDic['downFlow']}
         return result
     
@@ -564,11 +592,11 @@ class File:
         result = {'status': 1, 'scene1': targetDic['scene1'], 'scene2': targetDic['scene2']}
         return result
     
-    def getFpsLog(self, platform, scene):
+    def getFpsLog(self, platform, scene, max_points=None):
         targetDic = dict()
-        targetDic['fps'] = self.readLog(scene=scene, filename='fps.log')[0]
+        targetDic['fps'] = self.readLog(scene=scene, filename='fps.log', max_points=max_points)[0]
         if platform == Platform.Android:
-            targetDic['jank'] = self.readLog(scene=scene, filename='jank.log')[0]
+            targetDic['jank'] = self.readLog(scene=scene, filename='jank.log', max_points=max_points)[0]
             result = {'status': 1, 'fps': targetDic['fps'], 'jank': targetDic['jank']}
         else:
             result = {'status': 1, 'fps': targetDic['fps']}     

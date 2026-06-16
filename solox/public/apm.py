@@ -306,7 +306,51 @@ class Battery(object):
              apm_time = datetime.datetime.now().strftime('%H:%M:%S.%f')
              f.add_log(os.path.join(f.report_dir,'battery_level.log'), apm_time, level)
              f.add_log(os.path.join(f.report_dir,'battery_tem.log'), apm_time, temperature)
+             self.recordAndroidBatteryContext(output, apm_time)
         return level, temperature
+
+    def recordAndroidBatteryContext(self, output, apm_time):
+        """Record extra battery context without changing existing battery metrics."""
+        field_logs = {
+            'status': 'battery_status.log',
+            'AC powered': 'battery_ac_powered.log',
+            'USB powered': 'battery_usb_powered.log',
+            'Wireless powered': 'battery_wireless_powered.log',
+            'voltage': 'battery_voltage.log',
+            'current now': 'battery_current.log',
+            'Charge counter': 'battery_charge_counter.log',
+            'charge counter': 'battery_charge_counter.log'
+        }
+        recorded = set()
+        for field, filename in field_logs.items():
+            if filename in recorded:
+                continue
+            value = self.getAndroidBatteryField(output, field)
+            if value is not None:
+                self.addAndroidBatteryContextLog(os.path.join(f.report_dir, filename), apm_time, value)
+                recorded.add(filename)
+
+    def addAndroidBatteryContextLog(self, path, log_time, value):
+        with open(path, 'a+', encoding="utf-8") as file:
+            file.write(f'{log_time}={str(value)}' + '\n')
+
+    def getAndroidBatteryField(self, output, field):
+        pattern = r'^\s*{}:\s*(.+?)\s*$'.format(re.escape(field))
+        match = re.search(pattern, output, re.MULTILINE)
+        if not match:
+            return None
+        value = match.group(1).strip()
+        if value.lower() == 'true':
+            return 1
+        if value.lower() == 'false':
+            return 0
+        try:
+            return int(value)
+        except ValueError:
+            try:
+                return float(value)
+            except ValueError:
+                return value
 
     def getiOSBattery(self, noLog=False):
         """Get ios battery info, unit:%"""
@@ -923,4 +967,4 @@ class AppPerformanceMonitor(initPerformanceService):
             Scrcpy.stop_record()
             logger.exception(e)
         finally:
-            logger.info('End of testing')         
+            logger.info('End of testing')
